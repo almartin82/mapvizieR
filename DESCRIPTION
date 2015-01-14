@@ -1,0 +1,9 @@
+Package: mapvizieR
+Type: Package
+Title: What the package does (short line)
+Version: 0.1
+Date: 2015-01-14
+Author: Chris Haid and Andrew Martin
+Maintainer: <almartin@gmail.com; chaid@kippchicago.org>
+Description: Visualizations for NWEA MAP Data
+
