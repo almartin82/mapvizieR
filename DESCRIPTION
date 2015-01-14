@@ -3,7 +3,7 @@ Type: Package
 Title: What the package does (short line)
 Version: 0.1
 Date: 2015-01-14
-Author: Chris Haid and Andrew Martin
-Maintainer: <almartin@gmail.com; chaid@kippchicago.org>
+Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email = "almartin@gmail.com"),
+  person("Chris", "Haid", role = "aut", email = "chaid@kippchicago.org"))
 Description: Visualizations for NWEA MAP Data
-
+Depends: lubridate
