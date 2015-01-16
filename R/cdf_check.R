@@ -9,7 +9,8 @@
 #' @param prepped_cdf_long a map CDF file, generated either by prep_cdf_long,
 #' or via processing done in your data warehouse
 #'  
-#' @return boolean, does the prepped cdf conform to our expectations?
+#' @return a named list.  \code{$boolean} has true false result; \code{descriptive} 
+#' has a more descriptive string describing what happened.
 
 
 check_cdf_long <- function(prepped_cdf_long) {

@@ -1,6 +1,27 @@
 # mapvizieR
-
 mapvizieR is an R package that generates visualizations and reports for NWEA MAP data.
+
+## what's inside?
+
+### data prep functions
+prep MAP data and create `cdf_long` and `cdf_growth` dataframes.
+along with roster info, those data frames get wrapped up into a `mapvizieR` object, which can be passed to the visualization functions below..
+
+### data tests and checks
+test data frames to see if they conform with mapvizieR conventions and expectations.
+
+### longitudinal visualization functions
+these plots show MAP scores for a group of students across multiple testing terms.  they expect a `cdf_long` dataframe and return ggplot charts.  some examples:
+
+- `becca_plot()`
+- `galloping_elephants()`
+
+### growth visualization functions
+unlike the functions above, which can take 1, 2, 3, n... test seasons, a lot of MAP analysis revolves around growth windows.  these visualization functions expect a 'cdf_growth' dataframe.  examples include:
+
+- `haid_plot()`
+- `goal_bar()`
+
 
 ## development guidelines
 
