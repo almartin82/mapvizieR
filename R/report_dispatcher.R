@@ -13,14 +13,14 @@
 #' \code{studentids, depth_string} into the arg list, as well as named elements 
 #' corresponding to the key/value cut and element outlined above
 #' @param calling_env defaults to parent frame.
+#' @param ... other parameters to pass through (namely cdfs).  todo: reformat this function
+#' to take mapvizieR object.
 #' 
 #' @return a cdf with new term fields 
 
 report_dispatcher <- function(roster, cut_list, call_list, 
     func_to_call, arg_list, calling_env = parent.frame(), ...
   ) {
-  require(assertthat)
-  require(stringr)
   
   #all of the cuts provided need to match columns in the roster.
   cuts_unlisted <- unlist(cut_list)

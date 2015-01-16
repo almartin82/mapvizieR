@@ -4,9 +4,9 @@
 #' \code{galloping_elephants} returns ggplot density distributions that show change
 #'  in RIT over time
 #'
-#' @param cdf_long_prepped cdf.  run \code{prep_cdf_long} to get into proper format.
+#' @param data a cdf_long_prepped.  run \code{prep_cdf_long} to get into proper format.
 #' @param first_and_spring_only show all terms, or only entry & spring?  default is TRUE.
-#' @param entry_grades.  which grades are entry grades?
+#' @param entry_grades  which grades are entry grades?
 #' @return a ggplot object.
 
 

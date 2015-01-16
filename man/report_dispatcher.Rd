@@ -23,6 +23,9 @@ the function should get called at cut_list[i]}
 corresponding to the key/value cut and element outlined above}
 
 \item{calling_env}{defaults to parent frame.}
+
+\item{...}{other parameters to pass through (namely cdfs).  todo: reformat this function
+to take mapvizieR object.}
 }
 \value{
 a cdf with new term fields

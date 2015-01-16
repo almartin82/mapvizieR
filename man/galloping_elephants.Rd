@@ -8,11 +8,11 @@ galloping_elephants(data, first_and_spring_only = TRUE,
   entry_grades = c(-0.8, 4.2))
 }
 \arguments{
+\item{data}{a cdf_long_prepped.  run \code{prep_cdf_long} to get into proper format.}
+
 \item{first_and_spring_only}{show all terms, or only entry & spring?  default is TRUE.}
 
-\item{cdf_long_prepped}{cdf.  run \code{prep_cdf_long} to get into proper format.}
-
-\item{entry_grades.}{which grades are entry grades?}
+\item{entry_grades}{which grades are entry grades?}
 }
 \value{
 a ggplot object.
