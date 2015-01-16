@@ -7,3 +7,5 @@ Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email = "almartin
   person("Chris", "Haid", role = "aut", email = "chaid@kippchicago.org"))
 Description: Visualizations for NWEA MAP Data
 Depends: lubridate, assertthat
+Suggests: testthat
+LazyData: true
