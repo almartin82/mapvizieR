@@ -22,8 +22,8 @@ check_cdf_long <- function(prepped_cdf_long) {
     
   result_vector <- c(names_result, season_result)
   results <- list(
-    all(result_vector),
-    paste0("passed ", length(result_vector[result_vector==TRUE]), " tests!")
+    boolean=all(result_vector),
+    descriptive=paste0("passed ", length(result_vector[result_vector==TRUE]), " tests!")
   )
   
   return(results)

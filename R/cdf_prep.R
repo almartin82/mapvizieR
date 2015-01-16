@@ -68,7 +68,7 @@ prep_cdf_long <- function(cdf_long) {
   cdf_long <- cdf_prep_names(cdf_long)
   cdf_long <- cdf_prep_fws(cdf_long)
   
-  assert_that(check_cdf_long(cdf_long)[[1]])
+  assert_that(check_cdf_long(cdf_long)$boolean)
   
   return(cdf_long)
 }
