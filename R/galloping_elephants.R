@@ -8,11 +8,7 @@
 #' @param first_and_spring_only show all terms, or only entry & spring?  default is TRUE.
 #' @param entry_grades.  which grades are entry grades?
 #' @return a ggplot object.
-#' 
-#' @examples
-#' add(1, 1)
-#' add(10, 1)
-#' 
+
 
 galloping_elephants <- function (
   data, 

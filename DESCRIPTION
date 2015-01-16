@@ -6,6 +6,7 @@ Date: 2015-01-14
 Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email = "almartin@gmail.com"),
   person("Chris", "Haid", role = "aut", email = "chaid@kippchicago.org"))
 Description: Visualizations for NWEA MAP Data
+License: No license; c. 2015 Chris Haid and Andrew Martin.  Contact us if you're interested in using this in production and we'll certainly be able to work something out.
 Depends: lubridate, assertthat
 Suggests: testthat
 LazyData: true
