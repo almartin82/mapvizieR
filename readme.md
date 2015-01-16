@@ -11,3 +11,5 @@ mapvizieR is an R package that generates visualizations and reports for NWEA MAP
 - separate data processing functions from visualization functions
 
 - use ggplot themes, where possible, to handle formatting stuff (font size, transparency, etc) on plots
+
+- there's a tag for `design philosophy` in issues; put down thoughts about how we're thinking about handling data, workflows, etc there.

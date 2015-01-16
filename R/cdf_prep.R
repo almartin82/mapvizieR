@@ -7,9 +7,6 @@
 #' @param cdf_long a map assessmentresults.csv file.  can be one term, or many terms
 #' together in one file.
 #' @return a cdf with lowercase variable names
-#' 
-#' @examples
-#' add(1, 1)
 
 cdf_prep_names <- function(cdf_long) {
   
@@ -25,12 +22,9 @@ cdf_prep_names <- function(cdf_long) {
 #' @description
 #' \code{cdf_prep_fws} munges test term data on a CDF
 #'
-#' @param cdf_long a map assessmentresults.csv file.  can be one term, or many terms
-#' together in one file.
-#' @return a cdf with new term fields 
+#' @inheritParams cdf_prep_names
 #' 
-#' @examples
-#' add(1, 1)
+#' @return a cdf with new term fields 
 
 
 
@@ -60,22 +54,22 @@ cdf_prep_fws <- function(cdf_long) {
 
 
 
-#' @title prep_cdf
+#' @title prep_cdf_long
 #'
 #' @description
-#' \code{prep_cdf} a wrapper around several cdf prep functions
+#' \code{prep_cdf_long} a wrapper around several cdf prep functions
 #'
-#' @param cdf_long a map assessmentresults.csv file.  can be one term, or many terms
-#' together in one file.
-#' @return a prepped cdf file 
+#' @inheritParams cdf_prep_names
 #' 
-#' @examples
-#' add(1, 1)
+#' @return a prepped cdf file 
 
-prep_cdf <- function(cdf_long) {
+prep_cdf_long <- function(cdf_long) {
   
   cdf_long <- cdf_prep_names(cdf_long)
   cdf_long <- cdf_prep_fws(cdf_long)
   
+  assert_that(check_cdf_long(cdf_long)[[1]])
+  
   return(cdf_long)
 }
+
