@@ -13,7 +13,7 @@ lower_df_names(x)
 data frame with modified names
 }
 \description{
-\code{lower_df_names} a utility function to take any cdf and return it with
+\code{lower_df_names} a utility function to take a data frame and return it with
 lowercase names
 }
 

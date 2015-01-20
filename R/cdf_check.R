@@ -58,8 +58,7 @@ check_cdf_names <- function(prepped_cdf_long) {
     "goal6stderr", "goal6range", "goal6adjective", "goal7name", "goal7ritscore", 
     "goal7stderr", "goal7range", "goal7adjective", "goal8name", "goal8ritscore", 
     "goal8stderr", "goal8range", "goal8adjective", "teststarttime", 
-    "percentcorrect", "projectedproficiency", "fallwinterspring", "year_tested", 
-    "map_year_academic")
+    "percentcorrect", "projectedproficiency", "fallwinterspring", "map_year_academic")
   names_test <- all(has_name(prepped_cdf_long, expected_names))
   
   has_valid_names <- function(x) {x==TRUE}

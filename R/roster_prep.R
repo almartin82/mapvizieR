@@ -12,8 +12,10 @@
 
 prep_roster <- function(roster) {
   
-  #some data prep steps
+  #df names
   roster <- roster_prep_names(roster)
+  #year prep stuff
+  roster <- extract_academic_year(roster)
   
   #check that roster conforms to our expectations
   assert_that(check_roster(roster)$boolean)
@@ -35,4 +37,5 @@ prep_roster <- function(roster) {
 roster_prep_names <- function(students_by_school) {
   return(lower_df_names(students_by_school))
 }
+
 
