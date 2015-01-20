@@ -16,6 +16,8 @@
 #' @param ... other parameters to pass through (namely cdfs).  todo: reformat this function
 #' to take mapvizieR object.
 #' 
+#' @export
+#' 
 #' @return a cdf with new term fields 
 
 report_dispatcher <- function(roster, cut_list, call_list, 
