@@ -1,5 +1,3 @@
-
-
 #' @title check_cdf_long
 #'
 #' @description
@@ -11,6 +9,8 @@
 #'  
 #' @return a named list.  \code{$boolean} has true false result; \code{descriptive} 
 #' has a more descriptive string describing what happened.
+#' 
+#' @export
 
 
 check_cdf_long <- function(prepped_cdf_long) {
