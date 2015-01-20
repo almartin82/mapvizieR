@@ -1,6 +1,8 @@
 # mapvizieR
 mapvizieR is an R package that generates visualizations and reports for NWEA MAP data.
 
+[![Build Status](https://travis-ci.org/almartin82/mapvizieR.png?branch=master)](https://travis-ci.org/almartin82/mapvizieR)
+
 ## what's inside?
 
 ### data prep functions
