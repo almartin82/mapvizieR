@@ -10,10 +10,10 @@
 #' 
 #' @export
 
-prep_roster <- function(roster) {
+prep_roster <- function(students_by_school) {
   
   #df names
-  roster <- roster_prep_names(roster)
+  roster <- roster_prep_names(students_by_school)
   #year prep stuff
   roster <- extract_academic_year(roster)
   
