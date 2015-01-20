@@ -4,7 +4,7 @@
 \alias{prep_roster}
 \title{prep_roster}
 \usage{
-prep_roster(roster)
+prep_roster(students_by_school)
 }
 \arguments{
 \item{students_by_school}{one, or multiple (combined) NWEA MAP
