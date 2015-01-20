@@ -11,7 +11,7 @@ cdf_prep_names(cdf_long)
 together in one file.}
 }
 \value{
-a cdf with lowercase variable names
+a cdf with lowercase data frame names
 }
 \description{
 \code{cdf_prep_names} turns the CamelCase names of a cdf to lowercase.

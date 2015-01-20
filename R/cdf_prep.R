@@ -6,13 +6,10 @@
 #'
 #' @param cdf_long a map assessmentresults.csv file.  can be one term, or many terms
 #' together in one file.
-#' @return a cdf with lowercase variable names
+#' @return a cdf with lowercase data frame names
 
 cdf_prep_names <- function(cdf_long) {
-  
-  names(cdf_long) <- tolower(names(cdf_long))
-  
-  return(cdf_long)
+  return(lower_df_names(cdf_long))
 }
 
 
