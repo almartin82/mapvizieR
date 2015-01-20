@@ -3,10 +3,17 @@ Type: Package
 Title: What the package does (short line)
 Version: 0.1
 Date: 2015-01-14
-Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email = "almartin@gmail.com"),
-  person("Chris", "Haid", role = "aut", email = "chaid@kippchicago.org"))
+Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email =
+    "almartin@gmail.com"), person("Chris", "Haid", role = "aut", email =
+    "chaid@kippchicago.org"))
 Description: Visualizations for NWEA MAP Data
 License: No license
-Depends: assertthat, lubridate, stringr, R(>= 2.10.0)
-Suggests: testthat
+Depends:
+    assertthat,
+    lubridate,
+    stringr,
+    dplyr,
+    R(>= 2.10.0)
+Suggests:
+    testthat
 LazyData: true
