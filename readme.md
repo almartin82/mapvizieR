@@ -19,6 +19,7 @@ these plots show MAP scores for a group of students across multiple testing term
 
 - `becca_plot()`
 - `galloping_elephants()`
+- `long_plot()`
 
 ### growth visualization functions
 unlike the functions above, which can take 1, 2, 3, n... test seasons, a lot of MAP analysis revolves around growth windows.  these visualization functions expect a 'cdf_growth' dataframe.  examples include:
