@@ -4,11 +4,15 @@
 \alias{prep_roster}
 \title{prep_roster}
 \usage{
-prep_roster(students_by_school)
+prep_roster(students_by_school, kinder_codes = NULL)
 }
 \arguments{
 \item{students_by_school}{one, or multiple (combined) NWEA MAP
 studentsbyschool.csv file(s).}
+
+\item{kinder_codes}{alternative grade codes for kindergarten (e.g., "k",
+"kinder", "Kinder") that need to be translated to grade 0.  Note that code "K"
+and 13 are already checked by \code{\link{standardize_kinder}}.}
 }
 \value{
 a prepped roster file
