@@ -75,7 +75,7 @@ extract_academic_year <- function(x) {
 #' altnames<-list(old=c("KAPS", "KBCP", "KOA"), 
 #'                  new=c("KAP", "Bloom", "One"))
 #' 
-#' abbrev(x, excpetions=altnames)
+#' abbrev(x, exceptions=altnames)
 
 abbrev<-function(x, exceptions=NULL){
   x.out<- gsub(pattern="(\\w)\\w*\\W*", 
