@@ -28,7 +28,7 @@ into the 2nd, 3rd, and 4th quartiles, respectively. You can revert to a traditio
 quartile calculation by setting the \code{proper.quartile} argument to \code{TRUE}.
 }
 \examples{
-x <- sample(x=1:99, 100,replace = T)
+x <- sample(x=1:99, 100,replace = TRUE)
 kipp_quartile(x)
 kipp_quartile(x, proper.quartile=TRUE)
 kipp_quartile(x, proper.quartile=TRUE, return.factor=FALSE)

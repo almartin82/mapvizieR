@@ -113,7 +113,7 @@ abbrev<-function(x, exceptions=NULL){
 #' @return a vector of \code{length(x)}.
 #' @export
 #' @examples 
-#' x <- sample(x=1:99, 100,replace = T)
+#' x <- sample(x=1:99, 100,replace = TRUE)
 #' kipp_quartile(x)
 #' kipp_quartile(x, proper.quartile=TRUE)
 #' kipp_quartile(x, proper.quartile=TRUE, return.factor=FALSE)
