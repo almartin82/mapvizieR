@@ -4,11 +4,14 @@
 \alias{galloping_elephants}
 \title{RIT distribution change (affectionately titled 'Galloping Elephants')}
 \usage{
-galloping_elephants(data, first_and_spring_only = TRUE,
-  entry_grades = c(-0.8, 4.2))
+galloping_elephants(prepped_cdf_long, prepped_roster,
+  first_and_spring_only = TRUE, entry_grades = c(-0.8, 4.2))
 }
 \arguments{
-\item{data}{a cdf_long_prepped.  run \code{prep_cdf_long} to get into proper format.}
+\item{prepped_cdf_long}{a conforming cdf_long_prepped data frame. run \code{prep_cdf_long}
+to get into proper format.}
+
+\item{prepped_roster}{a conforming roster data frame.}
 
 \item{first_and_spring_only}{show all terms, or only entry & spring?  default is TRUE.}
 

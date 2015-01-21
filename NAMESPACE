@@ -3,6 +3,7 @@
 export(abbrev)
 export(check_cdf_long)
 export(check_roster)
+export(galloping_elephants)
 export(grade_levelify_cdf)
 export(kipp_quartile)
 export(prep_cdf_long)
