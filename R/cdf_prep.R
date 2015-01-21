@@ -12,27 +12,13 @@
 
 prep_cdf_long <- function(cdf_long) {
   
-  #names
-  cdf_long <- cdf_prep_names(cdf_long)
-  #fallwinterspring
-  cdf_long <- extract_academic_year(cdf_long)
+  cdf_long <- cdf_long %>% 
+    #names
+    lower_df_names() %>%
+    #fallwinterspring, academic_year
+    extract_academic_year()  
   
   assert_that(check_cdf_long(cdf_long)$boolean)
   
   return(cdf_long)
-}
-
-
-
-#' @title cdf_prep_names
-#'
-#' @description
-#' \code{cdf_prep_names} turns the CamelCase names of a cdf to lowercase.
-#'
-#' @inheritParams prep_cdf_long
-#' 
-#' @return a cdf with lowercase data frame names
-
-cdf_prep_names <- function(cdf_long) {
-  return(lower_df_names(cdf_long))
 }
