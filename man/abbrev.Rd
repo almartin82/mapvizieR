@@ -36,6 +36,6 @@ abbrev(x)
 altnames<-list(old=c("KAPS", "KBCP", "KOA"),
                  new=c("KAP", "Bloom", "One"))
 
-abbrev(x, excpetions=altnames)
+abbrev(x, exceptions=altnames)
 }
 
