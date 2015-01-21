@@ -17,8 +17,11 @@ check_roster <- function(roster) {
   
   #column/header names
   names_result <- check_roster_names(roster)
-      
-  result_vector <- c(names_result)
+  
+  #grade 
+  grades_result <- check_roster_grades(roster)
+  
+  result_vector <- c(names_result, grades_result)
   results <- list(
     boolean=all(result_vector),
     descriptive=paste0("passed ", length(result_vector[result_vector==TRUE]), " tests!")
@@ -57,3 +60,33 @@ check_roster_names <- function(roster) {
   return(studentid_test)
 }
 
+check_roster_grades <- function(roster) {
+  
+  #the roster df has to have a grade field
+  grade_col_test <- 'grade' %in% names(roster)
+  
+  #write a custom failure message to make the test more helpful
+  has_grade <- function(x) {x==TRUE}
+  on_failure(has_grade) <- function(call, env) {
+    msg <- paste0("Your roster failed the grade field test.\n",
+                  "Make sure that your roster data frame contains a field called grade.")
+    return(msg)
+  }
+  assert_that(has_grade(grade_col_test))
+  
+  #the roster grade field is an integer vecotr
+  grade_integer_test <- is.integer(roster$grade)
+  
+  #write a custom failure message to make the test more helpful
+  grade_is_integer <- function(x) {x==TRUE}
+  on_failure(grade_is_integer) <- function(call, env) {
+    msg <- paste0("Your roster failed the grade integeer field test.\n",
+                  "Make sure that your roster data frame's grade field is an integer vector.")
+    return(msg)
+  }
+  assert_that(grade_is_integer(grade_integer_test))
+  
+  
+  #return the test result
+  return(grade_col_test & grade_integer_test)
+}
