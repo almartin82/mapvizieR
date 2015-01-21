@@ -4,7 +4,7 @@
 \alias{galloping_elephants}
 \title{RIT distribution change (affectionately titled 'Galloping Elephants')}
 \usage{
-galloping_elephants(prepped_cdf_long, prepped_roster,
+galloping_elephants(prepped_cdf_long, prepped_roster, studentids,
   first_and_spring_only = TRUE, entry_grades = c(-0.8, 4.2))
 }
 \arguments{
@@ -12,6 +12,8 @@ galloping_elephants(prepped_cdf_long, prepped_roster,
 to get into proper format.}
 
 \item{prepped_roster}{a conforming roster data frame.}
+
+\item{studentids}{which students to display?}
 
 \item{first_and_spring_only}{show all terms, or only entry & spring?  default is TRUE.}
 

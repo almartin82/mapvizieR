@@ -1,4 +1,4 @@
-context("test util functions on sample data provided by NWEA")
+context("test util functions on a variety of different inputs")
 
 test_that("abbrev abbreviates school names properly", {
   
@@ -95,4 +95,71 @@ test_that("standardize_kinder translates kinder codes properly", {
   expect_is(standardize_kinder(grades_k), "integer")
   
   expect_equal(length(standardize_kinder(roster$grade)), nrow(roster))
+})
+
+
+
+test_that("grade_level_season returns the correct offsets", {
+  
+  f <- 'Fall'  
+  w <- 'Winter'
+  s <- 'Spring'
+
+  expect_equal(grade_level_season(f), -0.8)
+  expect_equal(grade_level_season(w), -0.5)
+  expect_equal(grade_level_season(s), 0)
+
+})
+
+
+
+
+test_that("grade_level_seasonify correctly labels the NWEA sample data", {
+  
+  ex_roster <- prep_roster(ex_CombinedStudentsBySchool)
+  ex_cdf <- prep_cdf_long(ex_CombinedAssessmentResults)
+  
+  ex_cdf$grade <- grade_levelify_cdf(ex_cdf, ex_roster)
+  ex_cdf <- grade_level_seasonify(ex_cdf)
+  
+  gls_freq <- table(ex_cdf$grade_level_season)
+
+  expect_equal(length(ex_cdf$grade_level_season), 9091)
+  expect_equal(sum(ex_cdf$grade_level_season), 60633.9)
+  
+  expect_equal(gls_freq[['-0.8']], 40)
+  expect_equal(gls_freq[['-0.5']], 40)
+  expect_equal(gls_freq[['0']], 100)
+  expect_equal(gls_freq[['0.2']], 33)
+  expect_equal(gls_freq[['0.5']], 33)
+  expect_equal(gls_freq[['1']], 65)
+  expect_equal(gls_freq[['1.2']], 83)
+  expect_equal(gls_freq[['1.5']], 83)
+  expect_equal(gls_freq[['2']], 83)
+  expect_equal(gls_freq[['3']], 165)
+  expect_equal(gls_freq[['3.2']], 166)
+  expect_equal(gls_freq[['3.5']], 166)
+  expect_equal(gls_freq[['4']], 404)
+  expect_equal(gls_freq[['4.2']], 171)
+  expect_equal(gls_freq[['4.5']], 171)
+  expect_equal(gls_freq[['5']], 283)
+  expect_equal(gls_freq[['5.2']], 279)
+  expect_equal(gls_freq[['5.5']], 279)
+  expect_equal(gls_freq[['6']], 627)
+  expect_equal(gls_freq[['6.2']], 348)
+  expect_equal(gls_freq[['6.5']], 348)
+  expect_equal(gls_freq[['7']], 744)
+  expect_equal(gls_freq[['7.2']], 412)
+  expect_equal(gls_freq[['7.5']], 412)
+  expect_equal(gls_freq[['8']], 816)
+  expect_equal(gls_freq[['8.2']], 520)
+  expect_equal(gls_freq[['8.5']], 520)
+  expect_equal(gls_freq[['9']], 619)
+  expect_equal(gls_freq[['9.2']], 148)
+  expect_equal(gls_freq[['9.5']], 148)
+  expect_equal(gls_freq[['10']], 344)
+  expect_equal(gls_freq[['10.2']], 147)
+  expect_equal(gls_freq[['10.5']], 147)
+  expect_equal(gls_freq[['11']], 147)
+
 })

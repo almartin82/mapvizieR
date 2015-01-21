@@ -238,3 +238,51 @@ standardize_kinder<- function(x,
 
 
 
+#' @title grade_level_season
+#' 
+#' @description returns appropriate offset given a season
+#' 
+#' @param season 'Fall', 'Winter', 'Spring', or 'Summer'.
+#' 
+#' @return decimal offset that matches the season
+
+grade_level_season <- function(season) {
+  
+  assert_that(length(season)==1)
+  assert_that(season %in% c('Fall', 'Winter', 'Spring', 'Summer'))
+  
+  season_offsets <- list(
+    'Fall' = -0.8
+   ,'Winter' = -0.5
+   ,'Spring' = 0
+   ,'Summer' = 0.1
+  )
+  
+  return(season_offsets[[season]])
+}
+
+#' @title grade_level_seasonify
+#'
+#' @description
+#' \code{grade_level_seasonify} turns grade level into a simplified continuous scale, 
+#' using consistent offsets for MAP 'seasons'  
+#'
+#' @param x a cdf that has 'grade' and 'fallwinterspring' columns (eg product of )
+#' \code{grade_levelify()}
+#' 
+#' @return a data frame with a 'grade_level_season' column
+
+grade_level_seasonify <- function(x) {
+  
+  assert_that('grade' %in% names(x))
+  assert_that('fallwinterspring' %in% names(x))
+  
+  prepped <- x %>% 
+    rowwise() %>%
+    mutate(
+      grade_level_season = grade + grade_level_season(fallwinterspring)
+    )
+  
+  return(as.data.frame(prepped))
+}
+

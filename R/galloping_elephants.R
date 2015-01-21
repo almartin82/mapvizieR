@@ -7,6 +7,7 @@
 #' @param prepped_cdf_long a conforming cdf_long_prepped data frame. run \code{prep_cdf_long} 
 #' to get into proper format.
 #' @param prepped_roster a conforming roster data frame.
+#' @param studentids which students to display?
 #' @param first_and_spring_only show all terms, or only entry & spring?  default is TRUE.
 #' @param entry_grades  which grades are entry grades?
 #' 
@@ -18,14 +19,17 @@
 galloping_elephants <- function (
   prepped_cdf_long,
   prepped_roster,
+  studentids,
   first_and_spring_only=TRUE,
-  entry_grades = c(-0.8, 4.2)
-  ) {
+  entry_grades=c(-0.8, 4.2)
+) {
   #test if the incoming data conforms to specs
   assert_that(check_cdf_long(prepped_cdf_long)$boolean)
   assert_that(check_roster(prepped_roster)$boolean)
   
-  #munge data to get desired terms
+  #munge data 
+  ##only these kids
+  this_cdf <- prepped_cdf_long[prepped_cdf_long$studentid %in% studentids, ]
   
   
   #get counts by term (for labels)
