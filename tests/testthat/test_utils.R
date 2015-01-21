@@ -72,5 +72,27 @@ test_that("tiered_growth_factors calculates proper tiered growth factors",{
   #             nrow(cdf)
   #             )
   
+})
+
+test_that("standardize_kinder translates kinder codes properly", {
+  grades<-c(1:13)
+  grades_k <- ifelse(grades==13, "K", grades)
+  grades_kinder <- ifelse(grades==13, "Kinder", grades)
+  grades_k_kinder <- c(grades_kinder, "kinder")
   
+  expected_grades <- ifelse(grades==13, 0, grades)
+  expected_grades_k_kinder <- c(expected_grades, 0)
+  
+  roster <- prep_roster(ex_CombinedStudentsBySchool)
+  
+  expect_equal(standardize_kinder(grades), expected_grades)
+  expect_equal(standardize_kinder(grades_k), expected_grades)
+  expect_equal(standardize_kinder(grades_kinder, other_codes = "Kinder"), 
+               expected_grades)
+  expect_equal(standardize_kinder(grades_k_kinder, other_codes = c("Kinder","kinder")), 
+               expected_grades_k_kinder)
+  
+  expect_is(standardize_kinder(grades_k), "integer")
+  
+  expect_equal(length(standardize_kinder(roster$grade)), nrow(roster))
 })

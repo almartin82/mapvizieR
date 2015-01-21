@@ -186,3 +186,55 @@ tiered_growth_factors <- function(quartile, grade){
   
 }
 
+#' @title Standardize Kindergarten code to 0 and other grades to integers
+#'
+#' @description
+#' \code{standardize_kinder} returns an integer vector grade levels.  
+#'
+#' @details 
+#' This function simply translates kindergarten codes 13 (from client-based
+#' MAP), "K", or a user specified \code{kinder_code} from an input vector \code{x}
+#'  to 0 and recasts the  input vector to an integer vector. 
+#' @param x a character, integer, or numeric vector of grade levels
+#' @param other_codes a vector of alternative codes for kindergarten to be translated to 0  
+#' 
+#' @return an integer vector of \code{length(x)}.
+#' @export
+#' @examples 
+#' 
+#' # Create vector of grades 1 through 13, where 13 = kinder
+#' x <- sample(x=1:13, 100,replace = TRUE)
+#' standardize_kinder(x)
+#' 
+#' # change 13 to "K"
+#' x2 <- ifelse(x==13, "K", x)
+#' standardize_kinder(x2)
+#' 
+#' # change "K" to "Kinder"
+#' x3 <- ifelse(x=="K", "Kinder", x)
+#' standardize_kinder(x2, other_codes="Kinder")
+
+
+standardize_kinder<- function(x,
+                              other_codes=NULL){
+  
+  # use other codes first
+  if(!is.null(other_codes)){
+    x<-ifelse(x %in% other_codes, 0, x)
+  }
+  
+  # change "K" to 0
+  x <- ifelse(x=="K", 0, x)
+  
+  # change 13 to 0
+  x <- ifelse(x==13, 0, x)
+  
+  # cast as integer.vector
+  x<-as.integer(x)
+   
+  #return 
+  x
+}
+
+
+
