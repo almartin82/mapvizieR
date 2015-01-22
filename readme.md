@@ -1,6 +1,6 @@
 # mapvizieR
 ### mapvizieR is an R package that generates visualizations and reports for NWEA MAP data.
-[![Build Status](https://travis-ci.org/almartin82/mapvizieR.png?branch=master)](https://travis-ci.org/almartin82/mapvizieR)
+[![Build Status](https://travis-ci.org/almartin82/mapvizieR.png?branch=master)](https://travis-ci.org/almartin82/mapvizieR) [![Coverage Status](https://coveralls.io/repos/almartin82/mapvizieR/badge.svg?branch=master)](https://coveralls.io/r/almartin82/mapvizieR?branch=master)
 
 ...because how else are you going to get a capital 'R' into mapviz?
 <img src="http://www.learningpracticalturkish.com/ibrahim-pasha-suleymans-grand-vizier.jpg">
