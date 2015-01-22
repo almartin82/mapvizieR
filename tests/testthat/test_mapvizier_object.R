@@ -76,6 +76,28 @@ test_that("nwea_growth properly gets growth", {
   expect_equal(nrow(growth), nrow(cdf))
   expect_equal(names(growth), expected_growth_col_names)
   expect_equal(names(growth_spring_only), c("R22", "S22", "T22"))
+})
 
-
+test_that("s2s_match properly matchs up data from a prepped long cdf",{
+  cdf<- ex_CombinedAssessmentResults %>%
+    prep_cdf_long 
+  
+  roster <- prep_roster(ex_CombinedStudentsBySchool)
+  
+  cdf$grade <-  grade_levelify_cdf(cdf, roster)
+  
+  cdf_growth_ss<-s2s_match(cdf, 
+                        season1 = "Spring", 
+                        season2 = "Spring", 
+                        sy = 2013)
+  
+  cdf_growth_sw<-s2s_match(cdf, 
+                           season1 = "Spring", 
+                           season2 = "Winter", 
+                           sy = 2013)
+  
+  expect_equal(nrow(cdf_growth_ss), 2099)
+  expect_match(unique(cdf_growth_ss$growth_season), "Spring - Spring")
+  expect_match(unique(cdf_growth_sw$growth_season), "Spring - Winter")
+  
 })
