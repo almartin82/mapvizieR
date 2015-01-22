@@ -1,14 +1,25 @@
-#' @title create_mapvizier_object
+#' @title Create a mapvizieR object
 #' 
 #' @description
-#' \code{create_mapvizier_object} is a workhorse workflow function that
+#' \code{mapvizieR} is a workhorse workflow function that
 #' calls a sequence of cdf and roster prep functions, given a raw cdf and raw roster
 #' 
 #' @param raw_cdf a NWEA AssessmentResults.csv or CDF
 #' @param raw_roster a NWEA students
+#' @examples
+#' data(ex_CombinedAssessmentResults)
+#' data(ex_CombinedStudentsBySchool)
+#' 
+#' cdf_mv <- mapvizieR(ex_CombinedAssessmentResults, 
+#'                     ex_CombinedStudentsBySchool)
+#'                     
+#' is.mapvizieR(cdf_mv)                     
+#' 
+#' @export
+mapvizieR <- function(raw_cdf, raw_roster) UseMethod("mapvizieR")
 
-
-create_mapvizier_object <- function(raw_cdf, raw_roster) {
+#' @export
+mapvizieR.default <- function(raw_cdf, raw_roster) {
   
   prepped_cdf <- prep_cdf_long(raw_cdf)
   prepped_roster <- prep_roster(raw_roster)
@@ -21,14 +32,88 @@ create_mapvizier_object <- function(raw_cdf, raw_roster) {
     grade_season_labelify() %>%
     grade_season_sortify()
   
-  return(
-    list(
+  #shit, why not just to all the joins we could ever want on this original data
+  # Create Seaason to Season Numbers
+  year_list<-as.integer(unique(processed_cdf$map_year_academic))
+  
+  map.SS<-rbind_all(lapply(year_list, 
+                           s2s_match, 
+                           .data=processed_cdf, 
+                           season1="Spring", 
+                           season2="Spring", 
+                           typical.growth=T,
+                           college.ready=T
+  )
+  )
+  map.FS<-rbind_all(lapply(year_list, 
+                           s2s_match,
+                           .data=processed_cdf, 
+                           season1="Fall", 
+                           season2="Spring", 
+                           typical.growth=T,
+                           college.ready=T
+  )
+  )
+  map.FW<-rbind_all(lapply(year_list, 
+                           s2s_match, 
+                           .data=processed_cdf, 
+                           season1="Fall", 
+                           season2="Winter", 
+                           typical.growth=T,
+                           college.ready=T
+  )
+  )
+  map.WS<-rbind_all(lapply(year_list,
+                           s2s_match, 
+                           .data=processed_cdf, 
+                           season1="Winter", 
+                           season2="Spring", 
+                           typical.growth=T,
+                           college.ready=T
+  )
+  )
+  map.FF<-rbind_all(lapply(year_list, 
+                           s2s_match, 
+                           .data=processed_cdf, 
+                           season1="Fall", 
+                           season2="Fall", 
+                           typical.growth=T,
+                           college.ready=T
+  )
+  )
+  
+  map.SW<-rbind_all(lapply(year_list, 
+                           s2s_match, 
+                           .data=processed_cdf, 
+                           season1="Spring", 
+                           season2="Winter", 
+                           typical.growth=T,
+                           college.ready=T
+  )
+  )
+  
+  cdf_growth<-rbind_all(list(map.SS, map.FS, map.FW, map.WS, map.FF, map.SW))
+  
+  
+  mapviz <-  list(
       'cdf'=processed_cdf
      ,'roster'=prepped_roster
+     ,'cdf_growth'=cdf_growth
      #todo: add some analytics about matched/unmatched kids
-    )  
-  )
+     )
+  class(mapviz) <- "mapvizieR"
+  
+  #return 
+  mapviz
 }
+
+#' @title Reports whether x is a mapvizier object
+#'
+#' @description
+#' Reports whether x is a mapvizier object
+#' @param x an object to test
+#' @export
+is.mapvizieR <- function(x) inherits(x, "mapvizieR")
 
 
 #' @title grade_levelify_cdf
