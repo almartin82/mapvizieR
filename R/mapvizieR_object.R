@@ -1,3 +1,36 @@
+#' @title create_mapvizier_object
+#' 
+#' @description
+#' \code{create_mapvizier_object} is a workhorse workflow function that
+#' calls a sequence of cdf and roster prep functions, given a raw cdf and raw roster
+#' 
+#' @param raw_cdf a NWEA AssessmentResults.csv or CDF
+#' @param raw_roster a NWEA students
+
+
+create_mapvizier_object <- function(raw_cdf, raw_roster) {
+  
+  prepped_cdf <- prep_cdf_long(raw_cdf)
+  prepped_roster <- prep_roster(raw_roster)
+  
+  #do more processing on the cdf now that we have the roster
+  prepped_cdf$grade <- grade_levelify_cdf(prepped_cdf, prepped_roster)
+  
+  processed_cdf <- prepped_cdf %>%
+    grade_level_seasonify() %>%
+    grade_season_labelify() %>%
+    grade_season_sortify()
+  
+  return(
+    list(
+      'cdf'=processed_cdf
+     ,'roster'=prepped_roster
+     #todo: add some analytics about matched/unmatched kids
+    )  
+  )
+}
+
+
 #' @title grade_levelify_cdf
 #'
 #' @description
@@ -16,7 +49,7 @@ grade_levelify_cdf <- function(prepped_cdf, roster) {
   slim_roster <- unique(roster[, c('studentid', 'termname', 'grade')])
   #first match on a student's EXACT termname
   matched_cdf <- left_join(prepped_cdf, slim_roster, by=c('studentid', 'termname'))
-  
+
   exact_count <- nrow(!is.na(matched_cdf$grade))
   
   #if there are still unmatched students, attempt to match on map_year_academic
@@ -35,4 +68,57 @@ grade_levelify_cdf <- function(prepped_cdf, roster) {
   } 
   
   return(matched_cdf$grade)
+}
+
+
+
+
+
+#' @title grade_season_labelify
+#'
+#' @description
+#' \code{grade_season_labelify} returns an abbreviated label ('5S') that is useful when
+#' labelling charts  
+#'
+#' @param x a cdf that has 'grade_level_season' (eg product of grade_level_seasonify)
+#' \code{grade_levelify()}
+#' 
+#' @return a data frame with a grade_season_labels
+
+grade_season_labelify <- function(x) {
+  
+  assert_that('grade_level_season' %in% names(x))
+  
+  prepped <- x %>% 
+    rowwise() %>%
+    mutate(
+      grade_season_label = fall_spring_me(grade_level_season)
+    )
+  
+  return(as.data.frame(prepped))
+}
+
+
+
+#' @title grade_season_sortify
+#'
+#' @description
+#' \code{grade_season_sortify} returns a sortable grade season label
+#'
+#' @param x a cdf that has 'grade_level_season' (eg product of grade_level_seasonify)
+#' \code{grade_levelify()}
+#' 
+#' @return a data frame with a grade_season_sorted
+
+grade_season_sortify <- function(x) {
+  
+  assert_that('grade_level_season' %in% names(x))
+  
+  prepped <- x %>% 
+    rowwise() %>%
+    mutate(
+      grade_season_label = fall_spring_sort_me(grade_level_season)
+    )
+  
+  return(as.data.frame(prepped))
 }
