@@ -286,3 +286,77 @@ grade_level_seasonify <- function(x) {
   return(as.data.frame(prepped))
 }
 
+
+
+#' @title Fall-Spring Me
+#'
+#' @description
+#' \code{fall_spring_me} tranforms grade levels into labels for charts; eg 4.2 -> F5
+#'
+#' @param grade a grade level between -1 and 12
+#' 
+#' @return a labeled string
+#' @export
+#' 
+
+fall_spring_me <- function(grade) {
+  #K is weird edge case
+  if(grade == -0.8) {
+    return('KF')
+  } else if(grade == -0.5) {
+    return('KW')
+  } else if(grade == 0) {
+    return('KS')
+  #too small, return nothing
+  } else if(grade <= -1) {
+    return('')
+  #too big
+  } else if(grade > 12) {
+    return('')  
+  #S observations are decimal 0s
+  } else if(grade %% 1 == 0) {
+    return(paste0(round(grade, 0), 'S'))
+  #test for F and W
+  } else if(round(grade %% 1,1) == 0.2) {
+    return(paste0(ceiling(grade), 'F'))
+  } else if(round(grade %% 1,2) == 0.5) {
+    return(paste0(ceiling(grade), 'W'))
+  } else {
+    return(NA)
+  }
+}
+
+
+
+#' @title Fall-Spring Sort Me
+#'
+#' @description
+#' \code{fall_spring_me} tranforms grade levels into labels that will sort properly; 
+#' eg, fall / winter/ spring
+#'
+#' @param grade a grade level between -1 and 12
+#' 
+#' @return a string
+#' @export
+
+fall_spring_sort_me <- function(grade) {
+  #K is weird edge case
+  if(grade == -0.8) {
+    return('K_1')
+  } else if(grade == -0.5) {
+    return('K_2')
+  } else if(grade == 0) {
+    return('K_3')
+  #S observations are decimal 0s
+  } else if(grade %% 1 == 0) {
+    return(paste0(round(grade, 0), '_3'))
+  #test for F and W; note that rounding is required or this misbehaves #rinferno
+  } else if(round(grade %% 1,1) == 0.2) {
+    return(paste0(ceiling(grade), '_1'))
+  } else if(round(grade %% 1,2) == 0.5) {
+    return(paste0(ceiling(grade), '_2'))
+  } else {
+    return(NA)
+  }  
+}
+

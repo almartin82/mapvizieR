@@ -4,12 +4,11 @@
 #' \code{galloping_elephants} returns ggplot density distributions that show change
 #'  in RIT over time
 #'
-#' @param prepped_cdf_long a conforming cdf_long_prepped data frame. run \code{prep_cdf_long} 
-#' to get into proper format.
-#' @param prepped_roster a conforming roster data frame.
+#' @param mapvizieR_obj a conforming mapvizieR object, which contains a cdf and a roster.
 #' @param studentids which students to display?
 #' @param first_and_spring_only show all terms, or only entry & spring?  default is TRUE.
-#' @param entry_grades  which grades are entry grades?
+#' @param detail_academic_year don't mask any data for this academic year
+#' @param entry_grade_seasons which grade_level_seasons are entry grades?
 #' 
 #' @return a ggplot object.
 #' 
@@ -17,24 +16,49 @@
 
 
 galloping_elephants <- function (
-  prepped_cdf_long,
-  prepped_roster,
+  mapvizieR_obj,
   studentids,
   first_and_spring_only=TRUE,
-  entry_grades=c(-0.8, 4.2)
+  detail_academic_year=2014,
+  entry_grade_seasons=c(-0.8, 4.2)
 ) {
-  #test if the incoming data conforms to specs
-  assert_that(check_cdf_long(prepped_cdf_long)$boolean)
-  assert_that(check_roster(prepped_roster)$boolean)
+  
+  #unpack the mapvizieR object
+  cdf_long <- mapvizieR_obj[['cdf']]
+  
+  #test if the cdf conforms to specs
+  assert_that(check_cdf_long(cdf_long)$boolean)
   
   #munge data 
   ##only these kids
-  this_cdf <- prepped_cdf_long[prepped_cdf_long$studentid %in% studentids, ]
+  this_cdf <- cdf_long[cdf_long$studentid %in% studentids, ]
   
-  
+  #only these seasons
+  valid_grades <- c(entry_grade_seasons, seq(0:13))
+  stage_1 <- this_cdf[this_cdf$grade %in% valid_grades | 
+                this_cdf$map_year_academic==detail_academic_year, ]
+
   #get counts by term (for labels)
+  term_counts <- stage_1 %>%
+    group_by(grade_season_label) %>%
+    summarize(
+      count=n()  
+    )
   
   
   #make and return the plot
+  p <- ggplot(
+    data=stage_1
+   ,aes(
+      x = testritscore
+     ,group = grade_season_label
+     ,fill = grade_season_label
+     ,alpha = grade_level_season
+    )
+  ) + 
+  geom_density(
+    adjust = 1
+  )
   
+  return(p)
 }

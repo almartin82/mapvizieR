@@ -4,20 +4,19 @@
 \alias{galloping_elephants}
 \title{RIT distribution change (affectionately titled 'Galloping Elephants')}
 \usage{
-galloping_elephants(prepped_cdf_long, prepped_roster, studentids,
-  first_and_spring_only = TRUE, entry_grades = c(-0.8, 4.2))
+galloping_elephants(mapvizieR_obj, studentids, first_and_spring_only = TRUE,
+  detail_academic_year = 2014, entry_grade_seasons = c(-0.8, 4.2))
 }
 \arguments{
-\item{prepped_cdf_long}{a conforming cdf_long_prepped data frame. run \code{prep_cdf_long}
-to get into proper format.}
-
-\item{prepped_roster}{a conforming roster data frame.}
+\item{mapvizieR_obj}{a conforming mapvizieR object, which contains a cdf and a roster.}
 
 \item{studentids}{which students to display?}
 
 \item{first_and_spring_only}{show all terms, or only entry & spring?  default is TRUE.}
 
-\item{entry_grades}{which grades are entry grades?}
+\item{detail_academic_year}{don't mask any data for this academic year}
+
+\item{entry_grade_seasons}{which grade_level_seasons are entry grades?}
 }
 \value{
 a ggplot object.
