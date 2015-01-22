@@ -17,5 +17,8 @@ on_failure:
 
 notifications:
   email:
-    on_success: change
-    on_failure: change
+    recipients:
+      - almartin@gmail.com
+      - chaid@kippchicago.org 
+    on_success: always
+    on_failure: always
