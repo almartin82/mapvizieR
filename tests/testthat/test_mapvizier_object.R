@@ -33,3 +33,49 @@ test_that("cdf_roster_match properly joins assessment results and rosters", {
   expect_warning(cdf_roster_match(ex_cdf, ex_roster_small), "8848")
   
 })
+
+
+test_that("nwea_growth properly gets growth", {
+  data(ex_CombinedAssessmentResults)
+  data(ex_CombinedStudentsBySchool)
+  
+  cdf<- ex_CombinedAssessmentResults %>%
+             prep_cdf_long 
+  
+  roster <- prep_roster(ex_CombinedStudentsBySchool)
+  
+  cdf$grade <-  grade_levelify_cdf(cdf, roster)
+     
+  growth<-nwea_growth(start.grade = cdf$grade, 
+                      start.rit = cdf$testritscore,
+                       measurementscale = cdf$measurementscale
+                      )
+  
+  growth_spring_only<-nwea_growth(start.grade = cdf$grade,
+                      start.rit = cdf$testritscore,
+                      measurementscale = cdf$measurementscale,
+                      "contains('22')"
+  )
+  expected_growth_col_names <- c("R12",
+                                  "R22",
+                                  "R41",
+                                  "R42",
+                                  "R44",
+                                  "S12",
+                                  "S22",
+                                  "S41",
+                                  "S42",
+                                  "S44",
+                                  "T12",
+                                  "T22",
+                                  "T41",
+                                  "T42",
+                                  "T44")
+
+  expect_equal(ncol(growth), 15)
+  expect_equal(nrow(growth), nrow(cdf))
+  expect_equal(names(growth), expected_growth_col_names)
+  expect_equal(names(growth_spring_only), c("R22", "S22", "T22"))
+
+
+})
