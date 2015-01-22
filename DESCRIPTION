@@ -13,6 +13,7 @@ Depends:
     lubridate,
     stringr,
     dplyr,
+    ggplot2,
     R(>= 2.10.0)
 Suggests:
     testthat
