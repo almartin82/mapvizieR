@@ -36,3 +36,50 @@ grade_levelify_cdf <- function(prepped_cdf, roster) {
   
   return(matched_cdf$grade)
 }
+
+#' @title match assessment results with students by school roster. 
+#'
+#' @description
+#' \code{cdf_roster_match} performs an inner join on a prepped, long cdf (Assesment Results)
+#' a prepped long roster (i.e. StudentsBySchool).  
+#'
+#' @param assessment_results a cdf file that passes the checks in \code{\link{check_cdf_long}}
+#' @param roster a roster that passes the checks in \code{\link{check_roster}}
+#'
+#' @return a merged data frame with \code{nrow(prepped_cdf)}
+#' 
+#' @export
+
+cdf_roster_match <- function(assessment_results, roster) {
+  # Validation
+  assert_that(check_cdf_long(assessment_results)$boolean, 
+              check_roster(roster)$boolean
+  )
+  
+  # inner join of roster and assessment results by id, subject, and term name
+  matched_df <-  dplyr::inner_join(roster, 
+                                   assessment_results %>% filter(growthmeasureyn=TRUE),
+                                   by=c("studentid", "termname", "schoolname")
+  ) %>%
+    select(-ends_with(".y")) %>% # drop repeated columns
+    as.data.frame
+  
+  # drop .x join artifact from colun names (we dropped .y in select above )
+  names(matched_df)<-gsub("(.+)(\\.x)", "\\1", names(matched_df))
+  
+  
+  #check that number of rows of assessment_results = nrow of matched_df
+  input_rows <- nrow(assessment_results)
+  output_rows <- nrow(matched_df)
+  if(input_rows!=output_rows){
+    cdf_name<-substitute(assessment_results)
+    msg <- paste0("The number of rows in ", cdf_name, " is ", input_rows, 
+                  ", while the number of rows in the matched data frame\n",
+                  "returned by this function is ", output_rows, ".\n\n",
+                  "You might want to check your data.")
+    warning(msg)
+  }
+  
+  #return 
+  matched_df
+}
