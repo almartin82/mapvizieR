@@ -176,3 +176,16 @@ test_that("fall_spring_me properly sets grade-season labels", {
   expect_equal(fall_spring_me(6.1), NA)
   
 })
+
+test_that("fall_spring_sort_me properly sets grade-season labels", {
+  expect_equal(fall_spring_sort_me(-0.8), 'K_1')
+  expect_equal(fall_spring_sort_me(-0.5), 'K_2')
+  expect_equal(fall_spring_sort_me(0), 'K_3')
+  expect_equal(fall_spring_sort_me(-1), '-1_3')
+  expect_equal(fall_spring_sort_me(13), '13_3')
+  expect_equal(fall_spring_sort_me(5.2), '6_1')
+  expect_equal(fall_spring_sort_me(5.5), '6_2')
+  expect_equal(fall_spring_sort_me(6), '6_3')
+  expect_equal(fall_spring_sort_me(6.1), NA)
+  
+})
