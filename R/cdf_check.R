@@ -166,7 +166,7 @@ check_processed_names <- function(processed_cdf) {
   
   has_valid_names <- function(x) {x==TRUE}
   on_failure(has_valid_names) <- function(call, env) {
-    mask <- ! expected_names %in% names(prepped_cdf_long) 
+    mask <- ! expected_names %in% names(processed_cdf) 
     failed_names <- expected_names[mask]
     msg <- paste0("Your processed CDF failed the VALID NAMES test.\n",
      "Your CDF is missing the following fields that are required\n",

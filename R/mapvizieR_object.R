@@ -32,6 +32,10 @@ mapvizieR.default <- function(raw_cdf, raw_roster) {
     grade_season_labelify() %>%
     grade_season_sortify()
   
+  #check to see that result conforms
+  assert_that(check_processed_cdf(processed_cdf)$boolean)
+  
+  #make a list and return it
   mapviz <-  list(
     'cdf'=processed_cdf,
     'roster'=prepped_roster
@@ -39,9 +43,8 @@ mapvizieR.default <- function(raw_cdf, raw_roster) {
   )
   
   class(mapviz) <- "mapvizieR"
-  
-  #return 
-  mapviz
+   
+  return(mapviz)
 }
 
 
@@ -215,8 +218,9 @@ grade_season_sortify <- function(x) {
 
 cdf_roster_match <- function(assessment_results, roster) {
   # Validation
-  assert_that(check_cdf_long(assessment_results)$boolean, 
-              check_roster(roster)$boolean
+  assert_that(
+    check_cdf_long(assessment_results)$boolean, 
+    check_roster(roster)$boolean
   )
   
   # inner join of roster and assessment results by id, subject, and term name

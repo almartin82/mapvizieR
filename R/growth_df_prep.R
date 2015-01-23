@@ -53,26 +53,36 @@ generate_growth_df <- function(
 #' 
 #' @description which student/test/season rows have valid data?
 #' 
-#' @param prepped_cdf a conforming prepped_cdf data frame
+#' @param processed_cdf a conforming processed_cdf data frame
 #' @param start_season the start of the growth window ("Fall", "Winter", or "Spring")
 #' @param end_season the end of the growth window ("Fall", "Winter", or "Spring")
+#' @param year_offset start_year + ? = end_year.  if same academic_year (eg fall to spring)
+#' this is 0  if spring to spring, this is 1
 #' 
 #' @return a data frame to pass back generate_growth_df that has kids, and the relevant 
 #' student/test/seasons to calculate growth records on
 
 student_scaffold <- function(
-  prepped_cdf,
+  processed_cdf,
   start_season,
-  end_season
+  end_season,
+  year_offset
 ) {
   #input validation
   assert_that(
-    is.data.frame(prepped_cdf),
+    is.data.frame(processed_cdf),
     start_season %in% c("Fall", "Spring", "Winter"), 
-    end_season %in% c("Fall", "Spring", "Winter")
+    end_season %in% c("Fall", "Spring", "Winter"),
+    check_processed_cdf(processed_cdf)$boolean
   )
-  check_cdf_long(prepped_cdf)
   
-  slim <- prepped_cdf[]
+  #make a simplified df
+  cols <- c("studentid", "testid", "measurementscale",
+    "map_year_academic", "fallwinterspring", "grade", "grade_level_season"           
+  )
+  simple <- processed_cdf[ ,cols]
+  
+  #grab all the unique start values
+  start <- simple[simple$fallwinterspring==start_season, ]
   
 }
