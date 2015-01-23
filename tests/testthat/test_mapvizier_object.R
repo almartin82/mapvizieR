@@ -7,6 +7,23 @@ test_that("grade_level_ify correctly processes CDF", {
   ex_cdf$grades <- grade_levelify_cdf(ex_cdf, ex_roster)
   grade_freq <- table(ex_cdf$grades)
   
+  ex_roster_termname_missing <- ex_roster %>%
+    filter(termname=="Fall 2013-2014") %>%
+    sample_n(10)
+    
+  
+  ex_cdf_termname_missing <- semi_join(ex_cdf %>% select(-grades),
+                                       ex_roster_termname_missing,
+                                       by=c("studentid", "termname")
+                                       )
+  
+  ex_roster_termname_missing <- ex_roster_termname_missing %>%
+    mutate(termname==NA)
+  
+  ex_cdf_termname_missing$grades <- grade_levelify_cdf(ex_cdf_termname_missing, 
+                                      ex_roster_termname_missing)
+  
+  
   expect_equal(length(ex_cdf$grades), 9091)
   expect_equal(grade_freq[['1']], 131)
   expect_equal(grade_freq[['2']], 249)
@@ -19,6 +36,8 @@ test_that("grade_level_ify correctly processes CDF", {
   expect_equal(grade_freq[['9']], 1659)
   expect_equal(grade_freq[['10']], 640)
   expect_equal(grade_freq[['11']], 441)
+  
+  expect_equal(sum(is.na(ex_cdf_termname_missing$grades)), 0)
 })
 
 test_that("cdf_roster_match properly joins assessment results and rosters", {
