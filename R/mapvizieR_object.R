@@ -115,6 +115,55 @@ mapvizieR.default <- function(raw_cdf, raw_roster) {
 #' @export
 is.mapvizieR <- function(x) inherits(x, "mapvizieR")
 
+#' @title print method for \code{mapvizier} class
+#'
+#' @description
+#'  prints to console
+#'
+#' @details Prints a summary fo the a \code{mapvizier} object. 
+
+#' @param x a \code{mapvizier} object
+
+#' @return some details about the object to the console.
+#' @rdname print
+#' @export
+#' @examples 
+#' data(ex_CombinedAssessmentResults)
+#' data(ex_CombinedStudentsBySchool)
+#' 
+#' cdf_mv <- mapvizieR(ex_CombinedAssessmentResults, 
+#'                     ex_CombinedStudentsBySchool)
+#'                     
+#' cdf_mv
+
+print.mapvizieR <-  function(x, ...) {
+  
+  #gather some summary stats
+  n_df <- length(x)
+  n_sy <- length(unique(x$cdf$map_year_academic))
+  min_sy <- min(x$cdf$map_year_academic)
+  max_sy <- max(x$cdf$map_year_academic)
+  n_students <- length(unique(x$cdf$studentid))
+  n_schools <- length(unique(x$cdf$schoolname))
+  growthseasons <- unique(x$cdf_growth$growth_season)
+  n_growthseasons <- length(growthseasons)
+  
+  cat("A mapvizieR object repesenting:\n- ")
+  cat(paste(n_sy))
+  cat(" school years from SY")
+  cat(paste(min_sy))
+  cat(" to SY")
+  cat(paste(max_sy))
+  cat(";\n- ")
+  cat(paste(n_students))
+  cat(" students from ")
+  cat(paste(n_schools))
+  cat(" schools;\n- and, ")
+  cat(paste(n_growthseasons))
+  cat(" growth seasons:\n    ")
+  cat(paste(growthseasons, collapse = ",\n    "))  
+}
+
 
 #' @title grade_levelify_cdf
 #'

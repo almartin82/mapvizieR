@@ -101,3 +101,15 @@ test_that("s2s_match properly matchs up data from a prepped long cdf",{
   expect_match(unique(cdf_growth_sw$growth_season), "Spring - Winter")
   
 })
+
+test_that("mapvizieR S3 class methods work", {
+  mv<-mapvizieR(ex_CombinedAssessmentResults,
+                ex_CombinedStudentsBySchool)
+  
+  expect_equal(length(mv), 3)
+  expect_equal(names(mv), c("cdf", "roster", "cdf_growth"))
+  expect_output(mv, "714 students")
+  expect_output(print.mapvizieR(mv), "SY2012 to SY2013")
+  expect_true(is.mapvizieR(mv))
+  expect_false(is.mapvizieR(ex_CombinedAssessmentResults))
+})
