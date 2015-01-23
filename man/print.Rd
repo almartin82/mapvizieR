@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{x}{a \code{mapvizier} object}
+
+\item{...}{additional arguments}
 }
 \value{
 some details about the object to the console.

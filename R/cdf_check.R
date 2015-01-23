@@ -32,6 +32,38 @@ check_cdf_long <- function(prepped_cdf_long) {
 
 
 
+#' @title check_processed_cdf
+#' 
+#' @description the mapvizieR takes a cdf + a roster and does some grade level lookup.
+#' this function is a wrapper around some tests that make sure that
+#' the output conforms to expectations
+#' 
+#' @param processed_cdf output of mapvizieR.default
+#' 
+#' @return a named list.  \code{$boolean} has true false result; \code{descriptive} 
+#' has a more descriptive string describing what happened.
+
+
+check_processed_cdf <- function(processed_cdf) {
+  
+  #encompasses check_cdf_long 
+  basic_result <- check_cdf_long(processed_cdf)$boolean
+
+  #column/header names
+  names_result <- check_processed_names(processed_cdf)
+      
+  result_vector <- c(basic_result, names_result)
+  results <- list(
+    boolean=all(result_vector),
+    descriptive=paste0("passed ", length(result_vector[result_vector==TRUE]), " tests!")
+  )
+  
+  return(results)
+}
+
+
+
+
 #' @title check_cdf_names
 #'
 #' @description
@@ -39,7 +71,7 @@ check_cdf_long <- function(prepped_cdf_long) {
 #'
 #' @inheritParams check_cdf_long
 #'  
-#' @return boolean, does the cdf pass this test?
+#' @return boolean, does the cdf pass?
 
 check_cdf_names <- function(prepped_cdf_long) {
   
@@ -88,7 +120,7 @@ check_cdf_names <- function(prepped_cdf_long) {
 #'
 #' @inheritParams check_cdf_long
 #'  
-#' @return boolean, does the cdf pass this test?
+#' @return boolean, does the cdf pass?
 
 check_cdf_fws <- function(prepped_cdf_long) {
   
@@ -110,4 +142,40 @@ check_cdf_fws <- function(prepped_cdf_long) {
   assert_that(has_valid_seasons(season_test))
   
   return(season_test)
+}
+
+
+
+
+
+
+#' @title check_processed_names
+#' 
+#' @description does the processed cdf have the right field names
+#' 
+#' @inheritParams check_processed_cdf
+#' 
+#' @return boolean, does the processed cdf pass?
+#' 
+
+check_processed_names <- function(processed_cdf) {
+  
+  #the names of the data frame should include the following
+  expected_names <- c("grade", "grade_level_season", "grade_season_label")
+  names_test <- all(has_name(processed_cdf, expected_names))
+  
+  has_valid_names <- function(x) {x==TRUE}
+  on_failure(has_valid_names) <- function(call, env) {
+    mask <- ! expected_names %in% names(prepped_cdf_long) 
+    failed_names <- expected_names[mask]
+    msg <- paste0("Your processed CDF failed the VALID NAMES test.\n",
+     "Your CDF is missing the following fields that are required\n",
+     "by mapvizieR:\n", paste(failed_names, collapse=', '))
+    
+    return(msg)
+  }
+  assert_that(has_valid_names(names_test))
+  
+  return(names_test)
+  
 }

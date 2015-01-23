@@ -17,3 +17,17 @@ test_that("check_cdf correctly identifies a cdf with improper seasons", {
   expect_error(check_cdf_fws(mangled), "failed the VALID SEASONS test")
   
 })
+
+
+test_that("check_processed_cdf should return TRUE on the sample data", {
+  #prep
+  ex_roster <- prep_roster(ex_CombinedStudentsBySchool)
+  ex_cdf <- prep_cdf_long(ex_CombinedAssessmentResults)
+  ex_mapvizieR <- mapvizieR(ex_cdf, ex_roster)
+  ex_processed_cdf <- ex_mapvizieR[['cdf']]
+
+  #asserts
+  expect_true(check_processed_names(ex_processed_cdf))
+  expect_true(check_processed_cdf(ex_processed_cdf)$boolean)
+
+})

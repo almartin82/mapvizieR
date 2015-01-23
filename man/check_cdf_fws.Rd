@@ -11,7 +11,7 @@ check_cdf_fws(prepped_cdf_long)
 or via processing done in your data warehouse}
 }
 \value{
-boolean, does the cdf pass this test?
+boolean, does the cdf pass?
 }
 \description{
 \code{check_cdf_fws} tests the fallwinterspring column of a prepped cdf to
