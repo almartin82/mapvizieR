@@ -163,3 +163,16 @@ test_that("grade_level_seasonify correctly labels the NWEA sample data", {
   expect_equal(gls_freq[['11']], 147)
 
 })
+
+test_that("fall_spring_me properly sets grade-season labels", {
+  expect_equal(fall_spring_me(-0.8), 'KF')
+  expect_equal(fall_spring_me(-0.5), 'KW')
+  expect_equal(fall_spring_me(0), 'KS')
+  expect_equal(fall_spring_me(-1), '')
+  expect_equal(fall_spring_me(13), '')
+  expect_equal(fall_spring_me(5.2), '6F')
+  expect_equal(fall_spring_me(5.5), '6W')
+  expect_equal(fall_spring_me(6), '6S')
+  expect_equal(fall_spring_me(6.1), NA)
+  
+})
