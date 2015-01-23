@@ -18,7 +18,7 @@ test_that("grade_level_ify correctly processes CDF", {
                                        )
   
   ex_roster_termname_missing <- ex_roster_termname_missing %>%
-    mutate(termname==NA)
+    mutate(termname=paste(termname,".xxx"))
   
   ex_cdf_termname_missing$grades <- grade_levelify_cdf(ex_cdf_termname_missing, 
                                       ex_roster_termname_missing)
