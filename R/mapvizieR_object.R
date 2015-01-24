@@ -28,6 +28,7 @@ mapvizieR.default <- function(raw_cdf, raw_roster) {
   prepped_cdf$grade <- grade_levelify_cdf(prepped_cdf, prepped_roster)
   
   processed_cdf <- prepped_cdf %>%
+    dedupe_cdf(method="NWEA") %>%
     grade_level_seasonify() %>%
     grade_season_labelify() %>%
     grade_season_sortify()

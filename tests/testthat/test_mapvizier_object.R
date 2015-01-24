@@ -12,10 +12,11 @@ test_that("grade_level_ify correctly processes CDF", {
     sample_n(10)
     
   
-  ex_cdf_termname_missing <- semi_join(ex_cdf %>% select(-grades),
-                                       ex_roster_termname_missing,
-                                       by=c("studentid", "termname")
-                                       )
+  ex_cdf_termname_missing <- semi_join(
+    ex_cdf %>% select(-grades),
+    ex_roster_termname_missing,
+    by=c("studentid", "termname")
+  )
   
   ex_roster_termname_missing <- ex_roster_termname_missing %>%
     mutate(termname=paste(termname,".xxx"))

@@ -78,11 +78,71 @@ student_scaffold <- function(
   
   #make a simplified df
   cols <- c("studentid", "testid", "measurementscale",
-    "map_year_academic", "fallwinterspring", "grade", "grade_level_season"           
+    "map_year_academic", "fallwinterspring", "grade", "grade_level_season", "schoolname"           
   )
   simple <- processed_cdf[ ,cols]
+  simple$hash <- with(simple,
+    paste(studentid, measurementscale, fallwinterspring, simple$map_year_academic, sep='_')
+  )
   
-  #grab all the unique start values
+  #we want kids with EITHER start OR end
   start <- simple[simple$fallwinterspring==start_season, ]
+  end <- simple[simple$fallwinterspring==end_season, ]
   
+  #namespace stuff
+    #normally I avoid reference by index number since, uh, inputs change, but
+    #we are hard coding the columns above, so it is OK.
+  start_prefixes <- c(rep("",3), rep("start_", 6))
+  end_prefixes <- c(rep("",3), rep("end_", 6))
+
+  names(start) <- paste0(start_prefixes, names(start))
+  names(end) <- paste0(end_prefixes, names(end))
+    
+  #a valid observation has BOTH start AND end AND the years match
+    #first build a match hash to find out what to match on
+  start$matching_end_hash <- with(start,
+      paste(studentid, measurementscale, end_season,
+        #this is the magic here - build the term you are looking for IN end ON start.
+        #then use in the inner_join below
+        start_map_year_academic + year_offset, sep='_'
+      )
+  )
+  
+  #a dplyr inner join will return the *matching* rows
+  matched_rows <- dplyr::inner_join(
+    x=start, y=end[, c(4:9)], by=c("matching_end_hash" = "end_hash")
+  )
+  
+  #dplyr returns a barfy order. reorder.                     
+  col_order <- c("studentid","testid", "measurementscale",      #constants
+    "start_map_year_academic","start_fallwinterspring",         #start cols
+    "start_grade", "start_grade_level_season", "start_schoolname",
+    "end_map_year_academic", "end_fallwinterspring",            #end cols
+    "end_grade", "end_grade_level_season", "end_schoolname",
+    "start_hash", "matching_end_hash"                           #hashes
+  )
+  matched_df <- matched_rows[, col_order]
+  matched_df$match_status <- 'start and end'
+
+  #what rows are ONLY found in the start df?
+  only_start <- anti_join(
+    x=start, y=matched_df, by=c("start_hash"="start_hash")
+  )
+  only_start$match_status <- rep('only start', nrow(only_start))
+  
+  #what rows are ONLY found in the end df?
+  only_end <- anti_join(
+    x=end, y=matched_df, by=c("end_hash"="matching_end_hash")
+  )
+  only_end$match_status <- rep('only end', nrow(only_end))
+
+  #build the df to return
+  final <- rbind_all(list(matched_df, only_start, only_end))
+  
+  #discard some helpers
+  final <- final[ ,!names(final) %in% c('start_hash', 'end_hash', 'matching_end_hash')]
+  
+  final$growth_window <- paste0(start_season, 'to', end_season)
+  
+  return(final)
 }
