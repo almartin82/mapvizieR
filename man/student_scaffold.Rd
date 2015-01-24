@@ -4,14 +4,17 @@
 \alias{student_scaffold}
 \title{student_scaffold}
 \usage{
-student_scaffold(prepped_cdf, start_season, end_season)
+student_scaffold(processed_cdf, start_season, end_season, year_offset)
 }
 \arguments{
-\item{prepped_cdf}{a conforming prepped_cdf data frame}
+\item{processed_cdf}{a conforming processed_cdf data frame}
 
 \item{start_season}{the start of the growth window ("Fall", "Winter", or "Spring")}
 
 \item{end_season}{the end of the growth window ("Fall", "Winter", or "Spring")}
+
+\item{year_offset}{start_year + ? = end_year.  if same academic_year (eg fall to spring)
+this is 0  if spring to spring, this is 1}
 }
 \value{
 a data frame to pass back generate_growth_df that has kids, and the relevant
