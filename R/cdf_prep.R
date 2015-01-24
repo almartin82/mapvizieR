@@ -16,7 +16,10 @@ prep_cdf_long <- function(cdf_long) {
     #names
     lower_df_names() %>%
     #fallwinterspring, academic_year
-    extract_academic_year()  
+    extract_academic_year() %>%
+    mutate(
+      teststartdate=as.Date(teststartdate, format="m/d/Y")
+    )
   
   assert_that(check_cdf_long(cdf_long)$boolean)
   
