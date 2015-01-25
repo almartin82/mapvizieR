@@ -9,7 +9,7 @@
 #' This function returns a growth data frame, with one row per student per test per 
 #' valid 'growth_window', such as 'Fall to Spring'. 
 #' 
-#' @param prepped_cdf a conforming prepped_cdf data frame
+#' @param processed_cdf a conforming processed_cdf data frame
 #' @param start_season the start of the growth window ("Fall", "Winter", or "Spring")
 #' @param end_season the end of the growth window ("Fall", "Winter", or "Spring")
 #' @param norm_df defaults to norms_students_2011.  if you have a conforming norms object,
@@ -26,7 +26,7 @@
 #' @export
 
 generate_growth_df <- function(
-  prepped_cdf,
+  processed_cdf,
   start_season, 
   end_season,
   norm_df=norms_students_2011,
@@ -34,7 +34,7 @@ generate_growth_df <- function(
 ){  
   #input validation
   assert_that(
-    is.data.frame(prepped_cdf),
+    is.data.frame(processed_cdf),
     is.data.frame(norm_df),
     start_season %in% c("Fall", "Spring", "Winter"), 
     end_season %in% c("Fall", "Spring", "Winter"),
@@ -43,8 +43,14 @@ generate_growth_df <- function(
   check_cdf_long(prepped_cdf)
   
   #generate a scaffold of students/terms/windows
-  
+  f2s <- student_scaffold(processed_cdf, 'Fall', 'Spring', 0)
+  f2w <- student_scaffold(processed_cdf, 'Fall', 'Winter', 0)
+  w2s <- student_scaffold(processed_cdf, 'Winter', 'Spring', 0)  
+  s2s <- student_scaffold(processed_cdf, 'Spring', 'Spring', 1)
 
+  scaffolds <- rbind(f2s, f2w, w2s, s2s)
+  
+  #match to cdf to get scores
 }
 
 

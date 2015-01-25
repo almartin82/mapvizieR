@@ -4,11 +4,11 @@
 \alias{generate_growth_df}
 \title{generate_growth_df}
 \usage{
-generate_growth_df(prepped_cdf, start_season, end_season,
+generate_growth_df(processed_cdf, start_season, end_season,
   norm_df = norms_students_2011, include_unsanctioned_windows = FALSE)
 }
 \arguments{
-\item{prepped_cdf}{a conforming prepped_cdf data frame}
+\item{processed_cdf}{a conforming processed_cdf data frame}
 
 \item{start_season}{the start of the growth window ("Fall", "Winter", or "Spring")}
 
