@@ -32,8 +32,6 @@ generate_growth_dfs <- function(
   assert_that(
     is.data.frame(processed_cdf),
     is.data.frame(norm_df),
-    start_season %in% c("Fall", "Spring", "Winter"), 
-    end_season %in% c("Fall", "Spring", "Winter"),
     is.logical(include_unsanctioned_windows),
     check_processed_cdf(processed_cdf)$boolean
   )
@@ -172,7 +170,7 @@ student_scaffold <- function(
 #' @description helper function for \code{generate_growth_df}. given a test id, 
 #' returns df with all the scores.
 #' 
-#' @param testid
+#' @param testids
 #' @param processed_cdf
 #' @param start_or_end
 #' 
