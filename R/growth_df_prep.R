@@ -43,11 +43,12 @@ generate_growth_dfs <- function(
   s2s <- student_scaffold(processed_cdf, 'Spring', 'Spring', 1)
   scaffolds <- rbind(f2s, f2w, w2s, s2s)
   
-  #extract scores from long cdf for start and end data
+  #extract scores from long cdf for start and end data, bind together.
   start_data <- scores_by_testid(scaffolds$start_testid, processed_cdf, 'start')
   end_data <- scores_by_testid(scaffolds$end_testid, processed_cdf, 'end')
-  
   with_scores <- cbind(scaffolds, start_data, end_data)
+  
+  #look up norms
   
   growth_dfs <- list(
     headline=with_scores
@@ -170,9 +171,9 @@ student_scaffold <- function(
 #' @description helper function for \code{generate_growth_df}. given a test id, 
 #' returns df with all the scores.
 #' 
-#' @param testids
-#' @param processed_cdf
-#' @param start_or_end
+#' @param testid a vector of testids
+#' @param processed_cdf a conforming processed_cdf data frame
+#' @param start_or_end either c('start', 'end')
 #' 
 #' 
 #' 
