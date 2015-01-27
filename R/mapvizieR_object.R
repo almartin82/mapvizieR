@@ -36,10 +36,14 @@ mapvizieR.default <- function(raw_cdf, raw_roster) {
   #check to see that result conforms
   assert_that(check_processed_cdf(processed_cdf)$boolean)
   
+  #growth df
+  growth_df <- generate_growth_dfs(processed_cdf)
+  
   #make a list and return it
   mapviz <-  list(
     'cdf'=processed_cdf,
-    'roster'=prepped_roster
+    'roster'=prepped_roster,
+    'growth_df'=growth_df
      #todo: add some analytics about matched/unmatched kids
   )
   

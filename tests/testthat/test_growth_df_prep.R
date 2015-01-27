@@ -3,7 +3,9 @@ context("growth data frame prep")
 #constants
 mapviz <- mapvizieR(raw_cdf=ex_CombinedAssessmentResults, raw_roster=ex_CombinedStudentsBySchool)
 processed_cdf <- mapviz[['cdf']]
+norms_long <- norms_students_wide_to_long(norms_students_2011)
   
+
 f2s_scaffold <- student_scaffold(
   processed_cdf = processed_cdf
  ,start_season = 'Fall'
@@ -103,10 +105,9 @@ test_that("growth_norm_lookup find norm data", {
   scaffold <- build_growth_scaffolds(processed_cdf)
   score_matched <- growth_testid_lookup(scaffold, processed_cdf)
   norm_matched <- growth_norm_lookup(
-    score_matched, 
-    norms_students_wide_to_long(norms_students_2011),
-    FALSE
+    score_matched, processed_cdf, norms_long, FALSE
   )
+  
   expect_equal(nrow(norm_matched), 17010)
   expect_equal(ncol(norm_matched), 48)
   expect_equal(
@@ -123,10 +124,7 @@ test_that("growth_norm_lookup with unsanctioned windows", {
   scaffold <- build_growth_scaffolds(processed_cdf)
   score_matched <- growth_testid_lookup(scaffold, processed_cdf)
   norm_matched <- growth_norm_lookup(
-    score_matched, 
-    processed_cdf,
-    norms_students_wide_to_long(norms_students_2011),
-    TRUE
+    score_matched, processed_cdf, norms_long, TRUE
   )
   expect_equal(nrow(norm_matched), 21483)
   expect_equal(ncol(norm_matched), 48)
