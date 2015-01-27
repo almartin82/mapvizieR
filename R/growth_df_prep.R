@@ -46,7 +46,7 @@ generate_growth_dfs <- function(
   
   #look up norms
   with_norms <- growth_norm_lookup(
-    with_scores, norm_df_long, include_unsanctioned_windows
+    with_scores, processed_cdf, norm_df_long, include_unsanctioned_windows
   )
   
   #todo: GOAL scores here
@@ -244,18 +244,34 @@ growth_testid_lookup <- function(scaffold, processed_cdf) {
 #' 
 #' @param incomplete_growth_df a growth df in process.  needs to have growth 
 #' windows, start_grade, and start_testritscore.
+#' @param processed_cdf conforming mapvizieR processed cdf.  needed for 
+#' unsanctioned windows.
 #' @param norm_df_long a data frame of normative expectations
 #' @param include_unsanctioned_windows check generate_growth_df for a 
 #' description.
 
 growth_norm_lookup <- function(
   incomplete_growth_df
+ ,processed_cdf
  ,norm_df_long
  ,include_unsanctioned_windows 
 ) {
   
   if (include_unsanctioned_windows) {
+    #spring to winter
+    scaffold <- student_scaffold(processed_cdf, 'Spring', 'Winter', 1)
+    s2w <- growth_testid_lookup(scaffold, processed_cdf)
+    #half of spring to spring for the norms
+    temp_norms <- norm_df_long[norm_df_long$growth_window=='Spring to Spring', ]
+    temp_norms$growth_window <- 'Spring to Winter'
+    temp_norms$typical_growth <- temp_norms$typical_growth / 2
+    temp_norms$reported_growth <- temp_norms$reported_growth / 2
+    temp_norms$std_dev_of_expectation <- NA
+    #put back on dfs
+    incomplete_growth_df <- rbind(incomplete_growth_df, s2w)
+    norm_df_long <- rbind(norm_df_long, temp_norms)
     
+    #todo: spring to fall (?)
   }
   
   with_matched_norms <- left_join(

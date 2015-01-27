@@ -116,3 +116,24 @@ test_that("growth_norm_lookup find norm data", {
   expect_equal(sum(norm_matched$reported_growth, na.rm=T), 34739)
   
 })
+
+
+
+test_that("growth_norm_lookup with unsanctioned windows", {
+  scaffold <- build_growth_scaffolds(processed_cdf)
+  score_matched <- growth_testid_lookup(scaffold, processed_cdf)
+  norm_matched <- growth_norm_lookup(
+    score_matched, 
+    processed_cdf,
+    norms_students_wide_to_long(norms_students_2011),
+    TRUE
+  )
+  expect_equal(nrow(norm_matched), 21483)
+  expect_equal(ncol(norm_matched), 48)
+  expect_equal(
+    as.character(summary(norm_matched)[, 'typical_growth'][3]), 
+    "Median : 2.220  " 
+  )
+  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 42784)
+  
+})
