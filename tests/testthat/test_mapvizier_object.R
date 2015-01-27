@@ -12,10 +12,11 @@ test_that("grade_level_ify correctly processes CDF", {
     sample_n(10)
     
   
-  ex_cdf_termname_missing <- semi_join(ex_cdf %>% select(-grades),
-                                       ex_roster_termname_missing,
-                                       by=c("studentid", "termname")
-                                       )
+  ex_cdf_termname_missing <- semi_join(
+    ex_cdf %>% select(-grades),
+    ex_roster_termname_missing,
+    by=c("studentid", "termname")
+  )
   
   ex_roster_termname_missing <- ex_roster_termname_missing %>%
     mutate(termname=paste(termname,".xxx"))
@@ -62,8 +63,8 @@ test_that("mapvizieR S3 class methods work", {
     raw_roster = ex_CombinedStudentsBySchool
   )
   
-  expect_equal(length(mv), 2)
-  expect_equal(names(mv), c("cdf", "roster"))
+  expect_equal(length(mv), 3)
+  expect_equal(names(mv), c("cdf", "roster", "growth_df"))
   expect_output(mv, "714 students")
   expect_output(print.mapvizieR(mv), "SY2012 to SY2013")
   expect_true(is.mapvizieR(mv))
