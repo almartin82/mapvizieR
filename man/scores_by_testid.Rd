@@ -7,11 +7,11 @@
 scores_by_testid(testid, processed_cdf, start_or_end)
 }
 \arguments{
-\item{testid}{}
+\item{testid}{a vector of testids}
 
-\item{processed_cdf}{}
+\item{processed_cdf}{a conforming processed_cdf data frame}
 
-\item{start_or_end}{}
+\item{start_or_end}{either c('start', 'end')}
 }
 \value{
 one row data frame.

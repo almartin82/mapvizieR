@@ -10,7 +10,7 @@
 #' valid 'growth_window', such as 'Fall to Spring'. 
 #' 
 #' @param processed_cdf a conforming processed_cdf data frame
-#' @param norm_df defaults to norms_students_2011.  if you have a conforming norms object,
+#' @param norm_df_long defaults to norms_students_2011.  if you have a conforming norms object,
 #' you can use generate_growth_df to produce a growth data frame for those norms.
 #' example usage: calculate college ready growth norms, and use generate_growth_df to see
 #' if students met them.
@@ -25,13 +25,13 @@
 
 generate_growth_dfs <- function(
   processed_cdf,
-  norm_df=norms_students_2011,
+  norm_df_long=norms_students_wide_to_long(norms_students_2011),
   include_unsanctioned_windows=FALSE
 ){  
   #input validation
   assert_that(
     is.data.frame(processed_cdf),
-    is.data.frame(norm_df),
+    is.data.frame(norm_df_long),
     is.logical(include_unsanctioned_windows),
     check_processed_cdf(processed_cdf)$boolean
   )
@@ -49,9 +49,11 @@ generate_growth_dfs <- function(
   with_scores <- cbind(scaffolds, start_data, end_data)
   
   #look up norms
+  with_norms <- growth_norm_lookup(with_scores, norm_df_long, 
+    include_unsanctioned_windows)
   
   growth_dfs <- list(
-    headline=with_scores
+    headline=with_norms
     #TODO: long goal df here
   )
   return(growth_dfs)
@@ -196,4 +198,36 @@ scores_by_testid <- function(testid, processed_cdf, start_or_end) {
   names(matching_slim) <- paste0(start_or_end, '_', names(matching_slim))
   
   return(matching_slim)  
+}
+
+
+
+#' @title growth_norm_lookup
+#' 
+#' @description called by \code{generate_growth_df} to return
+#' growth norms for growth data frames in process
+#' 
+#' @param incomplete_growth_df a growth df in process.  needs to have growth 
+#' windows, start_grade, and start_testritscore.
+#' @param norm_df_long a data frame of normative expectations
+#' @param include_unsanctioned_windows check generate_growth_df for a 
+#' description.
+
+growth_norm_lookup <- function(
+  incomplete_growth_df
+ ,norm_df_long
+ ,include_unsanctioned_windows 
+) {
+  
+  with_matched_norms <- left_join(
+    x=incomplete_growth_df, y=norm_df_long,
+    by=c("measurementscale" = "measurementscale",
+      "growth_window" = "growth_window", 
+      "start_grade" = "startgrade",
+      "start_testritscore" = "startrit")
+  )
+  
+  #TODO: if/if then logic for unsanctioned windows
+  return(with_matched_norms)
+  
 }
