@@ -6,8 +6,10 @@
 #' results.
 #'
 #' @details 
-#' This function returns a growth data frame, with one row per student per test per 
-#' valid 'growth_window', such as 'Fall to Spring'. 
+#' A workflow wrapper that calls a variety of growth_df prep functions.
+#' Given a mapvizieR processed cdf, this function will return a a growth 
+#' data frame, with one row per student per test per valid 'growth_window', 
+#' eg 'Fall to Spring'. 
 #' 
 #' @param processed_cdf a conforming processed_cdf data frame
 #' @param norm_df_long defaults to norms_students_2011.  if you have a conforming norms object,
@@ -37,24 +39,21 @@ generate_growth_dfs <- function(
   )
 
   #generate a scaffold of students/terms/windows
-  f2s <- student_scaffold(processed_cdf, 'Fall', 'Spring', 0)
-  f2w <- student_scaffold(processed_cdf, 'Fall', 'Winter', 0)
-  w2s <- student_scaffold(processed_cdf, 'Winter', 'Spring', 0)  
-  s2s <- student_scaffold(processed_cdf, 'Spring', 'Spring', 1)
-  scaffolds <- rbind(f2s, f2w, w2s, s2s)
+  scaffold <- build_growth_scaffolds(processed_cdf)
   
-  #extract scores from long cdf for start and end data, bind together.
-  start_data <- scores_by_testid(scaffolds$start_testid, processed_cdf, 'start')
-  end_data <- scores_by_testid(scaffolds$end_testid, processed_cdf, 'end')
-  with_scores <- cbind(scaffolds, start_data, end_data)
+  #match start/end testids to cdf data
+  with_scores <- growth_testid_lookup(scaffold, processed_cdf)
   
   #look up norms
-  with_norms <- growth_norm_lookup(with_scores, norm_df_long, 
-    include_unsanctioned_windows)
+  with_norms <- growth_norm_lookup(
+    with_scores, norm_df_long, include_unsanctioned_windows
+  )
+  
+  #todo: GOAL scores here
   
   growth_dfs <- list(
     headline=with_norms
-    #TODO: long goal df here
+    #TODO: return goal scores df here
   )
   return(growth_dfs)
 }
@@ -177,8 +176,6 @@ student_scaffold <- function(
 #' @param processed_cdf a conforming processed_cdf data frame
 #' @param start_or_end either c('start', 'end')
 #' 
-#' 
-#' 
 #' @return one row data frame.
 
 scores_by_testid <- function(testid, processed_cdf, start_or_end) {
@@ -202,6 +199,44 @@ scores_by_testid <- function(testid, processed_cdf, start_or_end) {
 
 
 
+#' @title build_growth_scaffolds
+#' 
+#' @description a helper function for \code{generate_growth_df}.  
+#' finds all the student/season growth windows.
+#' 
+#' @param processed_cdf conforming mapvizieR processed cdf
+
+build_growth_scaffolds <- function(processed_cdf){
+  f2s <- student_scaffold(processed_cdf, 'Fall', 'Spring', 0)
+  f2w <- student_scaffold(processed_cdf, 'Fall', 'Winter', 0)
+  w2s <- student_scaffold(processed_cdf, 'Winter', 'Spring', 0)  
+  s2s <- student_scaffold(processed_cdf, 'Spring', 'Spring', 1)
+  scaffolds <- rbind(f2s, f2w, w2s, s2s)
+  
+  return(scaffolds)
+}
+
+
+
+#' @title growth_testid_lookup
+#' 
+#' @description a helper function for \code{generate_growth_df}
+#' given a scaffold of student/season growth windows, finds the
+#' matching test data in the cdf
+#' 
+#' @param scaffold output of \code{build_growth_scaffolds} 
+#' @param processed_cdf conforming mapvizieR processed cdf
+
+growth_testid_lookup <- function(scaffold, processed_cdf) {
+  start_data <- scores_by_testid(scaffold$start_testid, processed_cdf, 'start')
+  end_data <- scores_by_testid(scaffold$end_testid, processed_cdf, 'end')
+  with_scores <- cbind(scaffold, start_data, end_data)
+  
+  return(with_scores)
+}
+
+
+
 #' @title growth_norm_lookup
 #' 
 #' @description called by \code{generate_growth_df} to return
@@ -219,6 +254,10 @@ growth_norm_lookup <- function(
  ,include_unsanctioned_windows 
 ) {
   
+  if (include_unsanctioned_windows) {
+    
+  }
+  
   with_matched_norms <- left_join(
     x=incomplete_growth_df, y=norm_df_long,
     by=c("measurementscale" = "measurementscale",
@@ -227,7 +266,5 @@ growth_norm_lookup <- function(
       "start_testritscore" = "startrit")
   )
   
-  #TODO: if/if then logic for unsanctioned windows
   return(with_matched_norms)
-  
 }

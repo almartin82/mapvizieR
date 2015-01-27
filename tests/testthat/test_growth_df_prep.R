@@ -67,3 +67,52 @@ test_that("generate_growth_df builds scaffold and finds growth scores", {
   
 })
 
+
+
+test_that("build_growth_scaffolds returns expected output on sample data", {
+  scaffold <- build_growth_scaffolds(processed_cdf)
+  expect_equal(nrow(scaffold), 17010)
+  expect_equal(
+    round(sum(as.numeric(scaffold$start_grade_level_season), na.rm=T),1), 
+    69667.4
+  )
+  expect_equal(
+    sum(as.numeric(scaffold$end_testid), na.rm=T) - 
+      sum(as.numeric(scaffold$start_testid), na.rm=T), 
+    487259127716
+  )
+})
+
+
+
+test_that("growth_testid_lookup behaves as expected", {
+    scaffold <- build_growth_scaffolds(processed_cdf)
+    score_matched <- growth_testid_lookup(scaffold, processed_cdf)
+  
+    expect_equal(nrow(score_matched), 17010)
+    expect_equal(ncol(score_matched), 45)
+    expect_equal(sum(as.numeric(score_matched$start_testritscore), na.rm=T), 
+      2344192)
+    expect_equal(sum(as.numeric(score_matched$end_testritscore), na.rm=T),
+      3239190)
+})
+
+
+
+test_that("growth_norm_lookup find norm data", {
+  scaffold <- build_growth_scaffolds(processed_cdf)
+  score_matched <- growth_testid_lookup(scaffold, processed_cdf)
+  norm_matched <- growth_norm_lookup(
+    score_matched, 
+    norms_students_wide_to_long(norms_students_2011),
+    FALSE
+  )
+  expect_equal(nrow(norm_matched), 17010)
+  expect_equal(ncol(norm_matched), 48)
+  expect_equal(
+    as.character(summary(norm_matched)[, 'typical_growth'][3]), 
+    "Median : 2.390  " 
+  )
+  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 34739)
+  
+})
