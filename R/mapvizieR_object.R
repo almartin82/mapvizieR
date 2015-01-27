@@ -1,14 +1,25 @@
-#' @title create_mapvizier_object
+#' @title Create a mapvizieR object
 #' 
 #' @description
-#' \code{create_mapvizier_object} is a workhorse workflow function that
+#' \code{mapvizieR} is a workhorse workflow function that
 #' calls a sequence of cdf and roster prep functions, given a raw cdf and raw roster
 #' 
 #' @param raw_cdf a NWEA AssessmentResults.csv or CDF
 #' @param raw_roster a NWEA students
+#' @examples
+#' data(ex_CombinedAssessmentResults)
+#' data(ex_CombinedStudentsBySchool)
+#' 
+#' cdf_mv <- mapvizieR(ex_CombinedAssessmentResults, 
+#'                     ex_CombinedStudentsBySchool)
+#'                     
+#' is.mapvizieR(cdf_mv)                     
+#' 
+#' @export
+mapvizieR <- function(raw_cdf, raw_roster) UseMethod("mapvizieR")
 
-
-create_mapvizier_object <- function(raw_cdf, raw_roster) {
+#' @export
+mapvizieR.default <- function(raw_cdf, raw_roster) {
   
   prepped_cdf <- prep_cdf_long(raw_cdf)
   prepped_roster <- prep_roster(raw_roster)
@@ -17,18 +28,92 @@ create_mapvizier_object <- function(raw_cdf, raw_roster) {
   prepped_cdf$grade <- grade_levelify_cdf(prepped_cdf, prepped_roster)
   
   processed_cdf <- prepped_cdf %>%
+    dedupe_cdf(method="NWEA") %>%
     grade_level_seasonify() %>%
     grade_season_labelify() %>%
     grade_season_sortify()
   
-  return(
-    list(
-      'cdf'=processed_cdf
-     ,'roster'=prepped_roster
+  #check to see that result conforms
+  assert_that(check_processed_cdf(processed_cdf)$boolean)
+  
+  #growth df
+  growth_df <- generate_growth_dfs(processed_cdf)
+  
+  #make a list and return it
+  mapviz <-  list(
+    'cdf'=processed_cdf,
+    'roster'=prepped_roster,
+    'growth_df'=growth_df
      #todo: add some analytics about matched/unmatched kids
-    )  
   )
+  
+  class(mapviz) <- "mapvizieR"
+   
+  return(mapviz)
 }
+
+
+
+#' @title Reports whether x is a mapvizier object
+#'
+#' @description
+#' Reports whether x is a mapvizier object
+#' @param x an object to test
+#' @export
+is.mapvizieR <- function(x) inherits(x, "mapvizieR")
+
+
+
+#' @title print method for \code{mapvizier} class
+#'
+#' @description
+#'  prints to console
+#'
+#' @details Prints a summary fo the a \code{mapvizier} object. 
+#' 
+#' @param x a \code{mapvizier} object
+#' @param ... additional arguments
+#' 
+#' @return some details about the object to the console.
+#' @rdname print
+#' @export
+#' @examples 
+#' data(ex_CombinedAssessmentResults)
+#' data(ex_CombinedStudentsBySchool)
+#' 
+#' cdf_mv <- mapvizieR(ex_CombinedAssessmentResults, 
+#'                     ex_CombinedStudentsBySchool)
+#'                     
+#' cdf_mv
+
+print.mapvizieR <-  function(x, ...) {
+  
+  #gather some summary stats
+  n_df <- length(x)
+  n_sy <- length(unique(x$cdf$map_year_academic))
+  min_sy <- min(x$cdf$map_year_academic)
+  max_sy <- max(x$cdf$map_year_academic)
+  n_students <- length(unique(x$cdf$studentid))
+  n_schools <- length(unique(x$cdf$schoolname))
+  growthseasons <- unique(x$cdf_growth$growth_season)
+  n_growthseasons <- length(growthseasons)
+  
+  cat("A mapvizieR object repesenting:\n- ")
+  cat(paste(n_sy))
+  cat(" school years from SY")
+  cat(paste(min_sy))
+  cat(" to SY")
+  cat(paste(max_sy))
+  cat(";\n- ")
+  cat(paste(n_students))
+  cat(" students from ")
+  cat(paste(n_schools))
+  cat(" schools;\n- and, ")
+  cat(paste(n_growthseasons))
+  cat(" growth seasons:\n    ")
+  cat(paste(growthseasons, collapse = ",\n    "))  
+}
+
 
 
 #' @title grade_levelify_cdf
@@ -69,8 +154,6 @@ grade_levelify_cdf <- function(prepped_cdf, roster) {
   
   return(matched_cdf$grade)
 }
-
-
 
 
 
@@ -121,4 +204,54 @@ grade_season_sortify <- function(x) {
     )
   
   return(as.data.frame(prepped))
+}
+
+
+
+#' @title match assessment results with students by school roster. 
+#'
+#' @description
+#' \code{cdf_roster_match} performs an inner join on a prepped, long cdf (Assesment Results)
+#' a prepped long roster (i.e. StudentsBySchool).  
+#'
+#' @param assessment_results a cdf file that passes the checks in \code{\link{check_cdf_long}}
+#' @param roster a roster that passes the checks in \code{\link{check_roster}}
+#'
+#' @return a merged data frame with \code{nrow(prepped_cdf)}
+#' 
+#' @export
+
+cdf_roster_match <- function(assessment_results, roster) {
+  # Validation
+  assert_that(
+    check_cdf_long(assessment_results)$boolean, 
+    check_roster(roster)$boolean
+  )
+  
+  # inner join of roster and assessment results by id, subject, and term name
+  matched_df <-  dplyr::inner_join(roster, 
+                                   assessment_results %>% dplyr::filter(growthmeasureyn=TRUE),
+                                   by=c("studentid", "termname", "schoolname")
+  ) %>%
+    select(-ends_with(".y")) %>% # drop repeated columns
+    as.data.frame
+  
+  # drop .x join artifact from colun names (we dropped .y in select above )
+  names(matched_df)<-gsub("(.+)(\\.x)", "\\1", names(matched_df))
+  
+  
+  #check that number of rows of assessment_results = nrow of matched_df
+  input_rows <- nrow(assessment_results)
+  output_rows <- nrow(matched_df)
+  if(input_rows!=output_rows){
+    cdf_name<-substitute(assessment_results)
+    msg <- paste0("The number of rows in ", cdf_name, " is ", input_rows, 
+                  ", while the number of rows in the matched data frame\n",
+                  "returned by this function is ", output_rows, ".\n\n",
+                  "You might want to check your data.")
+    warning(msg)
+  }
+  
+  #return 
+  matched_df
 }

@@ -41,7 +41,8 @@ extract_academic_year <- function(x) {
     args = strsplit(x = prep1[ , 2], split = "-", fixed = T)
   )
   
-  x$map_year_academic <- prep2[ ,1]
+  #coerce to numeric
+  x$map_year_academic <- as.integer(prep2[ ,1])
   
   return(x)
 }
