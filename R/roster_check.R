@@ -68,8 +68,8 @@ check_roster_grades <- function(roster) {
   #write a custom failure message to make the test more helpful
   has_grade <- function(x) {x==TRUE}
   on_failure(has_grade) <- function(call, env) {
-    msg <- paste0("Your roster failed the grade field test.\n",
-                  "Make sure that your roster data frame contains a field called grade.")
+    msg <- paste0("Your roster failed the GRADE field test.\n",
+                  "Make sure that your roster data frame contains a field named grade.")
     return(msg)
   }
   assert_that(has_grade(grade_col_test))
@@ -80,8 +80,12 @@ check_roster_grades <- function(roster) {
   #write a custom failure message to make the test more helpful
   grade_is_integer <- function(x) {x==TRUE}
   on_failure(grade_is_integer) <- function(call, env) {
-    msg <- paste0("Your roster failed the grade integeer field test.\n",
-                  "Make sure that your roster data frame's grade field is an integer vector.")
+    msg <- paste0(
+      "Roster objects can only have integers for the GRADE field.\n",
+      "If you have a weird representation of Kindergarten that is not\n",
+      "being handled by the mapvizieR constructor function, try running\n",
+      "prep_roster(your_roster,kinder_codes=c('your weird K code'))."
+    )
     return(msg)
   }
   assert_that(grade_is_integer(grade_integer_test))
