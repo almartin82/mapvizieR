@@ -242,7 +242,7 @@ cdf_roster_match <- function(assessment_results, roster) {
   # Validation
   assert_that(
     check_cdf_long(assessment_results)$boolean, 
-    check_roster(roster)$boolean
+    check_roster(roster)
   )
   
   # inner join of roster and assessment results by id, subject, and term name

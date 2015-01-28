@@ -23,7 +23,7 @@ prep_roster <- function(students_by_school,
   # translate kindergarten ("K", 13, etc) to grade 0
   roster$grade <- standardize_kinder(roster$grade, other_codes = kinder_codes)
   #check that roster conforms to our expectations
-  assert_that(check_roster(roster)$boolean)
+  assert_that(check_roster(roster))
   
   return(roster)
 }
