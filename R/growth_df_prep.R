@@ -44,10 +44,14 @@ generate_growth_dfs <- function(
   #match start/end testids to cdf data
   with_scores <- growth_testid_lookup(scaffold, processed_cdf)
   
-  #look up norms
+  #look up normsand add growth metrics
   with_norms <- growth_norm_lookup(
     with_scores, processed_cdf, norm_df_long, include_unsanctioned_windows
-  )
+    ) %>%
+    calc_rit_growth_metrics
+  
+ 
+  
   
   #todo: GOAL scores here
   
@@ -283,4 +287,28 @@ growth_norm_lookup <- function(
   )
   
   return(with_matched_norms)
+}
+
+
+#' @title Calculate growth metrics (RIT growth, meeting indicators, conditional 
+#' change in test percentile, growth index, student growth percentile).
+#' 
+#' @description a helper function  for \code{generate_growth_df}
+#' which adds columns to a growth CDF for variuos growth statistics. 
+#' 
+#' @param normed_df a data frame that has matched growth windows for 
+#' each student/subject/season triplet. 
+#' @return a data frame the same as growth_df with the addiont
+calc_rit_growth_metrics <- function(normed_df){
+  out <- normed_df %>%
+    mutate(rit_growth = end_testritscore - start_testritscore,
+           met_typical_growth = rit_growth >= reported_growth,
+           change_testpercentile = end_testpercentile - start_testpercentile,
+           cgi = (rit_growth-reported_growth)/std_dev_of_expectation,
+           sgp = pnorm(cgi)
+    ) %>%
+    as.data.frame
+           
+  # return 
+  out
 }
