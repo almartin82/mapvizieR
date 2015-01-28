@@ -30,7 +30,9 @@ all possible growth calculations for a student and returns a long data frame wit
 results.
 }
 \details{
-This function returns a growth data frame, with one row per student per test per
-valid 'growth_window', such as 'Fall to Spring'.
+A workflow wrapper that calls a variety of growth_df prep functions.
+Given a mapvizieR processed cdf, this function will return a a growth
+data frame, with one row per student per test per valid 'growth_window',
+eg 'Fall to Spring'.
 }
 

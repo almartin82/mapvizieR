@@ -118,6 +118,25 @@ test_that("growth_norm_lookup find norm data", {
   
 })
 
+test_that("calc_rit_growth_metrics properly calculates growth metrics", {
+  scaffold <- build_growth_scaffolds(processed_cdf)
+  score_matched <- growth_testid_lookup(scaffold, processed_cdf)
+  norm_matched <- growth_norm_lookup(
+    score_matched, processed_cdf, norms_long, FALSE
+  )
+  
+  with_rit_metrics <- calc_rit_growth_metrics(norm_matched)
+  
+  expect_equal(nrow(with_rit_metrics), 17010)
+  expect_equal(ncol(with_rit_metrics), 53)
+  expect_equal(median(with_rit_metrics$rit_growth,na.rm = T),3)
+  expect_equal(median(with_rit_metrics$change_testpercentile,na.rm = T),1)
+  expect_equal(median(with_rit_metrics$cgi,na.rm = T),0)
+   
+  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 34739)
+  
+})
+
 
 
 test_that("growth_norm_lookup with unsanctioned windows", {
