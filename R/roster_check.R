@@ -14,83 +14,44 @@
 
 
 check_roster <- function(roster) {
-  
   #column/header names
-  names_result <- check_roster_names(roster)
-  
-  #grade 
-  grades_result <- check_roster_grades(roster)
-  
-  result_vector <- c(names_result, grades_result)
-  results <- list(
-    boolean=all(result_vector),
-    descriptive=paste0("passed ", length(result_vector[result_vector==TRUE]), " tests!")
+  all_checks <- is.data.frame(
+    roster %>%
+      ensure_roster_names %>%
+      ensure_roster_types
   )
   
-  return(results)
+  return(all_checks)
 }
 
 
 
-#' @title check_roster_names
+#' @title ensure_roster_names
 #' 
-#' @description
-#' \code{check_roster_names} does the roster have a studentid field?
+#' @description does the roster have a studentid and grade field?
 #' 
-#' @param roster a roster file, generated either by prep_roster,
-#' or via processing done in your data warehouse
+#' @inheritParams ensure_is_mapvizieR
+
+ensure_roster_names <- ensures_that(
+    c('studentid') %in% names(.) ~ 
+      "check your roster - it must have a field named studentid.",
+    c('grade') %in% names(.) ~ 
+      "check your roster - it must have a field named grade."
+)
+
+
+
+#' @title ensure_roster_types
 #' 
-#' @return boolean
+#' @description checks if certain roster fields are of the correct type
+#' 
+#' @inheritParams ensure_is_mapvizieR
 
-check_roster_names <- function(roster) {
-  
-  #the roster df has to have a studentid field
-  studentid_test <- 'studentid' %in% names(roster)
-
-  #write a custom failure message to make the test more helpful
-  has_studentid <- function(x) {x==TRUE}
-  on_failure(has_studentid) <- function(call, env) {
-    msg <- paste0("Your roster failed the NAMES test.\n",
-     "Make sure that your roster data frame contains a field called studentid.")
-    return(msg)
-  }
-  assert_that(has_studentid(studentid_test))
-  
-  #return the test result
-  return(studentid_test)
-}
-
-check_roster_grades <- function(roster) {
-  
-  #the roster df has to have a grade field
-  grade_col_test <- 'grade' %in% names(roster)
-  
-  #write a custom failure message to make the test more helpful
-  has_grade <- function(x) {x==TRUE}
-  on_failure(has_grade) <- function(call, env) {
-    msg <- paste0("Your roster failed the GRADE field test.\n",
-                  "Make sure that your roster data frame contains a field named grade.")
-    return(msg)
-  }
-  assert_that(has_grade(grade_col_test))
-  
-  #the roster grade field is an integer vecotr
-  grade_integer_test <- is.integer(roster$grade)
-  
-  #write a custom failure message to make the test more helpful
-  grade_is_integer <- function(x) {x==TRUE}
-  on_failure(grade_is_integer) <- function(call, env) {
-    msg <- paste0(
-      "Roster objects can only have integers for the GRADE field.\n",
-      "If you have a weird representation of Kindergarten that is not\n",
-      "being handled by the mapvizieR constructor function, try running\n",
-      "prep_roster(your_roster,kinder_codes=c('your weird K code'))."
-    )
-    return(msg)
-  }
-  assert_that(grade_is_integer(grade_integer_test))
-  
-  
-  #return the test result
-  return(grade_col_test & grade_integer_test)
-}
+ensure_roster_types <- ensures_that(  
+  class(.$grade) == "integer" ~ 
+    "check type on grade field, should be integer.",
+  class(.$map_year_academic) == "integer" ~ 
+    "check type on map_year_academic field, should be integer.",
+  class(.$fallwinterspring) == "character" ~ 
+    "check type on fallwinterspring, should be character."
+)

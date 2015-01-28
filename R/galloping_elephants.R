@@ -22,7 +22,9 @@ galloping_elephants <- function (
   detail_academic_year=2014,
   entry_grade_seasons=c(-0.8, 4.2)
 ) {
-  
+  #use ensureR to check if this is a mapvizieR object
+  mapvizieR_obj %>% ensure_is_mapvizieR()
+    
   #unpack the mapvizieR object
   cdf_long <- mapvizieR_obj[['cdf']]
   

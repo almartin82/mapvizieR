@@ -10,6 +10,7 @@ Description: Visualizations for NWEA MAP Data
 License: No license
 Depends:
     assertthat,
+    ensurer,
     lubridate,
     stringr,
     dplyr,
