@@ -24,10 +24,7 @@ galloping_elephants <- function (
 ) {
   #use ensureR to check if this is a mapvizieR object
   mapvizieR_obj %>% ensure_is_mapvizieR()
-  
-  #is this a mapvizieR object?
-  check_is_mapvizieR(mapvizieR_obj)
-  
+    
   #unpack the mapvizieR object
   cdf_long <- mapvizieR_obj[['cdf']]
   

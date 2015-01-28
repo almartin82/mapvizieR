@@ -70,7 +70,7 @@ is.mapvizieR <- function(x) inherits(x, "mapvizieR")
 #' 
 #' @description a contract that ensures that an object is a mapvizieR object at runtime.
 #' 
-#' @param x an object to test
+#' @param . dot-placeholder, per ensurer doc.
 
 ensure_is_mapvizieR <- ensures_that(
   is.mapvizieR(.) ~ paste0("The object you passed is not a conforming mapvizieR object.\n",

@@ -7,7 +7,7 @@
 ensure_is_mapvizieR(.)
 }
 \arguments{
-\item{x}{an object to test}
+\item{.}{dot-placeholder, per ensurer doc.}
 }
 \description{
 a contract that ensures that an object is a mapvizieR object at runtime.
