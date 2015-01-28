@@ -4,10 +4,10 @@
 \alias{fall_spring_me}
 \title{Fall-Spring Me}
 \usage{
-fall_spring_me(grade)
+fall_spring_me(grade_season)
 }
 \arguments{
-\item{grade}{a grade level between -1 and 12}
+\item{grade_season}{a grade level between -1 and 12}
 }
 \value{
 a labeled string

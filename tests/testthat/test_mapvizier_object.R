@@ -56,6 +56,32 @@ test_that("cdf_roster_match properly joins assessment results and rosters", {
 })
 
 
+test_that("grade_season_factors return correct order", {
+  
+  just_grade_season <- data.frame(
+    grade_level_season = c(-0.8, -0.5, 4, 5, 11, 6.5, 6.2, 7, 7.2, 8, 10.5)
+  )
+  
+  with_factors <- just_grade_season %>% 
+    rowwise() %>%
+    mutate(
+      grade_season_label = fall_spring_me(grade_level_season)
+    ) %>%
+    grade_season_factors()
+    
+  expect_true(all(c("ordered", "factor") %in% class(with_factors$grade_season_label)))
+  
+  label_order <- levels(with_factors$grade_season_label)
+  
+  expect_equal(label_order[[1]], 'KF')
+  expect_equal(label_order[[4]], '5S')
+  expect_equal(label_order[[5]], '7F')
+  expect_equal(label_order[[6]], '7W')
+  expect_equal(label_order[[7]], '7S')
+  expect_equal(label_order[[10]], '11W')
+})
+
+
 
 test_that("mapvizieR S3 class methods work", {
   mv <- mapvizieR(

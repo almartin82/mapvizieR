@@ -60,7 +60,8 @@ galloping_elephants <- function (
   ) + 
   geom_density(
     adjust = 1
-  )
+  ) +
+  theme_bw()
   
   return(p)
 }

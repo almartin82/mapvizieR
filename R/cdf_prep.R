@@ -16,7 +16,7 @@ prep_cdf_long <- function(cdf_long) {
     #names
     lower_df_names() %>%
     #fallwinterspring, academic_year
-    extract_academic_year()
+    extract_academic_year()   
   
   #getting weird lubridate errors when chaining this.  roll it solo.
   clean_date <- as.Date(mdy(cdf_long$teststartdate, locale="US"))

@@ -32,8 +32,8 @@ mapvizieR.default <- function(raw_cdf, raw_roster) {
     dedupe_cdf(method="NWEA") %>%
     grade_level_seasonify() %>%
     grade_season_labelify() %>%
-    grade_season_sortify()
-  
+    grade_season_factors()
+
   #check to see that result conforms
   assert_that(check_processed_cdf(processed_cdf)$boolean)
   
@@ -200,29 +200,23 @@ grade_season_labelify <- function(x) {
 
 
 
-#' @title grade_season_sortify
-#'
-#' @description
-#' \code{grade_season_sortify} returns a sortable grade season label
-#'
-#' @param x a cdf that has 'grade_level_season' (eg product of grade_level_seasonify)
-#' \code{grade_levelify()}
+#' @title grade_season_factors
 #' 
-#' @return a data frame with a grade_season_sorted
+#' @description helper function that 1) converts grade_season_label to factor and
+#' 2) orders the labels based on grade_level_season
+#' 
+#' @param x a cdf that has grade_level_season and grade_season_label
 
-grade_season_sortify <- function(x) {
+grade_season_factors <- function(x) {
   
-  assert_that('grade_level_season' %in% names(x))
+  x$grade_season_label <- factor(
+    x$grade_season_label
+   ,levels=unique(x[order(x$grade_level_season),]$grade_season_label)
+   ,ordered=TRUE  
+  )
   
-  prepped <- x %>% 
-    rowwise() %>%
-    mutate(
-      grade_season_label = fall_spring_sort_me(grade_level_season)
-    )
-  
-  return(as.data.frame(prepped))
+  x
 }
-
 
 
 #' @title match assessment results with students by school roster. 
