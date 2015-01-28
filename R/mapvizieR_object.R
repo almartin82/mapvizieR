@@ -16,6 +16,7 @@
 #' is.mapvizieR(cdf_mv)                     
 #' 
 #' @export
+
 mapvizieR <- function(raw_cdf, raw_roster) UseMethod("mapvizieR")
 
 #' @export
@@ -60,7 +61,23 @@ mapvizieR.default <- function(raw_cdf, raw_roster) {
 #' Reports whether x is a mapvizier object
 #' @param x an object to test
 #' @export
+
 is.mapvizieR <- function(x) inherits(x, "mapvizieR")
+
+
+
+#' @title ensure_is_mapvizieR
+#' 
+#' @description a contract that ensures that an object is a mapvizieR object at runtime.
+#' 
+#' @param x an object to test
+
+ensure_is_mapvizieR <- ensures_that(
+  is.mapvizieR(.) ~ paste0("The object you passed is not a conforming mapvizieR object.\n",
+     "Look at the examples in the mapvizieR() to see more about generating\n",
+     "a valid mapvizieR object.  TODO: write a vignette that walks through\n",
+     "the process and explains our reasoning around requiring a mapviz object.")
+)
 
 
 
