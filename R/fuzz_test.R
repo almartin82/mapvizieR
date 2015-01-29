@@ -16,6 +16,7 @@ fuzz_test_plot <- function(plot_name, n=100, additional_args=list()) {
   )
 
   results <- vector("list", n)
+  studentids <- vector("list", n)
   
   for (i in seq(1:n)) {
     stu_random <- sample(mapviz[['roster']]$studentid, sample(20:500, 1)) %>% 
@@ -33,18 +34,35 @@ fuzz_test_plot <- function(plot_name, n=100, additional_args=list()) {
       args=arg_list
     )
     
+    build_p <- try(ggplot_build(p))
+    
     tests <- all(
-      is.ggplot(p)
+      is.list(build_p)
      ,all(
-        c("data", "layers", "scales", "mapping", "theme", 
-          "coordinates", "facet", "plot_env", "labels") %in% names(p)
+        c("data", "panel", "plot") %in% names(build_p)
       )
     )
     
+    #append
     results[[i]] <- tests
+    studentids[[i]] <- stu_random
+  }
+
+  #if a test fails, print the results
+  if (!(all(unlist(results)))) {
+    
+    writeLines(paste('fuzz testing', plot_name, 'failed!'))
+    writeLines(paste('outputting studentid vectors that caused', plot_name, 'to fail:'))
+               
+    failed_on <- studentids[c(results==FALSE)] %>%
+      paste(collapse='\n\n\n') %>%
+      strwrap()
+  
+    writeLines(failed_on)
+
   }
   
-  return(results)  
+  return(results)
 }
 
 
@@ -59,6 +77,28 @@ fuzz_test_plot <- function(plot_name, n=100, additional_args=list()) {
 silly_plot <- function(mapvizieR_obj, studentids) {
   p <- ggplot(
     data=mapvizieR_obj[['cdf']]
+   ,aes(x=testritscore)
+  ) + 
+  geom_histogram()
+  
+  return(p)
+}
+
+
+
+#' @title error ridden plot
+#' 
+#' @description a plot that is definitely going to break
+#' 
+#' @param mapvizieR_obj a conforming mapvizieR object
+#' @param studentids a vector of studentids
+
+error_ridden_plot <- function(mapvizieR_obj, studentids) {
+  cdf <- mapvizieR_obj[['cdf']]
+  cdf <- cdf[cdf$studentid=='pancakes', ]
+  
+  p <- ggplot(
+    data=cdf
    ,aes(x=testritscore)
   ) + 
   geom_histogram()
