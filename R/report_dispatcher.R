@@ -23,6 +23,8 @@
 report_dispatcher <- function(mapvizieR_obj, cut_list, call_list, 
     func_to_call, arg_list=list(), calling_env = parent.frame(), ...
   ) {
+  #use ensureR to check if this is a mapvizieR object
+  mapvizieR_obj %>% ensure_is_mapvizieR()
   
   roster <- mapvizieR_obj[['roster']]
   #put mapvizieR object onto the arg list
@@ -70,8 +72,7 @@ report_dispatcher <- function(mapvizieR_obj, cut_list, call_list,
   unq_ele <- as.data.frame(unq_ele, stringsAsFactors=F)
   names(unq_ele) <- cols  
   #nifty little sort function
-  unq_ele <- df_sorter(unq_ele, by=names(unq_ele))  
-  #print(unq_ele)    
+  unq_ele <- df_sorter(unq_ele, by=names(unq_ele))   
   
   perm_list <- list()
   counter <- 1
@@ -106,12 +107,12 @@ report_dispatcher <- function(mapvizieR_obj, cut_list, call_list,
 
   for (i in 1:length(perm_list)) {
     print(i)
-    this_depth <- perm_list[[i]]
+    this_depth <- as.data.frame(perm_list[[i]])
     
     for (j in 1:nrow(this_depth)) {
       print(j)
       
-      this_perm <- this_depth[j,] 
+      this_perm <- this_depth[j, ,drop=FALSE]
       
       #generic names for depth of tree
       generic_perm <- this_perm
@@ -140,11 +141,16 @@ report_dispatcher <- function(mapvizieR_obj, cut_list, call_list,
       } 
       
       #now that we have the studentids and arg list, call the function
-            
-      this_output <- do.call(
-        what=func_to_call
-       ,args=this_arg_list
-       ,envir=calling_env
+               
+      #TODO: this should try/catch and return a simple textgrob
+      #TODO: this should be controlled via a parameter at the function
+      
+      this_output <- try(
+        do.call(
+          what=func_to_call
+         ,args=this_arg_list
+         ,envir=calling_env
+        )
       )
       
       final_list[[counter]] <- this_output
