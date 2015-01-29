@@ -51,7 +51,7 @@ galloping_elephants <- function (
 
   #now group by grade level season and only return groups where n > 2
   #b/c geom_density will error on 2 data points.
-  term_counts <- this_cdf %>%
+  term_counts <- munge %>%
     group_by(grade_season_label) %>%
     summarize(
       count=n()  
@@ -61,7 +61,7 @@ galloping_elephants <- function (
     ) 
   
   #filter the cdf by the valid terms above
-  munge <- this_cdf %>%
+  munge <- munge %>%
     filter(
       grade_season_label %in% term_counts$grade_season_label
     ) %>%
