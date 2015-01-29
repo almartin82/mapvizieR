@@ -3,7 +3,7 @@
 #' @description
 #' \code{report_dispatcher} munges test term data on a CDF
 #'
-#' @param roster a roster dataframe.  must have a field called studentid
+#' @param mapvizieR_obj a conforming mapvizieR object.
 #' @param cut_list a list of 'org units' in your roster, in order from most general
 #' to most specific.  
 #' @param call_list a list of booleans.  must be the same length as cut_list.  indicates if
@@ -20,9 +20,13 @@
 #' 
 #' @return a cdf with new term fields 
 
-report_dispatcher <- function(roster, cut_list, call_list, 
-    func_to_call, arg_list, calling_env = parent.frame(), ...
+report_dispatcher <- function(mapvizieR_obj, cut_list, call_list, 
+    func_to_call, arg_list=list(), calling_env = parent.frame(), ...
   ) {
+  
+  roster <- mapvizieR_obj[['roster']]
+  #put mapvizieR object onto the arg list
+  arg_list <- append(arg_list, list(mapvizieR_obj=mapvizieR_obj))
   
   #all of the cuts provided need to match columns in the roster.
   cuts_unlisted <- unlist(cut_list)

@@ -4,11 +4,11 @@
 \alias{report_dispatcher}
 \title{report_dispatcher}
 \usage{
-report_dispatcher(roster, cut_list, call_list, func_to_call, arg_list,
-  calling_env = parent.frame(), ...)
+report_dispatcher(mapvizieR_obj, cut_list, call_list, func_to_call,
+  arg_list = list(), calling_env = parent.frame(), ...)
 }
 \arguments{
-\item{roster}{a roster dataframe.  must have a field called studentid}
+\item{mapvizieR_obj}{a conforming mapvizieR object.}
 
 \item{cut_list}{a list of 'org units' in your roster, in order from most general
 to most specific.}
