@@ -32,20 +32,23 @@ mapvizieR.default <- function(raw_cdf, raw_roster) {
     dedupe_cdf(method="NWEA") %>%
     grade_level_seasonify() %>%
     grade_season_labelify() %>%
-    grade_season_sortify()
-  
+    grade_season_factors()
+
   #check to see that result conforms
   assert_that(check_processed_cdf(processed_cdf)$boolean)
   
-  #growth df
-  growth_df <- generate_growth_dfs(processed_cdf)
+  #headline growth df
+  growth_df <- generate_growth_dfs(processed_cdf)$headline
+  
+  #TODO: goal growht df
   
   #make a list and return it
   mapviz <-  list(
     'cdf'=processed_cdf,
     'roster'=prepped_roster,
     'growth_df'=growth_df
-     #todo: add some analytics about matched/unmatched kids
+    #todo: also return a goal/strand df
+    #todo: add some analytics about matched/unmatched kids
   )
   
   class(mapviz) <- "mapvizieR"
@@ -112,7 +115,7 @@ print.mapvizieR <-  function(x, ...) {
   max_sy <- max(x$cdf$map_year_academic)
   n_students <- length(unique(x$cdf$studentid))
   n_schools <- length(unique(x$cdf$schoolname))
-  growthseasons <- unique(x$cdf_growth$growth_season)
+  growthseasons <- unique(x$growth_df$growth_window)
   n_growthseasons <- length(growthseasons)
   
   cat("A mapvizieR object repesenting:\n- ")
@@ -200,29 +203,23 @@ grade_season_labelify <- function(x) {
 
 
 
-#' @title grade_season_sortify
-#'
-#' @description
-#' \code{grade_season_sortify} returns a sortable grade season label
-#'
-#' @param x a cdf that has 'grade_level_season' (eg product of grade_level_seasonify)
-#' \code{grade_levelify()}
+#' @title grade_season_factors
 #' 
-#' @return a data frame with a grade_season_sorted
+#' @description helper function that 1) converts grade_season_label to factor and
+#' 2) orders the labels based on grade_level_season
+#' 
+#' @param x a cdf that has grade_level_season and grade_season_label
 
-grade_season_sortify <- function(x) {
+grade_season_factors <- function(x) {
   
-  assert_that('grade_level_season' %in% names(x))
+  x$grade_season_label <- factor(
+    x$grade_season_label
+   ,levels=unique(x[order(x$grade_level_season),]$grade_season_label)
+   ,ordered=TRUE  
+  )
   
-  prepped <- x %>% 
-    rowwise() %>%
-    mutate(
-      grade_season_label = fall_spring_sort_me(grade_level_season)
-    )
-  
-  return(as.data.frame(prepped))
+  x
 }
-
 
 
 #' @title match assessment results with students by school roster. 
@@ -246,9 +243,11 @@ cdf_roster_match <- function(assessment_results, roster) {
   )
   
   # inner join of roster and assessment results by id, subject, and term name
-  matched_df <-  dplyr::inner_join(roster, 
-                                   assessment_results %>% dplyr::filter(growthmeasureyn=TRUE),
-                                   by=c("studentid", "termname", "schoolname")
+  matched_df <-  dplyr::inner_join(
+    roster, 
+    assessment_results %>% 
+      dplyr::filter(growthmeasureyn=TRUE),
+    by=c("studentid", "termname", "schoolname")
   ) %>%
     select(-ends_with(".y")) %>% # drop repeated columns
     as.data.frame

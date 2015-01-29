@@ -294,34 +294,35 @@ grade_level_seasonify <- function(x) {
 #' @description
 #' \code{fall_spring_me} tranforms grade levels into labels for charts; eg 4.2 -> F5
 #'
-#' @param grade a grade level between -1 and 12
+#' @param grade_season a grade level between -1 and 12
 #' 
 #' @return a labeled string
 #' @export
 #' 
 
-fall_spring_me <- function(grade) {
+fall_spring_me <- function(grade_season) {
+  
   #K is weird edge case
-  if(grade == -0.8) {
+  if(grade_season == -0.8) {
     return('KF')
-  } else if(grade == -0.5) {
+  } else if(grade_season == -0.5) {
     return('KW')
-  } else if(grade == 0) {
+  } else if(grade_season == 0) {
     return('KS')
   #too small, return nothing
-  } else if(grade <= -1) {
+  } else if(grade_season <= -1) {
     return('')
   #too big
-  } else if(grade > 12) {
+  } else if(grade_season > 12) {
     return('')  
   #S observations are decimal 0s
-  } else if(grade %% 1 == 0) {
-    return(paste0(round(grade, 0), 'S'))
+  } else if(grade_season %% 1 == 0) {
+    return(paste0(round(grade_season, 0), 'S'))
   #test for F and W
-  } else if(round(grade %% 1,1) == 0.2) {
-    return(paste0(ceiling(grade), 'F'))
-  } else if(round(grade %% 1,2) == 0.5) {
-    return(paste0(ceiling(grade), 'W'))
+  } else if(round(grade_season %% 1,1) == 0.2) {
+    return(paste0(floor(grade_season) + 1, 'F'))
+  } else if(round(grade_season %% 1,2) == 0.5) {
+    return(paste0(floor(grade_season) + 1, 'W'))
   } else {
     return(NA)
   }
@@ -329,35 +330,15 @@ fall_spring_me <- function(grade) {
 
 
 
-#' @title Fall-Spring Sort Me
-#'
-#' @description
-#' \code{fall_spring_me} tranforms grade levels into labels that will sort properly; 
-#' eg, fall / winter/ spring
-#'
-#' @param grade a grade level between -1 and 12
+#' @title round_to_any
 #' 
-#' @return a string
-#' @export
+#' @description because we don't want \code{suggests: plyr, dpylr if we can avoid it}
+#' 
+#' @param x numeric or date-time (POSIXct) vector to round
+#' @param accuracy number to round to; for POSIXct objects, a number of seconds
+#' @param f rounding function: \code{\link{floor}}, \code{\link{ceiling}} or
+#'  \code{\link{round}}
 
-fall_spring_sort_me <- function(grade) {
-  #K is weird edge case
-  if(grade == -0.8) {
-    return('K_1')
-  } else if(grade == -0.5) {
-    return('K_2')
-  } else if(grade == 0) {
-    return('K_3')
-  #S observations are decimal 0s
-  } else if(grade %% 1 == 0) {
-    return(paste0(round(grade, 0), '_3'))
-  #test for F and W; note that rounding is required or this misbehaves #rinferno
-  } else if(round(grade %% 1,1) == 0.2) {
-    return(paste0(ceiling(grade), '_1'))
-  } else if(round(grade %% 1,2) == 0.5) {
-    return(paste0(ceiling(grade), '_2'))
-  } else {
-    return(NA)
-  }  
+round_to_any <- function(x, accuracy, f = round) {
+  f(x / accuracy) * accuracy
 }
-  
