@@ -329,4 +329,16 @@ fall_spring_me <- function(grade_season) {
 }
 
 
-  
+
+#' @title round_to_any
+#' 
+#' @description because we don't want \code{suggests: plyr, dpylr if we can avoid it}
+#' 
+#' @param x numeric or date-time (POSIXct) vector to round
+#' @param accuracy number to round to; for POSIXct objects, a number of seconds
+#' @param f rounding function: \code{\link{floor}}, \code{\link{ceiling}} or
+#'  \code{\link{round}}
+
+round_to_any <- function(x, accuracy, f = round) {
+  f(x / accuracy) * accuracy
+}

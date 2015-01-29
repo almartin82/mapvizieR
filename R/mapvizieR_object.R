@@ -37,15 +37,18 @@ mapvizieR.default <- function(raw_cdf, raw_roster) {
   #check to see that result conforms
   assert_that(check_processed_cdf(processed_cdf)$boolean)
   
-  #growth df
-  growth_df <- generate_growth_dfs(processed_cdf)
+  #headline growth df
+  growth_df <- generate_growth_dfs(processed_cdf)$headline
+  
+  #TODO: goal growht df
   
   #make a list and return it
   mapviz <-  list(
     'cdf'=processed_cdf,
     'roster'=prepped_roster,
     'growth_df'=growth_df
-     #todo: add some analytics about matched/unmatched kids
+    #todo: also return a goal/strand df
+    #todo: add some analytics about matched/unmatched kids
   )
   
   class(mapviz) <- "mapvizieR"
@@ -112,7 +115,7 @@ print.mapvizieR <-  function(x, ...) {
   max_sy <- max(x$cdf$map_year_academic)
   n_students <- length(unique(x$cdf$studentid))
   n_schools <- length(unique(x$cdf$schoolname))
-  growthseasons <- unique(x$cdf_growth$growth_season)
+  growthseasons <- unique(x$growth_df$growth_window)
   n_growthseasons <- length(growthseasons)
   
   cat("A mapvizieR object repesenting:\n- ")
@@ -240,9 +243,11 @@ cdf_roster_match <- function(assessment_results, roster) {
   )
   
   # inner join of roster and assessment results by id, subject, and term name
-  matched_df <-  dplyr::inner_join(roster, 
-                                   assessment_results %>% dplyr::filter(growthmeasureyn=TRUE),
-                                   by=c("studentid", "termname", "schoolname")
+  matched_df <-  dplyr::inner_join(
+    roster, 
+    assessment_results %>% 
+      dplyr::filter(growthmeasureyn=TRUE),
+    by=c("studentid", "termname", "schoolname")
   ) %>%
     select(-ends_with(".y")) %>% # drop repeated columns
     as.data.frame

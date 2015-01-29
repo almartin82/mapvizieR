@@ -61,7 +61,7 @@ report_dispatcher <- function(roster, cut_list, call_list,
   unq_keys <- unique(pairs_vector)
   
   #strsplit on the sep_hash gets us back to data frame
-  unq_ele <- do.call(rbind,strsplit(unq_keys, hash_sep, fixed=T))
+  unq_ele <- do.call(rbind,strsplit(unq_keys, hash_sep, fixed=TRUE))
   #back to df and sort
   unq_ele <- as.data.frame(unq_ele, stringsAsFactors=F)
   names(unq_ele) <- cols  
