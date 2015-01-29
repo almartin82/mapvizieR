@@ -51,7 +51,7 @@ galloping_elephants <- function (
 
   #now group by grade level season and only return groups where n > 2
   #b/c geom_density will error on 2 data points.
-  term_counts <- this_cdf %>%
+  term_counts <- munge %>%
     group_by(grade_season_label) %>%
     summarize(
       count=n()  
@@ -61,7 +61,7 @@ galloping_elephants <- function (
     ) 
   
   #filter the cdf by the valid terms above
-  munge <- this_cdf %>%
+  munge <- munge %>%
     filter(
       grade_season_label %in% term_counts$grade_season_label
     ) %>%
@@ -90,7 +90,7 @@ galloping_elephants <- function (
     )
 
   #join a DF with extracted data & max values - this tags all the max rows in the df
-  full_max <- dplyr::inner_join(density_raw, max_points)
+  full_max <- dplyr::inner_join(density_raw, max_points, by=c("y", "group"))
   
   #cbind in the factor names (ie the group names)
   full_max <- cbind(full_max, grade_labels=term_counts$grade_season_label)
