@@ -353,8 +353,46 @@ round_to_any <- function(x, accuracy, f = round) {
 #' @param by how to sort
 #' @param decreasing logical toggle to change sort order
 #' @param ... additional arguments
+
 df_sorter <- function(x, by=1, decreasing=FALSE, ... ) {
   f <- function(...) order(...,decreasing=decreasing)
   i <- do.call(f,x[by])
   x[i,,drop=FALSE]
+}
+
+
+
+#' @title is_error
+#' 
+#' @description utility function, test if an object is a try-error
+#' 
+#' @param x an object
+
+is_error <- function(x) {
+  inherits(x, "try-error")
+}
+
+
+
+#' @title is_not_error
+#' 
+#' @description utility function, test if an object is NOT a try-error
+#' 
+#' @param x an object
+
+is_not_error <- function(x) {
+  !is_error(x)
+}
+
+
+
+#' @title rand_stu
+#' 
+#' @description gives back a random sample of studentids from a mapvizieR object
+#' 
+#' @param mapvizieR_obj conforming mapvizieR object
+
+rand_stu <- function(mapvizieR_obj, low=20, high=500) {
+  sample(mapvizieR_obj[['roster']]$studentid, sample(20:500, 1)) %>% 
+      unique 
 }

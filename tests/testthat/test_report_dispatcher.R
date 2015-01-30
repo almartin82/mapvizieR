@@ -44,3 +44,30 @@ test_that("report dispatcher on elephants using test data", {
 })  
 
 
+
+test_that("only_valid_plots correctly handles a list of ggplot", {  
+
+  ex <- list(
+    silly_plot(mapviz, rand_stu(mapviz)),
+    silly_plot(mapviz, rand_stu(mapviz)),
+    try(silly_plot('farts'))
+  )
+  
+  clean <- only_valid_plots(ex)
+  
+  expect_equal(length(clean), 2)
+  expect_equal(sapply(clean, class)[2,], c(rep("ggplot", 2)))
+  
+  cut_by <- list('schoolname', 'grade')
+  call_these <- list(TRUE, TRUE)
+
+  more_realistic <- report_dispatcher(
+    mapvizieR_obj=mapviz
+   ,cut_list=cut_by
+   ,call_list=call_these
+   ,func_to_call="galloping_elephants"
+  )
+
+
+})  
+

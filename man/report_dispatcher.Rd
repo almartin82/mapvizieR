@@ -5,7 +5,8 @@
 \title{report_dispatcher}
 \usage{
 report_dispatcher(mapvizieR_obj, cut_list, call_list, func_to_call,
-  arg_list = list(), calling_env = parent.frame(), ...)
+  arg_list = list(), calling_env = parent.frame(),
+  post_process = "only_valid_plots", verbose = TRUE, ...)
 }
 \arguments{
 \item{mapvizieR_obj}{a conforming mapvizieR object.}
@@ -24,13 +25,19 @@ corresponding to the key/value cut and element outlined above}
 
 \item{calling_env}{defaults to parent frame.}
 
+\item{post_process}{a post processing function to apply to the list of plots we get back.
+default behavior is only_valid_plots(), which drops any plot that failed.
+don't want that?  write something new :)}
+
+\item{verbose}{should the function print updates about what is happening?  default is TRUE.}
+
 \item{...}{other parameters to pass through (namely cdfs).  todo: reformat this function
 to take mapvizieR object.}
 }
 \value{
-a cdf with new term fields
+a list of output from the function you called
 }
 \description{
-\code{report_dispatcher} munges test term data on a CDF
+\code{report_dispatcher} applies a mapvizieR over the unique 'org units' in a roster object.
 }
 
