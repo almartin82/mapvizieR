@@ -7,9 +7,10 @@ test_that("abbrev abbreviates school names properly", {
   
   expected_abbrev <- c("MBMS", "MHHS", "SHES", "TSES")
   
-  alts <- list(old=c("SHES", "TSES"),
-               new=c("St. Helens", "3 Sisters")
-               )
+  alts <- list(
+    old=c("SHES", "TSES"),
+    new=c("St. Helens", "3 Sisters")
+  )
   expected_alts <- c("MBMS", "MHHS", "St. Helens", "3 Sisters")
   
   expect_equal(abbrev(school_names), expected_abbrev)
@@ -19,63 +20,75 @@ test_that("abbrev abbreviates school names properly", {
   
 })
 
+
 test_that("kipp_quartile returns KIPP style quartiles",{
-  test_percentiles<-c(78, 16, 64, 72, 17, 27, 92, 34, 67, 33, 25, 50, 75)
-  expected_quartiles_kipp<-    c(4,1,3,3,1,2,4,2,3,2,2,3,4)
-  expected_quartiles_not_kipp<-c(4,1,3,3,1,2,4,2,3,2,1,2,3)
+  test_percentiles <- c(78, 16, 64, 72, 17, 27, 92, 34, 67, 33, 25, 50, 75)
+  expected_quartiles_kipp <- c(4,1,3,3,1,2,4,2,3,2,2,3,4)
+  expected_quartiles_not_kipp <- c(4,1,3,3,1,2,4,2,3,2,1,2,3)
   
   cdf <- prep_cdf_long(ex_CombinedAssessmentResults)
   
-  expect_equal(kipp_quartile(test_percentiles, return.factor = FALSE), 
-               expected_quartiles_kipp)
+  expect_equal(
+    kipp_quartile(test_percentiles, return.factor = FALSE), 
+    expected_quartiles_kipp
+  )
   
-  expect_equal(kipp_quartile(test_percentiles, return.factor = TRUE), 
-               as.factor(expected_quartiles_kipp))
+  expect_equal(
+    kipp_quartile(test_percentiles, return.factor = TRUE), 
+    as.factor(expected_quartiles_kipp)
+  )
   
-  expect_equal(kipp_quartile(test_percentiles, 
-                             return.factor = TRUE, 
-                             proper.quartile = TRUE),
-               as.factor(expected_quartiles_not_kipp))
+  expect_equal(
+    kipp_quartile(
+      test_percentiles, 
+      return.factor = TRUE, 
+      proper.quartile = TRUE),
+    as.factor(expected_quartiles_not_kipp)
+  )
   
-  expect_equal(kipp_quartile(test_percentiles, 
-                             return.factor = FALSE, 
-                             proper.quartile = TRUE),
-               expected_quartiles_not_kipp)
+  expect_equal(
+    kipp_quartile(
+      test_percentiles, 
+      return.factor = FALSE, 
+      proper.quartile = TRUE),
+    expected_quartiles_not_kipp
+  )
   
   expect_equal(length(kipp_quartile(cdf$testpercentile)), nrow(cdf))
 })
 
+
 test_that("tiered_growth_factors calculates proper tiered growth factors",{
   
-  grades<-rep(0:12, times=4)
-  quartiles <- c(rep(1, times=13), 
-                rep(2, times=13),
-                rep(3, times=13),
-                rep(4, times=13))
-  expected_quartiles <- c(rep(1.50, times=4),
-                          rep(2.00, times=9),
-                          rep(1.50, times=4),
-                          rep(1.75, times=9),
-                          rep(1.25, times=4),
-                          rep(1.50, times=9),
-                          rep(1.25, times=4),
-                          rep(1.25, times=9)
-                          )
+  grades <- rep(0:12, times=4)
+  quartiles <- c(
+    rep(1, times=13), 
+    rep(2, times=13),
+    rep(3, times=13),
+    rep(4, times=13)
+  )
+  expected_quartiles <- c(
+    rep(1.50, times=4),
+    rep(2.00, times=9),
+    rep(1.50, times=4),
+    rep(1.75, times=9),
+    rep(1.25, times=4),
+    rep(1.50, times=9),
+    rep(1.25, times=4),
+    rep(1.25, times=9)
+  )
   
   cdf <- prep_cdf_long(ex_CombinedAssessmentResults)
   cdf <- cdf  %>%
     mutate(testquartiles=kipp_quartile(testpercentile))
   
-  
   expect_equal(tiered_growth_factors(quartiles, grades), expected_quartiles)
-  #expect_equal(length(tiered_growth_factors(cdf$testquartiles, cdf$grade)), 
-  #             nrow(cdf)
-  #             )
   
 })
 
+
 test_that("standardize_kinder translates kinder codes properly", {
-  grades<-c(1:13)
+  grades <- c(1:13)
   grades_k <- ifelse(grades==13, "K", grades)
   grades_kinder <- ifelse(grades==13, "Kinder", grades)
   grades_k_kinder <- c(grades_kinder, "kinder")
@@ -98,7 +111,6 @@ test_that("standardize_kinder translates kinder codes properly", {
 })
 
 
-
 test_that("grade_level_season returns the correct offsets", {
   
   f <- 'Fall'  
@@ -110,8 +122,6 @@ test_that("grade_level_season returns the correct offsets", {
   expect_equal(grade_level_season(s), 0)
 
 })
-
-
 
 
 test_that("grade_level_seasonify correctly labels the NWEA sample data", {
@@ -164,6 +174,7 @@ test_that("grade_level_seasonify correctly labels the NWEA sample data", {
 
 })
 
+
 test_that("fall_spring_me properly sets grade-season labels", {
   expect_equal(fall_spring_me(-0.8), 'KF')
   expect_equal(fall_spring_me(-0.5), 'KW')
@@ -175,4 +186,19 @@ test_that("fall_spring_me properly sets grade-season labels", {
   expect_equal(fall_spring_me(6), '6S')
   expect_equal(fall_spring_me(6.1), NA)
   
+})
+
+
+test_that("df sorter correctly sorts sample df",{
+  
+  ex_sort <- df_sorter(ex_CombinedStudentsBySchool, by=names(ex_CombinedStudentsBySchool))  
+  
+  expect_equal(ex_sort[1, ]$StudentID, 'F08000021')
+  expect_equal(ex_sort[1, ]$StudentLastName, 'Adidas')
+  expect_equal(ex_sort[1, ]$StudentFirstName, 'Cecilia')
+
+  expect_equal(ex_sort[17, ]$StudentID, 'SF07002137')
+  expect_equal(ex_sort[17, ]$StudentLastName, 'Berg')
+  expect_equal(ex_sort[17, ]$StudentFirstName, 'Andreas')
+
 })

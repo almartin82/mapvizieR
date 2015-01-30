@@ -342,3 +342,19 @@ fall_spring_me <- function(grade_season) {
 round_to_any <- function(x, accuracy, f = round) {
   f(x / accuracy) * accuracy
 }
+
+
+
+#' @title df_sorter
+#' 
+#' @description helper function used by report_dispatcher
+#' 
+#' @param x data frame to sort
+#' @param by how to sort
+#' @param decreasing logical toggle to change sort order
+#' @param ... additional arguments
+df_sorter <- function(x, by=1, decreasing=FALSE, ... ) {
+  f <- function(...) order(...,decreasing=decreasing)
+  i <- do.call(f,x[by])
+  x[i,,drop=FALSE]
+}

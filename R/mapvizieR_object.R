@@ -40,7 +40,7 @@ mapvizieR.default <- function(raw_cdf, raw_roster) {
   #headline growth df
   growth_df <- generate_growth_dfs(processed_cdf)$headline
   
-  #TODO: goal growht df
+  #TODO: goal growth df
   
   #make a list and return it
   mapviz <-  list(
@@ -220,6 +220,7 @@ grade_season_factors <- function(x) {
   
   x
 }
+
 
 
 #' @title match assessment results with students by school roster. 
