@@ -1,5 +1,8 @@
 context("test util functions on a variety of different inputs")
 
+#constants
+mapviz <- mapvizieR(raw_cdf=ex_CombinedAssessmentResults, raw_roster=ex_CombinedStudentsBySchool)
+
 test_that("abbrev abbreviates school names properly", {
   
   roster <- prep_roster(ex_CombinedStudentsBySchool)
@@ -17,11 +20,11 @@ test_that("abbrev abbreviates school names properly", {
   expect_equal(abbrev(school_names, exceptions = alts), expected_alts)
   
   expect_equal(length(abbrev(roster$schoolname)), nrow(roster))
-  
 })
 
 
 test_that("kipp_quartile returns KIPP style quartiles",{
+  
   test_percentiles <- c(78, 16, 64, 72, 17, 27, 92, 34, 67, 33, 25, 50, 75)
   expected_quartiles_kipp <- c(4,1,3,3,1,2,4,2,3,2,2,3,4)
   expected_quartiles_not_kipp <- c(4,1,3,3,1,2,4,2,3,2,1,2,3)
@@ -83,11 +86,11 @@ test_that("tiered_growth_factors calculates proper tiered growth factors",{
     mutate(testquartiles=kipp_quartile(testpercentile))
   
   expect_equal(tiered_growth_factors(quartiles, grades), expected_quartiles)
-  
 })
 
 
 test_that("standardize_kinder translates kinder codes properly", {
+  
   grades <- c(1:13)
   grades_k <- ifelse(grades==13, "K", grades)
   grades_kinder <- ifelse(grades==13, "Kinder", grades)
@@ -100,10 +103,14 @@ test_that("standardize_kinder translates kinder codes properly", {
   
   expect_equal(standardize_kinder(grades), expected_grades)
   expect_equal(standardize_kinder(grades_k), expected_grades)
-  expect_equal(standardize_kinder(grades_kinder, other_codes = "Kinder"), 
-               expected_grades)
-  expect_equal(standardize_kinder(grades_k_kinder, other_codes = c("Kinder","kinder")), 
-               expected_grades_k_kinder)
+  expect_equal(
+    standardize_kinder(grades_kinder, other_codes = "Kinder"), 
+    expected_grades
+  )
+  expect_equal(
+    standardize_kinder(grades_k_kinder, other_codes = c("Kinder","kinder")), 
+    expected_grades_k_kinder
+  )
   
   expect_is(standardize_kinder(grades_k), "integer")
   
@@ -120,7 +127,6 @@ test_that("grade_level_season returns the correct offsets", {
   expect_equal(grade_level_season(f), -0.8)
   expect_equal(grade_level_season(w), -0.5)
   expect_equal(grade_level_season(s), 0)
-
 })
 
 
@@ -171,11 +177,11 @@ test_that("grade_level_seasonify correctly labels the NWEA sample data", {
   expect_equal(gls_freq[['10.2']], 147)
   expect_equal(gls_freq[['10.5']], 147)
   expect_equal(gls_freq[['11']], 147)
-
 })
 
 
 test_that("fall_spring_me properly sets grade-season labels", {
+  
   expect_equal(fall_spring_me(-0.8), 'KF')
   expect_equal(fall_spring_me(-0.5), 'KW')
   expect_equal(fall_spring_me(0), 'KS')
@@ -185,7 +191,6 @@ test_that("fall_spring_me properly sets grade-season labels", {
   expect_equal(fall_spring_me(4.5), '5W')
   expect_equal(fall_spring_me(6), '6S')
   expect_equal(fall_spring_me(6.1), NA)
-  
 })
 
 
@@ -200,5 +205,24 @@ test_that("df sorter correctly sorts sample df",{
   expect_equal(ex_sort[17, ]$StudentID, 'SF07002137')
   expect_equal(ex_sort[17, ]$StudentLastName, 'Berg')
   expect_equal(ex_sort[17, ]$StudentFirstName, 'Andreas')
+})
 
+
+test_that("is_error and is_not_error tags properly",{
+  
+  expect_false(is_error("foo"))
+  expect_true(is_error(try(kipp_quartile(-1))))
+  
+  expect_true(is_not_error("foo"))
+  expect_false(is_not_error(try(kipp_quartile(-1))))
+
+})
+
+
+test_that("rand_stu gets students", {
+  expect_is(rand_stu(mapviz), 'character')
+
+  expect_true(
+    all(rand_stu(mapviz) %in% mapviz[['roster']]$studentid)
+  )
 })

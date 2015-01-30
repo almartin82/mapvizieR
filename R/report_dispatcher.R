@@ -1,7 +1,7 @@
 #' @title report_dispatcher
 #'
 #' @description
-#' \code{report_dispatcher} munges test term data on a CDF
+#' \code{report_dispatcher} applies a mapvizieR over the unique 'org units' in a roster object.
 #'
 #' @param mapvizieR_obj a conforming mapvizieR object.
 #' @param cut_list a list of 'org units' in your roster, in order from most general
@@ -13,15 +13,25 @@
 #' \code{studentids, depth_string} into the arg list, as well as named elements 
 #' corresponding to the key/value cut and element outlined above
 #' @param calling_env defaults to parent frame.
+#' @param post_process a post processing function to apply to the list of plots we get back.
+#' default behavior is only_valid_plots(), which drops any plot that failed.  
+#' don't want that?  write something new :)
+#' @param verbose should the function print updates about what is happening?  default is TRUE.
 #' @param ... other parameters to pass through (namely cdfs).  todo: reformat this function
 #' to take mapvizieR object.
 #' 
 #' @export
 #' 
-#' @return a cdf with new term fields 
+#' @return a list of output from the function you called
 
-report_dispatcher <- function(mapvizieR_obj, cut_list, call_list, 
-    func_to_call, arg_list=list(), calling_env = parent.frame(), ...
+report_dispatcher <- function(
+    mapvizieR_obj,
+    cut_list, call_list, 
+    func_to_call, arg_list=list(),
+    calling_env = parent.frame(),
+    post_process = "only_valid_plots",
+    verbose = TRUE,
+    ...
   ) {
   #use ensureR to check if this is a mapvizieR object
   mapvizieR_obj %>% ensure_is_mapvizieR()
@@ -98,20 +108,17 @@ report_dispatcher <- function(mapvizieR_obj, cut_list, call_list,
     }
   #end make perm list loop  
   }
-  print(perm_list)
+  if (verbose) writeLines('permutations on selected cuts are:'); print(perm_list)
 
   #iterate over the perm list
   #these are the reports we need to generate
-  final_list <- list()
+  output_list <- list()
   counter <- 1
 
   for (i in 1:length(perm_list)) {
-    print(i)
     this_depth <- as.data.frame(perm_list[[i]])
     
     for (j in 1:nrow(this_depth)) {
-      print(j)
-      
       this_perm <- this_depth[j, ,drop=FALSE]
       
       #generic names for depth of tree
@@ -121,7 +128,8 @@ report_dispatcher <- function(mapvizieR_obj, cut_list, call_list,
       #friendly name string of this depth:
       depth_string <- paste(names(this_perm), this_perm[1,], sep=": ")
       depth_string <- paste(depth_string, collapse=" | ")
-            
+      if (verbose) print(depth_string)
+      
       #get the matching kids
       studentids <- unique(merge(roster, this_perm))$studentid
       
@@ -140,11 +148,7 @@ report_dispatcher <- function(mapvizieR_obj, cut_list, call_list,
         this_arg_list <- this_arg_list[mask]
       } 
       
-      #now that we have the studentids and arg list, call the function
-               
-      #TODO: this should try/catch and return a simple textgrob
-      #TODO: this should be controlled via a parameter at the function
-      
+      #now that we have the studentids and arg list, call the function      
       this_output <- try(
         do.call(
           what=func_to_call
@@ -153,16 +157,30 @@ report_dispatcher <- function(mapvizieR_obj, cut_list, call_list,
         )
       )
       
-      final_list[[counter]] <- this_output
-      
+      output_list[[counter]] <- this_output
       counter <- counter + 1
     #end call elements of perm list loop
     }
-  
   #end perm list
   }
+  
+  #apply post-processing function
+  final_list <- do.call(what = post_process, args = list(x = output_list))
   
   return(final_list)
 
 #end function
+}
+
+
+
+#' @title only_valid_plots
+#' 
+#' @description a post-processor for report_dispatcher
+#' 
+#' @param x a list of report_dispatcher output
+
+only_valid_plots <- function(x) {
+  mask <- sapply(x, is_not_error) 
+  x[mask]
 }

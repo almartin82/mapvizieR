@@ -75,6 +75,8 @@ fuzz_test_plot <- function(plot_name, n=100, additional_args=list()) {
 #' @param studentids a vector of studentids
 
 silly_plot <- function(mapvizieR_obj, studentids) {
+  mapvizieR_obj %>% ensure_is_mapvizieR()
+
   p <- ggplot(
     data=mapvizieR_obj[['cdf']]
    ,aes(x=testritscore)
