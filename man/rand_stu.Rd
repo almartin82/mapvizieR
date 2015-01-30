@@ -8,6 +8,10 @@ rand_stu(mapvizieR_obj, low = 20, high = 500)
 }
 \arguments{
 \item{mapvizieR_obj}{conforming mapvizieR object}
+
+\item{low}{how many kids? lower bound}
+
+\item{high}{how many kids? higher bound}
 }
 \description{
 gives back a random sample of studentids from a mapvizieR object

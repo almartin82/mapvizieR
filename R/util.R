@@ -391,6 +391,8 @@ is_not_error <- function(x) {
 #' @description gives back a random sample of studentids from a mapvizieR object
 #' 
 #' @param mapvizieR_obj conforming mapvizieR object
+#' @param low how many kids? lower bound
+#' @param high how many kids? higher bound
 
 rand_stu <- function(mapvizieR_obj, low=20, high=500) {
   sample(mapvizieR_obj[['roster']]$studentid, sample(20:500, 1)) %>% 
