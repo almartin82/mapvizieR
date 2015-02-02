@@ -21,9 +21,7 @@ http://legacysupport.nwea.org/sites/www.nwea.org/files/resources/2012%20RIT%20Sc
 sch_growth_norms_2012
 }
 \description{
-MAP assessment results, in the format provided by web-based MAP.
-Data provided from NWEA, by request.
-(Note that this is training data, and these students/student records *are not real*!)
+school growth norms 2012
 }
 \keyword{datasets}
 

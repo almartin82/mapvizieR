@@ -33,16 +33,7 @@ NWEA hands data back in two important files:
   
 ## what happens next
 
-well, if you've copied/pasted all the csvs together into two master/combined files, hopefully you can just load your files
-
-```{r read_in, eval=FALSE}
-
-ex_CombinedAssessmentResults <- read.csv('data-raw/CombinedAssessmentResults.csv')
-ex_CombinedStudentsBySchool <- read.csv('data-raw/CombinedStudentsBySchool.csv')
-
-```
-
-and then just call mapvizieR 
+well, if you've copied/pasted all the csvs together into two master/combined files, hopefully you can just load your files, and then just call mapvizieR 
 
 ```{r easy_button, warning=FALSE, message=FALSE}
 library(mapvizieR)

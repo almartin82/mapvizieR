@@ -7,9 +7,6 @@
 #' @param raw_cdf a NWEA AssessmentResults.csv or CDF
 #' @param raw_roster a NWEA students
 #' @examples
-#' data(ex_CombinedAssessmentResults)
-#' data(ex_CombinedStudentsBySchool)
-#' 
 #' cdf_mv <- mapvizieR(ex_CombinedAssessmentResults, 
 #'                     ex_CombinedStudentsBySchool)
 #'                     

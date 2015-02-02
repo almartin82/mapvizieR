@@ -1,9 +1,5 @@
 #' school growth norms 2012
 #'
-#' MAP assessment results, in the format provided by web-based MAP.
-#' Data provided from NWEA, by request.  
-#' (Note that this is training data, and these students/student records *are not real*!)
-#'
 #' @format
 #' \describe{
 #' \item{grade}{grade}
