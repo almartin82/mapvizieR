@@ -145,7 +145,7 @@ print(sch_grade)
 
 Don't like this behavior?  Roll your own post-processor!
 
-```{r new_postprocessor, fig.width=8, fig.height=5, error=TRUE}
+```{r new_postprocessor, fig.width=8, fig.height=5}
 
 all_the_things <- function(x) {x}
 
