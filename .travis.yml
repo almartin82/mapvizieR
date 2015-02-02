@@ -26,5 +26,3 @@ notifications:
       - chaid@kippchicago.org 
     on_success: always
     on_failure: always
-  
-  hipchat: 1f5638b987cc31020439c32e78554e@kippdata

@@ -116,7 +116,7 @@ report_dispatcher <- function(
   counter <- 1
 
   for (i in 1:length(perm_list)) {
-    this_depth <- as.data.frame(perm_list[[i]])
+    this_depth <- as.data.frame(perm_list[[i]], drop=FALSE)
     
     for (j in 1:nrow(this_depth)) {
       this_perm <- this_depth[j, ,drop=FALSE]
