@@ -1,0 +1,162 @@
+---
+title: "report dispatcher"
+author: "Andrew Martin and Chris Haid"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{your new mapvizieR object}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## big idea
+A common workflow in education analysis is to report progress against some internal slice of your organization - academic progress across schools, or student growth across classrooms, etc.
+
+Stop me if you've heard this one before:
+
+```
+schools <- unique(mydata$schools)
+
+for (sch in schools) {
+  this_sch <- mydata[mydata$school==sch, ]
+  grades <- unique(this_sch$grade_level)
+  
+  for (gr in grades) {
+    
+    ...do some stuff here
+  }
+}
+```
+
+ugh.  tedious to write, and very ungainly if you have more questions of your data.  want to report on both schools AND grades?  now you're calling at two levels of a loop... need to go deeper in on one school - say, to the teacher or classroom level?  have fun stripping out the code in `gr` and writing a new loop for classrooms. 
+
+## what you need to make a plot
+
+plot functions in mapvizieR really only need two things:
+  - the mapvizieR object
+  - a list of studentids to run.
+  
+most (if not all) of the time that list of studentids will have semantic meaning to _you_ - a class, an advisory, a grade, a school - but the design principle we're trying to follow is that if you give a plot a mapvizieR object and some studentids, you'll get back a graphic.
+
+we'll need to break that assumption some of the time - for instance when we are plotting cohort growth, which has some strong assumptions about students representing 'grade levels'.  and some longitudinal plots risk becoming incoherent if you mix kids of different ages together.  but if we can return a meaningful plot just given a list of studentids, that will be our point of departure.
+
+## a new workflow tool
+`report_dispatcher()` is designed to make an analyst's life easier by giving you a high-level language for slicing and reporting on schools.  you give it the nested org units (that match columns in your `mapvizier[['roster']]` data file) to iterate over, and it hands back plots for all the permutations in those org units.
+
+let's walk through an example.
+
+here's what our roster object looks like in our sample data:
+```{r roster, warning=FALSE, message=FALSE}
+require(mapvizieR)
+
+mapviz <- mapvizieR(
+  raw_cdf = ex_CombinedAssessmentResults,
+  raw_roster = ex_CombinedStudentsBySchool
+)
+
+head(mapviz[['roster']])
+
+```
+
+
+we'll dispatch the `galloping_elephants()` plot across our district.  first we define a `cut_list` and a `call_list`:
+
+```{r my_lists}
+
+cut_list <- list('schoolname', 'studentgender')
+call_list <- list(FALSE, TRUE)
+
+```
+
+the cut list nested from biggest -> smallest.  it will iterate over all the schools in our roster, then over all each gender inside each school.  it will *not* call the function at the school level (the element of `call_list`, `FALSE`) but it *will* call the function for each gender, schoolwide.
+
+We hand those lists to report dispatcher, along with the name of the function and a list of additional arguments required by the function.
+
+```{r dispatch_ex}
+require(ggplot2)
+
+sch_gender <- report_dispatcher(
+  mapvizieR_obj=mapviz
+ ,cut_list=cut_list
+ ,call_list=call_list
+ ,func_to_call="galloping_elephants"
+)
+
+```
+
+`report_dispatcher` returns a list, with the output of each function call.  We can see the output by simply printing that list.
+
+```{r see_output, fig.width=8, fig.height=5}
+
+print(sch_gender)
+
+```
+
+it blends!  let's change our `cut_list` to demonstrate how easy it is to show a different cut of our district's data.
+
+```{r second_ex, fig.width=8, fig.height=5}
+
+cut_list <- list('districtname', 'studentethnicgroup')
+call_list <- list(FALSE, TRUE)
+
+dist_eth <- report_dispatcher(
+  mapvizieR_obj=mapviz
+ ,cut_list=cut_list
+ ,call_list=call_list
+ ,func_to_call="galloping_elephants"
+)
+
+print(dist_eth)
+
+```
+
+## Postprocessing
+
+You'll notice that I have been throwing some somewhat esoteric cuts at `report_dispatcher` so far.  What's that about?
+
+Well, the sample data set that we have from NWEA is kind of weird.  Namely, there's only one student enrolled at Three Sisters Elementary in the first grade 
+
+```{r roster_weirdness}
+mapviz[['roster']] %>%
+  filter(
+    schoolname=='Three Sisters Elementary School' & grade==1
+  )
+```
+
+Go figure.  But given a sufficiently large school district, well, you're going to see some weird edge cases - either dirty data, or just weird one-off situations.
+
+Report dispatcher wraps every function call in `try()` and puts the output onto the list.  Before it returns the list, it runs a post-processing function.  Currently that function is `only_valid_plots()`, which simply drops bad plots from the object.  Errors will still be printed to the console, but you'll get back a list of all the plots that we rendered.
+
+```{r postprocess_ex, fig.width=8, fig.height=5}
+
+cut_list <- list('schoolname', 'studentgender')
+call_list <- list(FALSE, TRUE)
+
+sch_grade <- report_dispatcher(
+  mapvizieR_obj=mapviz
+ ,cut_list=cut_list
+ ,call_list=call_list
+ ,func_to_call="galloping_elephants"
+)
+
+print(sch_grade)
+
+```
+
+Don't like this behavior?  Roll your own post-processor!
+
+```{r new_postprocessor, fig.width=8, fig.height=5, error=TRUE}
+
+all_the_things <- function(x) {x}
+
+sch_grade_redux <- report_dispatcher(
+  mapvizieR_obj=mapviz
+ ,cut_list=c('schoolname', 'grade')
+ ,call_list=call_list
+ ,func_to_call="galloping_elephants"
+ ,post_process="all_the_things"
+)
+
+print(sch_grade_redux)
+
+```
