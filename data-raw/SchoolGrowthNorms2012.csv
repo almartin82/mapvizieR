@@ -1,0 +1,1171 @@
+grade,measurementscale,growth_window,start_fallwinterspring,end_fallwinterspring,rit,typical_cohort_growth,sd_of_expectation
+2,Language Usage,Fall to Fall,Fall ,Fall,163,19.27,3.21
+2,Language Usage,Fall to Fall,Fall ,Fall,165,18.74,3.06
+2,Language Usage,Fall to Fall,Fall ,Fall,167,18.21,2.92
+2,Language Usage,Fall to Fall,Fall ,Fall,169,17.68,2.78
+2,Language Usage,Fall to Fall,Fall ,Fall,171,17.2,2.6
+2,Language Usage,Fall to Fall,Fall ,Fall,173,16.62,2.5
+2,Language Usage,Fall to Fall,Fall ,Fall,175,16.09,2.37
+2,Language Usage,Fall to Fall,Fall ,Fall,177,15.57,2.24
+2,Language Usage,Fall to Fall,Fall ,Fall,179,15.04,2.11
+2,Language Usage,Fall to Fall,Fall ,Fall,181,14.51,1.99
+2,Language Usage,Fall to Fall,Fall ,Fall,183,13.98,1.88
+2,Language Usage,Fall to Fall,Fall ,Fall,185,13.45,1.77
+2,Language Usage,Fall to Fall,Fall ,Fall,187,12.92,1.67
+2,Language Usage,Fall to Spring,Fall ,Spring,163,18.4,3.28
+2,Language Usage,Fall to Spring,Fall ,Spring,165,17.87,3.14
+2,Language Usage,Fall to Spring,Fall ,Spring,167,17.35,3.01
+2,Language Usage,Fall to Spring,Fall ,Spring,169,16.82,2.88
+2,Language Usage,Fall to Spring,Fall ,Spring,171,16.3,2.8
+2,Language Usage,Fall to Spring,Fall ,Spring,173,15.77,2.63
+2,Language Usage,Fall to Spring,Fall ,Spring,175,15.24,2.51
+2,Language Usage,Fall to Spring,Fall ,Spring,177,14.72,2.39
+2,Language Usage,Fall to Spring,Fall ,Spring,179,14.19,2.28
+2,Language Usage,Fall to Spring,Fall ,Spring,181,13.67,2.17
+2,Language Usage,Fall to Spring,Fall ,Spring,183,13.14,2.07
+2,Language Usage,Fall to Spring,Fall ,Spring,185,12.61,1.98
+2,Language Usage,Fall to Spring,Fall ,Spring,187,12.09,1.9
+3,Language Usage,Fall to Fall,Fall ,Fall,178,13.68,2.51
+3,Language Usage,Fall to Fall,Fall ,Fall,180,13.16,2.38
+3,Language Usage,Fall to Fall,Fall ,Fall,182,12.64,2.26
+3,Language Usage,Fall to Fall,Fall ,Fall,184,12.12,2.14
+3,Language Usage,Fall to Fall,Fall ,Fall,186,11.6,2
+3,Language Usage,Fall to Fall,Fall ,Fall,188,11.09,1.92
+3,Language Usage,Fall to Fall,Fall ,Fall,190,10.57,1.82
+3,Language Usage,Fall to Fall,Fall ,Fall,192,10.05,1.73
+3,Language Usage,Fall to Fall,Fall ,Fall,194,9.53,1.65
+3,Language Usage,Fall to Fall,Fall ,Fall,196,9.01,1.57
+3,Language Usage,Fall to Fall,Fall ,Fall,198,8.5,1.51
+3,Language Usage,Fall to Fall,Fall ,Fall,200,7.98,1.46
+3,Language Usage,Fall to Fall,Fall ,Fall,202,7.46,1.43
+3,Language Usage,Fall to Spring,Fall ,Spring,178,14.03,2.67
+3,Language Usage,Fall to Spring,Fall ,Spring,180,13.48,2.54
+3,Language Usage,Fall to Spring,Fall ,Spring,182,12.92,2.42
+3,Language Usage,Fall to Spring,Fall ,Spring,184,12.36,2.3
+3,Language Usage,Fall to Spring,Fall ,Spring,186,11.8,2.2
+3,Language Usage,Fall to Spring,Fall ,Spring,188,11.25,2.09
+3,Language Usage,Fall to Spring,Fall ,Spring,190,10.69,1.99
+3,Language Usage,Fall to Spring,Fall ,Spring,192,10.13,1.9
+3,Language Usage,Fall to Spring,Fall ,Spring,194,9.58,1.82
+3,Language Usage,Fall to Spring,Fall ,Spring,196,9.02,1.75
+3,Language Usage,Fall to Spring,Fall ,Spring,198,8.46,1.69
+3,Language Usage,Fall to Spring,Fall ,Spring,200,7.91,1.65
+3,Language Usage,Fall to Spring,Fall ,Spring,202,7.35,1.62
+3,Language Usage,Spring to Spring,Spring ,Spring,176,14.84,2.79
+3,Language Usage,Spring to Spring,Spring ,Spring,178,14.3,2.65
+3,Language Usage,Spring to Spring,Spring ,Spring,180,13.76,2.52
+3,Language Usage,Spring to Spring,Spring ,Spring,182,13.21,2.4
+3,Language Usage,Spring to Spring,Spring ,Spring,184,12.7,2.3
+3,Language Usage,Spring to Spring,Spring ,Spring,186,12.12,2.17
+3,Language Usage,Spring to Spring,Spring ,Spring,188,11.58,2.07
+3,Language Usage,Spring to Spring,Spring ,Spring,190,11.03,1.97
+3,Language Usage,Spring to Spring,Spring ,Spring,192,10.49,1.89
+3,Language Usage,Spring to Spring,Spring ,Spring,194,9.94,1.82
+3,Language Usage,Spring to Spring,Spring ,Spring,196,9.4,1.77
+3,Language Usage,Spring to Spring,Spring ,Spring,198,8.85,1.73
+3,Language Usage,Spring to Spring,Spring ,Spring,200,8.31,1.71
+4,Language Usage,Fall to Fall,Fall ,Fall,188,10.57,2.35
+4,Language Usage,Fall to Fall,Fall ,Fall,190,10.07,2.22
+4,Language Usage,Fall to Fall,Fall ,Fall,192,9.57,2.1
+4,Language Usage,Fall to Fall,Fall ,Fall,194,9.07,1.98
+4,Language Usage,Fall to Fall,Fall ,Fall,196,8.6,1.9
+4,Language Usage,Fall to Fall,Fall ,Fall,198,8.07,1.77
+4,Language Usage,Fall to Fall,Fall ,Fall,200,7.57,1.68
+4,Language Usage,Fall to Fall,Fall ,Fall,202,7.07,1.59
+4,Language Usage,Fall to Fall,Fall ,Fall,204,6.57,1.52
+4,Language Usage,Fall to Fall,Fall ,Fall,206,6.07,1.47
+4,Language Usage,Fall to Fall,Fall ,Fall,208,5.57,1.43
+4,Language Usage,Fall to Fall,Fall ,Fall,210,5.07,1.4
+4,Language Usage,Fall to Fall,Fall ,Fall,212,4.57,1.4
+4,Language Usage,Fall to Spring,Fall ,Spring,212,4.55,1.53
+4,Language Usage,Fall to Spring,Fall ,Spring,188,10.86,2.63
+4,Language Usage,Fall to Spring,Fall ,Spring,190,10.33,2.48
+4,Language Usage,Fall to Spring,Fall ,Spring,192,9.81,2.34
+4,Language Usage,Fall to Spring,Fall ,Spring,194,9.28,2.21
+4,Language Usage,Fall to Spring,Fall ,Spring,196,8.8,2.1
+4,Language Usage,Fall to Spring,Fall ,Spring,198,8.23,1.97
+4,Language Usage,Fall to Spring,Fall ,Spring,200,7.7,1.86
+4,Language Usage,Fall to Spring,Fall ,Spring,202,7.18,1.76
+4,Language Usage,Fall to Spring,Fall ,Spring,204,6.65,1.68
+4,Language Usage,Fall to Spring,Fall ,Spring,206,6.13,1.61
+4,Language Usage,Fall to Spring,Fall ,Spring,208,5.6,1.57
+4,Language Usage,Fall to Spring,Fall ,Spring,210,5.08,1.54
+4,Language Usage,Spring to Spring,Spring ,Spring,187,10.87,2.55
+4,Language Usage,Spring to Spring,Spring ,Spring,189,10.36,2.42
+4,Language Usage,Spring to Spring,Spring ,Spring,191,9.85,2.3
+4,Language Usage,Spring to Spring,Spring ,Spring,193,9.35,2.18
+4,Language Usage,Spring to Spring,Spring ,Spring,195,8.8,2.1
+4,Language Usage,Spring to Spring,Spring ,Spring,197,8.33,1.97
+4,Language Usage,Spring to Spring,Spring ,Spring,199,7.83,1.88
+4,Language Usage,Spring to Spring,Spring ,Spring,201,7.32,1.81
+4,Language Usage,Spring to Spring,Spring ,Spring,203,6.81,1.75
+4,Language Usage,Spring to Spring,Spring ,Spring,205,6.31,1.7
+4,Language Usage,Spring to Spring,Spring ,Spring,207,5.8,1.67
+4,Language Usage,Spring to Spring,Spring ,Spring,209,5.29,1.66
+4,Language Usage,Spring to Spring,Spring ,Spring,211,4.78,1.67
+5,Language Usage,Fall to Fall,Fall ,Fall,195,8,2.42
+5,Language Usage,Fall to Fall,Fall ,Fall,197,7.56,2.28
+5,Language Usage,Fall to Fall,Fall ,Fall,199,7.12,2.15
+5,Language Usage,Fall to Fall,Fall ,Fall,201,6.67,2.02
+5,Language Usage,Fall to Fall,Fall ,Fall,203,6.2,1.9
+5,Language Usage,Fall to Fall,Fall ,Fall,205,5.79,1.78
+5,Language Usage,Fall to Fall,Fall ,Fall,207,5.34,1.67
+5,Language Usage,Fall to Fall,Fall ,Fall,209,4.9,1.57
+5,Language Usage,Fall to Fall,Fall ,Fall,211,4.46,1.47
+5,Language Usage,Fall to Fall,Fall ,Fall,213,4.01,1.39
+5,Language Usage,Fall to Fall,Fall ,Fall,215,3.57,1.33
+5,Language Usage,Fall to Fall,Fall ,Fall,217,3.13,1.28
+5,Language Usage,Fall to Fall,Fall ,Fall,219,2.68,1.25
+5,Language Usage,Fall to Spring,Fall ,Spring,195,9.06,2.43
+5,Language Usage,Fall to Spring,Fall ,Spring,197,8.56,2.31
+5,Language Usage,Fall to Spring,Fall ,Spring,199,8.06,2.19
+5,Language Usage,Fall to Spring,Fall ,Spring,201,7.56,2.07
+5,Language Usage,Fall to Spring,Fall ,Spring,203,7.1,2
+5,Language Usage,Fall to Spring,Fall ,Spring,205,6.57,1.86
+5,Language Usage,Fall to Spring,Fall ,Spring,207,6.07,1.76
+5,Language Usage,Fall to Spring,Fall ,Spring,209,5.57,1.67
+5,Language Usage,Fall to Spring,Fall ,Spring,211,5.07,1.6
+5,Language Usage,Fall to Spring,Fall ,Spring,213,4.57,1.53
+5,Language Usage,Fall to Spring,Fall ,Spring,215,4.07,1.48
+5,Language Usage,Fall to Spring,Fall ,Spring,217,3.57,1.44
+5,Language Usage,Fall to Spring,Fall ,Spring,219,3.07,1.42
+5,Language Usage,Spring to Spring,Spring ,Spring,194,9.11,2.73
+5,Language Usage,Spring to Spring,Spring ,Spring,196,8.61,2.59
+5,Language Usage,Spring to Spring,Spring ,Spring,198,8.11,2.46
+5,Language Usage,Spring to Spring,Spring ,Spring,200,7.61,2.32
+5,Language Usage,Spring to Spring,Spring ,Spring,202,7.1,2.2
+5,Language Usage,Spring to Spring,Spring ,Spring,204,6.61,2.08
+5,Language Usage,Spring to Spring,Spring ,Spring,206,6.11,1.96
+5,Language Usage,Spring to Spring,Spring ,Spring,208,5.61,1.86
+5,Language Usage,Spring to Spring,Spring ,Spring,210,5.11,1.77
+5,Language Usage,Spring to Spring,Spring ,Spring,212,4.61,1.68
+5,Language Usage,Spring to Spring,Spring ,Spring,214,4.11,1.62
+5,Language Usage,Spring to Spring,Spring ,Spring,216,3.61,1.56
+5,Language Usage,Spring to Spring,Spring ,Spring,218,3.11,1.53
+6,Language Usage,Fall to Fall,Fall ,Fall,199,6.93,2.45
+6,Language Usage,Fall to Fall,Fall ,Fall,201,6.5,2.34
+6,Language Usage,Fall to Fall,Fall ,Fall,203,6.07,2.23
+6,Language Usage,Fall to Fall,Fall ,Fall,205,5.65,2.12
+6,Language Usage,Fall to Fall,Fall ,Fall,207,5.2,2
+6,Language Usage,Fall to Fall,Fall ,Fall,209,4.79,1.93
+6,Language Usage,Fall to Fall,Fall ,Fall,211,4.37,1.85
+6,Language Usage,Fall to Fall,Fall ,Fall,213,3.94,1.77
+6,Language Usage,Fall to Fall,Fall ,Fall,215,3.51,1.71
+6,Language Usage,Fall to Fall,Fall ,Fall,217,3.09,1.67
+6,Language Usage,Fall to Fall,Fall ,Fall,219,2.66,1.63
+6,Language Usage,Fall to Fall,Fall ,Fall,221,2.23,1.61
+6,Language Usage,Fall to Fall,Fall ,Fall,223,1.81,1.61
+6,Language Usage,Fall to Spring,Fall ,Spring,199,7.69,2.36
+6,Language Usage,Fall to Spring,Fall ,Spring,201,7.22,2.25
+6,Language Usage,Fall to Spring,Fall ,Spring,203,6.75,2.14
+6,Language Usage,Fall to Spring,Fall ,Spring,205,6.29,2.04
+6,Language Usage,Fall to Spring,Fall ,Spring,207,5.8,1.9
+6,Language Usage,Fall to Spring,Fall ,Spring,209,5.35,1.86
+6,Language Usage,Fall to Spring,Fall ,Spring,211,4.89,1.78
+6,Language Usage,Fall to Spring,Fall ,Spring,213,4.42,1.71
+6,Language Usage,Fall to Spring,Fall ,Spring,215,3.95,1.65
+6,Language Usage,Fall to Spring,Fall ,Spring,217,3.49,1.6
+6,Language Usage,Fall to Spring,Fall ,Spring,219,3.02,1.57
+6,Language Usage,Fall to Spring,Fall ,Spring,221,2.55,1.54
+6,Language Usage,Fall to Spring,Fall ,Spring,223,2.09,1.53
+6,Language Usage,Spring to Spring,Spring ,Spring,199,7.14,2.73
+6,Language Usage,Spring to Spring,Spring ,Spring,201,6.7,2.6
+6,Language Usage,Spring to Spring,Spring ,Spring,203,6.26,2.46
+6,Language Usage,Spring to Spring,Spring ,Spring,205,5.82,2.34
+6,Language Usage,Spring to Spring,Spring ,Spring,207,5.4,2.2
+6,Language Usage,Spring to Spring,Spring ,Spring,209,4.94,2.11
+6,Language Usage,Spring to Spring,Spring ,Spring,211,4.5,2.01
+6,Language Usage,Spring to Spring,Spring ,Spring,213,4.06,1.92
+6,Language Usage,Spring to Spring,Spring ,Spring,215,3.62,1.85
+6,Language Usage,Spring to Spring,Spring ,Spring,217,3.18,1.78
+6,Language Usage,Spring to Spring,Spring ,Spring,219,2.74,1.74
+6,Language Usage,Spring to Spring,Spring ,Spring,221,2.31,1.71
+6,Language Usage,Spring to Spring,Spring ,Spring,223,1.87,1.7
+7,Language Usage,Fall to Fall,Fall ,Fall,203,6.45,2.33
+7,Language Usage,Fall to Fall,Fall ,Fall,205,6.03,2.22
+7,Language Usage,Fall to Fall,Fall ,Fall,207,5.6,2.1
+7,Language Usage,Fall to Fall,Fall ,Fall,209,5.18,1.99
+7,Language Usage,Fall to Fall,Fall ,Fall,211,4.8,1.9
+7,Language Usage,Fall to Fall,Fall ,Fall,213,4.34,1.8
+7,Language Usage,Fall to Fall,Fall ,Fall,215,3.91,1.71
+7,Language Usage,Fall to Fall,Fall ,Fall,217,3.49,1.64
+7,Language Usage,Fall to Fall,Fall ,Fall,219,3.07,1.57
+7,Language Usage,Fall to Fall,Fall ,Fall,221,2.65,1.52
+7,Language Usage,Fall to Fall,Fall ,Fall,223,2.22,1.48
+7,Language Usage,Fall to Fall,Fall ,Fall,225,1.8,1.46
+7,Language Usage,Fall to Fall,Fall ,Fall,227,1.38,1.45
+7,Language Usage,Fall to Spring,Fall ,Spring,203,6.36,2.33
+7,Language Usage,Fall to Spring,Fall ,Spring,205,5.92,2.22
+7,Language Usage,Fall to Spring,Fall ,Spring,207,5.48,2.12
+7,Language Usage,Fall to Spring,Fall ,Spring,209,5.04,2.02
+7,Language Usage,Fall to Spring,Fall ,Spring,211,4.6,1.9
+7,Language Usage,Fall to Spring,Fall ,Spring,213,4.16,1.84
+7,Language Usage,Fall to Spring,Fall ,Spring,215,3.72,1.76
+7,Language Usage,Fall to Spring,Fall ,Spring,217,3.27,1.69
+7,Language Usage,Fall to Spring,Fall ,Spring,219,2.83,1.63
+7,Language Usage,Fall to Spring,Fall ,Spring,221,2.39,1.58
+7,Language Usage,Fall to Spring,Fall ,Spring,223,1.95,1.54
+7,Language Usage,Fall to Spring,Fall ,Spring,225,1.51,1.51
+7,Language Usage,Fall to Spring,Fall ,Spring,227,1.07,1.5
+7,Language Usage,Spring to Spring,Spring ,Spring,203,6.01,2.6
+7,Language Usage,Spring to Spring,Spring ,Spring,205,5.59,2.47
+7,Language Usage,Spring to Spring,Spring ,Spring,207,5.17,2.34
+7,Language Usage,Spring to Spring,Spring ,Spring,209,4.74,2.22
+7,Language Usage,Spring to Spring,Spring ,Spring,211,4.3,2.1
+7,Language Usage,Spring to Spring,Spring ,Spring,213,3.9,2
+7,Language Usage,Spring to Spring,Spring ,Spring,215,3.47,1.91
+7,Language Usage,Spring to Spring,Spring ,Spring,217,3.05,1.82
+7,Language Usage,Spring to Spring,Spring ,Spring,219,2.62,1.75
+7,Language Usage,Spring to Spring,Spring ,Spring,221,2.2,1.69
+7,Language Usage,Spring to Spring,Spring ,Spring,223,1.78,1.64
+7,Language Usage,Spring to Spring,Spring ,Spring,225,1.35,1.61
+7,Language Usage,Spring to Spring,Spring ,Spring,227,0.93,1.6
+8,Language Usage,Fall to Fall,Fall ,Fall,206,5.16,2.49
+8,Language Usage,Fall to Fall,Fall ,Fall,208,4.79,2.33
+8,Language Usage,Fall to Fall,Fall ,Fall,210,4.42,2.18
+8,Language Usage,Fall to Fall,Fall ,Fall,212,4.05,2.04
+8,Language Usage,Fall to Fall,Fall ,Fall,214,3.7,1.9
+8,Language Usage,Fall to Fall,Fall ,Fall,216,3.32,1.76
+8,Language Usage,Fall to Fall,Fall ,Fall,218,2.95,1.64
+8,Language Usage,Fall to Fall,Fall ,Fall,220,2.58,1.54
+8,Language Usage,Fall to Fall,Fall ,Fall,222,2.21,1.45
+8,Language Usage,Fall to Fall,Fall ,Fall,224,1.84,1.38
+8,Language Usage,Fall to Fall,Fall ,Fall,228,1.11,1.31
+8,Language Usage,Fall to Fall,Fall ,Fall,230,0.74,1.31
+8,Language Usage,Fall to Fall,Fall ,Fall,226,1.47,1.33
+8,Language Usage,Fall to Spring,Fall ,Spring,206,5.88,2.49
+8,Language Usage,Fall to Spring,Fall ,Spring,208,5.47,2.33
+8,Language Usage,Fall to Spring,Fall ,Spring,210,5.05,2.19
+8,Language Usage,Fall to Spring,Fall ,Spring,214,4.2,1.9
+8,Language Usage,Fall to Spring,Fall ,Spring,216,3.8,1.78
+8,Language Usage,Fall to Spring,Fall ,Spring,218,3.38,1.67
+8,Language Usage,Fall to Spring,Fall ,Spring,220,2.96,1.57
+8,Language Usage,Fall to Spring,Fall ,Spring,222,2.54,1.48
+8,Language Usage,Fall to Spring,Fall ,Spring,224,2.13,1.42
+8,Language Usage,Fall to Spring,Fall ,Spring,228,1.29,1.36
+8,Language Usage,Fall to Spring,Fall ,Spring,230,0.87,1.36
+8,Language Usage,Fall to Spring,Fall ,Spring,212,4.63,2.04
+8,Language Usage,Fall to Spring,Fall ,Spring,226,1.71,1.37
+8,Language Usage,Spring to Spring,Spring ,Spring,205,6.22,2.55
+8,Language Usage,Spring to Spring,Spring ,Spring,207,5.81,2.4
+8,Language Usage,Spring to Spring,Spring ,Spring,209,5.39,2.25
+8,Language Usage,Spring to Spring,Spring ,Spring,213,4.6,2
+8,Language Usage,Spring to Spring,Spring ,Spring,215,4.13,1.84
+8,Language Usage,Spring to Spring,Spring ,Spring,217,3.72,1.72
+8,Language Usage,Spring to Spring,Spring ,Spring,219,3.3,1.62
+8,Language Usage,Spring to Spring,Spring ,Spring,221,2.88,1.52
+8,Language Usage,Spring to Spring,Spring ,Spring,223,2.46,1.45
+8,Language Usage,Spring to Spring,Spring ,Spring,225,2.04,1.39
+8,Language Usage,Spring to Spring,Spring ,Spring,227,1.63,1.36
+8,Language Usage,Spring to Spring,Spring ,Spring,229,1.21,1.35
+8,Language Usage,Spring to Spring,Spring ,Spring,211,4.97,2.11
+9,Language Usage,Fall to Fall,Fall ,Fall,208,4.4,2.6
+9,Language Usage,Fall to Fall,Fall ,Fall,210,4.03,2.44
+9,Language Usage,Fall to Fall,Fall ,Fall,212,3.66,2.29
+9,Language Usage,Fall to Fall,Fall ,Fall,214,3.29,2.15
+9,Language Usage,Fall to Fall,Fall ,Fall,216,2.9,2
+9,Language Usage,Fall to Fall,Fall ,Fall,218,2.54,1.89
+9,Language Usage,Fall to Fall,Fall ,Fall,220,2.17,1.78
+9,Language Usage,Fall to Fall,Fall ,Fall,222,1.8,1.7
+9,Language Usage,Fall to Fall,Fall ,Fall,224,1.42,1.63
+9,Language Usage,Fall to Fall,Fall ,Fall,226,1.05,1.58
+9,Language Usage,Fall to Fall,Fall ,Fall,228,0.68,1.56
+9,Language Usage,Fall to Fall,Fall ,Fall,230,0.31,1.56
+9,Language Usage,Fall to Fall,Fall ,Fall,232,-0.06,1.59
+9,Language Usage,Fall to Spring,Fall ,Spring,208,4.13,2.28
+9,Language Usage,Fall to Spring,Fall ,Spring,210,3.75,2.14
+9,Language Usage,Fall to Spring,Fall ,Spring,212,3.37,2.02
+9,Language Usage,Fall to Spring,Fall ,Spring,214,2.99,1.89
+9,Language Usage,Fall to Spring,Fall ,Spring,216,2.6,1.8
+9,Language Usage,Fall to Spring,Fall ,Spring,218,2.23,1.67
+9,Language Usage,Fall to Spring,Fall ,Spring,220,1.85,1.57
+9,Language Usage,Fall to Spring,Fall ,Spring,222,1.47,1.48
+9,Language Usage,Fall to Spring,Fall ,Spring,224,1.09,1.41
+9,Language Usage,Fall to Spring,Fall ,Spring,226,0.71,1.35
+9,Language Usage,Fall to Spring,Fall ,Spring,228,0.32,1.31
+9,Language Usage,Fall to Spring,Fall ,Spring,230,-0.06,1.28
+9,Language Usage,Fall to Spring,Fall ,Spring,232,-0.44,1.28
+9,Language Usage,Spring to Spring,Spring ,Spring,208,3.9,3.15
+9,Language Usage,Spring to Spring,Spring ,Spring,210,3.54,2.96
+9,Language Usage,Spring to Spring,Spring ,Spring,212,3.18,2.77
+9,Language Usage,Spring to Spring,Spring ,Spring,214,2.82,2.58
+9,Language Usage,Spring to Spring,Spring ,Spring,216,2.5,2.4
+9,Language Usage,Spring to Spring,Spring ,Spring,218,2.1,2.23
+9,Language Usage,Spring to Spring,Spring ,Spring,220,1.74,2.06
+9,Language Usage,Spring to Spring,Spring ,Spring,222,1.39,1.91
+9,Language Usage,Spring to Spring,Spring ,Spring,224,1.03,1.77
+9,Language Usage,Spring to Spring,Spring ,Spring,226,0.67,1.65
+9,Language Usage,Spring to Spring,Spring ,Spring,228,0.31,1.55
+9,Language Usage,Spring to Spring,Spring ,Spring,230,-0.05,1.48
+9,Language Usage,Spring to Spring,Spring ,Spring,232,-0.41,1.43
+10,Language Usage,Fall to Fall,Fall ,Fall,209,3.74,2.93
+10,Language Usage,Fall to Fall,Fall ,Fall,211,3.42,2.77
+10,Language Usage,Fall to Fall,Fall ,Fall,213,3.1,2.62
+10,Language Usage,Fall to Fall,Fall ,Fall,215,2.78,2.48
+10,Language Usage,Fall to Fall,Fall ,Fall,217,2.5,2.3
+10,Language Usage,Fall to Fall,Fall ,Fall,219,2.14,2.21
+10,Language Usage,Fall to Fall,Fall ,Fall,221,1.82,2.09
+10,Language Usage,Fall to Fall,Fall ,Fall,223,1.5,1.98
+10,Language Usage,Fall to Fall,Fall ,Fall,225,1.18,1.88
+10,Language Usage,Fall to Fall,Fall ,Fall,227,0.86,1.8
+10,Language Usage,Fall to Fall,Fall ,Fall,229,0.54,1.74
+10,Language Usage,Fall to Fall,Fall ,Fall,231,0.22,1.7
+10,Language Usage,Fall to Fall,Fall ,Fall,233,-0.1,1.69
+10,Language Usage,Fall to Spring,Fall ,Spring,209,4.31,2.7
+10,Language Usage,Fall to Spring,Fall ,Spring,211,3.9,2.54
+10,Language Usage,Fall to Spring,Fall ,Spring,213,3.49,2.38
+10,Language Usage,Fall to Spring,Fall ,Spring,215,3.09,2.22
+10,Language Usage,Fall to Spring,Fall ,Spring,217,2.7,2.1
+10,Language Usage,Fall to Spring,Fall ,Spring,219,2.27,1.93
+10,Language Usage,Fall to Spring,Fall ,Spring,221,1.86,1.8
+10,Language Usage,Fall to Spring,Fall ,Spring,223,1.46,1.67
+10,Language Usage,Fall to Spring,Fall ,Spring,225,1.05,1.56
+10,Language Usage,Fall to Spring,Fall ,Spring,227,0.64,1.47
+10,Language Usage,Fall to Spring,Fall ,Spring,229,0.24,1.4
+10,Language Usage,Fall to Spring,Fall ,Spring,231,-0.17,1.35
+10,Language Usage,Fall to Spring,Fall ,Spring,233,-0.58,1.33
+10,Language Usage,Spring to Spring,Spring ,Spring,209,4.37,3.08
+10,Language Usage,Spring to Spring,Spring ,Spring,211,3.99,2.85
+10,Language Usage,Spring to Spring,Spring ,Spring,213,3.61,2.64
+10,Language Usage,Spring to Spring,Spring ,Spring,215,3.23,2.42
+10,Language Usage,Spring to Spring,Spring ,Spring,217,2.9,2.2
+10,Language Usage,Spring to Spring,Spring ,Spring,219,2.47,2.02
+10,Language Usage,Spring to Spring,Spring ,Spring,221,2.09,1.83
+10,Language Usage,Spring to Spring,Spring ,Spring,223,1.72,1.65
+10,Language Usage,Spring to Spring,Spring ,Spring,225,1.34,1.5
+10,Language Usage,Spring to Spring,Spring ,Spring,227,0.96,1.36
+10,Language Usage,Spring to Spring,Spring ,Spring,229,0.58,1.26
+10,Language Usage,Spring to Spring,Spring ,Spring,231,0.2,1.21
+10,Language Usage,Spring to Spring,Spring ,Spring,233,-0.18,1.19
+0,Mathematics,Fall to Fall,Fall ,Fall,130,22.03,3.71
+0,Mathematics,Fall to Fall,Fall ,Fall,132,21.78,3.62
+0,Mathematics,Fall to Fall,Fall ,Fall,134,21.53,3.54
+0,Mathematics,Fall to Fall,Fall ,Fall,136,21.28,3.46
+0,Mathematics,Fall to Fall,Fall ,Fall,138,21,3.4
+0,Mathematics,Fall to Fall,Fall ,Fall,140,20.77,3.34
+0,Mathematics,Fall to Fall,Fall ,Fall,142,20.52,3.29
+0,Mathematics,Fall to Fall,Fall ,Fall,144,20.27,3.26
+0,Mathematics,Fall to Fall,Fall ,Fall,146,20.02,3.23
+0,Mathematics,Fall to Fall,Fall ,Fall,148,19.77,3.21
+0,Mathematics,Fall to Fall,Fall ,Fall,150,19.51,3.2
+0,Mathematics,Fall to Fall,Fall ,Fall,152,19.26,3.2
+0,Mathematics,Fall to Fall,Fall ,Fall,154,19.01,3.22
+0,Mathematics,Fall to Spring,Fall ,Spring,130,19.22,4.18
+0,Mathematics,Fall to Spring,Fall ,Spring,132,18.95,4.11
+0,Mathematics,Fall to Spring,Fall ,Spring,134,18.68,4.04
+0,Mathematics,Fall to Spring,Fall ,Spring,136,18.4,3.98
+0,Mathematics,Fall to Spring,Fall ,Spring,138,18.1,3.9
+0,Mathematics,Fall to Spring,Fall ,Spring,140,17.86,3.88
+0,Mathematics,Fall to Spring,Fall ,Spring,142,17.59,3.85
+0,Mathematics,Fall to Spring,Fall ,Spring,144,17.32,3.82
+0,Mathematics,Fall to Spring,Fall ,Spring,146,17.05,3.79
+0,Mathematics,Fall to Spring,Fall ,Spring,148,16.78,3.78
+0,Mathematics,Fall to Spring,Fall ,Spring,150,16.5,3.77
+0,Mathematics,Fall to Spring,Fall ,Spring,152,16.23,3.77
+0,Mathematics,Fall to Spring,Fall ,Spring,154,15.96,3.78
+1,Mathematics,Fall to Fall,Fall ,Fall,149,21.18,2.71
+1,Mathematics,Fall to Fall,Fall ,Fall,151,20.48,2.65
+1,Mathematics,Fall to Fall,Fall ,Fall,153,19.77,2.59
+1,Mathematics,Fall to Fall,Fall ,Fall,155,19.07,2.55
+1,Mathematics,Fall to Fall,Fall ,Fall,157,18.4,2.5
+1,Mathematics,Fall to Fall,Fall ,Fall,159,17.66,2.47
+1,Mathematics,Fall to Fall,Fall ,Fall,161,16.96,2.44
+1,Mathematics,Fall to Fall,Fall ,Fall,163,16.25,2.42
+1,Mathematics,Fall to Fall,Fall ,Fall,165,15.55,2.41
+1,Mathematics,Fall to Fall,Fall ,Fall,167,14.84,2.41
+1,Mathematics,Fall to Fall,Fall ,Fall,169,14.14,2.41
+1,Mathematics,Fall to Fall,Fall ,Fall,171,13.43,2.42
+1,Mathematics,Fall to Fall,Fall ,Fall,173,12.73,2.43
+1,Mathematics,Fall to Spring,Fall ,Spring,149,21.52,3.21
+1,Mathematics,Fall to Spring,Fall ,Spring,151,21.07,3.09
+1,Mathematics,Fall to Spring,Fall ,Spring,153,20.62,2.97
+1,Mathematics,Fall to Spring,Fall ,Spring,155,20.17,2.86
+1,Mathematics,Fall to Spring,Fall ,Spring,157,19.7,2.8
+1,Mathematics,Fall to Spring,Fall ,Spring,159,19.27,2.66
+1,Mathematics,Fall to Spring,Fall ,Spring,161,18.82,2.58
+1,Mathematics,Fall to Spring,Fall ,Spring,163,18.37,2.5
+1,Mathematics,Fall to Spring,Fall ,Spring,165,17.92,2.44
+1,Mathematics,Fall to Spring,Fall ,Spring,167,17.47,2.39
+1,Mathematics,Fall to Spring,Fall ,Spring,169,17.01,2.35
+1,Mathematics,Fall to Spring,Fall ,Spring,171,16.56,2.32
+1,Mathematics,Fall to Spring,Fall ,Spring,173,16.11,2.31
+1,Mathematics,Spring to Spring,Spring ,Spring,143,24.96,3.97
+1,Mathematics,Spring to Spring,Spring ,Spring,145,24.49,3.84
+1,Mathematics,Spring to Spring,Spring ,Spring,147,24.01,3.72
+1,Mathematics,Spring to Spring,Spring ,Spring,149,23.53,3.61
+1,Mathematics,Spring to Spring,Spring ,Spring,151,23.1,3.5
+1,Mathematics,Spring to Spring,Spring ,Spring,153,22.58,3.41
+1,Mathematics,Spring to Spring,Spring ,Spring,155,22.11,3.32
+1,Mathematics,Spring to Spring,Spring ,Spring,157,21.63,3.24
+1,Mathematics,Spring to Spring,Spring ,Spring,159,21.16,3.17
+1,Mathematics,Spring to Spring,Spring ,Spring,161,20.68,3.12
+1,Mathematics,Spring to Spring,Spring ,Spring,163,20.2,3.07
+1,Mathematics,Spring to Spring,Spring ,Spring,165,19.73,3.04
+1,Mathematics,Spring to Spring,Spring ,Spring,167,19.25,3.02
+2,Mathematics,Fall to Fall,Fall ,Fall,165,17.23,2.66
+2,Mathematics,Fall to Fall,Fall ,Fall,167,16.77,2.59
+2,Mathematics,Fall to Fall,Fall ,Fall,169,16.32,2.52
+2,Mathematics,Fall to Fall,Fall ,Fall,171,15.87,2.45
+2,Mathematics,Fall to Fall,Fall ,Fall,173,15.4,2.4
+2,Mathematics,Fall to Fall,Fall ,Fall,175,14.96,2.34
+2,Mathematics,Fall to Fall,Fall ,Fall,177,14.51,2.3
+2,Mathematics,Fall to Fall,Fall ,Fall,179,14.06,2.27
+2,Mathematics,Fall to Fall,Fall ,Fall,181,13.61,2.24
+2,Mathematics,Fall to Fall,Fall ,Fall,183,13.15,2.23
+2,Mathematics,Fall to Fall,Fall ,Fall,185,12.7,2.22
+2,Mathematics,Fall to Fall,Fall ,Fall,187,12.25,2.23
+2,Mathematics,Fall to Fall,Fall ,Fall,189,11.8,2.24
+2,Mathematics,Fall to Spring,Fall ,Spring,165,17.41,2.94
+2,Mathematics,Fall to Spring,Fall ,Spring,167,16.9,2.85
+2,Mathematics,Fall to Spring,Fall ,Spring,169,16.4,2.77
+2,Mathematics,Fall to Spring,Fall ,Spring,171,15.89,2.69
+2,Mathematics,Fall to Spring,Fall ,Spring,173,15.4,2.6
+2,Mathematics,Fall to Spring,Fall ,Spring,175,14.88,2.55
+2,Mathematics,Fall to Spring,Fall ,Spring,177,14.38,2.49
+2,Mathematics,Fall to Spring,Fall ,Spring,179,13.87,2.44
+2,Mathematics,Fall to Spring,Fall ,Spring,181,13.37,2.4
+2,Mathematics,Fall to Spring,Fall ,Spring,183,12.86,2.36
+2,Mathematics,Fall to Spring,Fall ,Spring,185,12.36,2.34
+2,Mathematics,Fall to Spring,Fall ,Spring,187,11.85,2.32
+2,Mathematics,Fall to Spring,Fall ,Spring,189,11.35,2.32
+2,Mathematics,Spring to Spring,Spring ,Spring,164,17.25,3.16
+2,Mathematics,Spring to Spring,Spring ,Spring,166,16.61,3.07
+2,Mathematics,Spring to Spring,Spring ,Spring,168,15.97,2.99
+2,Mathematics,Spring to Spring,Spring ,Spring,170,15.33,2.91
+2,Mathematics,Spring to Spring,Spring ,Spring,172,14.7,2.8
+2,Mathematics,Spring to Spring,Spring ,Spring,174,14.05,2.78
+2,Mathematics,Spring to Spring,Spring ,Spring,176,13.4,2.74
+2,Mathematics,Spring to Spring,Spring ,Spring,178,12.76,2.7
+2,Mathematics,Spring to Spring,Spring ,Spring,180,12.12,2.67
+2,Mathematics,Spring to Spring,Spring ,Spring,182,11.48,2.66
+2,Mathematics,Spring to Spring,Spring ,Spring,184,10.84,2.66
+2,Mathematics,Spring to Spring,Spring ,Spring,186,10.2,2.67
+2,Mathematics,Spring to Spring,Spring ,Spring,188,9.56,2.69
+3,Mathematics,Fall to Fall,Fall ,Fall,179,14.05,2.39
+3,Mathematics,Fall to Fall,Fall ,Fall,181,13.71,2.27
+3,Mathematics,Fall to Fall,Fall ,Fall,183,13.38,2.17
+3,Mathematics,Fall to Fall,Fall ,Fall,185,13.05,2.07
+3,Mathematics,Fall to Fall,Fall ,Fall,187,12.7,2
+3,Mathematics,Fall to Fall,Fall ,Fall,189,12.38,1.92
+3,Mathematics,Fall to Fall,Fall ,Fall,191,12.05,1.87
+3,Mathematics,Fall to Fall,Fall ,Fall,193,11.71,1.84
+3,Mathematics,Fall to Fall,Fall ,Fall,195,11.38,1.82
+3,Mathematics,Fall to Fall,Fall ,Fall,197,11.05,1.82
+3,Mathematics,Fall to Fall,Fall ,Fall,199,10.71,1.84
+3,Mathematics,Fall to Fall,Fall ,Fall,201,10.38,1.88
+3,Mathematics,Fall to Fall,Fall ,Fall,203,10.05,1.93
+3,Mathematics,Fall to Spring,Fall ,Spring,179,14.44,2.54
+3,Mathematics,Fall to Spring,Fall ,Spring,181,14.06,2.44
+3,Mathematics,Fall to Spring,Fall ,Spring,183,13.68,2.36
+3,Mathematics,Fall to Spring,Fall ,Spring,185,13.29,2.29
+3,Mathematics,Fall to Spring,Fall ,Spring,187,12.9,2.2
+3,Mathematics,Fall to Spring,Fall ,Spring,189,12.52,2.17
+3,Mathematics,Fall to Spring,Fall ,Spring,191,12.14,2.14
+3,Mathematics,Fall to Spring,Fall ,Spring,193,11.75,2.11
+3,Mathematics,Fall to Spring,Fall ,Spring,195,11.37,2.11
+3,Mathematics,Fall to Spring,Fall ,Spring,197,10.98,2.11
+3,Mathematics,Fall to Spring,Fall ,Spring,199,10.6,2.13
+3,Mathematics,Fall to Spring,Fall ,Spring,201,10.21,2.17
+3,Mathematics,Fall to Spring,Fall ,Spring,203,9.83,2.22
+3,Mathematics,Spring to Spring,Spring ,Spring,177,15.21,2.77
+3,Mathematics,Spring to Spring,Spring ,Spring,179,14.8,2.67
+3,Mathematics,Spring to Spring,Spring ,Spring,181,14.4,2.58
+3,Mathematics,Spring to Spring,Spring ,Spring,183,14,2.49
+3,Mathematics,Spring to Spring,Spring ,Spring,185,13.6,2.4
+3,Mathematics,Spring to Spring,Spring ,Spring,187,13.19,2.37
+3,Mathematics,Spring to Spring,Spring ,Spring,189,12.79,2.32
+3,Mathematics,Spring to Spring,Spring ,Spring,191,12.39,2.29
+3,Mathematics,Spring to Spring,Spring ,Spring,193,11.98,2.28
+3,Mathematics,Spring to Spring,Spring ,Spring,195,11.58,2.28
+3,Mathematics,Spring to Spring,Spring ,Spring,197,11.18,2.29
+3,Mathematics,Spring to Spring,Spring ,Spring,199,10.77,2.32
+3,Mathematics,Spring to Spring,Spring ,Spring,201,10.37,2.37
+4,Mathematics,Fall to Fall,Fall ,Fall,191,10.71,2.1
+4,Mathematics,Fall to Fall,Fall ,Fall,193,10.52,2.05
+4,Mathematics,Fall to Fall,Fall ,Fall,195,10.32,2.01
+4,Mathematics,Fall to Fall,Fall ,Fall,197,10.13,1.98
+4,Mathematics,Fall to Fall,Fall ,Fall,199,9.9,2
+4,Mathematics,Fall to Fall,Fall ,Fall,201,9.74,1.97
+4,Mathematics,Fall to Fall,Fall ,Fall,203,9.54,1.98
+4,Mathematics,Fall to Fall,Fall ,Fall,205,9.35,2
+4,Mathematics,Fall to Fall,Fall ,Fall,207,9.15,2.04
+4,Mathematics,Fall to Fall,Fall ,Fall,209,8.96,2.08
+4,Mathematics,Fall to Fall,Fall ,Fall,211,8.76,2.14
+4,Mathematics,Fall to Fall,Fall ,Fall,213,8.57,2.21
+4,Mathematics,Fall to Fall,Fall ,Fall,215,8.37,2.28
+4,Mathematics,Fall to Spring,Fall ,Spring,191,11.31,2.47
+4,Mathematics,Fall to Spring,Fall ,Spring,193,11.09,2.42
+4,Mathematics,Fall to Spring,Fall ,Spring,195,10.86,2.39
+4,Mathematics,Fall to Spring,Fall ,Spring,197,10.64,2.37
+4,Mathematics,Fall to Spring,Fall ,Spring,199,10.4,2.4
+4,Mathematics,Fall to Spring,Fall ,Spring,201,10.19,2.37
+4,Mathematics,Fall to Spring,Fall ,Spring,203,9.97,2.38
+4,Mathematics,Fall to Spring,Fall ,Spring,205,9.74,2.41
+4,Mathematics,Fall to Spring,Fall ,Spring,207,9.52,2.45
+4,Mathematics,Fall to Spring,Fall ,Spring,209,9.3,2.5
+4,Mathematics,Fall to Spring,Fall ,Spring,211,9.07,2.56
+4,Mathematics,Fall to Spring,Fall ,Spring,213,8.85,2.63
+4,Mathematics,Fall to Spring,Fall ,Spring,215,8.62,2.71
+4,Mathematics,Spring to Spring,Spring ,Spring,190,11.34,2.43
+4,Mathematics,Spring to Spring,Spring ,Spring,192,11.1,2.39
+4,Mathematics,Spring to Spring,Spring ,Spring,194,10.87,2.35
+4,Mathematics,Spring to Spring,Spring ,Spring,196,10.63,2.33
+4,Mathematics,Spring to Spring,Spring ,Spring,198,10.4,2.3
+4,Mathematics,Spring to Spring,Spring ,Spring,200,10.16,2.33
+4,Mathematics,Spring to Spring,Spring ,Spring,202,9.93,2.35
+4,Mathematics,Spring to Spring,Spring ,Spring,204,9.69,2.38
+4,Mathematics,Spring to Spring,Spring ,Spring,206,9.45,2.42
+4,Mathematics,Spring to Spring,Spring ,Spring,208,9.22,2.48
+4,Mathematics,Spring to Spring,Spring ,Spring,210,8.98,2.54
+4,Mathematics,Spring to Spring,Spring ,Spring,212,8.75,2.62
+4,Mathematics,Spring to Spring,Spring ,Spring,214,8.51,2.7
+5,Mathematics,Fall to Fall,Fall ,Fall,200,8.9,2.49
+5,Mathematics,Fall to Fall,Fall ,Fall,202,8.7,2.42
+5,Mathematics,Fall to Fall,Fall ,Fall,204,8.5,2.36
+5,Mathematics,Fall to Fall,Fall ,Fall,206,8.3,2.31
+5,Mathematics,Fall to Fall,Fall ,Fall,208,8.1,2.3
+5,Mathematics,Fall to Fall,Fall ,Fall,210,7.9,2.23
+5,Mathematics,Fall to Fall,Fall ,Fall,212,7.7,2.19
+5,Mathematics,Fall to Fall,Fall ,Fall,214,7.5,2.17
+5,Mathematics,Fall to Fall,Fall ,Fall,216,7.3,2.15
+5,Mathematics,Fall to Fall,Fall ,Fall,218,7.1,2.14
+5,Mathematics,Fall to Fall,Fall ,Fall,220,6.9,2.14
+5,Mathematics,Fall to Fall,Fall ,Fall,222,6.7,2.15
+5,Mathematics,Fall to Fall,Fall ,Fall,224,6.5,2.17
+5,Mathematics,Fall to Spring,Fall ,Spring,200,10.21,2.51
+5,Mathematics,Fall to Spring,Fall ,Spring,202,10.07,2.47
+5,Mathematics,Fall to Spring,Fall ,Spring,204,9.93,2.44
+5,Mathematics,Fall to Spring,Fall ,Spring,206,9.8,2.42
+5,Mathematics,Fall to Spring,Fall ,Spring,208,9.7,2.4
+5,Mathematics,Fall to Spring,Fall ,Spring,210,9.52,2.39
+5,Mathematics,Fall to Spring,Fall ,Spring,212,9.39,2.39
+5,Mathematics,Fall to Spring,Fall ,Spring,214,9.25,2.39
+5,Mathematics,Fall to Spring,Fall ,Spring,216,9.11,2.41
+5,Mathematics,Fall to Spring,Fall ,Spring,218,8.98,2.43
+5,Mathematics,Fall to Spring,Fall ,Spring,220,8.84,2.46
+5,Mathematics,Fall to Spring,Fall ,Spring,222,8.7,2.49
+5,Mathematics,Fall to Spring,Fall ,Spring,224,8.57,2.53
+5,Mathematics,Spring to Spring,Spring ,Spring,199,9.68,2.56
+5,Mathematics,Spring to Spring,Spring ,Spring,201,9.52,2.52
+5,Mathematics,Spring to Spring,Spring ,Spring,203,9.36,2.48
+5,Mathematics,Spring to Spring,Spring ,Spring,205,9.19,2.46
+5,Mathematics,Spring to Spring,Spring ,Spring,207,9,2.4
+5,Mathematics,Spring to Spring,Spring ,Spring,209,8.87,2.43
+5,Mathematics,Spring to Spring,Spring ,Spring,211,8.7,2.42
+5,Mathematics,Spring to Spring,Spring ,Spring,213,8.54,2.43
+5,Mathematics,Spring to Spring,Spring ,Spring,215,8.38,2.44
+5,Mathematics,Spring to Spring,Spring ,Spring,217,8.21,2.47
+5,Mathematics,Spring to Spring,Spring ,Spring,219,8.05,2.5
+5,Mathematics,Spring to Spring,Spring ,Spring,221,7.89,2.54
+5,Mathematics,Spring to Spring,Spring ,Spring,223,7.72,2.58
+6,Mathematics,Fall to Fall,Fall ,Fall,207,7.64,2.06
+6,Mathematics,Fall to Fall,Fall ,Fall,209,7.49,2.02
+6,Mathematics,Fall to Fall,Fall ,Fall,211,7.33,1.97
+6,Mathematics,Fall to Fall,Fall ,Fall,213,7.17,1.94
+6,Mathematics,Fall to Fall,Fall ,Fall,215,7,1.9
+6,Mathematics,Fall to Fall,Fall ,Fall,217,6.85,1.89
+6,Mathematics,Fall to Fall,Fall ,Fall,219,6.7,1.88
+6,Mathematics,Fall to Fall,Fall ,Fall,221,6.54,1.87
+6,Mathematics,Fall to Fall,Fall ,Fall,223,6.38,1.87
+6,Mathematics,Fall to Fall,Fall ,Fall,225,6.22,1.88
+6,Mathematics,Fall to Fall,Fall ,Fall,227,6.07,1.9
+6,Mathematics,Fall to Fall,Fall ,Fall,229,5.91,1.93
+6,Mathematics,Fall to Fall,Fall ,Fall,231,5.75,1.96
+6,Mathematics,Fall to Spring,Fall ,Spring,207,8.38,2.32
+6,Mathematics,Fall to Spring,Fall ,Spring,209,8.21,2.27
+6,Mathematics,Fall to Spring,Fall ,Spring,211,8.03,2.24
+6,Mathematics,Fall to Spring,Fall ,Spring,213,7.85,2.21
+6,Mathematics,Fall to Spring,Fall ,Spring,215,7.7,2.2
+6,Mathematics,Fall to Spring,Fall ,Spring,217,7.5,2.17
+6,Mathematics,Fall to Spring,Fall ,Spring,219,7.33,2.16
+6,Mathematics,Fall to Spring,Fall ,Spring,221,7.15,2.16
+6,Mathematics,Fall to Spring,Fall ,Spring,223,6.98,2.17
+6,Mathematics,Fall to Spring,Fall ,Spring,225,6.8,2.19
+6,Mathematics,Fall to Spring,Fall ,Spring,227,6.63,2.21
+6,Mathematics,Fall to Spring,Fall ,Spring,229,6.45,2.24
+6,Mathematics,Fall to Spring,Fall ,Spring,231,6.28,2.28
+6,Mathematics,Spring to Spring,Spring ,Spring,207,7.62,2.9
+6,Mathematics,Spring to Spring,Spring ,Spring,209,7.36,2.85
+6,Mathematics,Spring to Spring,Spring ,Spring,211,7.11,2.81
+6,Mathematics,Spring to Spring,Spring ,Spring,213,6.86,2.77
+6,Mathematics,Spring to Spring,Spring ,Spring,215,6.6,2.7
+6,Mathematics,Spring to Spring,Spring ,Spring,217,6.35,2.71
+6,Mathematics,Spring to Spring,Spring ,Spring,219,6.1,2.69
+6,Mathematics,Spring to Spring,Spring ,Spring,221,5.84,2.68
+6,Mathematics,Spring to Spring,Spring ,Spring,223,5.59,2.67
+6,Mathematics,Spring to Spring,Spring ,Spring,225,5.34,2.67
+6,Mathematics,Spring to Spring,Spring ,Spring,227,5.08,2.68
+6,Mathematics,Spring to Spring,Spring ,Spring,229,4.83,2.69
+6,Mathematics,Spring to Spring,Spring ,Spring,231,4.58,2.71
+7,Mathematics,Fall to Fall,Fall ,Fall,213,7.05,2.11
+7,Mathematics,Fall to Fall,Fall ,Fall,215,6.89,2.04
+7,Mathematics,Fall to Fall,Fall ,Fall,217,6.72,1.98
+7,Mathematics,Fall to Fall,Fall ,Fall,219,6.55,1.92
+7,Mathematics,Fall to Fall,Fall ,Fall,221,6.4,1.9
+7,Mathematics,Fall to Fall,Fall ,Fall,223,6.22,1.82
+7,Mathematics,Fall to Fall,Fall ,Fall,225,6.05,1.78
+7,Mathematics,Fall to Fall,Fall ,Fall,227,5.89,1.75
+7,Mathematics,Fall to Fall,Fall ,Fall,229,5.72,1.72
+7,Mathematics,Fall to Fall,Fall ,Fall,231,5.55,1.71
+7,Mathematics,Fall to Fall,Fall ,Fall,233,5.39,1.7
+7,Mathematics,Fall to Fall,Fall ,Fall,235,5.22,1.69
+7,Mathematics,Fall to Fall,Fall ,Fall,237,5.06,1.7
+7,Mathematics,Fall to Spring,Fall ,Spring,213,6.89,2.14
+7,Mathematics,Fall to Spring,Fall ,Spring,215,6.73,2.09
+7,Mathematics,Fall to Spring,Fall ,Spring,217,6.57,2.04
+7,Mathematics,Fall to Spring,Fall ,Spring,219,6.4,2
+7,Mathematics,Fall to Spring,Fall ,Spring,221,6.2,2
+7,Mathematics,Fall to Spring,Fall ,Spring,223,6.08,1.93
+7,Mathematics,Fall to Spring,Fall ,Spring,225,5.91,1.9
+7,Mathematics,Fall to Spring,Fall ,Spring,227,5.75,1.88
+7,Mathematics,Fall to Spring,Fall ,Spring,229,5.59,1.87
+7,Mathematics,Fall to Spring,Fall ,Spring,231,5.42,1.86
+7,Mathematics,Fall to Spring,Fall ,Spring,233,5.26,1.85
+7,Mathematics,Fall to Spring,Fall ,Spring,235,5.09,1.85
+7,Mathematics,Fall to Spring,Fall ,Spring,237,4.93,1.86
+7,Mathematics,Spring to Spring,Spring ,Spring,212,6.87,2.53
+7,Mathematics,Spring to Spring,Spring ,Spring,214,6.7,2.46
+7,Mathematics,Spring to Spring,Spring ,Spring,216,6.53,2.41
+7,Mathematics,Spring to Spring,Spring ,Spring,218,6.36,2.35
+7,Mathematics,Spring to Spring,Spring ,Spring,220,6.2,2.3
+7,Mathematics,Spring to Spring,Spring ,Spring,222,6.02,2.27
+7,Mathematics,Spring to Spring,Spring ,Spring,224,5.85,2.23
+7,Mathematics,Spring to Spring,Spring ,Spring,226,5.68,2.2
+7,Mathematics,Spring to Spring,Spring ,Spring,228,5.51,2.18
+7,Mathematics,Spring to Spring,Spring ,Spring,230,5.34,2.17
+7,Mathematics,Spring to Spring,Spring ,Spring,232,5.17,2.16
+7,Mathematics,Spring to Spring,Spring ,Spring,234,5,2.16
+7,Mathematics,Spring to Spring,Spring ,Spring,236,4.83,2.16
+8,Mathematics,Fall to Fall,Fall ,Fall,217,5.88,2.27
+8,Mathematics,Fall to Fall,Fall ,Fall,219,5.69,2.19
+8,Mathematics,Fall to Fall,Fall ,Fall,221,5.5,2.1
+8,Mathematics,Fall to Fall,Fall ,Fall,223,5.32,2.02
+8,Mathematics,Fall to Fall,Fall ,Fall,225,5.1,1.9
+8,Mathematics,Fall to Fall,Fall ,Fall,227,4.94,1.87
+8,Mathematics,Fall to Fall,Fall ,Fall,229,4.75,1.81
+8,Mathematics,Fall to Fall,Fall ,Fall,231,4.57,1.74
+8,Mathematics,Fall to Fall,Fall ,Fall,233,4.38,1.69
+8,Mathematics,Fall to Fall,Fall ,Fall,235,4.19,1.64
+8,Mathematics,Fall to Fall,Fall ,Fall,237,4,1.6
+8,Mathematics,Fall to Fall,Fall ,Fall,239,3.82,1.56
+8,Mathematics,Fall to Fall,Fall ,Fall,241,3.63,1.54
+8,Mathematics,Fall to Spring,Fall ,Spring,217,6.12,2.15
+8,Mathematics,Fall to Spring,Fall ,Spring,219,5.95,2.08
+8,Mathematics,Fall to Spring,Fall ,Spring,221,5.78,2.02
+8,Mathematics,Fall to Spring,Fall ,Spring,223,5.61,1.96
+8,Mathematics,Fall to Spring,Fall ,Spring,225,5.4,1.9
+8,Mathematics,Fall to Spring,Fall ,Spring,227,5.27,1.86
+8,Mathematics,Fall to Spring,Fall ,Spring,229,5.1,1.81
+8,Mathematics,Fall to Spring,Fall ,Spring,231,4.93,1.78
+8,Mathematics,Fall to Spring,Fall ,Spring,233,4.76,1.75
+8,Mathematics,Fall to Spring,Fall ,Spring,235,4.59,1.72
+8,Mathematics,Fall to Spring,Fall ,Spring,237,4.42,1.71
+8,Mathematics,Fall to Spring,Fall ,Spring,239,4.25,1.7
+8,Mathematics,Fall to Spring,Fall ,Spring,241,4.09,1.69
+8,Mathematics,Spring to Spring,Spring ,Spring,216,6.87,2.36
+8,Mathematics,Spring to Spring,Spring ,Spring,218,6.68,2.28
+8,Mathematics,Spring to Spring,Spring ,Spring,220,6.49,2.21
+8,Mathematics,Spring to Spring,Spring ,Spring,222,6.3,2.14
+8,Mathematics,Spring to Spring,Spring ,Spring,224,6.1,2.1
+8,Mathematics,Spring to Spring,Spring ,Spring,226,5.92,2.03
+8,Mathematics,Spring to Spring,Spring ,Spring,228,5.73,1.98
+8,Mathematics,Spring to Spring,Spring ,Spring,230,5.54,1.94
+8,Mathematics,Spring to Spring,Spring ,Spring,232,5.35,1.91
+8,Mathematics,Spring to Spring,Spring ,Spring,234,5.16,1.88
+8,Mathematics,Spring to Spring,Spring ,Spring,236,4.97,1.86
+8,Mathematics,Spring to Spring,Spring ,Spring,238,4.78,1.86
+8,Mathematics,Spring to Spring,Spring ,Spring,240,4.59,1.86
+9,Mathematics,Fall to Fall,Fall ,Fall,221,4.04,2.03
+9,Mathematics,Fall to Fall,Fall ,Fall,223,3.88,1.96
+9,Mathematics,Fall to Fall,Fall ,Fall,225,3.71,1.91
+9,Mathematics,Fall to Fall,Fall ,Fall,227,3.54,1.85
+9,Mathematics,Fall to Fall,Fall ,Fall,229,3.4,1.8
+9,Mathematics,Fall to Fall,Fall ,Fall,231,3.2,1.76
+9,Mathematics,Fall to Fall,Fall ,Fall,233,3.03,1.72
+9,Mathematics,Fall to Fall,Fall ,Fall,235,2.86,1.69
+9,Mathematics,Fall to Fall,Fall ,Fall,237,2.7,1.67
+9,Mathematics,Fall to Fall,Fall ,Fall,239,2.53,1.65
+9,Mathematics,Fall to Fall,Fall ,Fall,241,2.36,1.64
+9,Mathematics,Fall to Fall,Fall ,Fall,243,2.19,1.64
+9,Mathematics,Fall to Fall,Fall ,Fall,245,2.02,1.65
+9,Mathematics,Fall to Spring,Fall ,Spring,221,3.85,2.14
+9,Mathematics,Fall to Spring,Fall ,Spring,223,3.68,2.08
+9,Mathematics,Fall to Spring,Fall ,Spring,225,3.51,2.01
+9,Mathematics,Fall to Spring,Fall ,Spring,227,3.34,1.95
+9,Mathematics,Fall to Spring,Fall ,Spring,229,3.2,1.9
+9,Mathematics,Fall to Spring,Fall ,Spring,231,3,1.85
+9,Mathematics,Fall to Spring,Fall ,Spring,233,2.83,1.8
+9,Mathematics,Fall to Spring,Fall ,Spring,235,2.66,1.76
+9,Mathematics,Fall to Spring,Fall ,Spring,237,2.49,1.73
+9,Mathematics,Fall to Spring,Fall ,Spring,239,2.32,1.7
+9,Mathematics,Fall to Spring,Fall ,Spring,241,2.15,1.68
+9,Mathematics,Fall to Spring,Fall ,Spring,243,1.98,1.67
+9,Mathematics,Fall to Spring,Fall ,Spring,245,1.81,1.66
+9,Mathematics,Spring to Spring,Spring ,Spring,221,4.14,2.9
+9,Mathematics,Spring to Spring,Spring ,Spring,223,3.95,2.82
+9,Mathematics,Spring to Spring,Spring ,Spring,225,3.76,2.73
+9,Mathematics,Spring to Spring,Spring ,Spring,227,3.57,2.65
+9,Mathematics,Spring to Spring,Spring ,Spring,229,3.4,2.6
+9,Mathematics,Spring to Spring,Spring ,Spring,231,3.18,2.51
+9,Mathematics,Spring to Spring,Spring ,Spring,233,2.99,2.45
+9,Mathematics,Spring to Spring,Spring ,Spring,235,2.8,2.4
+9,Mathematics,Spring to Spring,Spring ,Spring,237,2.6,2.35
+9,Mathematics,Spring to Spring,Spring ,Spring,239,2.41,2.31
+9,Mathematics,Spring to Spring,Spring ,Spring,241,2.22,2.28
+9,Mathematics,Spring to Spring,Spring ,Spring,243,2.02,2.26
+9,Mathematics,Spring to Spring,Spring ,Spring,245,1.83,2.24
+10,Mathematics,Fall to Fall,Fall ,Fall,221,4.45,2.39
+10,Mathematics,Fall to Fall,Fall ,Fall,223,4.26,2.32
+10,Mathematics,Fall to Fall,Fall ,Fall,225,4.08,2.25
+10,Mathematics,Fall to Fall,Fall ,Fall,227,3.89,2.19
+10,Mathematics,Fall to Fall,Fall ,Fall,229,3.7,2.1
+10,Mathematics,Fall to Fall,Fall ,Fall,231,3.52,2.1
+10,Mathematics,Fall to Fall,Fall ,Fall,233,3.34,2.06
+10,Mathematics,Fall to Fall,Fall ,Fall,235,3.15,2.03
+10,Mathematics,Fall to Fall,Fall ,Fall,237,2.97,2.01
+10,Mathematics,Fall to Fall,Fall ,Fall,239,2.78,2
+10,Mathematics,Fall to Fall,Fall ,Fall,241,2.6,2
+10,Mathematics,Fall to Fall,Fall ,Fall,243,2.41,2.01
+10,Mathematics,Fall to Fall,Fall ,Fall,245,2.23,2.03
+10,Mathematics,Fall to Spring,Fall ,Spring,221,4.25,2.11
+10,Mathematics,Fall to Spring,Fall ,Spring,223,4.07,2.05
+10,Mathematics,Fall to Spring,Fall ,Spring,225,3.88,1.98
+10,Mathematics,Fall to Spring,Fall ,Spring,227,3.69,1.93
+10,Mathematics,Fall to Spring,Fall ,Spring,229,3.5,1.9
+10,Mathematics,Fall to Spring,Fall ,Spring,231,3.32,1.83
+10,Mathematics,Fall to Spring,Fall ,Spring,233,3.13,1.79
+10,Mathematics,Fall to Spring,Fall ,Spring,235,2.94,1.75
+10,Mathematics,Fall to Spring,Fall ,Spring,237,2.75,1.72
+10,Mathematics,Fall to Spring,Fall ,Spring,239,2.57,1.7
+10,Mathematics,Fall to Spring,Fall ,Spring,241,2.38,1.69
+10,Mathematics,Fall to Spring,Fall ,Spring,243,2.19,1.69
+10,Mathematics,Fall to Spring,Fall ,Spring,245,2,1.69
+10,Mathematics,Spring to Spring,Spring ,Spring,221,4.85,2.36
+10,Mathematics,Spring to Spring,Spring ,Spring,223,4.66,2.27
+10,Mathematics,Spring to Spring,Spring ,Spring,225,4.47,2.18
+10,Mathematics,Spring to Spring,Spring ,Spring,227,4.28,2.1
+10,Mathematics,Spring to Spring,Spring ,Spring,229,4.1,2
+10,Mathematics,Spring to Spring,Spring ,Spring,231,3.9,1.96
+10,Mathematics,Spring to Spring,Spring ,Spring,233,3.71,1.9
+10,Mathematics,Spring to Spring,Spring ,Spring,235,3.52,1.85
+10,Mathematics,Spring to Spring,Spring ,Spring,237,3.33,1.81
+10,Mathematics,Spring to Spring,Spring ,Spring,239,3.14,1.77
+10,Mathematics,Spring to Spring,Spring ,Spring,241,2.95,1.75
+10,Mathematics,Spring to Spring,Spring ,Spring,243,2.76,1.73
+10,Mathematics,Spring to Spring,Spring ,Spring,245,2.58,1.73
+0,Reading,Fall to Fall,Fall ,Fall,129,21.28,3.29
+0,Reading,Fall to Fall,Fall ,Fall,131,21.06,3.24
+0,Reading,Fall to Fall,Fall ,Fall,133,20.85,3.2
+0,Reading,Fall to Fall,Fall ,Fall,135,20.64,3.16
+0,Reading,Fall to Fall,Fall ,Fall,137,20.4,3.1
+0,Reading,Fall to Fall,Fall ,Fall,139,20.21,3.11
+0,Reading,Fall to Fall,Fall ,Fall,141,20,3.1
+0,Reading,Fall to Fall,Fall ,Fall,143,19.79,3.09
+0,Reading,Fall to Fall,Fall ,Fall,145,19.58,3.09
+0,Reading,Fall to Fall,Fall ,Fall,147,19.36,3.09
+0,Reading,Fall to Fall,Fall ,Fall,149,19.15,3.1
+0,Reading,Fall to Fall,Fall ,Fall,151,18.94,3.12
+0,Reading,Fall to Fall,Fall ,Fall,153,18.72,3.15
+0,Reading,Fall to Spring,Fall ,Spring,129,19.48,3.39
+0,Reading,Fall to Spring,Fall ,Spring,131,19.2,3.35
+0,Reading,Fall to Spring,Fall ,Spring,133,18.93,3.31
+0,Reading,Fall to Spring,Fall ,Spring,135,18.66,3.29
+0,Reading,Fall to Spring,Fall ,Spring,137,18.4,3.3
+0,Reading,Fall to Spring,Fall ,Spring,139,18.11,3.26
+0,Reading,Fall to Spring,Fall ,Spring,141,17.84,3.25
+0,Reading,Fall to Spring,Fall ,Spring,143,17.57,3.26
+0,Reading,Fall to Spring,Fall ,Spring,145,17.29,3.27
+0,Reading,Fall to Spring,Fall ,Spring,147,17.02,3.29
+0,Reading,Fall to Spring,Fall ,Spring,149,16.75,3.32
+0,Reading,Fall to Spring,Fall ,Spring,151,16.47,3.35
+0,Reading,Fall to Spring,Fall ,Spring,153,16.2,3.39
+1,Reading,Fall to Fall,Fall ,Fall,148,15.46,3.63
+1,Reading,Fall to Fall,Fall ,Fall,150,15.36,3.52
+1,Reading,Fall to Fall,Fall ,Fall,152,15.25,3.4
+1,Reading,Fall to Fall,Fall ,Fall,154,15.14,3.3
+1,Reading,Fall to Fall,Fall ,Fall,156,15,3.2
+1,Reading,Fall to Fall,Fall ,Fall,158,14.92,3.09
+1,Reading,Fall to Fall,Fall ,Fall,160,14.81,3
+1,Reading,Fall to Fall,Fall ,Fall,162,14.7,2.91
+1,Reading,Fall to Fall,Fall ,Fall,164,14.59,2.82
+1,Reading,Fall to Fall,Fall ,Fall,166,14.48,2.75
+1,Reading,Fall to Fall,Fall ,Fall,168,14.38,2.68
+1,Reading,Fall to Fall,Fall ,Fall,170,14.27,2.61
+1,Reading,Fall to Fall,Fall ,Fall,172,14.16,2.56
+1,Reading,Fall to Spring,Fall ,Spring,148,18.42,3.18
+1,Reading,Fall to Spring,Fall ,Spring,150,18.24,3.08
+1,Reading,Fall to Spring,Fall ,Spring,152,18.07,2.98
+1,Reading,Fall to Spring,Fall ,Spring,154,17.89,2.89
+1,Reading,Fall to Spring,Fall ,Spring,156,17.7,2.8
+1,Reading,Fall to Spring,Fall ,Spring,158,17.54,2.72
+1,Reading,Fall to Spring,Fall ,Spring,160,17.36,2.64
+1,Reading,Fall to Spring,Fall ,Spring,162,17.19,2.57
+1,Reading,Fall to Spring,Fall ,Spring,164,17.01,2.52
+1,Reading,Fall to Spring,Fall ,Spring,166,16.83,2.47
+1,Reading,Fall to Spring,Fall ,Spring,168,16.66,2.43
+1,Reading,Fall to Spring,Fall ,Spring,170,16.48,2.4
+1,Reading,Fall to Spring,Fall ,Spring,172,16.3,2.38
+1,Reading,Spring to Spring,Spring ,Spring,144,20.91,3.72
+1,Reading,Spring to Spring,Spring ,Spring,146,20.74,3.6
+1,Reading,Spring to Spring,Spring ,Spring,148,20.58,3.48
+1,Reading,Spring to Spring,Spring ,Spring,150,20.41,3.38
+1,Reading,Spring to Spring,Spring ,Spring,152,20.2,3.3
+1,Reading,Spring to Spring,Spring ,Spring,154,20.08,3.18
+1,Reading,Spring to Spring,Spring ,Spring,156,19.92,3.09
+1,Reading,Spring to Spring,Spring ,Spring,158,19.75,3.01
+1,Reading,Spring to Spring,Spring ,Spring,160,19.58,2.94
+1,Reading,Spring to Spring,Spring ,Spring,162,19.42,2.88
+1,Reading,Spring to Spring,Spring ,Spring,164,19.25,2.83
+1,Reading,Spring to Spring,Spring ,Spring,166,19.09,2.79
+1,Reading,Spring to Spring,Spring ,Spring,168,18.92,2.76
+2,Reading,Fall to Fall,Fall ,Fall,163,18.21,3.45
+2,Reading,Fall to Fall,Fall ,Fall,165,17.68,3.31
+2,Reading,Fall to Fall,Fall ,Fall,167,17.16,3.18
+2,Reading,Fall to Fall,Fall ,Fall,169,16.63,3.05
+2,Reading,Fall to Fall,Fall ,Fall,171,16.1,2.9
+2,Reading,Fall to Fall,Fall ,Fall,173,15.58,2.8
+2,Reading,Fall to Fall,Fall ,Fall,175,15.05,2.68
+2,Reading,Fall to Fall,Fall ,Fall,177,14.53,2.56
+2,Reading,Fall to Fall,Fall ,Fall,179,14,2.44
+2,Reading,Fall to Fall,Fall ,Fall,181,13.48,2.33
+2,Reading,Fall to Fall,Fall ,Fall,183,12.95,2.23
+2,Reading,Fall to Fall,Fall ,Fall,185,12.43,2.13
+2,Reading,Fall to Fall,Fall ,Fall,187,11.9,2.04
+2,Reading,Fall to Spring,Fall ,Spring,163,18.19,3.28
+2,Reading,Fall to Spring,Fall ,Spring,165,17.6,3.15
+2,Reading,Fall to Spring,Fall ,Spring,167,17.01,3.02
+2,Reading,Fall to Spring,Fall ,Spring,169,16.42,2.89
+2,Reading,Fall to Spring,Fall ,Spring,171,15.8,2.8
+2,Reading,Fall to Spring,Fall ,Spring,173,15.25,2.63
+2,Reading,Fall to Spring,Fall ,Spring,175,14.66,2.51
+2,Reading,Fall to Spring,Fall ,Spring,177,14.07,2.39
+2,Reading,Fall to Spring,Fall ,Spring,179,13.48,2.28
+2,Reading,Fall to Spring,Fall ,Spring,181,12.89,2.17
+2,Reading,Fall to Spring,Fall ,Spring,183,12.31,2.07
+2,Reading,Fall to Spring,Fall ,Spring,185,11.72,1.97
+2,Reading,Fall to Spring,Fall ,Spring,187,11.13,1.88
+2,Reading,Spring to Spring,Spring ,Spring,162,15.76,3.68
+2,Reading,Spring to Spring,Spring ,Spring,164,15.32,3.54
+2,Reading,Spring to Spring,Spring ,Spring,166,14.87,3.4
+2,Reading,Spring to Spring,Spring ,Spring,168,14.42,3.26
+2,Reading,Spring to Spring,Spring ,Spring,170,14,3.1
+2,Reading,Spring to Spring,Spring ,Spring,172,13.52,3.01
+2,Reading,Spring to Spring,Spring ,Spring,174,13.07,2.89
+2,Reading,Spring to Spring,Spring ,Spring,176,12.62,2.78
+2,Reading,Spring to Spring,Spring ,Spring,178,12.17,2.68
+2,Reading,Spring to Spring,Spring ,Spring,180,11.72,2.59
+2,Reading,Spring to Spring,Spring ,Spring,182,11.27,2.51
+2,Reading,Spring to Spring,Spring ,Spring,184,10.82,2.44
+2,Reading,Spring to Spring,Spring ,Spring,186,10.37,2.39
+3,Reading,Fall to Fall,Fall ,Fall,177,13.27,2.47
+3,Reading,Fall to Fall,Fall ,Fall,179,12.8,2.37
+3,Reading,Fall to Fall,Fall ,Fall,181,12.33,2.27
+3,Reading,Fall to Fall,Fall ,Fall,183,11.86,2.17
+3,Reading,Fall to Fall,Fall ,Fall,185,11.4,2.1
+3,Reading,Fall to Fall,Fall ,Fall,187,10.91,1.98
+3,Reading,Fall to Fall,Fall ,Fall,189,10.44,1.9
+3,Reading,Fall to Fall,Fall ,Fall,191,9.97,1.82
+3,Reading,Fall to Fall,Fall ,Fall,193,9.5,1.74
+3,Reading,Fall to Fall,Fall ,Fall,195,9.03,1.67
+3,Reading,Fall to Fall,Fall ,Fall,197,8.56,1.61
+3,Reading,Fall to Fall,Fall ,Fall,199,8.08,1.56
+3,Reading,Fall to Fall,Fall ,Fall,201,7.61,1.52
+3,Reading,Fall to Spring,Fall ,Spring,177,13.54,2.75
+3,Reading,Fall to Spring,Fall ,Spring,179,13.01,2.63
+3,Reading,Fall to Spring,Fall ,Spring,181,12.47,2.52
+3,Reading,Fall to Spring,Fall ,Spring,183,11.93,2.41
+3,Reading,Fall to Spring,Fall ,Spring,185,11.4,2.3
+3,Reading,Fall to Spring,Fall ,Spring,187,10.86,2.2
+3,Reading,Fall to Spring,Fall ,Spring,189,10.32,2.11
+3,Reading,Fall to Spring,Fall ,Spring,191,9.79,2.02
+3,Reading,Fall to Spring,Fall ,Spring,193,9.25,1.94
+3,Reading,Fall to Spring,Fall ,Spring,195,8.71,1.86
+3,Reading,Fall to Spring,Fall ,Spring,197,8.18,1.8
+3,Reading,Fall to Spring,Fall ,Spring,199,7.64,1.74
+3,Reading,Fall to Spring,Fall ,Spring,201,7.1,1.69
+3,Reading,Spring to Spring,Spring ,Spring,175,14.52,2.87
+3,Reading,Spring to Spring,Spring ,Spring,177,14.01,2.76
+3,Reading,Spring to Spring,Spring ,Spring,179,13.5,2.64
+3,Reading,Spring to Spring,Spring ,Spring,181,12.99,2.53
+3,Reading,Spring to Spring,Spring ,Spring,183,12.5,2.4
+3,Reading,Spring to Spring,Spring ,Spring,185,11.96,2.33
+3,Reading,Spring to Spring,Spring ,Spring,187,11.45,2.23
+3,Reading,Spring to Spring,Spring ,Spring,189,10.94,2.15
+3,Reading,Spring to Spring,Spring ,Spring,191,10.43,2.07
+3,Reading,Spring to Spring,Spring ,Spring,193,9.92,1.99
+3,Reading,Spring to Spring,Spring ,Spring,195,9.4,1.93
+3,Reading,Spring to Spring,Spring ,Spring,197,8.89,1.88
+3,Reading,Spring to Spring,Spring ,Spring,199,8.38,1.84
+4,Reading,Fall to Fall,Fall ,Fall,187,10.38,2.36
+4,Reading,Fall to Fall,Fall ,Fall,189,9.94,2.26
+4,Reading,Fall to Fall,Fall ,Fall,191,9.51,2.15
+4,Reading,Fall to Fall,Fall ,Fall,193,9.07,2.05
+4,Reading,Fall to Fall,Fall ,Fall,195,8.6,2
+4,Reading,Fall to Fall,Fall ,Fall,197,8.2,1.87
+4,Reading,Fall to Fall,Fall ,Fall,199,7.76,1.78
+4,Reading,Fall to Fall,Fall ,Fall,201,7.32,1.71
+4,Reading,Fall to Fall,Fall ,Fall,203,6.89,1.64
+4,Reading,Fall to Fall,Fall ,Fall,205,6.45,1.58
+4,Reading,Fall to Fall,Fall ,Fall,207,6.01,1.53
+4,Reading,Fall to Fall,Fall ,Fall,209,5.58,1.5
+4,Reading,Fall to Fall,Fall ,Fall,211,5.14,1.48
+4,Reading,Fall to Spring,Fall ,Spring,187,10.53,2.54
+4,Reading,Fall to Spring,Fall ,Spring,189,10.04,2.43
+4,Reading,Fall to Spring,Fall ,Spring,191,9.54,2.32
+4,Reading,Fall to Spring,Fall ,Spring,193,9.05,2.21
+4,Reading,Fall to Spring,Fall ,Spring,195,8.6,2.1
+4,Reading,Fall to Spring,Fall ,Spring,197,8.06,2.02
+4,Reading,Fall to Spring,Fall ,Spring,199,7.56,1.93
+4,Reading,Fall to Spring,Fall ,Spring,201,7.07,1.85
+4,Reading,Fall to Spring,Fall ,Spring,203,6.57,1.78
+4,Reading,Fall to Spring,Fall ,Spring,205,6.08,1.72
+4,Reading,Fall to Spring,Fall ,Spring,207,5.58,1.67
+4,Reading,Fall to Spring,Fall ,Spring,209,5.09,1.63
+4,Reading,Fall to Spring,Fall ,Spring,211,4.59,1.61
+4,Reading,Spring to Spring,Spring ,Spring,186,11,2.47
+4,Reading,Spring to Spring,Spring ,Spring,188,10.53,2.37
+4,Reading,Spring to Spring,Spring ,Spring,190,10.06,2.27
+4,Reading,Spring to Spring,Spring ,Spring,192,9.58,2.17
+4,Reading,Spring to Spring,Spring ,Spring,194,9.1,2.1
+4,Reading,Spring to Spring,Spring ,Spring,196,8.64,2
+4,Reading,Spring to Spring,Spring ,Spring,198,8.17,1.93
+4,Reading,Spring to Spring,Spring ,Spring,200,7.69,1.86
+4,Reading,Spring to Spring,Spring ,Spring,202,7.22,1.81
+4,Reading,Spring to Spring,Spring ,Spring,204,6.75,1.76
+4,Reading,Spring to Spring,Spring ,Spring,206,6.28,1.73
+4,Reading,Spring to Spring,Spring ,Spring,208,5.8,1.71
+4,Reading,Spring to Spring,Spring ,Spring,210,5.33,1.7
+5,Reading,Fall to Fall,Fall ,Fall,194,8.06,2.32
+5,Reading,Fall to Fall,Fall ,Fall,196,7.66,2.23
+5,Reading,Fall to Fall,Fall ,Fall,198,7.27,2.14
+5,Reading,Fall to Fall,Fall ,Fall,200,6.87,2.05
+5,Reading,Fall to Fall,Fall ,Fall,202,6.5,2
+5,Reading,Fall to Fall,Fall ,Fall,204,6.08,1.88
+5,Reading,Fall to Fall,Fall ,Fall,206,5.68,1.81
+5,Reading,Fall to Fall,Fall ,Fall,208,5.29,1.74
+5,Reading,Fall to Fall,Fall ,Fall,210,4.89,1.68
+5,Reading,Fall to Fall,Fall ,Fall,212,4.5,1.63
+5,Reading,Fall to Fall,Fall ,Fall,214,4.1,1.59
+5,Reading,Fall to Fall,Fall ,Fall,216,3.71,1.56
+5,Reading,Fall to Fall,Fall ,Fall,218,3.31,1.54
+5,Reading,Fall to Spring,Fall ,Spring,194,8.91,2.49
+5,Reading,Fall to Spring,Fall ,Spring,196,8.45,2.38
+5,Reading,Fall to Spring,Fall ,Spring,198,7.99,2.28
+5,Reading,Fall to Spring,Fall ,Spring,200,7.52,2.18
+5,Reading,Fall to Spring,Fall ,Spring,202,7.1,2.1
+5,Reading,Fall to Spring,Fall ,Spring,204,6.59,2
+5,Reading,Fall to Spring,Fall ,Spring,206,6.13,1.91
+5,Reading,Fall to Spring,Fall ,Spring,208,5.67,1.84
+5,Reading,Fall to Spring,Fall ,Spring,210,5.2,1.77
+5,Reading,Fall to Spring,Fall ,Spring,212,4.74,1.7
+5,Reading,Fall to Spring,Fall ,Spring,214,4.27,1.65
+5,Reading,Fall to Spring,Fall ,Spring,216,3.81,1.61
+5,Reading,Fall to Spring,Fall ,Spring,218,3.35,1.58
+5,Reading,Spring to Spring,Spring ,Spring,193,9.25,2.54
+5,Reading,Spring to Spring,Spring ,Spring,195,8.8,2.42
+5,Reading,Spring to Spring,Spring ,Spring,197,8.35,2.31
+5,Reading,Spring to Spring,Spring ,Spring,199,7.9,2.21
+5,Reading,Spring to Spring,Spring ,Spring,201,7.5,2.1
+5,Reading,Spring to Spring,Spring ,Spring,203,7,2.02
+5,Reading,Spring to Spring,Spring ,Spring,205,6.55,1.94
+5,Reading,Spring to Spring,Spring ,Spring,207,6.1,1.86
+5,Reading,Spring to Spring,Spring ,Spring,209,5.65,1.8
+5,Reading,Spring to Spring,Spring ,Spring,211,5.2,1.75
+5,Reading,Spring to Spring,Spring ,Spring,213,4.75,1.71
+5,Reading,Spring to Spring,Spring ,Spring,215,4.3,1.69
+5,Reading,Spring to Spring,Spring ,Spring,217,3.85,1.68
+6,Reading,Fall to Fall,Fall ,Fall,199,7.3,2.31
+6,Reading,Fall to Fall,Fall ,Fall,201,6.89,2.22
+6,Reading,Fall to Fall,Fall ,Fall,203,6.48,2.14
+6,Reading,Fall to Fall,Fall ,Fall,205,6.06,2.07
+6,Reading,Fall to Fall,Fall ,Fall,207,5.7,2
+6,Reading,Fall to Fall,Fall ,Fall,209,5.24,1.93
+6,Reading,Fall to Fall,Fall ,Fall,211,4.83,1.87
+6,Reading,Fall to Fall,Fall ,Fall,213,4.42,1.81
+6,Reading,Fall to Fall,Fall ,Fall,215,4.01,1.77
+6,Reading,Fall to Fall,Fall ,Fall,217,3.6,1.73
+6,Reading,Fall to Fall,Fall ,Fall,219,3.19,1.69
+6,Reading,Fall to Fall,Fall ,Fall,221,2.78,1.67
+6,Reading,Fall to Fall,Fall ,Fall,223,2.37,1.66
+6,Reading,Fall to Spring,Fall ,Spring,199,7.74,2.42
+6,Reading,Fall to Spring,Fall ,Spring,201,7.28,2.33
+6,Reading,Fall to Spring,Fall ,Spring,203,6.82,2.24
+6,Reading,Fall to Spring,Fall ,Spring,205,6.37,2.16
+6,Reading,Fall to Spring,Fall ,Spring,207,5.9,2.1
+6,Reading,Fall to Spring,Fall ,Spring,209,5.45,2.01
+6,Reading,Fall to Spring,Fall ,Spring,211,4.99,1.95
+6,Reading,Fall to Spring,Fall ,Spring,213,4.53,1.89
+6,Reading,Fall to Spring,Fall ,Spring,215,4.07,1.84
+6,Reading,Fall to Spring,Fall ,Spring,217,3.62,1.8
+6,Reading,Fall to Spring,Fall ,Spring,219,3.16,1.77
+6,Reading,Fall to Spring,Fall ,Spring,221,2.7,1.74
+6,Reading,Fall to Spring,Fall ,Spring,223,2.24,1.73
+6,Reading,Spring to Spring,Spring ,Spring,199,7.15,2.66
+6,Reading,Spring to Spring,Spring ,Spring,201,6.74,2.56
+6,Reading,Spring to Spring,Spring ,Spring,203,6.34,2.46
+6,Reading,Spring to Spring,Spring ,Spring,205,5.93,2.36
+6,Reading,Spring to Spring,Spring ,Spring,207,5.5,2.3
+6,Reading,Spring to Spring,Spring ,Spring,209,5.11,2.18
+6,Reading,Spring to Spring,Spring ,Spring,211,4.7,2.1
+6,Reading,Spring to Spring,Spring ,Spring,213,4.29,2.03
+6,Reading,Spring to Spring,Spring ,Spring,215,3.88,1.96
+6,Reading,Spring to Spring,Spring ,Spring,217,3.47,1.9
+6,Reading,Spring to Spring,Spring ,Spring,219,3.06,1.86
+6,Reading,Spring to Spring,Spring ,Spring,221,2.65,1.82
+6,Reading,Spring to Spring,Spring ,Spring,223,2.25,1.79
+7,Reading,Fall to Fall,Fall ,Fall,203,6.97,2.43
+7,Reading,Fall to Fall,Fall ,Fall,205,6.54,2.33
+7,Reading,Fall to Fall,Fall ,Fall,207,6.12,2.24
+7,Reading,Fall to Fall,Fall ,Fall,209,5.69,2.15
+7,Reading,Fall to Fall,Fall ,Fall,211,5.3,2.1
+7,Reading,Fall to Fall,Fall ,Fall,213,4.84,1.99
+7,Reading,Fall to Fall,Fall ,Fall,215,4.41,1.91
+7,Reading,Fall to Fall,Fall ,Fall,217,3.98,1.84
+7,Reading,Fall to Fall,Fall ,Fall,219,3.56,1.78
+7,Reading,Fall to Fall,Fall ,Fall,221,3.13,1.73
+7,Reading,Fall to Fall,Fall ,Fall,223,2.7,1.69
+7,Reading,Fall to Fall,Fall ,Fall,225,2.28,1.65
+7,Reading,Fall to Fall,Fall ,Fall,227,1.85,1.63
+7,Reading,Fall to Spring,Fall ,Spring,203,6.56,2.41
+7,Reading,Fall to Spring,Fall ,Spring,205,6.12,2.32
+7,Reading,Fall to Spring,Fall ,Spring,207,5.68,2.22
+7,Reading,Fall to Spring,Fall ,Spring,209,5.25,2.13
+7,Reading,Fall to Spring,Fall ,Spring,211,4.8,2
+7,Reading,Fall to Spring,Fall ,Spring,213,4.37,1.97
+7,Reading,Fall to Spring,Fall ,Spring,215,3.94,1.9
+7,Reading,Fall to Spring,Fall ,Spring,217,3.5,1.83
+7,Reading,Fall to Spring,Fall ,Spring,219,3.06,1.77
+7,Reading,Fall to Spring,Fall ,Spring,221,2.62,1.72
+7,Reading,Fall to Spring,Fall ,Spring,223,2.19,1.67
+7,Reading,Fall to Spring,Fall ,Spring,225,1.75,1.63
+7,Reading,Fall to Spring,Fall ,Spring,227,1.31,1.61
+7,Reading,Spring to Spring,Spring ,Spring,203,6.77,2.5
+7,Reading,Spring to Spring,Spring ,Spring,205,6.34,2.4
+7,Reading,Spring to Spring,Spring ,Spring,207,5.91,2.3
+7,Reading,Spring to Spring,Spring ,Spring,209,5.48,2.21
+7,Reading,Spring to Spring,Spring ,Spring,211,5,2.1
+7,Reading,Spring to Spring,Spring ,Spring,213,4.62,2.04
+7,Reading,Spring to Spring,Spring ,Spring,215,4.19,1.96
+7,Reading,Spring to Spring,Spring ,Spring,217,3.76,1.9
+7,Reading,Spring to Spring,Spring ,Spring,219,3.32,1.84
+7,Reading,Spring to Spring,Spring ,Spring,221,2.89,1.79
+7,Reading,Spring to Spring,Spring ,Spring,223,2.46,1.75
+7,Reading,Spring to Spring,Spring ,Spring,225,2.03,1.72
+7,Reading,Spring to Spring,Spring ,Spring,227,1.6,1.7
+8,Reading,Fall to Fall,Fall ,Fall,206,5.94,2.58
+8,Reading,Fall to Fall,Fall ,Fall,208,5.54,2.44
+8,Reading,Fall to Fall,Fall ,Fall,210,5.14,2.3
+8,Reading,Fall to Fall,Fall ,Fall,212,4.74,2.17
+8,Reading,Fall to Fall,Fall ,Fall,214,4.3,2
+8,Reading,Fall to Fall,Fall ,Fall,216,3.94,1.92
+8,Reading,Fall to Fall,Fall ,Fall,218,3.55,1.8
+8,Reading,Fall to Fall,Fall ,Fall,220,3.15,1.69
+8,Reading,Fall to Fall,Fall ,Fall,222,2.75,1.59
+8,Reading,Fall to Fall,Fall ,Fall,224,2.35,1.51
+8,Reading,Fall to Fall,Fall ,Fall,226,1.95,1.43
+8,Reading,Fall to Fall,Fall ,Fall,228,1.55,1.37
+8,Reading,Fall to Fall,Fall ,Fall,230,1.15,1.34
+8,Reading,Fall to Spring,Fall ,Spring,206,6.21,2.53
+8,Reading,Fall to Spring,Fall ,Spring,208,5.78,2.39
+8,Reading,Fall to Spring,Fall ,Spring,210,5.34,2.26
+8,Reading,Fall to Spring,Fall ,Spring,212,4.91,2.13
+8,Reading,Fall to Spring,Fall ,Spring,214,4.5,2
+8,Reading,Fall to Spring,Fall ,Spring,216,4.04,1.88
+8,Reading,Fall to Spring,Fall ,Spring,218,3.61,1.76
+8,Reading,Fall to Spring,Fall ,Spring,220,3.18,1.66
+8,Reading,Fall to Spring,Fall ,Spring,222,2.75,1.56
+8,Reading,Fall to Spring,Fall ,Spring,224,2.31,1.47
+8,Reading,Fall to Spring,Fall ,Spring,226,1.88,1.39
+8,Reading,Fall to Spring,Fall ,Spring,228,1.45,1.33
+8,Reading,Fall to Spring,Fall ,Spring,230,1.02,1.29
+8,Reading,Spring to Spring,Spring ,Spring,206,6.84,2.36
+8,Reading,Spring to Spring,Spring ,Spring,208,6.39,2.25
+8,Reading,Spring to Spring,Spring ,Spring,210,5.94,2.13
+8,Reading,Spring to Spring,Spring ,Spring,212,5.49,2.02
+8,Reading,Spring to Spring,Spring ,Spring,214,5,1.9
+8,Reading,Spring to Spring,Spring ,Spring,216,4.59,1.83
+8,Reading,Spring to Spring,Spring ,Spring,218,4.14,1.74
+8,Reading,Spring to Spring,Spring ,Spring,220,3.68,1.66
+8,Reading,Spring to Spring,Spring ,Spring,222,3.23,1.58
+8,Reading,Spring to Spring,Spring ,Spring,224,2.78,1.53
+8,Reading,Spring to Spring,Spring ,Spring,226,2.33,1.48
+8,Reading,Spring to Spring,Spring ,Spring,228,1.88,1.45
+8,Reading,Spring to Spring,Spring ,Spring,230,1.43,1.43
+9,Reading,Fall to Fall,Fall ,Fall,208,4.97,2.46
+9,Reading,Fall to Fall,Fall ,Fall,210,4.58,2.36
+9,Reading,Fall to Fall,Fall ,Fall,212,4.2,2.27
+9,Reading,Fall to Fall,Fall ,Fall,214,3.81,2.17
+9,Reading,Fall to Fall,Fall ,Fall,216,3.4,2.1
+9,Reading,Fall to Fall,Fall ,Fall,218,3.04,2.01
+9,Reading,Fall to Fall,Fall ,Fall,220,2.65,1.94
+9,Reading,Fall to Fall,Fall ,Fall,222,2.27,1.88
+9,Reading,Fall to Fall,Fall ,Fall,224,1.88,1.83
+9,Reading,Fall to Fall,Fall ,Fall,226,1.49,1.78
+9,Reading,Fall to Fall,Fall ,Fall,228,1.11,1.75
+9,Reading,Fall to Fall,Fall ,Fall,230,0.72,1.73
+9,Reading,Fall to Fall,Fall ,Fall,232,0.34,1.73
+9,Reading,Fall to Spring,Fall ,Spring,208,4.69,2.74
+9,Reading,Fall to Spring,Fall ,Spring,210,4.28,2.61
+9,Reading,Fall to Spring,Fall ,Spring,212,3.87,2.48
+9,Reading,Fall to Spring,Fall ,Spring,214,3.46,2.36
+9,Reading,Fall to Spring,Fall ,Spring,216,3,2.2
+9,Reading,Fall to Spring,Fall ,Spring,218,2.63,2.14
+9,Reading,Fall to Spring,Fall ,Spring,220,2.22,2.03
+9,Reading,Fall to Spring,Fall ,Spring,222,1.81,1.93
+9,Reading,Fall to Spring,Fall ,Spring,224,1.4,1.84
+9,Reading,Fall to Spring,Fall ,Spring,226,0.99,1.76
+9,Reading,Fall to Spring,Fall ,Spring,228,0.58,1.69
+9,Reading,Fall to Spring,Fall ,Spring,230,0.17,1.63
+9,Reading,Fall to Spring,Fall ,Spring,232,-0.24,1.58
+9,Reading,Spring to Spring,Spring ,Spring,209,4.55,3.25
+9,Reading,Spring to Spring,Spring ,Spring,211,4.16,3.09
+9,Reading,Spring to Spring,Spring ,Spring,213,3.76,2.93
+9,Reading,Spring to Spring,Spring ,Spring,215,3.36,2.78
+9,Reading,Spring to Spring,Spring ,Spring,217,3,2.6
+9,Reading,Spring to Spring,Spring ,Spring,219,2.57,2.49
+9,Reading,Spring to Spring,Spring ,Spring,221,2.17,2.35
+9,Reading,Spring to Spring,Spring ,Spring,223,1.78,2.22
+9,Reading,Spring to Spring,Spring ,Spring,225,1.38,2.1
+9,Reading,Spring to Spring,Spring ,Spring,227,0.99,1.99
+9,Reading,Spring to Spring,Spring ,Spring,229,0.59,1.89
+9,Reading,Spring to Spring,Spring ,Spring,231,0.19,1.81
+9,Reading,Spring to Spring,Spring ,Spring,233,-0.2,1.74
+10,Reading,Fall to Fall,Fall ,Fall,210,4.62,3.28
+10,Reading,Fall to Fall,Fall ,Fall,212,4.21,3.12
+10,Reading,Fall to Fall,Fall ,Fall,214,3.79,2.96
+10,Reading,Fall to Fall,Fall ,Fall,216,3.37,2.81
+10,Reading,Fall to Fall,Fall ,Fall,218,3,2.7
+10,Reading,Fall to Fall,Fall ,Fall,220,2.54,2.53
+10,Reading,Fall to Fall,Fall ,Fall,222,2.12,2.4
+10,Reading,Fall to Fall,Fall ,Fall,224,1.71,2.28
+10,Reading,Fall to Fall,Fall ,Fall,226,1.29,2.18
+10,Reading,Fall to Fall,Fall ,Fall,228,0.88,2.09
+10,Reading,Fall to Fall,Fall ,Fall,230,0.46,2.02
+10,Reading,Fall to Fall,Fall ,Fall,232,0.04,1.97
+10,Reading,Fall to Fall,Fall ,Fall,234,-0.37,1.94
+10,Reading,Fall to Spring,Fall ,Spring,210,4.53,3
+10,Reading,Fall to Spring,Fall ,Spring,212,4.1,2.85
+10,Reading,Fall to Spring,Fall ,Spring,214,3.68,2.71
+10,Reading,Fall to Spring,Fall ,Spring,216,3.26,2.57
+10,Reading,Fall to Spring,Fall ,Spring,218,2.8,2.4
+10,Reading,Fall to Spring,Fall ,Spring,220,2.42,2.31
+10,Reading,Fall to Spring,Fall ,Spring,222,1.99,2.2
+10,Reading,Fall to Spring,Fall ,Spring,224,1.57,2.09
+10,Reading,Fall to Spring,Fall ,Spring,226,1.15,1.99
+10,Reading,Fall to Spring,Fall ,Spring,228,0.73,1.9
+10,Reading,Fall to Spring,Fall ,Spring,230,0.3,1.83
+10,Reading,Fall to Spring,Fall ,Spring,232,-0.12,1.77
+10,Reading,Fall to Spring,Fall ,Spring,234,-0.54,1.73
+10,Reading,Spring to Spring,Spring ,Spring,210,5.26,2.91
+10,Reading,Spring to Spring,Spring ,Spring,212,4.84,2.76
+10,Reading,Spring to Spring,Spring ,Spring,214,4.42,2.62
+10,Reading,Spring to Spring,Spring ,Spring,216,4,2.48
+10,Reading,Spring to Spring,Spring ,Spring,218,3.6,2.4
+10,Reading,Spring to Spring,Spring ,Spring,220,3.16,2.23
+10,Reading,Spring to Spring,Spring ,Spring,222,2.74,2.12
+10,Reading,Spring to Spring,Spring ,Spring,224,2.32,2.01
+10,Reading,Spring to Spring,Spring ,Spring,226,1.91,1.92
+10,Reading,Spring to Spring,Spring ,Spring,228,1.49,1.85
+10,Reading,Spring to Spring,Spring ,Spring,230,1.07,1.79
+10,Reading,Spring to Spring,Spring ,Spring,232,0.65,1.75
+10,Reading,Spring to Spring,Spring ,Spring,234,0.23,1.73
