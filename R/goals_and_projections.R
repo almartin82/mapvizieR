@@ -33,6 +33,7 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
            measurementscale, 
            start_testid,
            start_grade,
+           growth_window,
            start_grade_level_season,
            start_fallwinterspring,
            end_testid,
@@ -49,8 +50,10 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
            met_accel_growth=rit_growth>=accel_growth,
            iter=iter+1) %>%
     dplyr::select(studentid, 
+                  measurementscale,
                   start_testid, 
                   end_testid,
+                  growth_window,
                   start_fallwinterspring,
                   end_fallwinterspring, 
                   accel_growth, 
@@ -69,7 +72,11 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
   # return
   out_list<-list(
     goals=out,
-    join_by_fields=c("studentid", "start_testid", "end_testid"),
+    join_by_fields=c("studentid", 
+                     "start_testid", 
+                     "end_testid", 
+                     "measurementscale",
+                     "growth_window"),
     slot_name = "kipp_tiered_goals"
   )
 }    
