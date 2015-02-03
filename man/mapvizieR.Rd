@@ -16,9 +16,6 @@ mapvizieR(raw_cdf, raw_roster)
 calls a sequence of cdf and roster prep functions, given a raw cdf and raw roster
 }
 \examples{
-data(ex_CombinedAssessmentResults)
-data(ex_CombinedStudentsBySchool)
-
 cdf_mv <- mapvizieR(ex_CombinedAssessmentResults,
                     ex_CombinedStudentsBySchool)
 
