@@ -160,9 +160,9 @@ add_accelerated_growth <- function(mapvizier_object,
        new_growth_df <- new_growth_df %>%
          mutate(accel_growth.x=accel_growth.y,
                 met_accel_growth.x=met_accel_growth.y) %>%
-         select(accel_growth=accel_growth.x,
-                met_accel_growth=met_accel_growth.x,
-                -accel_growth.y,
+         rename(accel_growth=accel_growth.x,
+                met_accel_growth=met_accel_growth.x) %>%
+         select(-accel_growth.y,
                 -met_accel_growth.y) 
      }
        
