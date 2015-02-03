@@ -89,8 +89,8 @@ test_that("mapvizieR S3 class methods work", {
     raw_roster = ex_CombinedStudentsBySchool
   )
   
-  expect_equal(length(mv), 3)
-  expect_equal(names(mv), c("cdf", "roster", "growth_df"))
+  expect_equal(length(mv), 4)
+  expect_equal(names(mv), c("cdf", "roster", "growth_df", "goals"))
   expect_output(mv, "714 students")
   expect_output(print.mapvizieR(mv), "SY2012 to SY2013")
   expect_true(is.mapvizieR(mv))
