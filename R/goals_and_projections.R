@@ -1,23 +1,26 @@
-# This is the structure of the goals object.
-# studentid
-# measurementscale
-# grade_level_season
-# growth_season
-# simulation_number (this is for any simulated results so we can show projected uncertainty. See the map_projector concept).
-# projected RIT Score.
-# projected RIT Score type (i.e., typical or accelerated).
-# pointer to testid?
-# 
-# persistence of "projects"/goals?
-# 
-# hold object as promise? Does this hurt architecture that generates goals and then adds them back to object.
-
-
-#I think we can have mulitple goals objects.  One for typical goals
-# one ofr Accelerated goals as calcled with KIPP Tiered
-# one to n for custome goals 
-
-# create data.frame suitable for saving to a 
+#' @title Create KIPP Tiered accelerated growth goals
+#' 
+#' @description
+#' \code{goal_kipp_tiered} is a "goal function": it creates a list with three
+#' elements: a \code{goals} data frame (including  fields \code{accel_growth} and 
+#' \code{met_accel_growth} used in the \code{growth_df} of a \code{\link{mapvizieR}}
+#' object. 
+#' 
+#' @param mapvizier_object a \code{\link{mapvizieR}} object. 
+#' @param iterations the number of iterations out from any student test event
+#' you wish to continue projecting student growth.  This features is not 
+#' yet implemented, so it only projects growth one iteration. 
+#' 
+#' @examples
+#' data(ex_CombinedAssessmentResults)
+#' data(ex_CombinedStudentsBySchool)
+#' 
+#' cdf_mv <- mapvizieR(ex_CombinedAssessmentResults, 
+#'                     ex_CombinedStudentsBySchool)
+#'                     
+#' goals<-goal_kipp_tiered(cdf_mv)                     
+#' 
+#' @export
 goal_kipp_tiered <- function(mapvizier_object, iterations=1){
   
   
@@ -71,11 +74,60 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
   )
 }    
 
+#' @title Add an accelerated growth object, including projections and 
+#' simulations, to a mapvizieR object
+#' 
+#' @description
+#' \code{add_accelerated_growth} is a constructor function that adds a 
+#' "goals" object (a list with a \code{goals} data frame, a \code{join_by_fields}
+#' character vector, and \code{slot_name} single element character vector) to
+#' a \code{\link{mapvizieR}} object. The goals object is added to a \code{goals}
+#' slot in the \code{mapvizieR} object. The goals themselves, as well as any 
+#' projections or simulations, are created by a "goals function" (see \code{\link{goal_kipp_tiered}}
+#' for an example) that is passed as the \code{goal_function argument}; 
+#' arguments to the \code{goal_function} are passed via the \code{goal_function_args} 
+#' argument. Note well that the \code{goal_function} must (i) return a list with 
+#' three elements (the goals data frame, the join_by_fields character vector,
+#' and the slot_name) and (ii) the goals data frame must have at least fields named
+#' \code{accel_growth} and \code{met_accel_growth}. If the \code{updated_growth_df}
+#' is TRUE then the goals data frame is \code{inner_join}ed  with the 
+#' \code{growth_df} using the \code{join_by_fields}, accelerated growth columns are added or updated, and any 
+#' duplicate columns from the join are cleaned up (original columns from 
+#' the \code{growth_df} are maintened). Obviouslly, the goals function should
+#' return a one to one match on any first iterations. 
+#' 
+#' @param mapvizier_object a \code{\link{mapvizieR}} object. 
+#' @param goal_function a function that returns a list containing a a data 
+#' frame named \code{goals}, a character vector of columns used to join 
+#' accelerated goals to \code{growth_df}, and \code{slot_name} single element
+#' character vector used to name the slot in the \code{goals} element of 
+#' a \code{mapvizieR} object. 
+#' @param  goal_function_args arguments passed to \code{goal_function}
+#' @param update_growth_df if \code{TRUE} accelerated growth and met accelerated
+#' growth columns are added/updated in the \code{growth_df} of a \code{mapvizieR}
+#' object
+#' 
+#' @return a \code{\link{mapvizieR}} object. 
+#' 
+#' @examples
+#' data(ex_CombinedAssessmentResults)
+#' data(ex_CombinedStudentsBySchool)
+#' 
+#' cdf_mv <- mapvizieR(ex_CombinedAssessmentResults, 
+#'                     ex_CombinedStudentsBySchool)
+#'                     
+#' new_mv<-add_accelerated_growth(cdf_mv,
+#'                                goal_function=goal_kipp_tiered, 
+#'                                goal_function_args=list(iterations=1),
+#'                                update_growth_df=FALSE)
+#' str(new_mv)                                
+#' 
+#' @export
 
 add_accelerated_growth <- function(mapvizier_object, 
                          goal_function=goal_kipp_tiered, 
                          goal_function_args=list(iterations=1),
-                         updated_growth_df=FALSE){
+                         update_growth_df=FALSE){
     # this should be run in the mapvizier method after the mapvizier class
     # is assigned.  That way it can be used in the constructor method or
     # outside of it for adding new growth to the 
@@ -89,7 +141,7 @@ add_accelerated_growth <- function(mapvizier_object,
    #
    mapvizier_object$goals[[goals_obj$slot_name]]<-goals_obj
    
-   if(updated_growth_df){
+   if(update_growth_df){
      new_growth_df<-
        mapvizier_object$growth_df %>%
        inner_join(goals_obj$goals,
@@ -129,6 +181,28 @@ add_accelerated_growth <- function(mapvizier_object,
 
 
 # ensures ####
+#' @title ensure_goals_names
+#' 
+#' @description a contract that ensures that a goal object's has the 
+#' proper elements. 
+#' 
+#' @param . dot-placeholder, per ensurer doc.
+ensure_goals_names<-ensures_that(
+  all(
+    c("goals", "join_by_fields", "slot_name") %in% 
+      names(.)) ~ 
+    paste0("Your goals function must create a list ", 
+           "with slots for 'goals', 'join_by_fields', ",  
+           "and 'slot_name'.")
+)
+
+#' @title ensure_goals_obj
+#' 
+#' @description a contract that ensures that a goal object's has the proper  
+#' elements and that the \code{goals} element data frame has columns names
+#' \code{accel_growth} and \code{met_acc}
+#' 
+#' @param . dot-placeholder, per ensurer doc.
 ensure_goals_obj<- ensures_that(+ensure_goals_names,
   all(
     c("accel_growth",  "met_accel_growth") %in% names(.$goals)) ~
@@ -136,14 +210,8 @@ ensure_goals_obj<- ensures_that(+ensure_goals_names,
                      must have accel_growth and met_accel_growth fields.")
     )
 
-ensure_goals_names<-ensures_that(
-  all(
-    c("goals", "join_by_fields", "slot_name") %in% 
-      names(.)) ~ 
-    paste0("Your goals function must create a list ", 
-                      "with slots for 'goals', 'join_by_fields', ",  
-                      "and 'slot_name'.")
-  )
+
+
 
 
 
