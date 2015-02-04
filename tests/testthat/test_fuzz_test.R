@@ -9,6 +9,3 @@ test_that("fuzz test a vanilla ggplot", {
   results <- fuzz_test_plot('error_ridden_plot', n=3)
   expect_false(all(unlist(results)))
 })
-
-
-

@@ -37,33 +37,36 @@ calc_cgp_targets <- function(
 }
 
 
+#' @title determine_cgp_method
+#' 
+#' @description given all the cgp parameters, determines how we'll look up growth scores.
+#' 
+#' @inheritParams calc_cgp_targets
+
 determine_cgp_method <- function(
-  measurementscale
- ,grade
- ,growth_window
+  measurementscale_in
+ ,grade_in
+ ,growth_window_in
  ,baseline_avg_rit
  ,tolerance
  ,sch_growth_study
 ) {
   #if this is science, use the generalization
-  if (measurementscale == 'General Science') {
+  if (measurementscale_in == 'General Science') {
     return('cgp_generalization')
   }
   
   norm_match <- sch_growth_study %>%
     filter(
-      measurementscale==measurementscale
-     ,growth_window==growth_window
-     ,grade==grade
+      measurementscale==measurementscale_in, growth_window==growth_window_in, grade==grade_in
     )
   
   diffs <- baseline_avg_rit - norm_match$rit
   #if the rit difference is greater than the tolerance, use generalization
-  if (max(abs(diffs)) > tolerance) {
+  if (min(abs(diffs)) > tolerance) {
     return('cgp_generalization')
   #otherwise look it up 
   } else {
     return('cgp_nearest_lookup')
   }
-
 }
