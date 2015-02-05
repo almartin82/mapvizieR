@@ -8,7 +8,7 @@ test_that("determine_cgp_method tests", {
       'Mathematics', 5, 'Fall to Spring'
       ,206, 10, sch_growth_norms_2012
     ),
-    "cgp_nearest_lookup"
+    "lookup"
   )
 
   #cgp_nearest_lookup for science
@@ -17,7 +17,7 @@ test_that("determine_cgp_method tests", {
       'General Science', 5, 'Fall to Spring'
       ,206, 10, sch_growth_norms_2012
     ),
-    "cgp_generalization"
+    "generalization"
   )
   
   #cgp_generalization when outside of rit difference tolerance  
@@ -26,7 +26,7 @@ test_that("determine_cgp_method tests", {
       'Mathematics', 5, 'Fall to Spring'
       ,178, 10, sch_growth_norms_2012
     ),
-    "cgp_generalization"
+    "generalization"
   )
 
 })
