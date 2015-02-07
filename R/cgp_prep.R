@@ -1,4 +1,3 @@
-
 #' @title project_cgp_targets
 #' 
 #' @description given a baseline, what scores are necessary to reach certain growth targets
@@ -27,19 +26,53 @@ project_cgp_targets <- function(
  ,sch_growth_study=sch_growth_norms_2012
  ,calc_for=c(1:99)
 ) {
+  #cant have a growth percentile 0 or below, or 100 or above.
 
   #get the method
   cgp_method <- determine_cgp_method(
     measurementscale, grade, growth_window, baseline_avg_rit, tolerance, sch_growth_study
   )
 
-  #do.call the method
+  #get target using do.call for appropriate method
+  typ_expectation <- do.call(
+    what=paste0('cohort_expectation_', cgp_method),
+    args=list(
+      measurementscale_in=measurementscale,
+      grade_in=grade,
+      growth_window_in=growth_window,
+      baseline_avg_rit=baseline_avg_rit
+    )
+  )
   
+  growth_target <- lapply(
+    X=calc_for, 
+    FUN=gain_needed, 
+    sd_gain=typ_expectation[['sd_of_expectation']], 
+    mean_gain=typ_expectation[['typical_cohort_growth']]
+  ) %>% unlist()
   
-  calc_for <- c(1:99)
-  
+  data.frame(
+    cgp=calc_for,
+    z_score=qnorm(calc_for/100),
+    growth_target=growth_target,
+    measured_in=ifelse(cgp_method=='lookup', 'RIT', 'NPR')
+  )
 }
 
+
+
+#' @title gain_needed
+#' 
+#' @description rit gain needed to reach given percentile
+#' 
+#' @param percentile growth percentile, between 0-100
+#' @param sd_gain sd for population growth
+#' @param mean_gain typical growth for population
+
+gain_needed <- function(percentile, sd_gain, mean_gain) {
+  z <- qnorm((percentile/100))
+  (z * sd_gain) + mean_gain
+}
 
 
 #' @title determine_cgp_method
@@ -82,23 +115,23 @@ determine_cgp_method <- function(
 
 
 
-#' @title cgp_target_lookup
+#' @title cohort_expectation_lookup
 #' 
-#' @description get the best matching row from a school growth study data frame.
+#' @description get cohort growth expectations via lookup from growth study
 #' 
 #' @param measurementscale MAP subject
 #' @param grade baseline/starting grad for the group of students
 #' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students
+#' @param sch_growth_study NWEA school growth study to use for lookup; defaults to 2012.
 
-cgp_target_lookup <- function(  
+cohort_expectation_lookup <- function(  
   measurementscale_in
  ,grade_in
  ,growth_window_in
  ,baseline_avg_rit
  ,sch_growth_study=sch_growth_norms_2012
-) {
-    
+) {    
   norm_match <- sch_growth_study %>%
     filter(
       measurementscale==measurementscale_in, growth_window==growth_window_in, 
@@ -110,10 +143,26 @@ cgp_target_lookup <- function(
   
   best_match <- rank(norm_match$diff, ties.method=c("first"))
   
-  norm_match[best_match==1, ]
+  as.list(norm_match[best_match==1, ])
 }
 
 
-ex_diamonds <- diamonds[sample(nrow(diamonds), 20), ]
-ex_diamonds$rank <- with(ex_diamonds, rank(color, -price))
-ex_diamonds[order(ex_diamonds$rank),] 
+
+#' @title cohort_expectation_generalization
+#' 
+#' @description get the best matching row from a school growth study data frame.
+#' 
+#' @param measurementscale MAP subject
+#' @param grade baseline/starting grad for the group of students
+#' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
+#' @param baseline_avg_rit the baseline mean rit for the group of students
+
+cohort_expectation_generalization <- function(
+  measurementscale_in
+ ,grade_in
+ ,growth_window_in
+ ,baseline_avg_rit
+){
+  #stub
+  return(NA)  
+} 
