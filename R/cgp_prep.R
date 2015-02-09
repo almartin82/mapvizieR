@@ -22,6 +22,7 @@ project_cgp_targets <- function(
  ,grade
  ,growth_window
  ,baseline_avg_rit
+ ,baseline_avg_npr
  ,tolerance=10
  ,sch_growth_study=sch_growth_norms_2012
  ,calc_for=c(1:99)
@@ -33,35 +34,110 @@ project_cgp_targets <- function(
     measurementscale, grade, growth_window, baseline_avg_rit, tolerance, sch_growth_study
   )
 
-  #get target using do.call for appropriate method
-  typ_expectation <- do.call(
-    what=paste0('cohort_expectation_', cgp_method),
+  #do.call the appropriate method.  returns df.
+  do.call(
+    what=paste0('cohort_expectation_via_', cgp_method),
     args=list(
       measurementscale_in=measurementscale,
       grade_in=grade,
       growth_window_in=growth_window,
+      baseline_avg_rit=baseline_avg_rit,
+      calc_for=calc_for
+    )
+  )
+    
+}
+
+
+
+#' @title cohort_expectation_via_lookup
+#' 
+#' @description wrapper function to get cohort growth expectations for the lookup method
+#' 
+#' @inheritParams project_cgp_targets
+
+cohort_expectation_via_lookup <- function(
+  measurementscale_in
+ ,grade_in
+ ,growth_window_in
+ ,baseline_avg_rit
+ ,baseline_avg_npr
+ ,sch_growth_study
+ ,calc_for
+) {
+  
+  #get expectation
+  growth_expectation <- do.call(
+    what=sch_growth_lookup,
+    args=list(
+      measurementscale_in=measurementscale_in,
+      grade_in=grade_in,
+      growth_window_in=growth_window_in,
       baseline_avg_rit=baseline_avg_rit
     )
   )
-  
+
+  #calc targets over range
   growth_target <- lapply(
     X=calc_for, 
-    FUN=gain_needed, 
-    sd_gain=typ_expectation[['sd_of_expectation']], 
-    mean_gain=typ_expectation[['typical_cohort_growth']]
+    FUN=rit_gain_needed, 
+    sd_gain=growth_expectation[['sd_of_expectation']], 
+    mean_gain=growth_expectation[['typical_cohort_growth']]
   ) %>% unlist()
-  
+
+
+  #return df
   data.frame(
     cgp=calc_for,
     z_score=qnorm(calc_for/100),
     growth_target=growth_target,
-    measured_in=ifelse(cgp_method=='lookup', 'RIT', 'NPR')
+    measured_in='RIT'
   )
 }
 
 
 
-#' @title gain_needed
+
+
+#' @title cohort_expectation_via_generalization
+#' 
+#' @description expectation in NPR via generalization
+#' 
+#' @inheritParams project_cgp_targets
+
+cohort_expectation_via_generalization <- function(
+  measurementscale_in
+ ,grade_in
+ ,growth_window_in
+ ,baseline_avg_rit
+ ,baseline_avg_npr
+ ,sch_growth_study
+ ,calc_for
+){
+  #these only work for spring to spring...
+  #some assert here
+  
+  #apply over calc_for
+  growth_target <- lapply(
+    X=calc_for, 
+    FUN=percentile_gain_needed, 
+    grade_level=grade_in,
+    start_npr=baseline_avg_npr
+  ) %>% unlist()
+  
+  #return df
+  data.frame(
+    cgp=calc_for,
+    z_score=qnorm(calc_for/100),
+    growth_target=growth_target,
+    measured_in='NPR'
+  )
+  
+} 
+
+
+
+#' @title rit_gain_needed
 #' 
 #' @description rit gain needed to reach given percentile
 #' 
@@ -69,10 +145,30 @@ project_cgp_targets <- function(
 #' @param sd_gain sd for population growth
 #' @param mean_gain typical growth for population
 
-gain_needed <- function(percentile, sd_gain, mean_gain) {
+rit_gain_needed <- function(percentile, sd_gain, mean_gain) {
   z <- qnorm((percentile/100))
   (z * sd_gain) + mean_gain
 }
+
+
+
+#' @title percentile_gain_needed
+#' 
+#' @description called by generalization method.
+#' 
+#' @param grade_in, start_npr, target_cgp
+
+percentile_gain_needed <- function(target_cgp, grade_level, start_npr) {
+    # transform cgp to logit scale (0-1)
+    target_cgp = target_cgp/100
+
+    # thanks wolfram alpha http://bit.ly/1dYmWqY
+    npr_change <- ((0.134056 * grade_level) + (-0.0574764 * start_npr) + log(-((12.583 * 
+        target_cgp)/(target_cgp - 1))))/0.292364
+
+    return(round(npr_change, 1))
+}
+
 
 
 #' @title determine_cgp_method
@@ -115,7 +211,7 @@ determine_cgp_method <- function(
 
 
 
-#' @title cohort_expectation_lookup
+#' @title sch_growth_lookup
 #' 
 #' @description get cohort growth expectations via lookup from growth study
 #' 
@@ -125,7 +221,7 @@ determine_cgp_method <- function(
 #' @param baseline_avg_rit the baseline mean rit for the group of students
 #' @param sch_growth_study NWEA school growth study to use for lookup; defaults to 2012.
 
-cohort_expectation_lookup <- function(  
+sch_growth_lookup <- function(  
   measurementscale_in
  ,grade_in
  ,growth_window_in
@@ -144,25 +240,5 @@ cohort_expectation_lookup <- function(
   best_match <- rank(norm_match$diff, ties.method=c("first"))
   
   as.list(norm_match[best_match==1, ])
+
 }
-
-
-
-#' @title cohort_expectation_generalization
-#' 
-#' @description get the best matching row from a school growth study data frame.
-#' 
-#' @param measurementscale MAP subject
-#' @param grade baseline/starting grad for the group of students
-#' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
-#' @param baseline_avg_rit the baseline mean rit for the group of students
-
-cohort_expectation_generalization <- function(
-  measurementscale_in
- ,grade_in
- ,growth_window_in
- ,baseline_avg_rit
-){
-  #stub
-  return(NA)  
-} 
