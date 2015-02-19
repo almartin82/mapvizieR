@@ -4,8 +4,8 @@
 \alias{project_cgp_targets}
 \title{project_cgp_targets}
 \usage{
-project_cgp_targets(measurementscale, grade, growth_window, baseline_avg_rit,
-  baseline_avg_npr, tolerance = 10,
+project_cgp_targets(measurementscale, grade, growth_window,
+  baseline_avg_rit = NA, baseline_avg_npr = NA, tolerance = 10,
   sch_growth_study = sch_growth_norms_2012, calc_for = c(1:99))
 }
 \arguments{

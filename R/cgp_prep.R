@@ -21,14 +21,26 @@ project_cgp_targets <- function(
   measurementscale
  ,grade
  ,growth_window
- ,baseline_avg_rit
- ,baseline_avg_npr
+ ,baseline_avg_rit=NA
+ ,baseline_avg_npr=NA
  ,tolerance=10
  ,sch_growth_study=sch_growth_norms_2012
  ,calc_for=c(1:99)
 ) {
-  #cant have a growth percentile 0 or below, or 100 or above.
+  #cant have a calc_for 0 or below, or 100 or above.
 
+  #you have to specify AT LEAST one of baseline_rit or baseline_npr
+  c(is.na(baseline_avg_rit), is.na(baseline_avg_npr)) %>%
+    ensure_that(
+      !all(.),
+      fail_with = function(...) {
+        stop("You must specify *either* a baseline RIT or a baseline NPR.", call. = FALSE)
+      }
+    )
+      
+  #if one of the baselines are -1, look up the value.
+  
+  
   #get the method
   cgp_method <- determine_cgp_method(
     measurementscale, grade, growth_window, baseline_avg_rit, tolerance, sch_growth_study
@@ -42,6 +54,7 @@ project_cgp_targets <- function(
       grade_in=grade,
       growth_window_in=growth_window,
       baseline_avg_rit=baseline_avg_rit,
+      baseline_avg_npr=baseline_avg_npr,
       calc_for=calc_for
     )
   )
@@ -85,7 +98,6 @@ cohort_expectation_via_lookup <- function(
     mean_gain=growth_expectation[['typical_cohort_growth']]
   ) %>% unlist()
 
-
   #return df
   data.frame(
     cgp=calc_for,
@@ -94,7 +106,6 @@ cohort_expectation_via_lookup <- function(
     measured_in='RIT'
   )
 }
-
 
 
 
@@ -216,7 +227,7 @@ determine_cgp_method <- function(
 #' @description get cohort growth expectations via lookup from growth study
 #' 
 #' @param measurementscale MAP subject
-#' @param grade baseline/starting grad for the group of students
+#' @param grade baseline/starting grade for the group of students
 #' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students
 #' @param sch_growth_study NWEA school growth study to use for lookup; defaults to 2012.
@@ -241,4 +252,28 @@ sch_growth_lookup <- function(
   
   as.list(norm_match[best_match==1, ])
 
+}
+
+
+
+#' @title rit_to_npr
+#' 
+#' @description given a RIT score, return the best match percentile rank
+#' 
+#' @param measurementscale MAP subject
+#' @param grade grade level
+#' @param season fall winter spring
+#' @param RIT rit score
+
+rit_to_npr <- function(measurementscale, grade, season, RIT) {
+  
+  matches <- student_norms_2011_dense_extended[with(student_norms_2011_dense_extended,
+    measurementscale==measurementscale & grade==grade &fallwinterspring==season &
+    round(RIT, 0)==RIT),]
+  
+  if (nrow(matches)==0) {
+    NA
+  } else{
+    matches[1, 'percentile']    
+  }
 }

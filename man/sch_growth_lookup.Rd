@@ -14,7 +14,7 @@ sch_growth_lookup(measurementscale_in, grade_in, growth_window_in,
 
 \item{measurementscale}{MAP subject}
 
-\item{grade}{baseline/starting grad for the group of students}
+\item{grade}{baseline/starting grade for the group of students}
 
 \item{growth_window}{desired growth window for targets (fall/spring, spring/spring, fall/fall)}
 }
