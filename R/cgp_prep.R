@@ -27,8 +27,16 @@ project_cgp_targets <- function(
  ,sch_growth_study=sch_growth_norms_2012
  ,calc_for=c(1:99)
 ) {
-  #cant have a calc_for 0 or below, or 100 or above.
-
+  #cant have a calc_for value 0 or below, or above 100 - those aren't valid growth %iles.
+  calc_for %>%
+    ensure_that(
+      min(.) > 0,
+      max(.) < 100,
+      fail_with = function(...) {
+        stop("You must specify *either* a baseline RIT or a baseline NPR.", call. = FALSE)
+      }
+    )
+  
   #you have to specify AT LEAST one of baseline_rit or baseline_npr
   c(is.na(baseline_avg_rit), is.na(baseline_avg_npr)) %>%
     ensure_that(
@@ -38,9 +46,18 @@ project_cgp_targets <- function(
       }
     )
       
-  #if one of the baselines are -1, look up the value.
+  #start of growth window
+  start_season <- str_sub(growth_window, 1, str_locate(growth_window, ' ')[1]-1)
   
+  #if one of the baselines are NA, look up the value.
+  if (is.na(baseline_avg_npr)) {
+    baseline_avg_npr <- rit_to_npr(measurementscale, grade, start_season, baseline_avg_rit)    
+  }
   
+  if (is.na(baseline_avg_rit)) {
+    baseline_avg_rit <- npr_to_rit(measurementscale, grade, start_season, baseline_avg_npr)
+  }
+    
   #get the method
   cgp_method <- determine_cgp_method(
     measurementscale, grade, growth_window, baseline_avg_rit, tolerance, sch_growth_study
@@ -106,7 +123,6 @@ cohort_expectation_via_lookup <- function(
     measured_in='RIT'
   )
 }
-
 
 
 
@@ -267,13 +283,39 @@ sch_growth_lookup <- function(
 
 rit_to_npr <- function(measurementscale, grade, season, RIT) {
   
-  matches <- student_norms_2011_dense_extended[with(student_norms_2011_dense_extended,
-    measurementscale==measurementscale & grade==grade &fallwinterspring==season &
-    round(RIT, 0)==RIT),]
+  matches <- student_status_norms_2011_dense_extended[with(
+    student_status_norms_2011_dense_extended,
+    measurementscale==measurementscale & grade==grade & fallwinterspring==season &
+      round(RIT, 0)==RIT),]
   
   if (nrow(matches)==0) {
     NA
   } else{
     matches[1, 'percentile']    
+  }
+}
+
+
+
+#' @title npr_to_rit
+#' 
+#' @description given a percentile rank, return the best match RIT
+#' 
+#' @param measurementscale MAP subject
+#' @param grade grade level
+#' @param season fall winter spring
+#' @param npr a percentile rank, between 1-99
+
+npr_to_rit <- function(measurementscale, grade, season, npr) {
+  
+  matches <- student_status_norms_2011_dense_extended[with(
+    student_status_norms_2011_dense_extended,
+    measurementscale==measurementscale & grade==grade & fallwinterspring==season &
+      round(npr, 0)==percentile),]
+  
+  if (nrow(matches)==0) {
+    NA
+  } else{
+    matches[1, 'RIT']    
   }
 }
