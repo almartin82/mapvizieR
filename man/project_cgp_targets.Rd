@@ -17,6 +17,8 @@ project_cgp_targets(measurementscale, grade, growth_window,
 
 \item{baseline_avg_rit}{the baseline mean rit for the group of students}
 
+\item{baseline_avg_npr}{the baseleine mean percentile rank for the group of students}
+
 \item{tolerance}{NWEA has published empirical lookup tables for growth.  these tables cover
 the middle of the distribution, meaning that data for most cohorts can be found in the table.
 but say that you have a cohort that is 10 rit points below the lowest mean RIT reported in the
@@ -26,9 +28,9 @@ percentile change, and then fits a general model to express cohort growth percen
 given a starting percentile and an ending percentile. rather than use lookup tables that we
 know to be poor fits to the students}
 
-\item{calc_for}{vector of cgp targets to calculate for.}
+\item{sch_growth_study}{a school growth study to use.  default is sch_growth_norms_2012}
 
-\item{school_growth_study}{a school growth study to use.  default is sch_growth_norms_2012}
+\item{calc_for}{vector of cgp targets to calculate for.}
 }
 \description{
 given a baseline, what scores are necessary to reach certain growth targets

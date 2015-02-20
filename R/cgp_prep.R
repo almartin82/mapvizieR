@@ -89,7 +89,7 @@ project_cgp_targets <- function(
 #' @param grade_in the ENDING grade level for the growth window.  ie, if this calculation
 #' crosses school years, use the grade level for the END of the term, per the example on p. 7
 #' of the 2012 school growth study
-#' @growth_window_in the growth window to calculate CGP over
+#' @param growth_window_in the growth window to calculate CGP over
 #' @param baseline_avg_rit mean rit at the START of the growth window
 #' @param baseline_avg_npr mean npr at the START of the growth window
 #' @param sch_growth_study which school growth study to use.  currently only have the 2012 data
