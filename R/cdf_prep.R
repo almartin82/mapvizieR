@@ -1,3 +1,5 @@
+utils::globalVariables(c("%>%", "mutate"))
+
 #' @title prep_cdf_long
 #'
 #' @description

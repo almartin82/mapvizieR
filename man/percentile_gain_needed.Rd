@@ -7,9 +7,14 @@
 percentile_gain_needed(target_cgp, grade_level, start_npr)
 }
 \arguments{
-\item{grade_in,}{start_npr, target_cgp}
+\item{target_cgp}{the CGP target}
+
+\item{grade_level}{grade level (end of window)}
+
+\item{start_npr}{avg start percentile rank}
 }
 \description{
-called by generalization method.
+given a CGP target, tells you how much improvement in class percentile
+rank neeeded
 }
 

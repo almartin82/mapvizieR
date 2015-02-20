@@ -39,6 +39,7 @@ test_that("project_cgp_targets tests", {
   
 })
 
+
 test_that("determine_cgp_method tests", {
 
   #cgp_nearest_lookup
@@ -68,6 +69,26 @@ test_that("determine_cgp_method tests", {
     "generalization"
   )
 
+})
+
+
+test_that("project_cgp_targets should fail given parameters out of range", {
+
+  expect_error(
+    project_cgp_targets(
+      measurementscale='Reading', grade=2, 
+      growth_window='Fall to Spring'
+    )
+  )
+  
+  expect_error(
+    project_cgp_targets(
+      measurementscale='Reading', grade=2, 
+      growth_window='Fall to Spring', baseline_avg_rit=173, calc_for=c(-10:2)
+    )
+  )
+
+  
 })
 
 

@@ -12,6 +12,8 @@ determine_cgp_method(measurementscale_in, grade_in, growth_window_in,
 
 \item{tolerance}{threshold to depart from lookup to generalization}
 
+\item{sch_growth_study}{which NWEA school growth study to use}
+
 \item{measurementscale}{MAP subject}
 
 \item{grade}{baseline/starting grad for the group of students}

@@ -9,7 +9,20 @@ cohort_expectation_via_generalization(measurementscale_in, grade_in,
   calc_for)
 }
 \arguments{
-\item{baseline_avg_rit}{the baseline mean rit for the group of students}
+\item{measurementscale_in}{a MAP subject}
+
+\item{grade_in}{the ENDING grade level for the growth window.  ie, if this calculation
+crosses school years, use the grade level for the END of the term, per the example on p. 7
+of the 2012 school growth study}
+
+\item{baseline_avg_rit}{mean rit at the START of the growth window}
+
+\item{baseline_avg_npr}{mean npr at the START of the growth window}
+
+\item{sch_growth_study}{which school growth study to use.  currently only have the 2012 data
+files in the package}
+
+\item{calc_for}{what CGPs to calculate for?}
 }
 \description{
 expectation in NPR via generalization

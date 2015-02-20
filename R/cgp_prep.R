@@ -1,11 +1,12 @@
 #' @title project_cgp_targets
 #' 
 #' @description given a baseline, what scores are necessary to reach certain growth targets
-#' 
+# '
 #' @param measurementscale MAP subject
 #' @param grade baseline/starting grad for the group of students
 #' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students
+#' @param baseline_avg_npr the baseleine mean percentile rank for the group of students
 #' @param tolerance NWEA has published empirical lookup tables for growth.  these tables cover 
 #' the middle of the distribution, meaning that data for most cohorts can be found in the table.
 #' but say that you have a cohort that is 10 rit points below the lowest mean RIT reported in the 
@@ -13,9 +14,9 @@
 #' mapvizieR has a generalization of the school growth study that translate the RIT changes to 
 #' percentile change, and then fits a general model to express cohort growth percentile 
 #' given a starting percentile and an ending percentile. rather than use lookup tables that we 
-#' know to be poor fits to the students  
-#' 
-#' @param school_growth_study a school growth study to use.  default is sch_growth_norms_2012
+#' know to be poor fits to the students 
+#' @param sch_growth_study a school growth study to use.  default is sch_growth_norms_2012
+#' @param calc_for vector of cgp targets to calculate for.
 
 project_cgp_targets <- function(
   measurementscale
@@ -84,7 +85,17 @@ project_cgp_targets <- function(
 #' 
 #' @description wrapper function to get cohort growth expectations for the lookup method
 #' 
-#' @inheritParams project_cgp_targets
+#' @param measurementscale_in a MAP subject
+#' @param grade_in the ENDING grade level for the growth window.  ie, if this calculation
+#' crosses school years, use the grade level for the END of the term, per the example on p. 7
+#' of the 2012 school growth study
+#' @growth_window_in the growth window to calculate CGP over
+#' @param baseline_avg_rit mean rit at the START of the growth window
+#' @param baseline_avg_npr mean npr at the START of the growth window
+#' @param sch_growth_study which school growth study to use.  currently only have the 2012 data
+#' files in the package
+#' @param calc_for what CGPs to calculate for?
+
 
 cohort_expectation_via_lookup <- function(
   measurementscale_in
@@ -130,7 +141,7 @@ cohort_expectation_via_lookup <- function(
 #' 
 #' @description expectation in NPR via generalization
 #' 
-#' @inheritParams project_cgp_targets
+#' @inheritParams cohort_expectation_via_lookup
 
 cohort_expectation_via_generalization <- function(
   measurementscale_in
@@ -181,9 +192,12 @@ rit_gain_needed <- function(percentile, sd_gain, mean_gain) {
 
 #' @title percentile_gain_needed
 #' 
-#' @description called by generalization method.
+#' @description given a CGP target, tells you how much improvement in class percentile 
+#' rank neeeded
 #' 
-#' @param grade_in, start_npr, target_cgp
+#' @param target_cgp the CGP target
+#' @param grade_level grade level (end of window)
+#' @param start_npr avg start percentile rank
 
 percentile_gain_needed <- function(target_cgp, grade_level, start_npr) {
     # transform cgp to logit scale (0-1)
@@ -201,12 +215,11 @@ percentile_gain_needed <- function(target_cgp, grade_level, start_npr) {
 #' @title determine_cgp_method
 #' 
 #' @param measurementscale MAP subject
-#' @param grade baseline/starting grad for the group of students
-#' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
+#' @param grade_in baseline/starting grad for the group of students
+#' @param growth_window_in desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students
 #' @param tolerance threshold to depart from lookup to generalization
-#' 
-#' @inheritParams project_cgp_targets
+#' @param sch_growth_study which NWEA school growth study to use
 
 determine_cgp_method <- function(
   measurementscale_in
@@ -242,9 +255,9 @@ determine_cgp_method <- function(
 #' 
 #' @description get cohort growth expectations via lookup from growth study
 #' 
-#' @param measurementscale MAP subject
-#' @param grade baseline/starting grade for the group of students
-#' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
+#' @param measurementscale_in MAP subject
+#' @param grade_in baseline/starting grade for the group of students
+#' @param growth_window_in desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students
 #' @param sch_growth_study NWEA school growth study to use for lookup; defaults to 2012.
 

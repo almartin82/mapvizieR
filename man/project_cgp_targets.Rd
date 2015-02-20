@@ -26,6 +26,8 @@ percentile change, and then fits a general model to express cohort growth percen
 given a starting percentile and an ending percentile. rather than use lookup tables that we
 know to be poor fits to the students}
 
+\item{calc_for}{vector of cgp targets to calculate for.}
+
 \item{school_growth_study}{a school growth study to use.  default is sch_growth_norms_2012}
 }
 \description{
