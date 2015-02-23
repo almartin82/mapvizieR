@@ -1,3 +1,5 @@
+utils::globalVariables(c("assert_that", "select", "ends_with", "has_name", "on_failure"))
+
 #' @title check_cdf_long
 #'
 #' @description

@@ -1,3 +1,7 @@
+utils::globalVariables(c("%>%", "mutate", "end_testritscore", "start_testritscore",
+  "rit_growth", "reported_growth", "end_testpercentile", "start_testpercentile",
+  "std_dev_of_expectation", "cgi"))
+
 #' @title generate_growth_df
 #'
 #' @description

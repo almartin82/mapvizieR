@@ -112,9 +112,9 @@ test_that("growth_norm_lookup find norm data", {
   expect_equal(ncol(norm_matched), 48)
   expect_equal(
     as.character(summary(norm_matched)[, 'typical_growth'][3]), 
-    "Median : 2.390  " 
+    "Median : 2.340  " 
   )
-  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 34739)
+  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 37379)
   
 })
 
@@ -133,7 +133,7 @@ test_that("calc_rit_growth_metrics properly calculates growth metrics", {
   expect_equal(median(with_rit_metrics$change_testpercentile,na.rm = T),1)
   expect_equal(median(with_rit_metrics$cgi,na.rm = T),0)
    
-  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 34739)
+  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 37379)
   
 })
 
@@ -149,8 +149,8 @@ test_that("growth_norm_lookup with unsanctioned windows", {
   expect_equal(ncol(norm_matched), 48)
   expect_equal(
     as.character(summary(norm_matched)[, 'typical_growth'][3]), 
-    "Median : 2.220  " 
+    "Median : 2.150  " 
   )
-  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 42784)
+  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 46086.5)
   
 })
