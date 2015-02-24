@@ -226,3 +226,9 @@ test_that("rand_stu gets students", {
     all(rand_stu(mapviz) %in% mapviz[['roster']]$studentid)
   )
 })
+
+
+test_that("clean_measurementscale cleans subjects", {
+  expect_equal(clean_measurementscale('Reading'), 'Reading')
+  expect_equal(clean_measurementscale('Science - General Science'), 'General Science')
+})

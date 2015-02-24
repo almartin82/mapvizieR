@@ -398,3 +398,34 @@ rand_stu <- function(mapvizieR_obj, low=20, high=500) {
   sample(mapvizieR_obj[['roster']]$studentid, sample(20:500, 1)) %>% 
       unique 
 }
+
+
+
+#' @title clean_measurementscale
+#' 
+#' @description add any logic about cleaning measurementscales to this function
+#' 
+#' @param x a measurementscale
+
+clean_measurementscale <- function(x) {
+  
+  x <- ifelse(x=='Science - General Science', 'General Science', x) 
+  x <- ifelse(x=='Science - Concepts and Processes', 'Concepts and Processes', x) 
+
+  return(x)
+}
+
+
+
+#' @title munge_startdate
+#' 
+#' @description helper function to convert a variety of date formats cleanly
+#' 
+#' @param x teststartdate field
+
+munge_startdate <- function(x) {
+  as.Date(
+    lubridate::parse_date_time(x, c("ymd", "mdy", "%d%m%Y"))
+  )
+}
+
