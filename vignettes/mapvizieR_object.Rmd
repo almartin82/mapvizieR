@@ -39,8 +39,8 @@ well, if you've copied/pasted all the csvs together into two master/combined fil
 library(mapvizieR)
 
 mapviz <- mapvizieR(
-  raw_cdf = ex_CombinedAssessmentResults,
-  raw_roster = ex_CombinedStudentsBySchool
+  cdf = ex_CombinedAssessmentResults,
+  roster = ex_CombinedStudentsBySchool
 )
 
 mapviz

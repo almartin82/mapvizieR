@@ -50,8 +50,8 @@ here's what our roster object looks like in our sample data:
 require(mapvizieR)
 
 mapviz <- mapvizieR(
-  raw_cdf = ex_CombinedAssessmentResults,
-  raw_roster = ex_CombinedStudentsBySchool
+  cdf = ex_CombinedAssessmentResults,
+  roster = ex_CombinedStudentsBySchool
 )
 
 head(mapviz[['roster']])

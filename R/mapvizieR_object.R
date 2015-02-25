@@ -2,7 +2,7 @@
 #' 
 #' @description
 #' \code{mapvizieR} is a workhorse workflow function that
-#' calls a sequence of cdf and roster prep functions, given a raw cdf and raw roster
+#' calls a sequence of cdf and roster prep functions, given a cdf and roster
 #' 
 #' @param cdf a NWEA AssessmentResults.csv or CDF
 #' @param roster a NWEA students
