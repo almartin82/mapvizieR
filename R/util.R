@@ -429,3 +429,27 @@ munge_startdate <- function(x) {
   )
 }
 
+
+#' @title valid_grade_seasons
+#' 
+#' @description a filter on a cdf that restricts the grade_level_season ONLY to 
+#' spring data, and fall of 'entry' grades 
+#' 
+#' @param cdf a processed cdf
+#' @param entry_grade_seasons which grade seasons are 'entry' for this school?
+
+valid_grade_seasons <- function(cdf, entry_grade_seasons=c(-0.8, 4.2), 
+  first_and_spring_only=TRUE, detail_academic_year=2014) {
+  #only these seasons
+  if (first_and_spring_only) {
+    valid_grade_seasons <- c(entry_grade_seasons, seq(0:13))
+  } else {
+    valid_grade_seasons <- unique(cdf$grade_level_season)
+  }
+  
+  #only valid grade level seasons or detail year
+  cdf %>%
+    filter(
+      grade_level_season %in% valid_grade_seasons | map_year_academic==detail_academic_year
+    ) 
+}

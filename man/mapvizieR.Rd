@@ -4,16 +4,18 @@
 \alias{mapvizieR}
 \title{Create a mapvizieR object}
 \usage{
-mapvizieR(raw_cdf, raw_roster)
+mapvizieR(cdf, roster, verbose = FALSE)
 }
 \arguments{
-\item{raw_cdf}{a NWEA AssessmentResults.csv or CDF}
+\item{cdf}{a NWEA AssessmentResults.csv or CDF}
 
-\item{raw_roster}{a NWEA students}
+\item{roster}{a NWEA students}
+
+\item{verbose}{should mapvizieR print status updates?  default is FALSE.}
 }
 \description{
 \code{mapvizieR} is a workhorse workflow function that
-calls a sequence of cdf and roster prep functions, given a raw cdf and raw roster
+calls a sequence of cdf and roster prep functions, given a cdf and roster
 }
 \examples{
 cdf_mv <- mapvizieR(ex_CombinedAssessmentResults,
