@@ -62,6 +62,17 @@ mapvizieR.default <- function(cdf, roster, verbose=FALSE) {
   )
   
   class(mapviz) <- "mapvizieR"
+  
+  # the next step runs the accelerated growth calculations with the
+  # default of KIPP Tiered growth.  This step must come after the 
+  # class assignement since add_accelerated_growth can only be run 
+  # on a mapvizieR class object by design (simplifies code and can be
+  # run after creating a mapvizieR object to increas goal objects attached).
+  
+  mapviz <- mapviz %>% 
+    add_accelerated_growth(goal_function = goal_kipp_tiered,  
+                           goal_function_args = list(iterations=1),
+                           update_growth_df = TRUE) 
    
   return(mapviz)
 }
