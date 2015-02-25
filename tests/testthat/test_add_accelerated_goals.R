@@ -1,12 +1,11 @@
 context("adding accelerated growth goals to growth_df")
 
 #constants
-mapviz <- mapvizieR(raw_cdf=ex_CombinedAssessmentResults, 
-                    raw_roster=ex_CombinedStudentsBySchool)
+mapviz <- mapvizieR(
+  cdf=ex_CombinedAssessmentResults, 
+  roster=ex_CombinedStudentsBySchool
+)
   
-
-
-
 test_that("goal_kipp_tiered creates proper object", {
   goal_obj<-goal_kipp_tiered(mapviz, iterations = 1)
   

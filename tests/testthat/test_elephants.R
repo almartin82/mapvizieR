@@ -23,9 +23,7 @@ test_that("galloping_elephants errors when handed an improper mapviz object", {
 
 
 test_that("galloping_elephants produces proper plot with a grade level of kids", {
-    
-  valid_grades <- c(c(-0.8,4.2), seq(0:13))
-    
+        
   p <- galloping_elephants(mapviz, studentids_normal_use)
   p_build <- ggplot_build(p)
   expect_true(is.ggplot(p))

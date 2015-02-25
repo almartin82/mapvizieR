@@ -40,20 +40,9 @@ galloping_elephants <- function (
   #munge data 
   ##only these kids
   this_cdf <- cdf_long[cdf_long$studentid %in% studentids, ]
-  
-  #only these seasons
-  if (first_and_spring_only) {
-    valid_grade_seasons <- c(entry_grade_seasons, seq(0:13))
-  } else {
-    valid_grade_seasons <- unique(cdf_long$grade_level_season)
-  }
-  
-  #only valid grade level seasons
-  munge <- this_cdf %>%
-    #only data that is in valid_grade_seasons
-    filter(
-      grade_level_season %in% valid_grade_seasons | map_year_academic==detail_academic_year
-    ) 
+  #only valid seasons
+  munge <- valid_grade_seasons(this_cdf, entry_grade_seasons, 
+    first_and_spring_only, detail_academic_year)
 
   #now group by grade level season and only return groups where n > 2
   #b/c geom_density will error on 2 data points.
