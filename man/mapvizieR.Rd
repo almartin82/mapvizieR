@@ -4,12 +4,12 @@
 \alias{mapvizieR}
 \title{Create a mapvizieR object}
 \usage{
-mapvizieR(raw_cdf, raw_roster)
+mapvizieR(cdf, roster)
 }
 \arguments{
-\item{raw_cdf}{a NWEA AssessmentResults.csv or CDF}
+\item{cdf}{a NWEA AssessmentResults.csv or CDF}
 
-\item{raw_roster}{a NWEA students}
+\item{roster}{a NWEA students}
 }
 \description{
 \code{mapvizieR} is a workhorse workflow function that

@@ -1,7 +1,7 @@
 context("growth data frame prep")
 
 #constants
-mapviz <- mapvizieR(raw_cdf=ex_CombinedAssessmentResults, raw_roster=ex_CombinedStudentsBySchool)
+mapviz <- mapvizieR(cdf=ex_CombinedAssessmentResults, roster=ex_CombinedStudentsBySchool)
 processed_cdf <- mapviz[['cdf']]
 norms_long <- norms_students_wide_to_long(norms_students_2011)
   

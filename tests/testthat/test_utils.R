@@ -1,7 +1,7 @@
 context("test util functions on a variety of different inputs")
 
 #constants
-mapviz <- mapvizieR(raw_cdf=ex_CombinedAssessmentResults, raw_roster=ex_CombinedStudentsBySchool)
+mapviz <- mapvizieR(cdf=ex_CombinedAssessmentResults, roster=ex_CombinedStudentsBySchool)
 
 test_that("abbrev abbreviates school names properly", {
   

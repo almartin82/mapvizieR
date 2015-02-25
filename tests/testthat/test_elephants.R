@@ -1,7 +1,7 @@
 context("Galloping elephants tests")
 
 #constants
-mapviz <- mapvizieR(raw_cdf=ex_CombinedAssessmentResults, raw_roster=ex_CombinedStudentsBySchool)
+mapviz <- mapvizieR(cdf=ex_CombinedAssessmentResults, roster=ex_CombinedStudentsBySchool)
 processed_cdf <- mapviz[['cdf']]
 growth_df <- mapviz[['growth_df']]
 

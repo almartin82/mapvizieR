@@ -297,12 +297,16 @@ grade_level_seasonify <- function(x) {
 #' @param grade_season a grade level between -1 and 12
 #' 
 #' @return a labeled string
-#' @export
 #' 
+#' @export
 
 fall_spring_me <- function(grade_season) {
   
-  #K is weird edge case
+  if (is.na(grade_season)) {
+    return(NA)
+  }
+
+  #K is weird edge case  
   if(grade_season == -0.8) {
     return('KF')
   } else if(grade_season == -0.5) {
