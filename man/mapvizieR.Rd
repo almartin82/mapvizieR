@@ -10,6 +10,8 @@ mapvizieR(cdf, roster, verbose = FALSE)
 \item{cdf}{a NWEA AssessmentResults.csv or CDF}
 
 \item{roster}{a NWEA students}
+
+\item{verbose}{should mapvizieR print status updates?  default is FALSE.}
 }
 \description{
 \code{mapvizieR} is a workhorse workflow function that

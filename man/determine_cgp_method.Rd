@@ -8,6 +8,8 @@ determine_cgp_method(measurementscale_in, grade_in, growth_window_in,
   baseline_avg_rit, tolerance, sch_growth_study)
 }
 \arguments{
+\item{measurementscale_in}{MAP subject}
+
 \item{grade_in}{baseline/starting grad for the group of students}
 
 \item{growth_window_in}{desired growth window for targets (fall/spring, spring/spring, fall/fall)}
@@ -17,8 +19,6 @@ determine_cgp_method(measurementscale_in, grade_in, growth_window_in,
 \item{tolerance}{threshold to depart from lookup to generalization}
 
 \item{sch_growth_study}{which NWEA school growth study to use}
-
-\item{measurementscale}{MAP subject}
 }
 \description{
 determine_cgp_method
