@@ -24,20 +24,13 @@ galloping_elephants <- function (
 ) {
   #data validation
   mv_opening_checks(mapvizieR_obj, studentids, 1)
-    
-  #unpack the mapvizieR object
-  cdf_long <- mapvizieR_obj[['cdf']]
-  
-  #test if the cdf conforms to specs
-  assert_that(check_cdf_long(cdf_long)$boolean)
-  
-  #munge data 
-  ##only these kids
-  this_cdf <- cdf_long[cdf_long$studentid %in% studentids, ]
 
+  #unpack the mapvizieR object and limit to desired students
+  this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids)
+  
   #only valid seasons
-  munge <- valid_grade_seasons(this_cdf, entry_grade_seasons, 
-    first_and_spring_only, detail_academic_year)
+  munge <- valid_grade_seasons(this_cdf, first_and_spring_only, 
+    entry_grade_seasons, detail_academic_year)
 
   #now group by grade level season and only return groups where n > 2
   #b/c geom_density will error on 2 data points.
