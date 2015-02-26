@@ -429,3 +429,26 @@ munge_startdate <- function(x) {
   )
 }
 
+
+
+#' @title mv_opening_checks
+#' 
+#' @description common beginning checks when building a plot.  DRY, right?
+#' 
+#' @param mapvizieR_obj a valid mapvizieR object.
+#' @param studentids vector of studentids to run for this plot
+#' @param min_stu minimum number of students for this plot.  default is 1.
+
+mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu=1) {
+  #has to be a mapvizieR obj
+  mapvizieR_obj %>% ensure_is_mapvizieR()
+  
+  #gotta have this many kids
+  studentids %>% 
+    ensure_that(
+      length(.) > min_stu ~ paste("this plot requires at least", min_stu, "student.")
+    )
+    
+}
+
+    
