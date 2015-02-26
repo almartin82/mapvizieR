@@ -11,8 +11,8 @@
 fuzz_test_plot <- function(plot_name, n=100, additional_args=list()) {
   
   mapviz <- mapvizieR(
-    raw_cdf=ex_CombinedAssessmentResults, 
-    raw_roster=ex_CombinedStudentsBySchool
+    cdf=ex_CombinedAssessmentResults, 
+    roster=ex_CombinedStudentsBySchool
   )
 
   results <- vector("list", n)

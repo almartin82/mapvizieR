@@ -22,12 +22,33 @@ prep_cdf_long <- function(cdf_long) {
     
   cdf_long$measurementscale <- clean_measurementscale(cdf_long$measurementscale)
   cdf_long$teststartdate <- munge_startdate(cdf_long$teststartdate)
+  cdf_long$growthmeasureyn <- as.logical(cdf_long$growthmeasureyn)
   
   assert_that(check_cdf_long(cdf_long)$boolean)
   
   return(cdf_long)
 }
 
+
+#' @title process_cdf_long
+#'
+#' @description
+#' \code{process_cdf_long} the second step in cdf processing
+#'
+#' @param prepped_cdf output of prep_cdf_long
+#' 
+#' @return a processed cdf file
+#' 
+#' @export
+
+process_cdf_long <- function(prepped_cdf) {
+  
+  prepped_cdf %>% 
+    dedupe_cdf(method="NWEA") %>%
+    grade_level_seasonify() %>%
+    grade_season_labelify() %>%
+    grade_season_factors()
+}
 
 
 #' @title dedupe_cdf

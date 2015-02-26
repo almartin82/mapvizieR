@@ -85,8 +85,8 @@ test_that("grade_season_factors return correct order", {
 
 test_that("mapvizieR S3 class methods work", {
   mv <- mapvizieR(
-    raw_cdf = ex_CombinedAssessmentResults,
-    raw_roster = ex_CombinedStudentsBySchool
+    cdf = ex_CombinedAssessmentResults,
+    roster = ex_CombinedStudentsBySchool
   )
   
   expect_equal(length(mv), 4)
@@ -95,4 +95,30 @@ test_that("mapvizieR S3 class methods work", {
   expect_output(print.mapvizieR(mv), "SY2012 to SY2013")
   expect_true(is.mapvizieR(mv))
   expect_false(is.mapvizieR(ex_CombinedAssessmentResults))
+})
+
+
+
+test_that("mapvizieR messages print when in verbose mode", {
+  expect_output(
+    mapvizieR(
+      cdf = ex_CombinedAssessmentResults,
+      roster = ex_CombinedStudentsBySchool,
+      verbose = TRUE), 
+    "preparing and processing your CDF..."
+  )
+  
+  samp_cdf <- prep_cdf_long(ex_CombinedAssessmentResults)
+  samp_roster <- prep_roster(ex_CombinedStudentsBySchool)
+  samp_cdf$grade <- grade_levelify_cdf(samp_cdf, samp_roster)
+  processed_cdf <- process_cdf_long(samp_cdf)
+
+  expect_output(
+    mapvizieR(
+      cdf = processed_cdf,
+      roster = ex_CombinedStudentsBySchool,
+      verbose = TRUE), 
+    "your CDF is ready to go!"
+  )
+  
 })

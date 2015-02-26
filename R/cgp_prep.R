@@ -214,7 +214,7 @@ percentile_gain_needed <- function(target_cgp, grade_level, start_npr) {
 
 #' @title determine_cgp_method
 #' 
-#' @param measurementscale MAP subject
+#' @param measurementscale_in MAP subject
 #' @param grade_in baseline/starting grad for the group of students
 #' @param growth_window_in desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students

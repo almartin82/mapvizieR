@@ -2,10 +2,11 @@
 #' 
 #' @description
 #' \code{mapvizieR} is a workhorse workflow function that
-#' calls a sequence of cdf and roster prep functions, given a raw cdf and raw roster
+#' calls a sequence of cdf and roster prep functions, given a cdf and roster
 #' 
-#' @param raw_cdf a NWEA AssessmentResults.csv or CDF
-#' @param raw_roster a NWEA students
+#' @param cdf a NWEA AssessmentResults.csv or CDF
+#' @param roster a NWEA students
+#' @param verbose should mapvizieR print status updates?  default is FALSE.
 #' @examples
 #' cdf_mv <- mapvizieR(ex_CombinedAssessmentResults, 
 #'                     ex_CombinedStudentsBySchool)
@@ -14,27 +15,40 @@
 #' 
 #' @export
 
-mapvizieR <- function(raw_cdf, raw_roster) UseMethod("mapvizieR")
+mapvizieR <- function(cdf, roster, verbose=FALSE) UseMethod("mapvizieR")
 
 #' @export
-mapvizieR.default <- function(raw_cdf, raw_roster) {
-  
-  prepped_cdf <- prep_cdf_long(raw_cdf)
-  prepped_roster <- prep_roster(raw_roster)
-  
-  #do more processing on the cdf now that we have the roster
-  prepped_cdf$grade <- grade_levelify_cdf(prepped_cdf, prepped_roster)
-  
-  processed_cdf <- prepped_cdf %>%
-    dedupe_cdf(method="NWEA") %>%
-    grade_level_seasonify() %>%
-    grade_season_labelify() %>%
-    grade_season_factors()
+mapvizieR.default <- function(cdf, roster, verbose=FALSE) {
 
-  #check to see that result conforms
-  assert_that(check_processed_cdf(processed_cdf)$boolean)
+  cdf_status <- try(check_processed_cdf(cdf)$boolean, silent=TRUE)
+  cdf_status <- all(!class(cdf_status)=="try-error" & cdf_status==TRUE)
+  
+  #prep the cdf, if necessary.
+  if (cdf_status) {
+    
+    processed_cdf <- cdf
+    
+    if (verbose) {print('your CDF is ready to go!')}
+  } else {
+    
+    if (verbose) {print('preparing and processing your CDF...')}
+    
+    #FIRST, prep the cdf and the roster
+    prepped_cdf <- prep_cdf_long(cdf)
+    roster <- prep_roster(roster)
+    
+    #SECOND, given a roster and cdf, grade level-ify the cdf
+    prepped_cdf$grade <- grade_levelify_cdf(prepped_cdf, roster)
+  
+    #THIRD, process the cdf
+    processed_cdf <- process_cdf_long(prepped_cdf)
+  
+    #check to see that result conforms
+    assert_that(check_processed_cdf(processed_cdf)$boolean)  
+  }
   
   #headline growth df
+  if (verbose) {print('calculating growth scores for students...')}
   growth_df <- generate_growth_dfs(processed_cdf)$headline
   
   #TODO: goal growth df
@@ -42,7 +56,7 @@ mapvizieR.default <- function(raw_cdf, raw_roster) {
   #make a list and return it
   mapviz <-  list(
     'cdf'=processed_cdf,
-    'roster'=prepped_roster,
+    'roster'=roster,
     'growth_df'=growth_df
     #todo: also return a goal/strand df
     #todo: add some analytics about matched/unmatched kids
@@ -199,14 +213,9 @@ grade_levelify_cdf <- function(prepped_cdf, roster) {
 grade_season_labelify <- function(x) {
   
   assert_that('grade_level_season' %in% names(x))
-  
-  prepped <- x %>% 
-    rowwise() %>%
-    mutate(
-      grade_season_label = fall_spring_me(grade_level_season)
-    )
-  
-  return(as.data.frame(prepped))
+  x$grade_season_label <- unlist(lapply(x$grade_level_season, fall_spring_me))
+    
+  return(x)
 }
 
 

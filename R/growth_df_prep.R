@@ -101,7 +101,7 @@ student_scaffold <- function(
   )
   simple <- processed_cdf[ ,cols]
   simple$hash <- with(simple,
-    paste(studentid, measurementscale, fallwinterspring, simple$map_year_academic, sep='_')
+    paste(studentid, measurementscale, fallwinterspring, map_year_academic, sep='_')
   )
   
   #we want kids with EITHER start OR end
@@ -169,7 +169,13 @@ student_scaffold <- function(
   final$growth_window <- paste0(start_season, ' to ', end_season)
   
   #reorder
-  final <- final[ ,names(final)[c(1:2, 17:15, 3:14)]]
+  target_cols <- c("studentid", "measurementscale", "end_schoolname", "end_grade_level_season", 
+    "end_grade", "growth_window", "complete_obsv", "match_status", 
+    "start_testid", "start_map_year_academic", "start_fallwinterspring", 
+    "start_grade", "start_grade_level_season", "start_schoolname", 
+    "end_testid", "end_map_year_academic", "end_fallwinterspring"
+  )
+  final <- final[ ,target_cols]
   return(as.data.frame(final))
 }
 
@@ -198,7 +204,12 @@ scores_by_testid <- function(testid, processed_cdf, start_or_end) {
 
   matched <- left_join(as.data.frame(testid), processed_cdf, by="testid")
   
-  matching_slim <- matched[ , c(names(matched)[c(7:14, 19:21, 62:64)])]
+  target_cols <- c("growthmeasureyn", "testtype", "testname", "teststartdate", 
+    "testdurationminutes", "testritscore", "teststandarderror", "testpercentile", 
+    "rittoreadingscore", "rittoreadingmin", "rittoreadingmax", "teststarttime", 
+    "percentcorrect", "projectedproficiency")
+
+  matching_slim <- matched[ , target_cols]
   #prefix it
   names(matching_slim) <- paste0(start_or_end, '_', names(matching_slim))
   

@@ -34,7 +34,7 @@ galloping_elephants <- function (
   #munge data 
   ##only these kids
   this_cdf <- cdf_long[cdf_long$studentid %in% studentids, ]
-  
+
   #only valid seasons
   munge <- valid_grade_seasons(this_cdf, entry_grade_seasons, 
     first_and_spring_only, detail_academic_year)
