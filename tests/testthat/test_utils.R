@@ -191,6 +191,7 @@ test_that("fall_spring_me properly sets grade-season labels", {
   expect_equal(fall_spring_me(4.5), '5W')
   expect_equal(fall_spring_me(6), '6S')
   expect_equal(fall_spring_me(6.1), NA)
+  expect_equal(fall_spring_me(NA), NA)
 })
 
 
@@ -232,3 +233,4 @@ test_that("clean_measurementscale cleans subjects", {
   expect_equal(clean_measurementscale('Reading'), 'Reading')
   expect_equal(clean_measurementscale('Science - General Science'), 'General Science')
 })
+

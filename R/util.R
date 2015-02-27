@@ -119,10 +119,7 @@ abbrev<-function(x, exceptions=NULL){
 #' kipp_quartile(x, proper.quartile=TRUE)
 #' kipp_quartile(x, proper.quartile=TRUE, return.factor=FALSE)
 
-kipp_quartile<- function(x, 
-                         return.factor=TRUE, 
-                         proper.quartile=FALSE){
-  
+kipp_quartile <- function(x, return.factor=TRUE, proper.quartile=FALSE){
   
   #defactor factors
   if(is.factor(x)) x<-as.numeric(as.character(x))
@@ -133,10 +130,10 @@ kipp_quartile<- function(x,
   # if proper.quartile is false adjust x's to return Foundation quartile 
   if(!proper.quartile) x<-x+1
   #calculate quartile
-  y<-ceiling(x/25)
+  y <- ceiling(x/25)
   
   #transform to factor
-  if(return.factor) y<-factor(y, levels=c(1:4))
+  if(return.factor) y <- factor(y, levels=c(1:4))
   
   #return
   y
@@ -302,6 +299,9 @@ grade_level_seasonify <- function(x) {
 
 fall_spring_me <- function(grade_season) {
   
+  if(is.na(grade_season)) {
+    return(NA)
+  }
   #K is weird edge case
   if(grade_season == -0.8) {
     return('KF')
@@ -430,16 +430,47 @@ munge_startdate <- function(x) {
 }
 
 
+
+#' @title mv_opening_checks
+#' 
+#' @description common beginning checks when building a plot.  DRY, right?
+#' 
+#' @param mapvizieR_obj a valid mapvizieR object.
+#' @param studentids vector of studentids to run for this plot
+#' @param min_stu minimum number of students for this plot.  default is 1.
+
+mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu=1) {
+  #has to be a mapvizieR obj
+  mapvizieR_obj %>% ensure_is_mapvizieR()
+  
+  #gotta have this many kids
+  studentids %>% 
+    ensure_that(
+      length(.) > min_stu ~ paste("this plot requires at least", min_stu, "student.")
+    )
+  
+  mapvizieR_obj[['cdf']] %>%  
+    ensure_that(
+      check_cdf_long(.)$boolean == TRUE ~ "your mapvizieR CDF is not conforming."
+    )
+    
+}
+
+
+    
 #' @title valid_grade_seasons
 #' 
 #' @description a filter on a cdf that restricts the grade_level_season ONLY to 
 #' spring data, and fall of 'entry' grades 
 #' 
 #' @param cdf a processed cdf
+#' @param first_and_spring_only should we limit only to 'entry' grades
 #' @param entry_grade_seasons which grade seasons are 'entry' for this school?
+#' @param detail_academic_year what is the 'current' year?  never drop data for
+#' this year.
 
-valid_grade_seasons <- function(cdf, entry_grade_seasons=c(-0.8, 4.2), 
-  first_and_spring_only=TRUE, detail_academic_year=2014) {
+valid_grade_seasons <- function(cdf, first_and_spring_only=TRUE,
+  entry_grade_seasons=c(-0.8, 4.2), detail_academic_year=2014) {
   #only these seasons
   if (first_and_spring_only) {
     valid_grade_seasons <- c(entry_grade_seasons, seq(0:13))
@@ -452,4 +483,81 @@ valid_grade_seasons <- function(cdf, entry_grade_seasons=c(-0.8, 4.2),
     filter(
       grade_level_season %in% valid_grade_seasons | map_year_academic==detail_academic_year
     ) 
+}
+
+
+
+#' @title mv_limit_cdf
+#' 
+#' @description extract the cdf and limit it to target students
+#' 
+#' @param mapvizieR_obj a conforming mapvizieR object
+#' @param studentids vector of studentids
+#' @param measurementscale_in a MAP subject
+
+mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale_in) {
+  
+  #pull off the object
+  cdf_long <- mapvizieR_obj[['cdf']] 
+  #only these kids
+  cdf_long %>%
+    filter(
+      studentid %in% studentids,
+      measurementscale == measurementscale_in
+    )
+  
+}
+
+
+
+#' @title min_term_filter 
+#' 
+#' @description returns only grade_season data where the number of students represented is at
+#' least N% of the total
+#' 
+#' @param cdf conforming cdf
+#' @param small_n_cutoff anything below this percent will get filtered out.  default is -1, eg
+#' off
+
+min_term_filter <- function(cdf, small_n_cutoff=-1) {
+   
+  grade_seasons_to_keep <- cdf %>%
+    dplyr::group_by(grade_level_season) %>%
+    dplyr::summarize(
+      n=n()
+    ) %>%
+    mutate(
+      include=n >= max(n) * small_n_cutoff
+    ) %>%
+    filter(
+      include==TRUE
+    ) %>%
+    select(
+      grade_level_season  
+    ) %>%
+    as.data.frame()
+ 
+  cdf %>%
+    filter(
+      grade_level_season %in% as.vector(grade_seasons_to_keep$grade_level_season)
+    )  
+}
+
+
+
+#' @title quartile_order
+#' 
+#' @description helper function used by becca plot to put quartiles in correct order
+#' 
+#' @param x a quartile (1-4)
+
+quartile_order <- function(x) {
+  
+  if(x==2) {
+    return(1)
+  } else if (x==1) {
+    return(2)
+  } else (
+    return(x)
+  )
 }
