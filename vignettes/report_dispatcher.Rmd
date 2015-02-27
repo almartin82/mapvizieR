@@ -80,6 +80,7 @@ sch_gender <- report_dispatcher(
  ,cut_list=cut_list
  ,call_list=call_list
  ,func_to_call="galloping_elephants"
+ ,arg_list=list('measurementscale'='Mathematics')
 )
 
 ```
@@ -104,6 +105,7 @@ dist_eth <- report_dispatcher(
  ,cut_list=cut_list
  ,call_list=call_list
  ,func_to_call="galloping_elephants"
+ ,arg_list=list('measurementscale'='Mathematics')
 )
 
 print(dist_eth)
@@ -137,6 +139,7 @@ sch_grade <- report_dispatcher(
  ,cut_list=cut_list
  ,call_list=call_list
  ,func_to_call="galloping_elephants"
+ ,arg_list=list('measurementscale'='Mathematics')
 )
 
 print(sch_grade)
@@ -154,6 +157,7 @@ sch_grade_redux <- report_dispatcher(
  ,cut_list=c('schoolname', 'grade')
  ,call_list=call_list
  ,func_to_call="galloping_elephants"
+ ,arg_list=list('measurementscale'='Mathematics')
  ,post_process="all_the_things"
 )
 

@@ -549,7 +549,7 @@ min_term_filter <- function(cdf, small_n_cutoff=-1) {
 #' 
 #' @description helper function used by becca plot to put quartiles in correct order
 #' 
-#' @param x
+#' @param x a quartile (1-4)
 
 quartile_order <- function(x) {
   

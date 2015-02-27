@@ -30,6 +30,7 @@ test_that("report dispatcher on elephants using test data", {
    ,cut_list=cut_by
    ,call_list=call_these
    ,func_to_call="galloping_elephants"
+   ,arg_list=list('measurementscale'='Mathematics')
   )
 
   expect_equal(length(ele_test), 4)

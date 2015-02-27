@@ -14,9 +14,10 @@
 #' @param first_and_spring_only show all terms, or only entry & spring?  default is TRUE.
 #' @param entry_grade_seasons which grade_level_seasons are entry grades?
 #' @param detail_academic_year don't mask any data for this academic year
-#' @param color_scheme only 'KIPP Report Card'
 #' @param small_n_cutoff drop a grade_level_season if less than x% of the max? 
 #' (useful when dealing with weird cohort histories)
+#' @param color_scheme color scheme for the stacked bars.  options are 'KIPP Report Card', 
+#' 'Sequential Blues', or a vector of 4 colors.
 #' 
 #' @return prints a ggplot object
 #' 

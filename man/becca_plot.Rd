@@ -6,7 +6,8 @@
 \usage{
 becca_plot(mapvizieR_obj, studentids, measurementscale,
   first_and_spring_only = TRUE, entry_grade_seasons = c(-0.8, 4.3),
-  detail_academic_year = 2014, small_n_cutoff = 0.5)
+  detail_academic_year = 2014, small_n_cutoff = 0.5,
+  color_scheme = "KIPP Report Card")
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -25,6 +26,9 @@ becca_plot(mapvizieR_obj, studentids, measurementscale,
 (useful when dealing with weird cohort histories)}
 
 \item{color_scheme}{only 'KIPP Report Card'}
+
+\item{color_scheme}{color scheme for the stacked bars.  options are 'KIPP Report Card',
+'Sequential Blues', or a vector of 4 colors.}
 }
 \value{
 prints a ggplot object

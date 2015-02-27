@@ -6,6 +6,7 @@
 #'
 #' @param mapvizieR_obj a conforming mapvizieR object, which contains a cdf and a roster.
 #' @param studentids which students to display?
+#' @param measurementscale target subject
 #' @param first_and_spring_only show all terms, or only entry & spring?  default is TRUE.
 #' @param detail_academic_year don't mask any data for this academic year
 #' @param entry_grade_seasons which grade_level_seasons are entry grades?
@@ -18,6 +19,7 @@
 galloping_elephants <- function (
   mapvizieR_obj,
   studentids,
+  measurementscale,
   first_and_spring_only=TRUE,
   detail_academic_year=2014,
   entry_grade_seasons=c(-0.8, 4.2)
@@ -26,7 +28,7 @@ galloping_elephants <- function (
   mv_opening_checks(mapvizieR_obj, studentids, 1)
 
   #unpack the mapvizieR object and limit to desired students
-  this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids)
+  this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
   
   #only valid seasons
   munge <- valid_grade_seasons(this_cdf, first_and_spring_only, 
@@ -52,7 +54,7 @@ galloping_elephants <- function (
       grade_season_label=droplevels(grade_season_label)
     )    
   
-  #a dummpy plot, just to get heights of the density graphs
+  #a dummy plot, just to get heights of the density graphs
   dummy <- ggplot(
     data = munge
    ,aes(
