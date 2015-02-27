@@ -25,8 +25,6 @@ becca_plot(mapvizieR_obj, studentids, measurementscale,
 \item{small_n_cutoff}{drop a grade_level_season if less than x% of the max?
 (useful when dealing with weird cohort histories)}
 
-\item{color_scheme}{only 'KIPP Report Card'}
-
 \item{color_scheme}{color scheme for the stacked bars.  options are 'KIPP Report Card',
 'Sequential Blues', or a vector of 4 colors.}
 }

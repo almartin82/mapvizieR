@@ -107,13 +107,17 @@ becca_plot <- function(
   
   #midpoints for labels
   npr_above <- npr_above %>%
+    group_by(grade_level_season) %>%
     mutate(
-      midpoint=cumsum(pct) - 0.5 * pct      
+      cumsum = order_by(order, cumsum(pct)),
+      midpoint = cumsum - (0.5 * pct)
     )
 
   npr_below <- npr_below %>%
+    group_by(grade_level_season) %>%
     mutate(
-      midpoint=cumsum(pct) - 0.5 * pct      
+      cumsum = order_by(order, cumsum(pct)),
+      midpoint = cumsum - (0.5 * pct)
     )
   
   #MAKE THE PLOT

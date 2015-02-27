@@ -7,7 +7,7 @@
 quartile_order(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{a quartile (1-4)}
 }
 \description{
 helper function used by becca plot to put quartiles in correct order
