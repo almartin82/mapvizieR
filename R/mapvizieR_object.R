@@ -100,8 +100,7 @@ is.mapvizieR <- function(x) inherits(x, "mapvizieR")
 ensure_is_mapvizieR <- ensures_that(
   is.mapvizieR(.) ~ paste0("The object you passed is not a conforming mapvizieR object.\n",
      "Look at the examples in the mapvizieR() to see more about generating\n",
-     "a valid mapvizieR object.  TODO: write a vignette that walks through\n",
-     "the process and explains our reasoning around requiring a mapviz object.")
+     "a valid mapvizieR object.")
 )
 
 

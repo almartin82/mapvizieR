@@ -120,6 +120,9 @@ becca_plot <- function(
       midpoint = cumsum - (0.5 * pct)
     )
   
+  x_breaks <- sort(unique(prepped$grade_level_season))
+  x_labels <- unlist(lapply(x_breaks, fall_spring_me))
+    
   #MAKE THE PLOT
    p <- ggplot() +
     #top half of NPR plots
@@ -169,60 +172,42 @@ becca_plot <- function(
       x = 'Grade Level'
      ,y = 'Percentage of Cohort'
     ) +
-    #clean out some default ggplot formatting elements
-    theme(
-      #zero out cetain formatting
-      panel.background = element_blank()
-     ,plot.background = element_blank()
-     ,panel.grid.major = element_blank()
+    theme_bw() +
+    #zero out cetain formatting
+    theme(      
+      panel.grid.major = element_blank()
      ,panel.grid.minor = element_blank()
+     ,panel.border = element_blank()
      ,axis.ticks.y = element_blank()
-      
-      #title and axis sizes
-     ,title = element_text(size = rel(0.9))
-     ,axis.title.x = element_text(size = rel(0.9))
      ,axis.text.y = element_blank()
-     
+     ,axis.title.x = element_text(size = rel(0.9))   
      ,plot.margin = rep(unit(0,"null"),4)
-    ) 
-  
-#     
-#     scale_x_continuous(
-#       breaks = becca_x_breaks
-#      ,labels = becca_x_labels
-#     ) +
-#     coord_cartesian(
-#       xlim=c(min(becca_x_breaks),max(becca_x_breaks))  
-#     )
+    ) +
+    scale_x_continuous(
+      breaks = x_breaks
+     ,labels = x_labels
+    ) +
+    coord_cartesian(
+      xlim=c(min(x_breaks) - 0.25, max(x_breaks) + 0.25)  
+    )
 
   legend_labels = c('1st', '2nd', '3rd', '4th')
   
   #color style?
   if(color_scheme == 'KIPP Report Card') {
-    p <- p +
-      #dark gray, light gray, light orange, dark orange
-      scale_fill_manual(
-        values = c(
-          rgb(207, 204, 193, max = 255)
-         ,rgb(230, 230, 230, max = 255)
-         ,rgb(254, 188, 17, max = 255)
-         ,rgb(247, 148, 30, max = 255)
-        )
-       ,name = 'Quartiles' 
-       ,labels = legend_labels
-      )
+    p <- p + scale_fill_manual(
+      values = kipp_4col, labels = legend_labels, name = 'Quartiles' 
+    )
   } else if (color_scheme == 'Sequential Blues') {
     p <- p + scale_fill_brewer(
-      type = "seq"
-     ,palette = 1
+      type = "seq", palette = 1, labels = legend_labels, name = 'Quartiles'
     ) 
   } else {
     p <- p + scale_fill_manual(
-      values = color_scheme
-     ,labels = legend_labels
+      values = color_scheme, labels = legend_labels, name = 'Quartiles'
     )
   }
   
-  p
+  return(p)
   
 }
