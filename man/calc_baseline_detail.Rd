@@ -4,8 +4,8 @@
 \alias{calc_baseline_detail}
 \title{calc_baseline_detail}
 \usage{
-calc_baseline_detail(mapvizieR_obj, studentids, measurementscale, target_fws,
-  target_academic_year, fallback_fws = NA, fallback_academic_year = NA)
+calc_baseline_detail(mapvizieR_obj, studentids, measurementscale, primary_fws,
+  primary_academic_year, fallback_fws = NA, fallback_academic_year = NA)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -14,16 +14,16 @@ calc_baseline_detail(mapvizieR_obj, studentids, measurementscale, target_fws,
 
 \item{measurementscale}{target subject}
 
-\item{target_fws}{fall winter spring of primary/desired baseline}
+\item{primary_fws}{fall winter spring of primary/desired baseline}
 
-\item{target_academic_year}{academic year of primary/desired baseline}
+\item{primary_academic_year}{academic year of primary/desired baseline}
 
 \item{fallback_fws}{fall winter spring of fallback/backup baseline}
 
 \item{fallback_academic_year}{academic year of fallback/backup baseline}
 }
 \description{
-given a mapvizieR object, a vector of studentids, a subject, and a target term, return
+given a mapvizieR object, a vector of studentids, a subject, and a primary term, return
 a data frame of students and their baseline RIT scores.
 also has a fallback option - for instance, imagine you
 were using a prior Spring score as baseline, but if a student was a new admit

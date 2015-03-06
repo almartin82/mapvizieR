@@ -18,8 +18,8 @@ test_that("baseline_calc behaves", {
     mapvizieR_obj = mapvizieR_obj,
     studentids = studentids,
     measurementscale = 'Reading',
-    target_fws = 'Spring',
-    target_academic_year = 2012,
+    primary_fws = 'Spring',
+    primary_academic_year = 2012,
     fallback_fws = 'Fall',
     fallback_academic_year = 2013
   )
@@ -35,8 +35,8 @@ test_that("baseline_calc with no fallback", {
     mapvizieR_obj = mapvizieR_obj,
     studentids = studentids,
     measurementscale = 'Reading',
-    target_fws = 'Spring',
-    target_academic_year = 2012  
+    primary_fws = 'Spring',
+    primary_academic_year = 2012  
   )
     
   expect_equal(nrow(no_fallback), 93)
