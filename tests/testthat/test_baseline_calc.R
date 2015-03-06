@@ -29,3 +29,17 @@ test_that("baseline_calc behaves", {
 })
 
 
+test_that("baseline_calc with no fallback", {
+  
+  no_fallback <- calc_baseline_detail(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale = 'Reading',
+    target_fws = 'Spring',
+    target_academic_year = 2012  
+  )
+    
+  expect_equal(nrow(no_fallback), 93)
+  expect_equal(sum(no_fallback$baseline_RIT, na.rm=TRUE), 7745)
+})
+

@@ -507,14 +507,9 @@ min_term_filter <- function(cdf, small_n_cutoff=-1) {
 #' 
 #' @param x a quartile (1-4)
 
-quartile_order <- function(x) {
-  
-  if(x==2) {
-    return(1)
-  } else if (x==1) {
-    return(2)
-  } else (
-    return(x)
+quartile_order <- function(x) { 
+  ifelse(x==2, 1,
+    ifelse(x==1, 2, x)       
   )
 }
 

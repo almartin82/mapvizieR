@@ -81,12 +81,10 @@ becca_plot <- function(
     dplyr::summarize(
       n_quartile=n()
     ) %>%
-    #TODO: clean this up, kill rowwise()
-    rowwise() %>%
     dplyr::mutate(
       at_grade_level_dummy=ifelse(quartile %in% c(3, 4), 'Yes', 'No'),
       order=quartile_order(as.numeric(quartile))
-    ) 
+    )
           
   
   prepped <- dplyr::left_join(

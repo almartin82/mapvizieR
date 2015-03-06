@@ -41,7 +41,7 @@ calc_baseline_detail <- function(
   )  
   names(munge)[[2]] <- 'target_RIT'
 
-  if (all(is.na(fallback_fws), fallback_academic_year)) {
+  if (all(is.na(fallback_fws), is.na(fallback_academic_year))) {
     #if there's no fallback, just generate a dummy column of NAs.
     munge$fallback_RIT <- NA
   } else {
