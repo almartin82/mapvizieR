@@ -243,7 +243,7 @@ standardize_kinder<- function(x,
 #' @description
 #' \code{fall_spring_me} tranforms grade levels into labels for charts; eg 4.2 -> F5
 #'
-#' @param grade_season a grade level between -1 and 12
+#' @param x a grade level between -1 and 12
 #' 
 #' @return a labeled string
 #' @export

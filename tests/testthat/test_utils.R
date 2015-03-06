@@ -7,7 +7,7 @@ cdf <- mapviz[['cdf']]
 samp_cdf <- prep_cdf_long(ex_CombinedAssessmentResults)
 prepped_roster <- prep_roster(ex_CombinedStudentsBySchool)
 samp_cdf$grade <- grade_levelify_cdf(samp_cdf, prepped_roster)
-
+processed_cdf <- process_cdf_long(samp_cdf)
 
 test_that("abbrev abbreviates school names properly", {
   
@@ -237,4 +237,17 @@ test_that("make_npr_consistent returns expected values", {
   expect_equal(nrow(samp_table), 95)
   expect_equal(sum(samp_table), 9091)  
 
+})
+
+
+test_that("timing functions",{
+  gls <- unique(processed_cdf$grade_level_season)
+  for_test <- base::sample(gls, 100000, replace = TRUE)  
+  
+  msg <- capture.output(
+    n_timings(n=20, test_function="fall_spring_me", test_args=list(x=for_test))
+  )
+
+  expect_output(msg, "20 trials of fall_spring_me with mean time")
+    
 })

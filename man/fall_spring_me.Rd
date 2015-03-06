@@ -7,7 +7,7 @@
 fall_spring_me(x)
 }
 \arguments{
-\item{grade_season}{a grade level between -1 and 12}
+\item{x}{a grade level between -1 and 12}
 }
 \value{
 a labeled string
