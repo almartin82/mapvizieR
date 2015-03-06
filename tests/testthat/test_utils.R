@@ -2,6 +2,12 @@ context("test util functions on a variety of different inputs")
 
 #constants
 mapviz <- mapvizieR(cdf=ex_CombinedAssessmentResults, roster=ex_CombinedStudentsBySchool)
+cdf <- mapviz[['cdf']]
+
+samp_cdf <- prep_cdf_long(ex_CombinedAssessmentResults)
+prepped_roster <- prep_roster(ex_CombinedStudentsBySchool)
+samp_cdf$grade <- grade_levelify_cdf(samp_cdf, prepped_roster)
+
 
 test_that("abbrev abbreviates school names properly", {
   
@@ -118,18 +124,6 @@ test_that("standardize_kinder translates kinder codes properly", {
 })
 
 
-test_that("grade_level_season returns the correct offsets", {
-  
-  f <- 'Fall'  
-  w <- 'Winter'
-  s <- 'Spring'
-
-  expect_equal(grade_level_season(f), -0.8)
-  expect_equal(grade_level_season(w), -0.5)
-  expect_equal(grade_level_season(s), 0)
-})
-
-
 test_that("grade_level_seasonify correctly labels the NWEA sample data", {
   
   ex_roster <- prep_roster(ex_CombinedStudentsBySchool)
@@ -185,13 +179,13 @@ test_that("fall_spring_me properly sets grade-season labels", {
   expect_equal(fall_spring_me(-0.8), 'KF')
   expect_equal(fall_spring_me(-0.5), 'KW')
   expect_equal(fall_spring_me(0), 'KS')
-  expect_equal(fall_spring_me(-1), '')
-  expect_equal(fall_spring_me(13), '')
+  expect_equal(fall_spring_me(-1), NA_character_)
+  expect_equal(fall_spring_me(13), NA_character_)
   expect_equal(fall_spring_me(4.2), '5F')
   expect_equal(fall_spring_me(4.5), '5W')
   expect_equal(fall_spring_me(6), '6S')
-  expect_equal(fall_spring_me(6.1), NA)
-  expect_equal(fall_spring_me(NA), NA)
+  expect_equal(fall_spring_me(6.1), NA_character_)
+  expect_equal(fall_spring_me(NA), NA_character_)
 })
 
 
@@ -234,3 +228,13 @@ test_that("clean_measurementscale cleans subjects", {
   expect_equal(clean_measurementscale('Science - General Science'), 'General Science')
 })
 
+
+test_that("make_npr_consistent returns expected values", {
+  
+  nprs <- make_npr_consistent(samp_cdf)
+  samp_table <- table(nprs$consistent_percentile)
+  
+  expect_equal(nrow(samp_table), 95)
+  expect_equal(sum(samp_table), 9091)  
+
+})

@@ -198,44 +198,6 @@ grade_levelify_cdf <- function(prepped_cdf, roster) {
 
 
 
-#' @title grade_season_labelify
-#'
-#' @description
-#' \code{grade_season_labelify} returns an abbreviated label ('5S') that is useful when
-#' labelling charts  
-#'
-#' @param x a cdf that has 'grade_level_season' (eg product of grade_level_seasonify)
-#' \code{grade_levelify()}
-#' 
-#' @return a data frame with a grade_season_labels
-
-grade_season_labelify <- function(x) {
-  
-  assert_that('grade_level_season' %in% names(x))
-  x$grade_season_label <- unlist(lapply(x$grade_level_season, fall_spring_me))
-    
-  return(x)
-}
-
-
-
-#' @title grade_season_factors
-#' 
-#' @description helper function that 1) converts grade_season_label to factor and
-#' 2) orders the labels based on grade_level_season
-#' 
-#' @param x a cdf that has grade_level_season and grade_season_label
-
-grade_season_factors <- function(x) {
-  
-  x$grade_season_label <- factor(
-    x$grade_season_label
-   ,levels=unique(x[order(x$grade_level_season),]$grade_season_label)
-   ,ordered=TRUE  
-  )
-  
-  x
-}
 
 
 

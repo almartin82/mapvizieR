@@ -169,15 +169,14 @@ tiered_growth_factors <- function(quartile, grade){
                       KIPPTieredGrowth=c(1.5,1.5,1.25,1.25,2,1.75,1.5,1.25)
   )
   
-  #
-  grade.type<-rep(NA,times=length(quartile))
+  grade.type <- rep(NA, times = length(quartile))
   
   # Create Grade Type column
-  grade.type<-ifelse(grade<=3, 0,1)
+  grade.type <- ifelse(grade <= 3, 0, 1)
   
-  df<-data.frame(grade, grade.type, quartile=as.factor(quartile))
+  df <- data.frame(grade, grade.type, quartile = as.factor(quartile))
   
-  df2<-left_join(df, tgrowth, by=c("quartile", "grade.type"))
+  df2 <- left_join(df, tgrowth, by=c("quartile", "grade.type"))
   
   #return
   df2$KIPPTieredGrowth
@@ -236,57 +235,10 @@ standardize_kinder<- function(x,
 
 
 
-#' @title grade_level_season
-#' 
-#' @description returns appropriate offset given a season
-#' 
-#' @param season 'Fall', 'Winter', 'Spring', or 'Summer'.
-#' 
-#' @return decimal offset that matches the season
-
-grade_level_season <- function(season) {
-  
-  assert_that(length(season)==1)
-  assert_that(season %in% c('Fall', 'Winter', 'Spring', 'Summer'))
-  
-  season_offsets <- list(
-    'Fall' = -0.8
-   ,'Winter' = -0.5
-   ,'Spring' = 0
-   ,'Summer' = 0.1
-  )
-  
-  return(season_offsets[[season]])
-}
-
-#' @title grade_level_seasonify
-#'
-#' @description
-#' \code{grade_level_seasonify} turns grade level into a simplified continuous scale, 
-#' using consistent offsets for MAP 'seasons'  
-#'
-#' @param x a cdf that has 'grade' and 'fallwinterspring' columns (eg product of )
-#' \code{grade_levelify()}
-#' 
-#' @return a data frame with a 'grade_level_season' column
-
-grade_level_seasonify <- function(x) {
-  
-  assert_that('grade' %in% names(x))
-  assert_that('fallwinterspring' %in% names(x))
-  
-  prepped <- x %>% 
-    rowwise() %>%
-    mutate(
-      grade_level_season = grade + grade_level_season(fallwinterspring)
-    )
-  
-  return(as.data.frame(prepped))
-}
 
 
 
-#' @title Fall-Spring Me
+#' @title fall_spring_me
 #'
 #' @description
 #' \code{fall_spring_me} tranforms grade levels into labels for charts; eg 4.2 -> F5
@@ -297,35 +249,39 @@ grade_level_seasonify <- function(x) {
 #' @export
 #' 
 
-fall_spring_me <- function(grade_season) {
+fall_spring_me <- function(x) {
   
-  if(is.na(grade_season)) {
-    return(NA)
-  }
-  #K is weird edge case
-  if(grade_season == -0.8) {
-    return('KF')
-  } else if(grade_season == -0.5) {
-    return('KW')
-  } else if(grade_season == 0) {
-    return('KS')
-  #too small, return nothing
-  } else if(grade_season <= -1) {
-    return('')
-  #too big
-  } else if(grade_season > 12) {
-    return('')  
-  #S observations are decimal 0s
-  } else if(grade_season %% 1 == 0) {
-    return(paste0(round(grade_season, 0), 'S'))
-  #test for F and W
-  } else if(round(grade_season %% 1,1) == 0.2) {
-    return(paste0(floor(grade_season) + 1, 'F'))
-  } else if(round(grade_season %% 1,2) == 0.5) {
-    return(paste0(floor(grade_season) + 1, 'W'))
-  } else {
-    return(NA)
-  }
+  #make the df
+    #just the grades
+    gr_spr <- c(0:12)
+    gr_fall <- gr_spr - 0.8
+    gr_wint <- gr_spr - 0.5
+    
+    with_k <- c('K', gr_spr[2:13])
+    #just the labels
+    labels_spr <- paste0(with_k, 'S')
+    labels_fall <- paste0(with_k, 'F')
+    labels_wint <- paste0(with_k, 'W')
+  
+  labels_df <- data.frame(
+    grade_level_season = c(gr_spr, gr_fall, gr_wint),
+    grade_season_label = c(labels_spr, labels_fall, labels_wint),
+    stringsAsFactors = FALSE
+  )
+  
+  input_df <- data.frame(
+    grade_level_season = x,
+    stringsAsFactors = FALSE
+  )
+  
+  munge <- left_join(
+    x = input_df,
+    y = labels_df,
+    by = c('grade_level_season' = 'grade_level_season')
+  )
+  
+  #return as vector
+  munge$grade_season_label
 }
 
 
@@ -559,5 +515,77 @@ quartile_order <- function(x) {
     return(2)
   } else (
     return(x)
+  )
+}
+
+
+
+#' @title time_execution
+#' 
+#' @description times how long it takes to execute a function
+#' 
+#' @param n num times to run the function
+#' @param test_function name of the function, passed to do.call
+#' @param test_args list of arguments for the function, passed
+#' to do.call
+#' @export
+
+time_execution <- function (n, test_function, test_args) {
+  timings <- rep(NA, n)
+ 
+  for (itr in 1:n) {
+    start <- Sys.time()
+    do.call(
+      what=test_function, 
+      args=test_args
+    )
+    end <- Sys.time()
+    timings[itr] <- end - start
+  }
+ 
+  return(timings)
+}
+ 
+#' @title n_timings
+#' 
+#' @description a convenience wrapper around timings to record
+#' the results of timing a function's execution
+#' 
+#' @inheritParams time_execution
+#' 
+#' @export
+
+n_timings <- function(n, test_function, test_args) {
+  timings <- time_execution(n, test_function, test_args)
+  
+  result <- paste0(
+    n, " trials of ", test_function, " with mean time of ", 
+    round(mean(timings), 4), " seconds.\n", 
+    "min of ", round(min(timings), 4), " and max of ",
+    round(max(timings), 4), " seconds."
+  )
+  
+  cat(result)
+}
+
+
+
+#' @title ensure_fields
+#' 
+#' @description a simple wrapper around ensurer to check for necessary fields
+#' used by a function
+#' 
+#' @param fields_vector vector of fields that your function needs.
+#' @param df data frame that needs to have the fields
+
+ensure_fields <- function(fields_vector, df) {
+  
+  df %>%
+  ensure_that(
+    all(fields_vector %in% names(df)) ~ paste(
+      "this function requires the following fields:",
+      fields_vector[!fields_vector %in% names(df)],
+      "which are missing from your data frame."
+      )
   )
 }

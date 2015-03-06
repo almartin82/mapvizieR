@@ -30,11 +30,14 @@ calc_baseline_detail <- function(
   #unpack the mapvizieR object and limit to desired students
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
   
-  #term 1
-  munge <- left_join(
-    data.frame(studentid=studentids),
-    this_cdf[with(this_cdf, fallwinterspring == target_fws &
+  minimal_cdf <- this_cdf[with(this_cdf, fallwinterspring == target_fws &
       map_year_academic == target_academic_year), c('studentid', 'testritscore')]
+  
+  #term 1
+  munge <- dplyr::left_join(
+    x = data.frame(studentid=studentids),
+    y = minimal_cdf,
+    by = "studentid"
   )  
   names(munge)[[2]] <- 'target_RIT'
 
@@ -45,7 +48,8 @@ calc_baseline_detail <- function(
     munge <- left_join(
       munge,
       this_cdf[with(this_cdf, fallwinterspring == fallback_fws &
-        map_year_academic == fallback_academic_year), c('studentid', 'testritscore')]    
+        map_year_academic == fallback_academic_year), c('studentid', 'testritscore')],
+      by = "studentid"
     )
     names(munge)[[3]] <- 'fallback_RIT'    
   }

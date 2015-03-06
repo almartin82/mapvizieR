@@ -47,7 +47,8 @@ process_cdf_long <- function(prepped_cdf) {
     dedupe_cdf(method="NWEA") %>%
     grade_level_seasonify() %>%
     grade_season_labelify() %>%
-    grade_season_factors()
+    grade_season_factors() %>%
+    make_npr_consistent()
 }
 
 
@@ -95,4 +96,129 @@ dedupe_cdf <- function(prepped_cdf, method="NWEA") {
   deduped <- dupe_tagged[dupe_tagged$rn==1, ]
   
   return(deduped)
+}
+
+
+
+#' @title grade_level_seasonify
+#'
+#' @description
+#' \code{grade_level_seasonify} turns grade level into a simplified continuous scale, 
+#' using consistent offsets for MAP 'seasons'  
+#'
+#' @param cdf a cdf that has 'grade' and 'fallwinterspring' columns (eg product of )
+#' \code{grade_levelify()}
+#' 
+#' @return a data frame with a 'grade_level_season' column
+
+grade_level_seasonify <- function(cdf) {
+  
+  #inputs consistency check 
+  cdf %>%
+    ensures_that(
+      c('grade', 'fallwinterspring') %in% names() ~ "'grade' 
+        and 'fallwinterspring' must be in in your cdf to 
+        grade_seasonify"
+    )
+  
+  season_offsets <- data.frame(
+    season=c('Fall', 'Winter', 'Spring', 'Summer')
+   ,offset=c(-0.8, -0.5, 0, 0.1)
+  )
+  
+  #get the offset
+  munge <- left_join(
+    x = cdf,
+    y = season_offsets,
+    by = c('fallwinterspring' = 'season')
+  )
+  
+  munge %>%
+    mutate(
+      grade_level_season = grade + offset
+    ) %>%
+    select(-offset) %>%
+    as.data.frame()
+}
+
+
+
+#' @title grade_season_labelify
+#'
+#' @description
+#' \code{grade_season_labelify} returns an abbreviated label ('5S') that is useful when
+#' labelling charts  
+#'
+#' @param x a cdf that has 'grade_level_season' (eg product of grade_level_seasonify)
+#' \code{grade_levelify()}
+#' 
+#' @return a data frame with a grade_season_labels
+
+grade_season_labelify <- function(x) {
+  
+  assert_that('grade_level_season' %in% names(x))
+  x$grade_season_label <- fall_spring_me(x$grade_level_season)
+    
+  return(as.data.frame(x))
+}
+
+
+
+#' @title grade_season_factors
+#' 
+#' @description helper function that 1) converts grade_season_label to factor and
+#' 2) orders the labels based on grade_level_season
+#' 
+#' @param x a cdf that has grade_level_season and grade_season_label
+
+grade_season_factors <- function(x) {
+  
+  x$grade_season_label <- factor(
+    x$grade_season_label,
+    levels = unique(x[order(x$grade_level_season),]$grade_season_label),
+    ordered = TRUE  
+  )
+  
+  return(x)
+}
+
+
+
+#' @title make_npr_consistent
+#' 
+#' @description join a cdf to a norms study and get the empirical 
+#' percentiles.  protects against longitudinal findings being 
+#' clouded by changes in the norms.
+#' 
+#' @param cdf a mostly-processed cdf object (this is the last step)
+#' in process_cdf
+#' @param norm_study name of a norm study.  default is 2011.  look in norm_data.R
+#' for documentation of available norm studies.
+
+make_npr_consistent <- function(
+  cdf,
+  norm_study = 'student_status_norms_2011'
+) {
+  #read norm df from text
+  norm_df <- eval(as.name(norm_study))
+
+  #make sure that cdf has required fields
+  ensure_fields(
+    c('measurementscale', 'fallwinterspring', 'grade', 'testritscore'),
+    cdf
+  )
+      
+  names(norm_df)[names(norm_df)=='percentile'] <- 'consistent_percentile'
+  norm_df$percentile_source <- norm_study
+
+  dplyr::left_join(
+    x = cdf,
+    y = norm_df,
+    by = c(
+      "measurementscale" = "measurementscale",
+      "fallwinterspring" = "fallwinterspring",
+      "grade" = "grade",
+      "testritscore" = "RIT"
+    )
+  )
 }

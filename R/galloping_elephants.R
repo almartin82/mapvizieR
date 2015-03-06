@@ -37,20 +37,20 @@ galloping_elephants <- function (
   #now group by grade level season and only return groups where n > 2
   #b/c geom_density will error on 2 data points.
   term_counts <- munge %>%
-    group_by(grade_season_label) %>%
-    summarize(
+    dplyr::group_by(grade_season_label) %>%
+    dplyr::summarize(
       count=n()  
     ) %>%
-    filter(
+    dplyr::filter(
       count > 2
     ) 
   
   #filter the cdf by the valid terms above
   munge <- munge %>%
-    filter(
+    dplyr::filter(
       grade_season_label %in% term_counts$grade_season_label
     ) %>%
-    mutate(
+    dplyr::mutate(
       grade_season_label=droplevels(grade_season_label)
     )    
   
@@ -69,8 +69,8 @@ galloping_elephants <- function (
   density_raw <- points$data[[1]]
   #extract the max per group
   max_points <- density_raw %>%
-    group_by(group) %>%
-    summarize(
+    dplyr::group_by(group) %>%
+    dplyr::summarize(
       y=max(y, na.rm=TRUE)  
     )
 

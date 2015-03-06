@@ -99,7 +99,7 @@ student_scaffold <- function(
   cols <- c("studentid", "measurementscale", "testid", 
     "map_year_academic", "fallwinterspring", "grade", "grade_level_season", "schoolname"           
   )
-  simple <- processed_cdf[ ,cols]
+  simple <- processed_cdf[ ,cols] %>% as.data.frame()
   simple$hash <- with(simple,
     paste(studentid, measurementscale, fallwinterspring, map_year_academic, sep='_')
   )
