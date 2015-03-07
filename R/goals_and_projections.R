@@ -131,39 +131,45 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
 #' 
 #' @export
 
-add_accelerated_growth <- function(mapvizier_object, 
-                         goal_function=goal_kipp_tiered, 
-                         goal_function_args=list(iterations=1),
-                         update_growth_df=FALSE){
-    # this should be run in the mapvizier method after the mapvizier class
-    # is assigned.  That way it can be used in the constructor method or
-    # outside of it for adding new growth to the 
+add_accelerated_growth <- function(
+  mapvizier_object, 
+  goal_function = goal_kipp_tiered, 
+  goal_function_args = list(iterations=1),
+  update_growth_df = FALSE){
+  # this should be run in the mapvizier method after the mapvizier class
+  # is assigned.  That way it can be used in the constructor method or
+  # outside of it for adding new growth to the 
    
    
-   goal_function_args$mapvizier_object<-ensure_is_mapvizieR(mapvizier_object)
+   goal_function_args$mapvizier_object <- ensure_is_mapvizieR(mapvizier_object)
    
-   goals_obj<-do.call(goal_function, goal_function_args) %>%
+   goals_obj <- do.call(goal_function, goal_function_args) %>%
      ensure_goals_obj
    
-   #
-   mapvizier_object$goals[[goals_obj$slot_name]]<-goals_obj
+  
+   mapvizier_object$goals[[goals_obj$slot_name]] <- goals_obj
    
    if(update_growth_df){
      new_growth_df<-
        mapvizier_object$growth_df %>%
-       inner_join(goals_obj$goals,
-                 by=goals_obj$join_by_fields)
+       dplyr::inner_join(
+         goals_obj$goals,
+         by = goals_obj$join_by_fields
+        )
       
      # clean_up from join
      # set accel.growth.y= accel.growth 
      if("accel_growth.y" %in% names(new_growth_df)) {
        new_growth_df <- new_growth_df %>%
-         mutate(accel_growth.x=accel_growth.y,
-                met_accel_growth.x=met_accel_growth.y) %>%
-         rename(accel_growth=accel_growth.x,
-                met_accel_growth=met_accel_growth.x) %>%
-         select(-accel_growth.y,
-                -met_accel_growth.y) 
+         dplyr::mutate(
+           accel_growth.x = accel_growth.y,
+           met_accel_growth.x = met_accel_growth.y
+         ) %>%
+         dplyr::rename(
+           accel_growth = accel_growth.x,
+           met_accel_growth = met_accel_growth.x
+         ) %>%
+         dplyr::select(-accel_growth.y, -met_accel_growth.y) 
      }
        
      #remove .x from names
@@ -216,9 +222,3 @@ ensure_goals_obj<- ensures_that(+ensure_goals_names,
               paste0("Your goals function's goals data frame ", "
                      must have accel_growth and met_accel_growth fields.")
     )
-
-
-
-
-
-

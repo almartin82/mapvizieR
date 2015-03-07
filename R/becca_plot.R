@@ -51,7 +51,7 @@ becca_plot <- function(
  
   #tag with quartiles
   munge <- munge %>%
-    mutate(
+    dplyr::mutate(
       quartile=kipp_quartile(testpercentile)
     )
   
@@ -60,41 +60,42 @@ becca_plot <- function(
   #SUBJECT    GRADE_LEVEL_SEASON     QUARTILE      PCT
   
   term_totals <- munge %>%
-    select(
+    dplyr::select(
       measurementscale, grade_level_season, quartile
     ) %>%
     #first group by term
-    group_by(
+    dplyr::group_by(
       measurementscale, grade_level_season  
     ) %>%
-    summarize(
+    dplyr::summarize(
       n_total=n()
     ) %>%
     as.data.frame()
   
   quartile_totals <- munge %>%
     #then group by quartile
-    group_by(
+    dplyr::group_by(
       measurementscale, grade_level_season, quartile
     ) %>%
     #include at grade level flag
-    summarize(
+    dplyr::summarize(
       n_quartile=n()
     ) %>%
-    rowwise() %>%
-    mutate(
+    dplyr::mutate(
       at_grade_level_dummy=ifelse(quartile %in% c(3, 4), 'Yes', 'No'),
       order=quartile_order(as.numeric(quartile))
-    ) 
+    )
           
   
-  prepped <- left_join(
-    quartile_totals, term_totals[, c(2,3)]  
-  ) %>%
-  mutate(
-    pct=n_quartile /  n_total * 100
-  ) %>%
-  as.data.frame()
+  prepped <- dplyr::left_join(
+      quartile_totals, 
+      term_totals[, c(2,3)],
+      by="grade_level_season"
+    ) %>%
+    dplyr::mutate(
+      pct=n_quartile /  n_total * 100
+    ) %>%
+    as.data.frame()
   
   #TRANSFORMATION - TWO dfs FOR CHART
   #super helpful advice from: http://stackoverflow.com/a/13734448/561698
@@ -107,15 +108,15 @@ becca_plot <- function(
   
   #midpoints for labels
   npr_above <- npr_above %>%
-    group_by(grade_level_season) %>%
-    mutate(
+    dplyr::group_by(grade_level_season) %>%
+    dplyr::mutate(
       cumsum = order_by(order, cumsum(pct)),
       midpoint = cumsum - (0.5 * pct)
     )
 
   npr_below <- npr_below %>%
-    group_by(grade_level_season) %>%
-    mutate(
+    dplyr::group_by(grade_level_season) %>%
+    dplyr::mutate(
       cumsum = order_by(order, cumsum(pct)),
       midpoint = cumsum - (0.5 * pct)
     )

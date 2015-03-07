@@ -2,12 +2,12 @@
 % Please edit documentation in R/util.R
 \name{fall_spring_me}
 \alias{fall_spring_me}
-\title{Fall-Spring Me}
+\title{fall_spring_me}
 \usage{
-fall_spring_me(grade_season)
+fall_spring_me(x)
 }
 \arguments{
-\item{grade_season}{a grade level between -1 and 12}
+\item{x}{a grade level between -1 and 12}
 }
 \value{
 a labeled string
