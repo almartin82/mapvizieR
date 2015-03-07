@@ -453,17 +453,36 @@ valid_grade_seasons <- function(cdf, first_and_spring_only=TRUE,
 
 mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale_in) {
   
-  #pull off the object
+  #extract the object
   cdf_long <- mapvizieR_obj[['cdf']] 
   #only these kids
   cdf_long %>%
-    filter(
+    dplyr::filter(
       studentid %in% studentids,
       measurementscale == measurementscale_in
     )
   
 }
 
+
+
+#' @title mv_limit_growth_df
+#' 
+#' @description extract the growth df and limit it to target students
+#' @inheritParams mv_limit_cdf
+
+mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale_in) {
+  
+  #extract the object
+  growth_df <- mapvizieR_obj[['growth_df']]
+  #only these kids
+  growth_df %>%
+    dplyr::filter(
+      studentid %in% studentids,
+      measurementscale == measurementscale_in
+    )
+  
+}
 
 
 #' @title min_term_filter 

@@ -11,6 +11,8 @@
 #' @param start_academic_year starting academic year
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
+#' @param complete_obsv if TRUE, limit only to students who have BOTH a start
+#' and end score. default is FALSE.
 #' 
 #' @export
 
@@ -21,16 +23,76 @@ nyt_subgroups <- function(
   start_fws,
   start_academic_year,
   end_fws,
-  end_academic_year
+  end_academic_year,
+  complete_obsv = FALSE
 ) {
   #data validation and unpack
   mv_opening_checks(mapvizieR_obj, studentids, 1)
 
   #unpack the mapvizieR object and limit to desired students
-  this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
+  growth_df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale)
 
   #data processing
+  #just desired terms
+  this_growth <- growth_df %>%
+    dplyr::filter(
+      start_map_year_academic == start_academic_year,
+      start_fallwinterspring == start_fws,
+      end_map_year_academic == end_academic_year,
+      end_fallwinterspring == end_fws
+    )
   
+  #complete observations?
+  if (complete_obsv == TRUE) {
+    this_growth <- this_growth %>%
+      dplyr::filter(
+        complete_obsv == TRUE  
+      )
+  }
+  
+  #data calcs  
+  #1. overall
+  total_change <- this_growth %>%
+    summarize(
+      start_rit = mean(start_testritscore, na.rm=TRUE),
+      end_rit = mean(end_testritscore, na.rm=TRUE),
+      rit_change = mean(rit_growth, na.rm=TRUE)
+    )
+
+  total_change$grouping <- 'All Students'
+  total_change$order <- 1
+  #by quartile
+  #TODO: figure out how to get by starting quartile
+  
+  plot_df <- rbind(total_change)
+  
+
   #make plot
+  p <- ggplot(
+    data=plot_df
+   ,aes(
+      x = start_rit,
+      xend = end_rit,
+      y = 1,
+      yend = 1
+    )
+  ) +
+  geom_segment(
+    arrow = arrow(length = unit(0.3,"cm"))
+  ) +
+  facet_grid(
+    . ~ grouping  
+  ) +
+  theme_bw() +
+  theme(
+    axis.title.y=element_blank(),
+    axis.text.y=element_blank(),
+    axis.ticks.y=element_blank()
+  )
+  
+    
+  #return
+  p
   
 }
+
