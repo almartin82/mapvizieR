@@ -54,9 +54,6 @@ generate_growth_dfs <- function(
     ) %>%
     calc_rit_growth_metrics
   
- 
-  
-  
   #todo: GOAL scores here
   
   growth_dfs <- list(

@@ -50,7 +50,7 @@ nyt_subgroups <- function(
       )
   }
   
-  #data calcs  
+  #data cuts
   #1. overall
   total_change <- this_growth %>%
     summarize(
@@ -64,8 +64,8 @@ nyt_subgroups <- function(
   #by quartile
   #TODO: figure out how to get by starting quartile
   
+  #bind all the cuts together.
   plot_df <- rbind(total_change)
-  
 
   #make plot
   p <- ggplot(
