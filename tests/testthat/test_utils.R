@@ -42,28 +42,22 @@ test_that("kipp_quartile returns KIPP style quartiles",{
   cdf <- prep_cdf_long(ex_CombinedAssessmentResults)
   
   expect_equal(
-    kipp_quartile(test_percentiles, return.factor = FALSE), 
+    kipp_quartile(test_percentiles, return_factor = FALSE), 
     expected_quartiles_kipp
   )
   
   expect_equal(
-    kipp_quartile(test_percentiles, return.factor = TRUE), 
+    kipp_quartile(test_percentiles, return_factor = TRUE), 
     as.factor(expected_quartiles_kipp)
   )
   
   expect_equal(
-    kipp_quartile(
-      test_percentiles, 
-      return.factor = TRUE, 
-      proper.quartile = TRUE),
+    kipp_quartile(test_percentiles, return_factor = TRUE, proper_quartile = TRUE),
     as.factor(expected_quartiles_not_kipp)
   )
   
   expect_equal(
-    kipp_quartile(
-      test_percentiles, 
-      return.factor = FALSE, 
-      proper.quartile = TRUE),
+    kipp_quartile(test_percentiles, return_factor = FALSE, proper_quartile = TRUE),
     expected_quartiles_not_kipp
   )
   

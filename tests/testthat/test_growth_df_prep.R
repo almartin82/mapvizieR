@@ -47,11 +47,12 @@ test_that("scores_by_testid correctly looks up test events", {
   ex_lookup <- scores_by_testid(processed_cdf$testid, processed_cdf, 'start')
   expect_equal(nrow(ex_lookup), 8551)
   expect_equal(
-    c('start_growthmeasureyn','start_testtype','start_testname',
-      'start_teststartdate','start_testdurationminutes','start_testritscore',
-      'start_teststandarderror','start_testpercentile','start_rittoreadingscore',
-      'start_rittoreadingmin','start_rittoreadingmax','start_teststarttime',
-      'start_percentcorrect','start_projectedproficiency'),
+    c("start_growthmeasureyn", "start_testtype", "start_testname", 
+      "start_teststartdate", "start_testdurationminutes", "start_testritscore", 
+      "start_teststandarderror", "start_testpercentile", "start_testquartile", 
+      "start_rittoreadingscore", "start_rittoreadingmin", "start_rittoreadingmax", 
+      "start_teststarttime", "start_percentcorrect", "start_projectedproficiency"
+      ),
     names(ex_lookup)
   )
   expect_equal(sum(ex_lookup$start_percentcorrect), 435341)
@@ -92,7 +93,7 @@ test_that("growth_testid_lookup behaves as expected", {
     score_matched <- growth_testid_lookup(scaffold, processed_cdf)
   
     expect_equal(nrow(score_matched), 17010)
-    expect_equal(ncol(score_matched), 45)
+    expect_equal(ncol(score_matched), 47)
     expect_equal(sum(as.numeric(score_matched$start_testritscore), na.rm=T), 
       2344192)
     expect_equal(sum(as.numeric(score_matched$end_testritscore), na.rm=T),
@@ -109,7 +110,7 @@ test_that("growth_norm_lookup find norm data", {
   )
   
   expect_equal(nrow(norm_matched), 17010)
-  expect_equal(ncol(norm_matched), 48)
+  expect_equal(ncol(norm_matched), 50)
   expect_equal(
     as.character(summary(norm_matched)[, 'typical_growth'][3]), 
     "Median : 2.340  " 
@@ -128,7 +129,7 @@ test_that("calc_rit_growth_metrics properly calculates growth metrics", {
   with_rit_metrics <- calc_rit_growth_metrics(norm_matched)
   
   expect_equal(nrow(with_rit_metrics), 17010)
-  expect_equal(ncol(with_rit_metrics), 53)
+  expect_equal(ncol(with_rit_metrics), 55)
   expect_equal(median(with_rit_metrics$rit_growth,na.rm = T),3)
   expect_equal(median(with_rit_metrics$change_testpercentile,na.rm = T),1)
   expect_equal(median(with_rit_metrics$cgi,na.rm = T),0)
@@ -146,7 +147,7 @@ test_that("growth_norm_lookup with unsanctioned windows", {
     score_matched, processed_cdf, norms_long, TRUE
   )
   expect_equal(nrow(norm_matched), 21483)
-  expect_equal(ncol(norm_matched), 48)
+  expect_equal(ncol(norm_matched), 50)
   expect_equal(
     as.character(summary(norm_matched)[, 'typical_growth'][3]), 
     "Median : 2.150  " 

@@ -58,14 +58,29 @@ nyt_subgroups <- function(
       end_rit = mean(end_testritscore, na.rm=TRUE),
       rit_change = mean(rit_growth, na.rm=TRUE)
     )
-
   total_change$grouping <- 'All Students'
   total_change$order <- 1
+  
+  #2. starting quartile
+  starting_quartile <- this_growth %>%
+    dplyr::group_by(
+      start_testquartile      
+    ) %>%
+    summarize(
+      start_rit = mean(start_testritscore, na.rm=TRUE),
+      end_rit = mean(end_testritscore, na.rm=TRUE),
+      rit_change = mean(rit_growth, na.rm=TRUE)        
+    )
+  
+  starting_quartile[, 1] <- paste('Quartile', starting_quartile$start_testquartile)
+  names(starting_quartile)[1] <- 'grouping'
+  starting_quartile$order <- 2
+  
   #by quartile
   #TODO: figure out how to get by starting quartile
   
   #bind all the cuts together.
-  plot_df <- rbind(total_change)
+  plot_df <- rbind(total_change, starting_quartile)
 
   #make plot
   p <- ggplot(
@@ -80,8 +95,30 @@ nyt_subgroups <- function(
   geom_segment(
     arrow = arrow(length = unit(0.3,"cm"))
   ) +
+  #start rit
+  geom_text(
+    aes(
+      x = start_rit,
+      y = 1,
+      label = round(start_rit, 1)
+    ),
+    inherit.aes = FALSE,
+    vjust = 1,
+    hjust = 0.5
+  ) +
+  #end rit
+  geom_text(
+    aes(
+      x = end_rit,
+      y = 1,
+      label = round(end_rit, 1)
+    ),
+    inherit.aes = FALSE,
+    vjust = 1,
+    hjust = 0.5
+  ) +    
   facet_grid(
-    . ~ grouping  
+    grouping ~ . 
   ) +
   theme_bw() +
   theme(
@@ -89,7 +126,6 @@ nyt_subgroups <- function(
     axis.text.y=element_blank(),
     axis.ticks.y=element_blank()
   )
-  
     
   #return
   p

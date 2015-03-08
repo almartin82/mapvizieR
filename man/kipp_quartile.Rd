@@ -4,14 +4,14 @@
 \alias{kipp_quartile}
 \title{Calcualte KIPP Foundation style quartiles from percentile vector}
 \usage{
-kipp_quartile(x, return.factor = TRUE, proper.quartile = FALSE)
+kipp_quartile(x, return_factor = TRUE, proper_quartile = FALSE)
 }
 \arguments{
 \item{x}{vector of percentiles to be converted to quartiels}
 
-\item{return.factor}{default is \code{TRUE}.  If set to \code{FALSE} returns integers rather than factors.}
+\item{return_factor}{default is \code{TRUE}.  If set to \code{FALSE} returns integers rather than factors.}
 
-\item{proper.quartile}{defaul is \code{FALSE}.  If set to \code{TRUE} returns traditional quartiles rather then KIPP Foundation quartiles.}
+\item{proper_quartile}{defaul is \code{FALSE}.  If set to \code{TRUE} returns traditional quartiles rather then KIPP Foundation quartiles.}
 }
 \value{
 a vector of \code{length(x)}.
@@ -30,7 +30,7 @@ quartile calculation by setting the \code{proper.quartile} argument to \code{TRU
 \examples{
 x <- sample(x=1:99, 100,replace = TRUE)
 kipp_quartile(x)
-kipp_quartile(x, proper.quartile=TRUE)
-kipp_quartile(x, proper.quartile=TRUE, return.factor=FALSE)
+kipp_quartile(x, proper_quartile=TRUE)
+kipp_quartile(x, proper_quartile=TRUE, return_factor=FALSE)
 }
 

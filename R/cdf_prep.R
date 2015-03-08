@@ -48,7 +48,10 @@ process_cdf_long <- function(prepped_cdf) {
     grade_level_seasonify() %>%
     grade_season_labelify() %>%
     grade_season_factors() %>%
-    make_npr_consistent()
+    make_npr_consistent() %>%
+    mutate(
+      testquartile = kipp_quartile(consistent_percentile) 
+    )
 }
 
 

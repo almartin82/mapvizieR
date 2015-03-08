@@ -5,7 +5,7 @@
 \title{nyt_subgroups}
 \usage{
 nyt_subgroups(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_academic_year, end_fws, end_academic_year)
+  start_academic_year, end_fws, end_academic_year, complete_obsv = FALSE)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -21,6 +21,9 @@ nyt_subgroups(mapvizieR_obj, studentids, measurementscale, start_fws,
 \item{end_fws}{ending season}
 
 \item{end_academic_year}{ending academic year}
+
+\item{complete_obsv}{if TRUE, limit only to students who have BOTH a start
+and end score. default is FALSE.}
 }
 \description{
 the times did a nice job capturing change in the population vs
