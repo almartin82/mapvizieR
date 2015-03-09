@@ -4,8 +4,10 @@
 \alias{nyt_subgroups}
 \title{nyt_subgroups}
 \usage{
-nyt_subgroups(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_academic_year, end_fws, end_academic_year, complete_obsv = FALSE)
+nyt_subgroups(mapvizieR_obj, studentids, measurementscale,
+  subgroup_cols = c("starting_quartile"),
+  pretty_names = c("Starting Quartile"), start_fws, start_academic_year,
+  end_fws, end_academic_year, complete_obsv = FALSE)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -13,6 +15,11 @@ nyt_subgroups(mapvizieR_obj, studentids, measurementscale, start_fws,
 \item{studentids}{target students}
 
 \item{measurementscale}{target subject}
+
+\item{subgroup_cols}{what subgroups in mapvizier roster do you want to cut by?  default
+is starting_quartile}
+
+\item{pretty_names}{nicely formatted names for the column cuts used above.}
 
 \item{start_fws}{starting season}
 

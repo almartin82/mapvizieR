@@ -203,8 +203,8 @@ scores_by_testid <- function(testid, processed_cdf, start_or_end) {
   
   target_cols <- c("growthmeasureyn", "testtype", "testname", "teststartdate", 
     "testdurationminutes", "testritscore", "teststandarderror", "testpercentile", 
-    "testquartile", "rittoreadingscore", "rittoreadingmin", "rittoreadingmax", 
-    "teststarttime", "percentcorrect", "projectedproficiency")
+    "consistent_percentile", "testquartile", "rittoreadingscore", "rittoreadingmin", 
+    "rittoreadingmax", "teststarttime", "percentcorrect", "projectedproficiency")
 
   matching_slim <- matched[ , target_cols]
   #prefix it
