@@ -99,7 +99,7 @@ nyt_subgroups <- function(
   }
     
   
-  facet_one_subgroup <- function(df, subgroup) {
+  facet_one_subgroup <- function(df, subgroup, xlims) {
     #make
     p <- ggplot(
       data=df
@@ -135,6 +135,9 @@ nyt_subgroups <- function(
       vjust = 1,
       hjust = 0.5
     ) +    
+    coord_cartesian(
+      xlim=c(xlims[1], xlims[2])
+    ) +
     facet_grid(
       facet_me ~ . 
     ) +
@@ -160,10 +163,42 @@ nyt_subgroups <- function(
   }
   
   #3| DATA CUTS
+
+  #calc constants
+  #silly values
+  x_min <- 999
+  x_max <- -1
+  
+  for (i in subgroup_cols) {    
+    minimal_roster <- roster[, c('studentid', i)]
+    int_df <- dplyr::inner_join(
+      x = this_growth,
+      y = minimal_roster,
+      by = 'studentid'
+    )
+
+    int_df <- dplyr::group_by_(
+      int_df, i  
+    ) %>%
+    summarize(
+      start_rit = round_to_any(mean(start_testritscore, na.rm=TRUE), 2, f=floor),
+      end_rit = round_to_any(mean(end_testritscore, na.rm=TRUE), 2, f=ceiling)        
+    )
+    
+    if(min(int_df$start_rit) < x_min) x_min <- min(int_df$start_rit)
+    if(max(int_df$end_rit) > x_max) x_max <- max(int_df$end_rit)
+  }
+  
+  plot_lims <- c(x_min, x_max)
+  
   #all students
   this_growth$all_students <- 'All Students'
   total_change <- group_summary(dplyr::group_by(this_growth, all_students), 'all_students')
-  p_all <- facet_one_subgroup(total_change, 'All Students')
+  p_all <- facet_one_subgroup(
+    df = total_change, 
+    subgroup = 'All Students',
+    xlims = plot_lims
+  )
   
   #iterate over subgroups
   plot_list <- list()
@@ -184,7 +219,11 @@ nyt_subgroups <- function(
     #now group by subgroup and summarize
     grouped_df <- dplyr::group_by_(combined_df, subgroup)
     this_summary <- group_summary(grouped_df, subgroup)
-    plot_list[[counter]] <- facet_one_subgroup(this_summary, pretty_names[i])    
+    plot_list[[counter]] <- facet_one_subgroup(
+      df = this_summary, 
+      subgroup = pretty_names[i],
+      xlims = plot_lims
+    )    
     
     counter <- counter + 1
   }  
