@@ -600,3 +600,18 @@ ensure_fields <- function(fields_vector, df) {
       )
   )
 }
+
+
+
+#' @title force_string_breaks
+#' 
+#' @description a text processing function to insert a \\n break every x characters
+#' 
+#' @param string the string
+#' @param x break every x
+
+force_string_breaks <- function(string, n_char) {
+  breaks <- gsub(paste0('(.{1,', n_char, '})(\\s|$)'), '\\1\n', string)  
+  #remove trailing and return
+  str_sub(breaks, 1, -2)
+}

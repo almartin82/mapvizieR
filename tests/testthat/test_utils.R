@@ -267,3 +267,11 @@ test_that("mv_limit_growth tests",{
   expect_equal(sum(growth_df_limit$typical_growth, na.rm=TRUE), 1841.18, tolerance = 0.01)  
   expect_equal(sum(growth_df_limit$accel_growth, na.rm=TRUE), 3134.5, tolerance = 0.01)
 })
+
+
+test_that("force_string_breaks",{
+  expect_equal(
+    force_string_breaks("I am an American, Chicago born-Chicago, that somber city-and go at things as I have taught myself, free-style, and will make the record in my own way: first to knock, first admitted; sometimes an innocent knock, sometimes a not so innocent", 40),
+    "I am an American, Chicago born-Chicago,\nthat somber city-and go at things as I\nhave taught myself, free-style, and will\nmake the record in my own way: first to\nknock, first admitted; sometimes an\ninnocent knock, sometimes a not so\ninnocent"  
+  )    
+})
