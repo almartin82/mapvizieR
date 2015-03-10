@@ -54,9 +54,6 @@ generate_growth_dfs <- function(
     ) %>%
     calc_rit_growth_metrics
   
- 
-  
-  
   #todo: GOAL scores here
   
   growth_dfs <- list(
@@ -206,8 +203,8 @@ scores_by_testid <- function(testid, processed_cdf, start_or_end) {
   
   target_cols <- c("growthmeasureyn", "testtype", "testname", "teststartdate", 
     "testdurationminutes", "testritscore", "teststandarderror", "testpercentile", 
-    "rittoreadingscore", "rittoreadingmin", "rittoreadingmax", "teststarttime", 
-    "percentcorrect", "projectedproficiency")
+    "consistent_percentile", "testquartile", "rittoreadingscore", "rittoreadingmin", 
+    "rittoreadingmax", "teststarttime", "percentcorrect", "projectedproficiency")
 
   matching_slim <- matched[ , target_cols]
   #prefix it
@@ -301,7 +298,7 @@ growth_norm_lookup <- function(
       "start_testritscore" = "startrit")
   )
   
-  return(with_matched_norms)
+  with_matched_norms
 }
 
 
@@ -316,11 +313,12 @@ growth_norm_lookup <- function(
 #' @return a data frame the same as growth_df with the addiont
 calc_rit_growth_metrics <- function(normed_df){
   out <- normed_df %>%
-    mutate(rit_growth = end_testritscore - start_testritscore,
-           met_typical_growth = rit_growth >= reported_growth,
-           change_testpercentile = end_testpercentile - start_testpercentile,
-           cgi = (rit_growth-reported_growth)/std_dev_of_expectation,
-           sgp = pnorm(cgi)
+    mutate(
+      rit_growth = end_testritscore - start_testritscore,
+      met_typical_growth = rit_growth >= reported_growth,
+      change_testpercentile = end_testpercentile - start_testpercentile,
+      cgi = (rit_growth-reported_growth) / std_dev_of_expectation,
+      sgp = pnorm(cgi)
     ) %>%
     as.data.frame
            

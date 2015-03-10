@@ -9,6 +9,10 @@ prepped_roster <- prep_roster(ex_CombinedStudentsBySchool)
 samp_cdf$grade <- grade_levelify_cdf(samp_cdf, prepped_roster)
 processed_cdf <- process_cdf_long(samp_cdf)
 
+studentids_normal_use <- processed_cdf[with(processed_cdf, 
+  map_year_academic==2013 & measurementscale=='Mathematics' & 
+  fallwinterspring=='Fall' & grade==6), ]$studentid
+
 test_that("abbrev abbreviates school names properly", {
   
   roster <- prep_roster(ex_CombinedStudentsBySchool)
@@ -38,28 +42,22 @@ test_that("kipp_quartile returns KIPP style quartiles",{
   cdf <- prep_cdf_long(ex_CombinedAssessmentResults)
   
   expect_equal(
-    kipp_quartile(test_percentiles, return.factor = FALSE), 
+    kipp_quartile(test_percentiles, return_factor = FALSE), 
     expected_quartiles_kipp
   )
   
   expect_equal(
-    kipp_quartile(test_percentiles, return.factor = TRUE), 
+    kipp_quartile(test_percentiles, return_factor = TRUE), 
     as.factor(expected_quartiles_kipp)
   )
   
   expect_equal(
-    kipp_quartile(
-      test_percentiles, 
-      return.factor = TRUE, 
-      proper.quartile = TRUE),
+    kipp_quartile(test_percentiles, return_factor = TRUE, proper_quartile = TRUE),
     as.factor(expected_quartiles_not_kipp)
   )
   
   expect_equal(
-    kipp_quartile(
-      test_percentiles, 
-      return.factor = FALSE, 
-      proper.quartile = TRUE),
+    kipp_quartile(test_percentiles, return_factor = FALSE, proper_quartile = TRUE),
     expected_quartiles_not_kipp
   )
   
@@ -250,4 +248,22 @@ test_that("timing functions",{
 
   expect_output(msg, "20 trials of fall_spring_me with mean time")
     
+})
+
+
+test_that("mv_limit_cdf tests",{
+  cdf_limit <- mv_limit_cdf(mapviz, studentids_normal_use, 'Reading')
+  expect_equal(nrow(cdf_limit), 316)
+  expect_equal(sum(cdf_limit$grade_level_season), 1738.1, tolerance = 0.01)
+  expect_equal(sum(cdf_limit$consistent_percentile), 13270)
+})
+
+
+test_that("mv_limit_growth tests",{
+  
+  growth_df_limit <- mv_limit_growth(mapviz, studentids_normal_use, 'Mathematics')
+  expect_equal(nrow(growth_df_limit), 576)
+  expect_equal(sum(growth_df_limit$cgi, na.rm=TRUE), 60.967, tolerance = 0.01)
+  expect_equal(sum(growth_df_limit$typical_growth, na.rm=TRUE), 1841.18, tolerance = 0.01)  
+  expect_equal(sum(growth_df_limit$accel_growth, na.rm=TRUE), 3134.5, tolerance = 0.01)
 })

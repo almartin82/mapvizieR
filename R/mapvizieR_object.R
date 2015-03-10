@@ -71,9 +71,11 @@ mapvizieR.default <- function(cdf, roster, verbose=FALSE) {
   # run after creating a mapvizieR object to increas goal objects attached).
   
   mapviz <- mapviz %>% 
-    add_accelerated_growth(goal_function = goal_kipp_tiered,  
-                           goal_function_args = list(iterations=1),
-                           update_growth_df = TRUE) 
+    add_accelerated_growth(
+      goal_function = goal_kipp_tiered,  
+      goal_function_args = list(iterations=1),
+      update_growth_df = TRUE
+  ) 
    
   return(mapviz)
 }
@@ -174,7 +176,7 @@ grade_levelify_cdf <- function(prepped_cdf, roster) {
   
   slim_roster <- unique(roster[, c('studentid', 'termname', 'grade')])
   #first match on a student's EXACT termname
-  matched_cdf <- left_join(prepped_cdf, slim_roster, by=c('studentid', 'termname'))
+  matched_cdf <- dplyr::left_join(prepped_cdf, slim_roster, by=c('studentid', 'termname'))
 
   exact_count <- nrow(!is.na(matched_cdf$grade))
   
@@ -183,7 +185,7 @@ grade_levelify_cdf <- function(prepped_cdf, roster) {
     
     slim_roster <- unique(roster[, c('studentid', 'map_year_academic', 'grade')])
     
-    secondary_match <- left_join(
+    secondary_match <- dplyr::left_join(
       prepped_cdf, 
       slim_roster, by=c('studentid', 'map_year_academic') 
     )
@@ -228,12 +230,12 @@ cdf_roster_match <- function(assessment_results, roster) {
       dplyr::filter(growthmeasureyn=TRUE),
     by=c("studentid", "termname", "schoolname")
   ) %>%
-    select(-ends_with(".y")) %>% # drop repeated columns
+    # drop repeated columns
+    dplyr::select(-ends_with(".y")) %>% 
     as.data.frame
   
   # drop .x join artifact from colun names (we dropped .y in select above )
   names(matched_df)<-gsub("(.+)(\\.x)", "\\1", names(matched_df))
-  
   
   #check that number of rows of assessment_results = nrow of matched_df
   input_rows <- nrow(assessment_results)

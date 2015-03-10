@@ -25,7 +25,7 @@ lower_df_names <- function(x) {
 #' @param x a data frame
 #' 
 #' @return data frame with disambiguated termname and map_year_academic
-#' 
+
 extract_academic_year <- function(x) {
   
   prep1 <- do.call(
@@ -46,6 +46,8 @@ extract_academic_year <- function(x) {
   
   return(x)
 }
+
+
 
 #' @title Create vector of Initials
 #'
@@ -78,7 +80,7 @@ extract_academic_year <- function(x) {
 #' 
 #' abbrev(x, exceptions=altnames)
 
-abbrev<-function(x, exceptions=NULL){
+abbrev <- function(x, exceptions = NULL){
   x.out<- gsub(pattern="(\\w)\\w*\\W*", 
                replacement="\\1",
                x=x)
@@ -90,9 +92,10 @@ abbrev<-function(x, exceptions=NULL){
     x.out<-x.changed # replace original vector with changed vector               
   }
   
-  
   x.out
 }
+
+
 
 #' @title Calcualte KIPP Foundation style quartiles from percentile vector
 #'
@@ -108,18 +111,18 @@ abbrev<-function(x, exceptions=NULL){
 #' quartile calculation by setting the \code{proper.quartile} argument to \code{TRUE}.
 #' 
 #' @param x vector of percentiles to be converted to quartiels
-#' @param return.factor  default is \code{TRUE}.  If set to \code{FALSE} returns integers rather than factors. 
-#' @param proper.quartile defaul is \code{FALSE}.  If set to \code{TRUE} returns traditional quartiles rather then KIPP Foundation quartiles. 
+#' @param return_factor  default is \code{TRUE}.  If set to \code{FALSE} returns integers rather than factors. 
+#' @param proper_quartile defaul is \code{FALSE}.  If set to \code{TRUE} returns traditional quartiles rather then KIPP Foundation quartiles. 
 #' 
 #' @return a vector of \code{length(x)}.
 #' @export
 #' @examples 
 #' x <- sample(x=1:99, 100,replace = TRUE)
 #' kipp_quartile(x)
-#' kipp_quartile(x, proper.quartile=TRUE)
-#' kipp_quartile(x, proper.quartile=TRUE, return.factor=FALSE)
+#' kipp_quartile(x, proper_quartile=TRUE)
+#' kipp_quartile(x, proper_quartile=TRUE, return_factor=FALSE)
 
-kipp_quartile <- function(x, return.factor=TRUE, proper.quartile=FALSE){
+kipp_quartile <- function(x, return_factor = TRUE, proper_quartile = FALSE){
   
   #defactor factors
   if(is.factor(x)) x<-as.numeric(as.character(x))
@@ -128,16 +131,17 @@ kipp_quartile <- function(x, return.factor=TRUE, proper.quartile=FALSE){
   stopifnot(x>0 | is.na(x), x<100 | is.na(x))
   
   # if proper.quartile is false adjust x's to return Foundation quartile 
-  if(!proper.quartile) x<-x+1
+  if(!proper_quartile) x <- x+1
   #calculate quartile
   y <- ceiling(x/25)
   
   #transform to factor
-  if(return.factor) y <- factor(y, levels=c(1:4))
+  if(return_factor) y <- factor(y, levels=c(1:4))
   
   #return
   y
 }
+
 
 
 #' @title Calculate KIPP Tiered Growth factors 
@@ -179,9 +183,10 @@ tiered_growth_factors <- function(quartile, grade){
   df2 <- left_join(df, tgrowth, by=c("quartile", "grade.type"))
   
   #return
-  df2$KIPPTieredGrowth
-  
+  df2$KIPPTieredGrowth 
 }
+
+
 
 #' @title Standardize Kindergarten code to 0 and other grades to integers
 #'
@@ -211,9 +216,7 @@ tiered_growth_factors <- function(quartile, grade){
 #' x3 <- ifelse(x=="K", "Kinder", x)
 #' standardize_kinder(x2, other_codes="Kinder")
 
-
-standardize_kinder<- function(x,
-                              other_codes=NULL){
+standardize_kinder<- function(x, other_codes = NULL){
   
   # use other codes first
   if(!is.null(other_codes)){
@@ -227,14 +230,11 @@ standardize_kinder<- function(x,
   x <- ifelse(x==13, 0, x)
   
   # cast as integer.vector
-  x<-as.integer(x)
+  x <- as.integer(x)
    
   #return 
   x
 }
-
-
-
 
 
 
@@ -310,7 +310,7 @@ round_to_any <- function(x, accuracy, f = round) {
 #' @param decreasing logical toggle to change sort order
 #' @param ... additional arguments
 
-df_sorter <- function(x, by=1, decreasing=FALSE, ... ) {
+df_sorter <- function(x, by = 1, decreasing = FALSE, ... ) {
   f <- function(...) order(...,decreasing=decreasing)
   i <- do.call(f,x[by])
   x[i,,drop=FALSE]
@@ -350,8 +350,8 @@ is_not_error <- function(x) {
 #' @param low how many kids? lower bound
 #' @param high how many kids? higher bound
 
-rand_stu <- function(mapvizieR_obj, low=20, high=500) {
-  sample(mapvizieR_obj[['roster']]$studentid, sample(20:500, 1)) %>% 
+rand_stu <- function(mapvizieR_obj, low = 20, high = 500) {
+  sample(mapvizieR_obj[['roster']]$studentid, sample(low:high, 1)) %>% 
       unique 
 }
 
@@ -409,7 +409,6 @@ mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu=1) {
     ensure_that(
       check_cdf_long(.)$boolean == TRUE ~ "your mapvizieR CDF is not conforming."
     )
-    
 }
 
 
@@ -453,17 +452,34 @@ valid_grade_seasons <- function(cdf, first_and_spring_only=TRUE,
 
 mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale_in) {
   
-  #pull off the object
+  #extract the object
   cdf_long <- mapvizieR_obj[['cdf']] 
   #only these kids
   cdf_long %>%
-    filter(
+    dplyr::filter(
       studentid %in% studentids,
       measurementscale == measurementscale_in
-    )
-  
+    ) 
 }
 
+
+
+#' @title mv_limit_growth_df
+#' 
+#' @description extract the growth df and limit it to target students
+#' @inheritParams mv_limit_cdf
+
+mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale_in) {
+  
+  #extract the object
+  growth_df <- mapvizieR_obj[['growth_df']]
+  #only these kids
+  growth_df %>%
+    dplyr::filter(
+      studentid %in% studentids,
+      measurementscale == measurementscale_in
+    )  
+}
 
 
 #' @title min_term_filter 
