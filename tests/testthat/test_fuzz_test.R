@@ -1,5 +1,8 @@
 context("very meta tests of the fuzz_test function")
 
+#make sure that constants used below exist
+testing_constants()
+
 test_that("fuzz test a vanilla ggplot", {
   results <- fuzz_test_plot('silly_plot', n=10)
   expect_true(all(unlist(results)))

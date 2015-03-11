@@ -1,17 +1,7 @@
 context("test util functions on a variety of different inputs")
 
-#constants
-mapviz <- mapvizieR(cdf=ex_CombinedAssessmentResults, roster=ex_CombinedStudentsBySchool)
-cdf <- mapviz[['cdf']]
-
-samp_cdf <- prep_cdf_long(ex_CombinedAssessmentResults)
-prepped_roster <- prep_roster(ex_CombinedStudentsBySchool)
-samp_cdf$grade <- grade_levelify_cdf(samp_cdf, prepped_roster)
-processed_cdf <- process_cdf_long(samp_cdf)
-
-studentids_normal_use <- processed_cdf[with(processed_cdf, 
-  map_year_academic==2013 & measurementscale=='Mathematics' & 
-  fallwinterspring=='Fall' & grade==6), ]$studentid
+#make sure that constants used below exist
+testing_constants()
 
 test_that("abbrev abbreviates school names properly", {
   
@@ -229,7 +219,7 @@ test_that("clean_measurementscale cleans subjects", {
 
 test_that("make_npr_consistent returns expected values", {
   
-  nprs <- make_npr_consistent(samp_cdf)
+  nprs <- make_npr_consistent(prepped_cdf)
   samp_table <- table(nprs$consistent_percentile)
   
   expect_equal(nrow(samp_table), 95)

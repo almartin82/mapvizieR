@@ -1,5 +1,8 @@
 context("cgp_prep tests")
 
+#make sure that constants used below exist
+testing_constants()
+
 ex_target_rit <- project_cgp_targets(
     measurementscale='Reading', grade=2, 
     growth_window='Fall to Spring', baseline_avg_rit=173
@@ -90,6 +93,3 @@ test_that("project_cgp_targets should fail given parameters out of range", {
 
   
 })
-
-
-
