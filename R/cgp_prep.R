@@ -31,8 +31,7 @@ project_cgp_targets <- function(
   #cant have a calc_for value 0 or below, or above 100 - those aren't valid growth %iles.
   calc_for %>%
     ensure_that(
-      min(.) > 0,
-      max(.) < 100,
+      min(.) > 0, max(.) < 100,
       fail_with = function(...) {
         stop("You must specify *either* a baseline RIT or a baseline NPR.", call. = FALSE)
       }
@@ -80,6 +79,25 @@ project_cgp_targets <- function(
 }
 
 
+
+#' @title eval_cgp_result
+#' 
+#' @description given a growth window and observed rit/npr change, what cohort
+#' backwards looking oppo
+#' 
+
+eval_cgp_result <- function(
+  measurementscale
+ ,grade
+ ,growth_window
+ ,baseline_avg_rit=NA
+ ,baseline_avg_npr=NA
+ ,tolerance=10
+ ,sch_growth_study=sch_growth_norms_2012
+ ,calc_for=c(1:99)
+) {
+
+}
 
 #' @title cohort_expectation_via_lookup
 #' 

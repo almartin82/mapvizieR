@@ -9,7 +9,7 @@ force_string_breaks(string, n_char)
 \arguments{
 \item{string}{the string}
 
-\item{x}{break every x}
+\item{n_char}{break every x}
 }
 \description{
 a text processing function to insert a \\n break every x characters
