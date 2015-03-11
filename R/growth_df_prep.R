@@ -204,8 +204,7 @@ student_scaffold <- function(
 scores_by_testid <- function(testid, processed_cdf, start_or_end) {
   #input validation
   assert_that(
-    #testids should all an integer
-    #testid %% 1 == 0,
+    #testids can't be null
     is.data.frame(processed_cdf),
     check_processed_cdf(processed_cdf)$boolean,
     start_or_end %in% c('start', 'end')
