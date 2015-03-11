@@ -105,6 +105,24 @@ student_scaffold <- function(
   start <- simple[simple$fallwinterspring==start_season, ]
   end <- simple[simple$fallwinterspring==end_season, ]
   
+  #define target columns now, in case we need to step out
+  target_cols <- c("studentid", "measurementscale", "end_schoolname", "end_grade_level_season", 
+    "end_grade", "growth_window", "complete_obsv", "match_status", 
+    "start_testid", "start_map_year_academic", "start_fallwinterspring", 
+    "start_grade", "start_grade_level_season", "start_schoolname", 
+    "end_testid", "end_map_year_academic", "end_fallwinterspring"
+  )
+  
+  empty <- data.frame(
+    matrix(vector(), 0, length(target_cols), dimnames=list(c(), target_cols)), 
+    stringsAsFactors=F
+  )
+
+  #if there's no data, don't worry about matching; just return a zero row df
+  if (nrow(start) == 0 | nrow(end) == 0) {
+    return(empty)
+  }
+
   #namespace stuff
     #normally I avoid reference by index number since, uh, inputs change, but
     #we are hard coding the columns above, so it is OK.
@@ -166,12 +184,6 @@ student_scaffold <- function(
   final$growth_window <- paste0(start_season, ' to ', end_season)
   
   #reorder
-  target_cols <- c("studentid", "measurementscale", "end_schoolname", "end_grade_level_season", 
-    "end_grade", "growth_window", "complete_obsv", "match_status", 
-    "start_testid", "start_map_year_academic", "start_fallwinterspring", 
-    "start_grade", "start_grade_level_season", "start_schoolname", 
-    "end_testid", "end_map_year_academic", "end_fallwinterspring"
-  )
   final <- final[ ,target_cols]
   return(as.data.frame(final))
 }
