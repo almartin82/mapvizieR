@@ -1,11 +1,11 @@
 context("growth data frame prep")
 
-#constants
-mapviz <- mapvizieR(cdf=ex_CombinedAssessmentResults, roster=ex_CombinedStudentsBySchool)
-processed_cdf <- mapviz[['cdf']]
+#make sure that constants used below exist
+testing_constants()
+
+#additional constants
 norms_long <- norms_students_wide_to_long(norms_students_2011)
   
-
 f2s_scaffold <- student_scaffold(
   processed_cdf = processed_cdf
  ,start_season = 'Fall'

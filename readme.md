@@ -33,12 +33,16 @@ _college ready/rutgers ready growth stuff will go here_
 
 ## development guidelines
 
+### testing
 - write tests & vignettes off of the sample CDF in `data/CombinedAssessmentRsults.csv`
 
 - did you how it said 'write tests' up there?  write tests!
+
+- a note on testing: remember that if you are doing something fancy with `do.call`, coveralls/travis might give you the false impression that you have full coverage.  enumerate the types of things the `do.call` step might do, and write test cases for each.  (this bit me [here](https://github.com/almartin82/mapvizieR/blob/7bc5199bb8d7f2100ce809618d61011e509d4bf8/R/cdf_prep.R#L90))
 
 - separate data processing functions from visualization functions
 
 - use ggplot themes, where possible, to handle formatting stuff (font size, transparency, etc) on plots
 
 - there's a tag for `design philosophy` in issues; put down thoughts about how we're thinking about handling data, workflows, etc there.
+

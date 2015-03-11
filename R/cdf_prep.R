@@ -90,7 +90,7 @@ dedupe_cdf <- function(prepped_cdf, method="NWEA") {
   rank_methods <- list(
     "NWEA" = "-growthmeasureyn, teststandarderror",
     "high RIT" = "-testritscore",
-    "most recent" = "-teststartdate"
+    "most recent" = "rev(teststartdate)"
   )
   
   #pull the method off the list

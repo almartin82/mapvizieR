@@ -1,22 +1,13 @@
 context("baseline_calc tests")
 
-#constants
-mapvizieR_obj <- mapvizieR(
-  cdf=ex_CombinedAssessmentResults, 
-  roster=ex_CombinedStudentsBySchool
-)
-
-processed_cdf <- mapvizieR_obj[['cdf']]
-
-studentids <- processed_cdf[with(processed_cdf, 
-  map_year_academic==2013 & measurementscale=='Mathematics' & 
-  fallwinterspring=='Fall' & grade==6), ]$studentid
+#make sure that constants used below exist
+testing_constants()
 
 test_that("baseline_calc behaves", {
   
   ex_baseline <- calc_baseline_detail(
-    mapvizieR_obj = mapvizieR_obj,
-    studentids = studentids,
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
     measurementscale = 'Reading',
     primary_fws = 'Spring',
     primary_academic_year = 2012,
@@ -32,8 +23,8 @@ test_that("baseline_calc behaves", {
 test_that("baseline_calc with no fallback", {
   
   no_fallback <- calc_baseline_detail(
-    mapvizieR_obj = mapvizieR_obj,
-    studentids = studentids,
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
     measurementscale = 'Reading',
     primary_fws = 'Spring',
     primary_academic_year = 2012  
