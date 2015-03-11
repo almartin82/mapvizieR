@@ -1,7 +1,8 @@
 context("report dispatcher tests")
 
-#constants
-mapviz <- mapvizieR(cdf=ex_CombinedAssessmentResults, roster=ex_CombinedStudentsBySchool)
+#make sure that constants used below exist
+testing_constants()
+
 
 test_that("basic test on silly plot.  report dispatcher should find roster structure on test data", {  
   
@@ -43,7 +44,6 @@ test_that("report dispatcher on elephants using test data", {
   )
   
 })  
-
 
 
 test_that("only_valid_plots correctly handles a list of ggplot", {  

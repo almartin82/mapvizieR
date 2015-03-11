@@ -1,22 +1,12 @@
 context("becca_plot tests")
 
-#constants
-mapviz <- mapvizieR(cdf=ex_CombinedAssessmentResults, roster=ex_CombinedStudentsBySchool)
-processed_cdf <- mapviz[['cdf']]
-growth_df <- mapviz[['growth_df']]
+#make sure that constants used below exist
+testing_constants()
 
-studentids_normal_use <- processed_cdf[with(processed_cdf, 
-  map_year_academic==2013 & measurementscale=='Mathematics' & 
-  fallwinterspring=='Fall' & grade==6), ]$studentid
-studentids_random <- sample(ex_CombinedStudentsBySchool$StudentID, 100) %>% 
-    unique 
-studentids_subset <- studentids <- processed_cdf[with(processed_cdf, 
-  map_year_academic==2013 & measurementscale=='Mathematics' & 
-  fallwinterspring=='Fall'), ]$studentid
 
 test_that("becca_plot errors when handed an improper mapviz object", {
   expect_error(
-    becca_plot(processed_cdf, studentids), 
+    becca_plot(cdf, studentids), 
     "The object you passed is not a conforming mapvizieR object"
   )  
 })
