@@ -54,7 +54,7 @@ process_cdf_long <- function(prepped_cdf) {
       #testids for client server are NULL.  we'll force a unique identifier here.
       testid = ifelse(
         #test
-        is.NA(testid),
+        is.na(testid),
         #if TRUE
         paste(studentid, measurementscale, teststartdate, teststarttime, sep='_'), 
         #if FALSE
