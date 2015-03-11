@@ -50,7 +50,15 @@ process_cdf_long <- function(prepped_cdf) {
     grade_season_factors() %>%
     make_npr_consistent() %>%
     mutate(
-      testquartile = kipp_quartile(consistent_percentile) 
+      testquartile = kipp_quartile(consistent_percentile),
+      #testids for client server are NULL.  we'll force a unique identifier here.
+      testid = ifelse(
+        #test
+        is.NA(testid),
+        #if TRUE
+        paste(studentid, measurementscale, teststartdate, teststarttime, sep='_'), 
+        #if FALSE
+        testid)
     )
 }
 
@@ -224,4 +232,15 @@ make_npr_consistent <- function(
       "testritscore" = "RIT"
     )
   )
+}
+
+
+#' @title psuedo_testids
+#' 
+#' @description if testids are NA, generate a unique identifier
+#' 
+#' @param x a cdf of testids
+
+psuedo_testids <- function(x) {
+  
 }
