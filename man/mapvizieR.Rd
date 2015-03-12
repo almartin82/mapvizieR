@@ -12,6 +12,8 @@ mapvizieR(cdf, roster, verbose = FALSE, ...)
 \item{roster}{a NWEA students}
 
 \item{verbose}{should mapvizieR print status updates?  default is FALSE.}
+
+\item{...}{additional arguments to pass to constructor functions called by mapvizieR}
 }
 \description{
 \code{mapvizieR} is a workhorse workflow function that

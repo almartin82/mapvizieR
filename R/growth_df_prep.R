@@ -295,6 +295,7 @@ growth_norm_lookup <- function(
     temp_norms$growth_window <- 'Spring to Winter'
     temp_norms$typical_growth <- temp_norms$typical_growth / 2
     temp_norms$reported_growth <- temp_norms$reported_growth / 2
+    #we don't know what the standard deviation is.
     temp_norms$std_dev_of_expectation <- NA
     
     #put back on dfs

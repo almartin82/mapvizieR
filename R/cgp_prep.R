@@ -74,14 +74,14 @@ calc_cgp <- function(
   #TARGETS
   #do.call the appropriate method.  returns df.
   targets <- do.call(
-    what=paste0('cohort_expectation_via_', cgp_method),
-    args=list(
-      measurementscale_in=measurementscale,
-      grade_in=grade,
-      growth_window_in=growth_window,
-      baseline_avg_rit=baseline_avg_rit,
-      baseline_avg_npr=baseline_avg_npr,
-      calc_for=calc_for
+    what = paste0('cohort_expectation_via_', cgp_method),
+    args = list(
+      measurementscale_in = measurementscale,
+      grade_in = grade,
+      growth_window_in = growth_window,
+      baseline_avg_rit = baseline_avg_rit,
+      baseline_avg_npr = baseline_avg_npr,
+      calc_for = calc_for
     )
   )
   
@@ -99,15 +99,21 @@ calc_cgp <- function(
   
   if(cgp_method == 'lookup') {
     #actual - typical over sd
-    act = (ending_avg_rit - baseline_avg_rit)
+    act = ending_avg_rit - baseline_avg_rit
     typ = grw_expect$typical_cohort_growth
     sdev = grw_expect$sd_of_expectation
     
     z_score = (act - typ) / sdev
     cgp = pnorm(z_score) * 100
+    
   } else if (cgp_method == 'generalization') {
-    #todo - old formula
-    cgp = NA
+    
+    npr_change = ending_avg_npr - baseline_avg_npr
+    # inverting logit returns percentile
+    cgp <- 1/(1 + exp(-(-2.53234 + -0.13405 * grade + 0.05747 * baseline_avg_npr + 
+        0.29236 * npr_change)))
+
+    cgp <- cgp * 100
   }
   
   

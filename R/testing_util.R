@@ -4,7 +4,8 @@
 
 populate_constants <- function() {
 
-  mapviz <<- mapvizieR(cdf=ex_CombinedAssessmentResults, roster=ex_CombinedStudentsBySchool)
+  mapviz <<- mapvizieR(cdf = ex_CombinedAssessmentResults, 
+    roster = ex_CombinedStudentsBySchool)
   cdf <<- mapviz[['cdf']]
   roster <<- mapviz[['roster']]
   growth_df <<- mapviz[['growth_df']]
@@ -18,13 +19,13 @@ populate_constants <- function() {
 
   #studentid vectors
   studentids_normal_use <<- cdf[with(cdf, 
-    map_year_academic==2013 & measurementscale=='Mathematics' & 
-    fallwinterspring=='Fall' & grade==6), ]$studentid
+    map_year_academic == 2013 & measurementscale == 'Mathematics' & 
+    fallwinterspring == 'Fall' & grade == 6), ]$studentid
   studentids_random <<- sample(ex_CombinedStudentsBySchool$StudentID, 100) %>% 
       unique 
   studentids_subset <<- studentids <- cdf[with(cdf, 
-    map_year_academic==2013 & measurementscale=='Mathematics' & 
-    fallwinterspring=='Fall'), ]$studentid
+    map_year_academic == 2013 & measurementscale == 'Mathematics' & 
+    fallwinterspring == 'Fall'), ]$studentid
 }
 
 
