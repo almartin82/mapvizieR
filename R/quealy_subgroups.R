@@ -128,7 +128,6 @@ quealy_subgroups <- function(
     df
   }
     
-  
   facet_one_subgroup <- function(df, subgroup, xlims, n_range, ref_lines) {
     #add newline breaks to the facet text
     df$facet_format <- unlist(lapply(df$facet_me, force_string_breaks, 15))
@@ -139,6 +138,30 @@ quealy_subgroups <- function(
     pct_of_range <- ((df$n - n_range[1]) / (n_range[2] - n_range[1]))
     df$size_scaled <- min_width + (pct_of_range * (max_width - min_width))
         
+    all_na_test <- all(is.na(df$cgp))
+    
+    
+    #cgp labeler
+    cgp_labeler <- function(n, cgp) {
+      if((start_fws == 'Fall' & end_fws == 'Winter') | 
+        (start_fws == 'Spring' & end_fws == 'Winter')
+      ) {
+        return(paste(n, 'stu')) 
+      }
+      if(n < 10) {
+        return(paste(n, 'stu')) 
+      } else {
+        return(paste(n, 'stu', '| CGP:', round(cgp, 0)))
+      }
+    }
+    
+    df <- df %>%
+      rowwise %>%
+      mutate(
+        cgp_label = cgp_labeler(n, cgp)  
+      ) %>%
+      as.data.frame
+  
     #make
     p <- ggplot(
       data=df
@@ -187,7 +210,7 @@ quealy_subgroups <- function(
       aes(
         x = start_rit + 0.5 * (end_rit - start_rit),
         y = 1.35,
-        label = ifelse(n > 10, paste(n, 'stu', '| CGP:', round(cgp, 0)), paste(n, 'stu'))
+        label = cgp_label
       ),
       fontface = 'italic',
       color = 'gray40',
