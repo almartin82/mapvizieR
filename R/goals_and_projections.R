@@ -61,8 +61,8 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
                   iter) %>%
     as.data.frame
   
-  if(iterations>1){
-    while(out$iter<=iterations){
+  if(iterations > 1){
+    while(out$iter <= iterations){
      # to do:
       # add loop to expand iteratsion
       # probaby need a better stopping rule (like max grade_season)
@@ -70,13 +70,10 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
     }
   } 
   # return
-  out_list<-list(
-    goals=out,
-    join_by_fields=c("studentid", 
-                     "start_testid", 
-                     "end_testid", 
-                     "measurementscale",
-                     "growth_window"),
+  out_list <- list(
+    goals = out,
+    join_by_fields = c("studentid", "start_testid", "end_testid", 
+      "measurementscale", "growth_window"),
     slot_name = "kipp_tiered_goals"
   )
 }    
@@ -120,13 +117,17 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
 #' data(ex_CombinedAssessmentResults)
 #' data(ex_CombinedStudentsBySchool)
 #' 
-#' cdf_mv <- mapvizieR(ex_CombinedAssessmentResults, 
-#'                     ex_CombinedStudentsBySchool)
+#' cdf_mv <- mapvizieR(
+#'  ex_CombinedAssessmentResults, 
+#'  ex_CombinedStudentsBySchool
+#' )
 #'                     
-#' new_mv<-add_accelerated_growth(cdf_mv,
-#'                                goal_function=goal_kipp_tiered, 
-#'                                goal_function_args=list(iterations=1),
-#'                                update_growth_df=FALSE)
+#' new_mv<-add_accelerated_growth(
+#'  cdf_mv,
+#'  goal_function = goal_kipp_tiered, 
+#'  goal_function_args = list(iterations=1),
+#'  update_growth_df = FALSE
+#' )
 #' str(new_mv)                                
 #' 
 #' @export
