@@ -15,10 +15,10 @@
 #' 
 #' @export
 
-mapvizieR <- function(cdf, roster, verbose=FALSE) UseMethod("mapvizieR")
+mapvizieR <- function(cdf, roster, verbose=FALSE, ...) UseMethod("mapvizieR")
 
 #' @export
-mapvizieR.default <- function(cdf, roster, verbose=FALSE) {
+mapvizieR.default <- function(cdf, roster, verbose=FALSE, ...) {
 
   cdf_status <- try(check_processed_cdf(cdf)$boolean, silent=TRUE)
   cdf_status <- all(!class(cdf_status)=="try-error" & cdf_status==TRUE)
@@ -49,7 +49,7 @@ mapvizieR.default <- function(cdf, roster, verbose=FALSE) {
   
   #headline growth df
   if (verbose) {print('calculating growth scores for students...')}
-  growth_df <- generate_growth_dfs(processed_cdf)$headline
+  growth_df <- generate_growth_dfs(processed_cdf, ...)$headline
   
   #TODO: goal growth df
   
