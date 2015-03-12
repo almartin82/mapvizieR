@@ -24,7 +24,7 @@ these plots show MAP scores for a group of students across multiple testing term
 ### growth visualizations
 unlike the functions above, which can take 1, 2, 3, n... test seasons, a lot of MAP analysis revolves around growth windows.  these visualization functions expect a 'cdf_growth' dataframe.  examples include:
 
-- `quealy_subgroups()` _to come_
+- `quealy_subgroups()`
 - `haid_plot()` _to come_
 - `goal_bar()`  _to come_
 
