@@ -281,19 +281,22 @@ growth_norm_lookup <- function(
   incomplete_growth_df
  ,processed_cdf
  ,norm_df_long
- ,include_unsanctioned_windows 
+ ,include_unsanctioned_windows
+ ,...
 ) {
   
   if (include_unsanctioned_windows) {
     #spring to winter
     scaffold <- student_scaffold(processed_cdf, 'Spring', 'Winter', 1)
     s2w <- growth_testid_lookup(scaffold, processed_cdf)
+    
     #half of spring to spring for the norms
     temp_norms <- norm_df_long[norm_df_long$growth_window=='Spring to Spring', ]
     temp_norms$growth_window <- 'Spring to Winter'
     temp_norms$typical_growth <- temp_norms$typical_growth / 2
     temp_norms$reported_growth <- temp_norms$reported_growth / 2
     temp_norms$std_dev_of_expectation <- NA
+    
     #put back on dfs
     incomplete_growth_df <- rbind(incomplete_growth_df, s2w)
     norm_df_long <- rbind(norm_df_long, temp_norms)

@@ -104,7 +104,7 @@ calc_cgp <- function(
     sdev = grw_expect$sd_of_expectation
     
     z_score = (act - typ) / sdev
-    cgp = pnorm(z_score)
+    cgp = pnorm(z_score) * 100
   } else if (cgp_method == 'generalization') {
     #todo - old formula
     cgp = NA

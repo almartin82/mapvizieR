@@ -4,7 +4,7 @@
 \alias{mapvizieR}
 \title{Create a mapvizieR object}
 \usage{
-mapvizieR(cdf, roster, verbose = FALSE)
+mapvizieR(cdf, roster, verbose = FALSE, ...)
 }
 \arguments{
 \item{cdf}{a NWEA AssessmentResults.csv or CDF}
