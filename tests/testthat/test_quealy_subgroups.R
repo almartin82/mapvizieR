@@ -65,3 +65,23 @@ test_that("quealy_subgroups with complete_obsv", {
   expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
 })
 
+
+test_that("quealy_subgroups generates a warning when multiple grade levels passed", {
+  
+  expect_warning(
+    quealy_subgroups(
+      mapvizieR_obj = mapviz,
+      studentids = roster$studentid,
+      measurementscale = 'Reading',
+      subgroup_cols = c('starting_quartile', 'studentgender'),
+      pretty_names = c('Starting Quartile', 'Gender'),
+      start_fws = 'Fall',
+      start_academic_year = 2013,
+      end_fws = 'Spring',
+      end_academic_year = 2013,
+      complete_obsv = TRUE
+    ),
+    "11 distinct grade levels present in your data!"
+  )
+    
+})

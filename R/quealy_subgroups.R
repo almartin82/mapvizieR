@@ -38,7 +38,7 @@ quealy_subgroups <- function(
   #data validation and unpack
   mv_opening_checks(mapvizieR_obj, studentids, 1)
   assert_that(length(subgroup_cols) == length(pretty_names))
-
+  
   #unpack the mapvizieR object and limit to desired students
   roster <- mapvizieR_obj[['roster']]
   growth_df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale)
@@ -52,8 +52,22 @@ quealy_subgroups <- function(
       end_map_year_academic == end_academic_year,
       end_fallwinterspring == end_fws
     )
+  #throw a warning if multiple grade levels
+  grades_present <- unique(this_growth$start_grade)
+  
+  if(length(grades_present) > 1) {
+    warning(
+      sprintf(paste0("%i distinct grade levels present in your data! NWEA ",
+        "school growth study tables assume cohorts composed of students ",
+        "of the *same grade level*.  quealy_subgroups will use the mean starting grade ",
+        "level to calculate growth scores, but you are advised to check your data and  ",
+        "attempt to use a cohort composed of students from the same grade."), 
+        length(grades_present))
+    )
+  }
   
   #put starting quartile on the roster and rename
+  #if we add other 'out of the box' cuts that look at  
   roster <- dplyr::left_join(
     x = roster,
     y = this_growth[ ,c('studentid', 'start_testquartile')],
@@ -83,6 +97,9 @@ quealy_subgroups <- function(
   
   #2| INTERNAL FUNCTIONS
   group_summary <- function(grouped_df, subgroup) {
+    
+    approximate_grade <- round(mean(grouped_df$start_grade, na.rm=TRUE), 0)  
+    
     df <- grouped_df %>%
     summarize(
       start_rit = mean(start_testritscore, na.rm=TRUE),
@@ -91,11 +108,22 @@ quealy_subgroups <- function(
       start_npr = mean(start_consistent_percentile, na.rm=TRUE),
       end_npr = mean(end_consistent_percentile, na.rm=TRUE),
       npr_change = mean(start_consistent_percentile - end_consistent_percentile, na.rm=TRUE),
-      n = n()      
+      n = n()
+    ) %>%       
+    #add cgp
+    rowwise() %>%
+    mutate(
+      cgp = calc_cgp(
+        measurementscale = measurementscale,
+        grade = approximate_grade,
+        growth_window = paste(start_fws, 'to', end_fws),
+        baseline_avg_rit = start_rit,
+        ending_avg_rit = end_rit
+      )[['results']] 
     ) %>%
     as.data.frame
     
-    names(df)[names(df)==subgroup] <- 'facet_me'
+    names(df)[names(df) == subgroup] <- 'facet_me'
     
     df
   }
@@ -124,8 +152,8 @@ quealy_subgroups <- function(
     annotate(
       geom = 'rect',
       xmin = ref_lines[1], xmax = ref_lines[2], ymin = -1, ymax = 3,
-      fill = 'hotpink',
-      alpha = 0.1,
+      fill = 'dodgerblue',
+      alpha = 0.15,
       size = 1.25
     ) +
     geom_segment(
@@ -141,7 +169,8 @@ quealy_subgroups <- function(
         y = 0.7,
         label = round(start_rit, 1)
       ),
-      inherit.aes = FALSE
+      inherit.aes = FALSE,
+      size = 4
     ) +
     #end rit
     geom_text(
@@ -150,14 +179,15 @@ quealy_subgroups <- function(
         y = 0.7,
         label = round(end_rit, 1)
       ),
-      inherit.aes = FALSE
+      inherit.aes = FALSE,
+      size = 4
     ) +    
     #n stu and CGP
     geom_text(
       aes(
         x = start_rit + 0.5 * (end_rit - start_rit),
-        y = 1.3,
-        label = paste(n, 'stu')
+        y = 1.35,
+        label = ifelse(n > 10, paste(n, 'stu', '| CGP:', round(cgp, 0)), paste(n, 'stu'))
       ),
       fontface = 'italic',
       color = 'gray40',
@@ -178,7 +208,8 @@ quealy_subgroups <- function(
       panel.grid.major.y = element_blank(),
       panel.grid.minor.y = element_blank(),
       panel.border = element_blank(),
-      panel.margin = unit(0, "lines")
+      panel.margin = unit(0, "lines"),
+      plot.margin=unit(c(1,1,1,1),"mm")
     ) +
     labs(x = 'RIT') +
     scale_size_identity()
@@ -189,10 +220,11 @@ quealy_subgroups <- function(
       "center", "center"
     )
     
+    first_row <- if(nrow(df) <= 2) {1.5} else {1}
     #arrange and return
     arrangeGrob(
       p_title, p,
-      nrow = 2, heights = c(1.25, 7)
+      nrow = 2, heights = c(first_row, 9)
     )    
   }
   

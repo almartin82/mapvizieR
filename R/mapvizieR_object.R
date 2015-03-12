@@ -7,6 +7,7 @@
 #' @param cdf a NWEA AssessmentResults.csv or CDF
 #' @param roster a NWEA students
 #' @param verbose should mapvizieR print status updates?  default is FALSE.
+#' @param ... additional arguments to pass to constructor functions called by mapvizieR
 #' @examples
 #' cdf_mv <- mapvizieR(ex_CombinedAssessmentResults, 
 #'                     ex_CombinedStudentsBySchool)
