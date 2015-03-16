@@ -25,6 +25,18 @@ test_that("goalbar produces proper plot with a grade level of kids", {
 })
 
 
+test_that("goalbar works with ontrack params",{
+  
+  p <- goalbar(mapviz, studentids_normal_use, 'Mathematics', 'Fall', 2013,
+         'Spring', 2013, ontrack_prorater = 0.5, ontrack_fws = 'Winter',
+        ontrack_academic_year = 2014)
+  expect_true(is.ggplot(p))
+  
+  p_build <- ggplot_build(p)
+  expect_equal(sum(p_build$data[[2]][, 3]), 222.5, tolerance=.001)
+  
+})
+
 test_that("fuzz test goalbar plot", {
   results <- fuzz_test_plot(
     'goalbar', 

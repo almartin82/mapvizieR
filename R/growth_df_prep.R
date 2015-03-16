@@ -165,16 +165,26 @@ student_scaffold <- function(
   only_start <- anti_join(
     x=start, y=matched_df, by=c("start_hash" = "start_hash")
   )
-  only_start$match_status <- rep('only start', nrow(only_start))
-  only_start$complete_obsv <- rep(FALSE, nrow(only_start))
+  if (nrow(only_start) > 0) {
+    only_start$match_status <- rep('only start', nrow(only_start))
+    only_start$complete_obsv <- rep(FALSE, nrow(only_start))
+    #ensure that we always return FWS and year, even if unmatched on end.
+    only_start$end_fallwinterspring <- end_season
+    only_start$end_map_year_academic <- only_start$start_map_year_academic + year_offset  
+  }
   
   #what rows are ONLY found in the end df?
   only_end <- anti_join(
     x=end, y=matched_df, by=c("end_hash"="matching_end_hash")
   )
-  only_end$match_status <- rep('only end', nrow(only_end))
-  only_end$complete_obsv <- rep(FALSE, nrow(only_end))
-  
+  if (nrow(only_end) > 0) {
+    only_end$match_status <- rep('only end', nrow(only_end))
+    only_end$complete_obsv <- rep(FALSE, nrow(only_end))
+    #ensure that we always return FWS and year, even if unmatched on start
+    only_end$start_fallwinterspring <- start_season
+    only_end$start_map_year_academic <- only_end$end_map_year_academic - year_offset  
+  }
+
   #build the df to return
   final <- rbind_all(list(matched_df, only_start, only_end))
   
@@ -185,6 +195,7 @@ student_scaffold <- function(
   
   #reorder
   final <- final[ ,target_cols]
+      
   return(as.data.frame(final))
 }
 

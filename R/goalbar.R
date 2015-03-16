@@ -16,8 +16,12 @@
 #' @param goal_labels what labels to show for each goal category.  must be in order from 
 #' highest to lowest.
 #' @param goal_colors what colors to show for each goal category 
-#' @param inprogress_prorater default is NA.  if set to a decimal value, what percent of the goal
+#' @param ontrack_prorater default is NA.  if set to a decimal value, what percent of the goal
 #' is considered ontrack?
+#' @param ontrack_fws season to use for determining ontrack status
+#' @param ontrack_academic_year year to use for determining ontrack status
+#' @param ontrack_labels what labels to use for the 3 ontrack statuses
+#' @param ontrack_colors what colors to use for the 3 ontrack colors
 #' @param complete_obsv if TRUE, limit only to students who have BOTH a start
 #' and end score. default is FALSE.
 #' 
@@ -33,10 +37,17 @@ goalbar <- function(
   end_academic_year,
   goal_labels = c(accel_growth = 'Made Accel Growth', typ_growth = 'Made Typ Growth', 
     positive_but_not_typ = 'Below Typ Growth', negative_growth = 'Negative Growth', 
-    no_start = sprintf('Untested: %s', start_fws), no_end = sprintf('Untested: %s', end_fws)
+    no_start = sprintf('Untested: %s %s', start_fws, start_academic_year), 
+    no_end = sprintf('Untested: %s %s', end_fws, end_academic_year)
   ),
   goal_colors = c('#CC00FFFF', '#0066FFFF', '#CCFF00FF', '#FF0000FF', '#FFFFFF', '#F0FFFF'),
-  inprogress_prorater = NA,
+  ontrack_prorater = NA,
+  ontrack_fws = NA,
+  ontrack_academic_year = NA,
+  ontrack_labels = c(ontrack_accel = 'On Track for Accel Growth', 
+    ontrack_typ = 'On Track for Typ Growth', offtrack_typ = 'Off Track for Typ Growth'
+  ),
+  ontrack_colors = c('#CC00FFFF', '#0066FFFF', '#CCFF00FF'),
   complete_obsv = FALSE
 ) {
  
@@ -66,10 +77,6 @@ goalbar <- function(
       )
   }
 
-  #what to do if in-progress
-  if (!is.na(inprogress_prorater)) {
-      
-  }
   
   #2| TAG ROWS
   g$goal_status <- NA
@@ -81,49 +88,104 @@ goalbar <- function(
   )
   
   g$goal_status <- ifelse(
-    test = is.na(g$start_testritscore),
+    test = is.na(g$end_testritscore),
     yes = goal_labels[['no_end']],
     no = g$goal_status
   )
   
   #process categories in order from lowest to highest
   g$goal_status <- ifelse(
-    test = g$rit_growth < 0,
+    test = g$rit_growth < 0 & !is.na(g$rit_growth),
     yes = goal_labels[['negative_growth']],
     no = g$goal_status
   )
   
   g$goal_status <- ifelse(
-    test = g$rit_growth >= 0 & !g$met_typical_growth,
+    test = g$rit_growth >= 0 & !g$met_typical_growth & !is.na(g$rit_growth),
     yes = goal_labels[['positive_but_not_typ']],
     no = g$goal_status
   )
   
   #typ growth
   g$goal_status <- ifelse(
-    test = g$met_typical_growth, 
+    test = g$met_typical_growth & !is.na(g$rit_growth), 
     yes = goal_labels[['typ_growth']],
     no = g$goal_status
   )
   
   #accel growth
   g$goal_status <- ifelse(
-    test = g$met_accel_growth, 
+    test = g$met_accel_growth & !is.na(g$rit_growth), 
     yes = goal_labels[['accel_growth']],
     no = g$goal_status
   )
-    
-  g$status_ordered <- ordered(
-    g$goal_status, levels = goal_labels
-  )
-    
+      
   #make a data frame to look up statuses to colors
   temp_df <- data.frame(
     goal_status = goal_labels,
-    goal_color = goal_colors
+    goal_color = goal_colors,
+    stringsAsFactors = FALSE
   )
   temp_df$goal_code <- rownames(temp_df)
-  
+
+  #what to do if in-progress
+  if (!is.na(ontrack_prorater)) {
+    ontrack <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
+    ontrack <- ontrack %>%
+      dplyr::filter(
+        map_year_academic == ontrack_academic_year,
+        fallwinterspring == ontrack_fws
+      )
+    
+    ontrack <- ontrack[, c('studentid', 'testritscore')]
+    names(ontrack)[2] <- 'ontrack_rit'
+    g <- dplyr::left_join(
+      x = g,
+      y = ontrack,
+      by = 'studentid'
+    )
+    
+    #highest to lowest
+    #on track accel
+    g$goal_status <- ifelse(
+      test = (g$ontrack_rit - g$start_testritscore) * ontrack_prorater >= g$accel_growth & 
+        !is.na(g$ontrack_rit),
+      yes = ontrack_labels[['ontrack_accel']],
+      no = g$goal_status
+    )
+    
+    #on track typ
+    g$goal_status <- ifelse(
+      test = (g$ontrack_rit - g$start_testritscore) * ontrack_prorater >= g$reported_growth & 
+        !is.na(g$ontrack_rit),
+      yes = ontrack_labels[['ontrack_typ']],
+      no = g$goal_status
+    )
+
+    #on track typ
+    g$goal_status <- ifelse(
+      test = (g$ontrack_rit - g$start_testritscore) * ontrack_prorater < g$reported_growth & 
+        !is.na(g$ontrack_rit),
+      yes = ontrack_labels[['offtrack_typ']],
+      no = g$goal_status
+    )
+    
+    #extend status df
+    ontrack_df <- data.frame(
+      goal_status = ontrack_labels,
+      goal_color = ontrack_colors,
+      stringsAsFactors = FALSE
+    )
+    ontrack_df$goal_code <- rownames(ontrack_df)
+    
+    temp_df <- rbind(temp_df, ontrack_df)
+  }
+
+  #turn status into ordered factor
+  g$status_ordered <- ordered(
+    g$goal_status, levels = temp_df$goal_status
+  )
+
   g_plot <- dplyr::left_join(x = g, y = temp_df, by = "goal_status")
   
   #should match the number of rows of the limited growth df
