@@ -1,13 +1,24 @@
-# mapvizieR
-### mapvizieR is an R package that generates visualizations and reports for NWEA MAP data.
+# mapvizieR:
+### an R package that generates visualizations and reports for NWEA MAP data.
 
-[![Join the chat at https://gitter.im/almartin82/mapvizieR](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/almartin82/mapvizieR?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/almartin82/mapvizieR.png?branch=master)](https://travis-ci.org/almartin82/mapvizieR) [![Coverage Status](https://coveralls.io/repos/almartin82/mapvizieR/badge.svg?branch=master)](https://coveralls.io/r/almartin82/mapvizieR?branch=master)
+[![Build Status](https://travis-ci.org/almartin82/mapvizieR.png?branch=master)](https://travis-ci.org/almartin82/mapvizieR) [![Coverage Status](https://coveralls.io/repos/almartin82/mapvizieR/badge.svg?branch=master)](https://coveralls.io/r/almartin82/mapvizieR?branch=master) [![Join the chat at https://gitter.im/almartin82/mapvizieR](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/almartin82/mapvizieR?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ...because how else are you going to get a capital 'R' into mapviz?
 <br><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Arolsen_Klebeband_02_327.jpg/255px-Arolsen_Klebeband_02_327.jpg">
 
-## what's inside?
+# why mapvizieR?
+The [MAP](https://www.nwea.org/assessments/map/) assessment is a computer-adaptive, norm-referenced assessment published by [NWEA](https://www.nwea.org/about/), a not-for-profit organization that specializes in assessment.
+More than **10 million students** take the MAP assessment - including [KIPP](http://www.kipp.org/), the organization where [Andrew](https://twitter.com/moneywithwings) and [Chris](https://www.linkedin.com/in/chrishaid work.
+
+We'd like mapvizeR to be a home where data scientists [working with MAP data](https://github.com/search?l=r&q=testritscore&type=Code&utf8=%E2%9C%93) can share visualizations and analysis tools, given that we're all working on a common data set.  If you work with MAP data, please reach out!
+
+# is mapvizier licensed by, or affiliated with NWEA?
+Nope!  This is an independent community effort.  
+
+# what's inside?
+mapvizieR is a product of some [lessons learned](https://github.com/almartin82/MAP-visuals) about the promises, and pitfalls, of sharing common analysis code.  Central to our approach here is workflow to create a [mapvizier](https://github.com/almartin82/MAP-visuals/blob/master/R/mapvizier.R) object, so that plots, analysis, and reporting can benefit from clear definitions and data structures.  The basic idea is that if each participating entity can build a data loading pathway into the mapvizieR object, reporting becomes easy scalable.  
+
+Take a look at this [this](https://github.com/almartin82/mapvizieR/blob/master/vignettes/mapvizieR_object.Rmd) vignette, which describes the object in detail.
 
 ### data prep functions
 prep MAP data and create `cdf_long` and `cdf_growth` dataframes.
