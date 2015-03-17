@@ -26,6 +26,18 @@ populate_constants <- function() {
   studentids_subset <<- studentids <- cdf[with(cdf, 
     map_year_academic == 2013 & measurementscale == 'Mathematics' & 
     fallwinterspring == 'Fall'), ]$studentid
+  studentids_hs <<- studentids <- cdf[with(cdf, 
+    map_year_academic == 2013 & measurementscale == 'Mathematics' & 
+    fallwinterspring == 'Fall' & grade %in% c(10,11)), ]$studentid
+  studentids_gr11 <<- studentids <- cdf[with(cdf, 
+    map_year_academic == 2013 & measurementscale == 'Mathematics' & 
+    fallwinterspring == 'Fall' & grade == 11), ]$studentid
+
+  mapviz_midyear <<- mapvizieR(
+    cdf = ex_CombinedAssessmentResults[with(ex_CombinedAssessmentResults, 
+      TermName != 'Spring 2013-2014'), ], 
+    roster = ex_CombinedStudentsBySchool
+  )
 }
 
 

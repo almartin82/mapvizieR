@@ -44,6 +44,9 @@ galloping_elephants <- function (
     dplyr::filter(
       count > 2
     ) 
+
+  #need SOME season with 2 or more rows
+  ensure_rows_in_df(term_counts)
   
   #filter the cdf by the valid terms above
   munge <- munge %>%

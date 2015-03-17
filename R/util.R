@@ -615,3 +615,32 @@ force_string_breaks <- function(string, n_char) {
   #remove trailing and return
   str_sub(breaks, 1, -2)
 }
+
+
+
+#' @title ensure_rows_in_df
+#' 
+#' @description a contract that verifies that a data set isn't length zero
+#' 
+#' @param . dot-placeholder, per ensurer doc.
+
+ensure_rows_in_df <- ensures_that(
+  nrow(.) > 0 ~ "Sorry, can't plot that: a data prep step returned a df of 0 rows."
+)
+
+
+#' @title ensure_nonzero_students_with_norms
+#' 
+#' @description a contract that verifies that a growth df has at least one student with
+#' normative data
+#' 
+#' @param . dot-placeholder, per ensurer doc.
+
+ensure_nonzero_students_with_norms <- ensures_that(
+  nrow(
+    subset(., !is.na(typical_growth))
+  ) > 0 ~ paste0("Sorry, can't plot that: None of the students in your selection have",
+    " typical growth norms (possibly because they are too old or young and outside",
+    " the NWEA norm study)")
+)
+  

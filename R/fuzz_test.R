@@ -8,18 +8,25 @@
 #' @param additional_args all plots will get "mapvizieR_obj" and "studentids".  if your
 #' plot needs additional args, pass them here.
 
-fuzz_test_plot <- function(plot_name, n=100, additional_args=list()) {
-  
-  mapviz <- mapvizieR(
+fuzz_test_plot <- function(
+  plot_name, 
+  n = 100, 
+  additional_args = list(),
+  mapviz = mapvizieR(
     cdf=ex_CombinedAssessmentResults, 
     roster=ex_CombinedStudentsBySchool
   )
-
+) {
+  
   results <- vector("list", n)
   studentids <- vector("list", n)
   
+  sample_limit <- ifelse(
+    length(mapviz[['roster']]$studentid) < 500, length(mapviz[['roster']]$studentid), 500
+  )
+  
   for (i in seq(1:n)) {
-    stu_random <- sample(mapviz[['roster']]$studentid, sample(20:500, 1)) %>% 
+    stu_random <- sample(mapviz[['roster']]$studentid, sample(20:sample_limit, 1)) %>% 
       unique 
     
     arg_list <- list(
@@ -29,10 +36,22 @@ fuzz_test_plot <- function(plot_name, n=100, additional_args=list()) {
     
     arg_list <- c(arg_list, additional_args)
 
-    p <- do.call(
-      what=plot_name, 
-      args=arg_list
+    p <- try(
+      do.call(
+        what=plot_name, 
+        args=arg_list
+      ),
+      silent = TRUE
     )
+    
+    known_error <- try(str_detect(p, fixed("Sorry, can't plot that")), silent = TRUE)
+    
+    if(known_error==TRUE) {
+      #known errors are passed tests
+      results[[i]] <- known_error
+      studentids[[i]] <- stu_random
+      next
+    }
     
     build_p <- try(ggplot_build(p))
     
@@ -44,7 +63,9 @@ fuzz_test_plot <- function(plot_name, n=100, additional_args=list()) {
     )
     
     #append
-    results[[i]] <- tests
+    results[[i]] <- tests    
+    
+    #always put the studentids on the list
     studentids[[i]] <- stu_random
   }
 
