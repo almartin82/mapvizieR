@@ -73,10 +73,14 @@ goalbar <- function(
   if (complete_obsv == TRUE) {
     g <- g %>%
       dplyr::filter(
-        complete_obsv == TRUE  
+        complete_obsv == TRUE,
+        !is.na(typical_growth)
       )
   }
 
+  #if no students have growth norms, throw an error.
+  ensure_nonzero_students_with_norms(g)
+  
   
   #2| TAG ROWS
   g$goal_status <- NA
@@ -186,14 +190,16 @@ goalbar <- function(
     g$goal_status, levels = temp_df$goal_status
   )
 
-  g_plot <- dplyr::left_join(x = g, y = temp_df, by = "goal_status")
+  g_plot <- dplyr::inner_join(x = g, y = temp_df, by = "goal_status")
   
   #should match the number of rows of the limited growth df
   if(nrow(g) != nrow(g_plot)) {
     warning(
       sprintf(paste0("the data frame used to make the plot was not able to ", 
-        "categorize %f rows.  inspect the growth data frame of your mapvizieR ",
-        "object for potential issues."), nrow(g) - nrow(g_plot))
+        "categorize %i rows.  inspect the growth data frame of your mapvizieR ",
+        "object for potential issues.  consider setting complete_obsv = TRUE"), 
+        round(nrow(g) - nrow(g_plot), 0)
+      )
     )
   }
   
