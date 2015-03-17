@@ -4,7 +4,9 @@
 \alias{fuzz_test_plot}
 \title{fuzz_test_plot}
 \usage{
-fuzz_test_plot(plot_name, n = 100, additional_args = list())
+fuzz_test_plot(plot_name, n = 100, additional_args = list(),
+  mapviz = mapvizieR(cdf = ex_CombinedAssessmentResults, roster =
+  ex_CombinedStudentsBySchool))
 }
 \arguments{
 \item{plot_name}{name of a plot, as text.  gets thrown to do call}

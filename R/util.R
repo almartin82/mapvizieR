@@ -618,6 +618,17 @@ force_string_breaks <- function(string, n_char) {
 
 
 
+#' @title ensure_rows_in_df
+#' 
+#' @description a contract that verifies that a data set isn't length zero
+#' 
+#' @param . dot-placeholder, per ensurer doc.
+
+ensure_rows_in_df <- ensures_that(
+  nrow(.) > 0 ~ "Sorry, can't plot that: a data prep step returned a df of 0 rows."
+)
+
+
 #' @title ensure_nonzero_students_with_norms
 #' 
 #' @description a contract that verifies that a growth df has at least one student with

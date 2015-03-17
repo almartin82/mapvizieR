@@ -58,9 +58,9 @@ test_that("fuzz test elephants plot", {
   expect_true(all(unlist(results)))
   
   results <- fuzz_test_plot(
-   plot_name='galloping_elephants', 
-   n=25, 
-   additional_args=list("first_and_spring_only"=FALSE, 'measurementscale'='Mathematics')
+   plot_name = 'galloping_elephants', 
+   n = 25, 
+   additional_args=list("first_and_spring_only" = FALSE, 'measurementscale' = 'Mathematics')
  )
  expect_true(all(unlist(results)))
  
