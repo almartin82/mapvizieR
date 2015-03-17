@@ -10,10 +10,10 @@ test_that("basic test on silly plot.  report dispatcher should find roster struc
   call_these <- list(FALSE, TRUE, TRUE)
 
   silly_test <- report_dispatcher(
-    mapvizieR_obj=mapviz
-   ,cut_list=cut_by
-   ,call_list=call_these
-   ,func_to_call="silly_plot"
+    mapvizieR_obj = mapviz
+   ,cut_list = cut_by
+   ,call_list = call_these
+   ,func_to_call = "silly_plot"
   )
 
   expect_equal(class(silly_test), "list")
@@ -27,11 +27,11 @@ test_that("report dispatcher on elephants using test data", {
   call_these <- list(TRUE)
   
   ele_test <- report_dispatcher(
-    mapvizieR_obj=mapviz
-   ,cut_list=cut_by
-   ,call_list=call_these
-   ,func_to_call="galloping_elephants"
-   ,arg_list=list('measurementscale'='Mathematics')
+    mapvizieR_obj = mapviz
+   ,cut_list = cut_by
+   ,call_list = call_these
+   ,func_to_call = "galloping_elephants"
+   ,arg_list = list('measurementscale'='Mathematics')
   )
 
   expect_equal(length(ele_test), 4)
@@ -63,11 +63,11 @@ test_that("only_valid_plots correctly handles a list of ggplot", {
   call_these <- list(TRUE, TRUE)
 
   more_realistic <- report_dispatcher(
-    mapvizieR_obj=mapviz
-   ,cut_list=cut_by
-   ,call_list=call_these
-   ,func_to_call="galloping_elephants"
-   ,arg_list=list('measurementscale'='Mathematics')
+    mapvizieR_obj = mapviz
+   ,cut_list = cut_by
+   ,call_list = call_these
+   ,func_to_call = "galloping_elephants"
+   ,arg_list = list('measurementscale'='Mathematics')
   )
 
   expect_equal(length(more_realistic), 17)
