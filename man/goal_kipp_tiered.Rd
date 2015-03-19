@@ -20,6 +20,7 @@ elements: a \code{goals} data frame (including  fields \code{accel_growth} and
 object.
 }
 \examples{
+\dontrun{
 data(ex_CombinedAssessmentResults)
 data(ex_CombinedStudentsBySchool)
 
@@ -27,5 +28,6 @@ cdf_mv <- mapvizieR(ex_CombinedAssessmentResults,
                     ex_CombinedStudentsBySchool)
 
 goals<-goal_kipp_tiered(cdf_mv)
+}
 }
 

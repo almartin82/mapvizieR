@@ -46,6 +46,7 @@ the \code{growth_df} are maintened). Obviouslly, the goals function should
 return a one to one match on any first iterations.
 }
 \examples{
+\dontrun{
 data(ex_CombinedAssessmentResults)
 data(ex_CombinedStudentsBySchool)
 
@@ -54,12 +55,13 @@ cdf_mv <- mapvizieR(
  ex_CombinedStudentsBySchool
 )
 
-new_mv<-add_accelerated_growth(
+new_mv <- add_accelerated_growth(
  cdf_mv,
  goal_function = goal_kipp_tiered,
  goal_function_args = list(iterations=1),
  update_growth_df = FALSE
 )
 str(new_mv)
+}
 }
 

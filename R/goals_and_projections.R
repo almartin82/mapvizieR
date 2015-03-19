@@ -12,6 +12,7 @@
 #' yet implemented, so it only projects growth one iteration. 
 #' 
 #' @examples
+#'\dontrun{
 #' data(ex_CombinedAssessmentResults)
 #' data(ex_CombinedStudentsBySchool)
 #' 
@@ -19,15 +20,18 @@
 #'                     ex_CombinedStudentsBySchool)
 #'                     
 #' goals<-goal_kipp_tiered(cdf_mv)                     
-#' 
+#' }
 #' @export
+
 goal_kipp_tiered <- function(mapvizier_object, iterations=1){
+
+  x <- ensure_is_mapvizieR(mapvizier_object)
   
+  growth_df <- x$growth_df 
   
-  x<-ensure_is_mapvizieR(mapvizier_object)
-  growth_df<-x$growth_df 
-  if(!"iter" %in% names(growth_df)) growth_df$iter<-0 # add and set iterator
-  out<-growth_df %>%
+  if(!"iter" %in% names(growth_df)) growth_df$iter <- 0 # add and set iterator
+  
+  out <- growth_df %>%
     as.data.frame %>%
     dplyr::select(studentid, 
            measurementscale, 
@@ -78,6 +82,8 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
   )
 }    
 
+
+
 #' @title Add an accelerated growth object, including projections and 
 #' simulations, to a mapvizieR object
 #' 
@@ -114,6 +120,7 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
 #' @return a \code{\link{mapvizieR}} object. 
 #' 
 #' @examples
+#'\dontrun{
 #' data(ex_CombinedAssessmentResults)
 #' data(ex_CombinedStudentsBySchool)
 #' 
@@ -122,14 +129,14 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
 #'  ex_CombinedStudentsBySchool
 #' )
 #'                     
-#' new_mv<-add_accelerated_growth(
+#' new_mv <- add_accelerated_growth(
 #'  cdf_mv,
 #'  goal_function = goal_kipp_tiered, 
 #'  goal_function_args = list(iterations=1),
 #'  update_growth_df = FALSE
 #' )
 #' str(new_mv)                                
-#' 
+#' }
 #' @export
 
 add_accelerated_growth <- function(

@@ -21,6 +21,7 @@ prints to console
 Prints a summary fo the a \code{mapvizier} object.
 }
 \examples{
+\dontrun{
 data(ex_CombinedAssessmentResults)
 data(ex_CombinedStudentsBySchool)
 
@@ -28,5 +29,6 @@ cdf_mv <- mapvizieR(ex_CombinedAssessmentResults,
                     ex_CombinedStudentsBySchool)
 
 cdf_mv
+}
 }
 
