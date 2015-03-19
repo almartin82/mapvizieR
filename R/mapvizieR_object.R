@@ -9,11 +9,12 @@
 #' @param verbose should mapvizieR print status updates?  default is FALSE.
 #' @param ... additional arguments to pass to constructor functions called by mapvizieR
 #' @examples
+#'\dontrun{
 #' cdf_mv <- mapvizieR(ex_CombinedAssessmentResults, 
 #'                     ex_CombinedStudentsBySchool)
 #'                     
 #' is.mapvizieR(cdf_mv)                     
-#' 
+#' }
 #' @export
 
 mapvizieR <- function(cdf, roster, verbose=FALSE, ...) UseMethod("mapvizieR")
@@ -120,8 +121,8 @@ ensure_is_mapvizieR <- ensures_that(
 #' 
 #' @return some details about the object to the console.
 #' @rdname print
-#' @export
 #' @examples 
+#'\dontrun{
 #' data(ex_CombinedAssessmentResults)
 #' data(ex_CombinedStudentsBySchool)
 #' 
@@ -129,6 +130,8 @@ ensure_is_mapvizieR <- ensures_that(
 #'                     ex_CombinedStudentsBySchool)
 #'                     
 #' cdf_mv
+#' }
+#' @export
 
 print.mapvizieR <-  function(x, ...) {
   

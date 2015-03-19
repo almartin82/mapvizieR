@@ -20,9 +20,11 @@ mapvizieR(cdf, roster, verbose = FALSE, ...)
 calls a sequence of cdf and roster prep functions, given a cdf and roster
 }
 \examples{
+\dontrun{
 cdf_mv <- mapvizieR(ex_CombinedAssessmentResults,
                     ex_CombinedStudentsBySchool)
 
 is.mapvizieR(cdf_mv)
+}
 }
 
