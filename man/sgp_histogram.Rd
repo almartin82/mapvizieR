@@ -5,7 +5,7 @@
 \title{sgp_histogram}
 \usage{
 sgp_histogram(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_academic_year, end_fws, end_academic_year, perf_breaks = c(45, 55))
+  start_academic_year, end_fws, end_academic_year, perf_breaks = c(55, 45))
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

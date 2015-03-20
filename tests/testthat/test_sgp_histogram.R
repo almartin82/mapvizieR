@@ -39,7 +39,59 @@ test_that("sgp_histogram produces proper plot with a grade level of kids", {
     c("y", "count", "x", "ndensity", "ncount", "density", "PANEL", 
       "group", "ymin", "ymax", "xmin", "xmax")
   )
-  expect_equal(sum(p_build[[1]][[2]]$density), 0.1333, tolerance=0.01)
+  expect_equal(sum(p_build[[1]][[2]]$density), 0.1, tolerance=0.01)
+  
+})
+
+
+test_that("sgp_histogram produces proper plot with a grade level of kids", {
+    
+  studentids_orange <- cdf[with(cdf, 
+    map_year_academic == 2013 & measurementscale == 'Mathematics' & 
+    fallwinterspring == 'Fall' & grade == 2), ]$studentid
+  
+  sgp_orange <- sgp_histogram(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_orange,
+    measurementscale = 'Reading',
+    start_fws = 'Fall',
+    start_academic_year = 2013,
+    end_fws = 'Spring',
+    end_academic_year = 2013
+  )
+  
+  expect_is(sgp_orange, 'gg')
+  expect_is(sgp_orange, 'ggplot')
+  
+  expect_equal(length(sgp_orange), 9)
+  expect_equal(names(sgp_orange), 
+    c("data", "layers", "scales", "mapping", "theme", "coordinates", 
+      "facet", "plot_env", "labels")             
+  )
+  
+  p_build <- ggplot_build(sgp_orange)
+  
+  expect_equal(length(p_build), 3)
+  expect_equal(sum(p_build[[1]][[2]]$density), 0.1, tolerance=0.01)
+
+  
+  #test sgp red
+  studentids_red <- cdf[with(cdf, 
+    map_year_academic == 2013 & measurementscale == 'Mathematics' & 
+    fallwinterspring == 'Fall' & grade == 6 & testpercentile < 30), ]$studentid
+  
+  sgp_red <- sgp_histogram(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_red,
+    measurementscale = 'Mathematics',
+    start_fws = 'Spring',
+    start_academic_year = 2012,
+    end_fws = 'Spring',
+    end_academic_year = 2013
+  )
+  
+  expect_is(sgp_red, 'gg')
+  expect_is(sgp_red, 'ggplot')
   
 })
 

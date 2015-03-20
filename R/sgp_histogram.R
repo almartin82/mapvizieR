@@ -24,7 +24,7 @@ sgp_histogram <- function (
     start_academic_year,
     end_fws,
     end_academic_year,
-    perf_breaks = c(45, 55)
+    perf_breaks = c(55, 45)
   ) {
   
   #data validation and unpack
@@ -81,12 +81,12 @@ sgp_histogram <- function (
          'lightgreen'
        } else if (e$med_sgp >= perf_breaks[2]) {
          'orange'
-       } else if (e$med_sgp < perf_breaks[3]) {
+       } else if (e$med_sgp < perf_breaks[2]) {
          'firebrick1'
        }
   ) +
   geom_histogram(
-   ,binwidth = 7.5
+   ,binwidth = 10
    ,alpha = 0.85
    #'TEAM blue'
    #,color = '#0067AC'
@@ -107,7 +107,10 @@ sgp_histogram <- function (
    ) + 
   scale_x_continuous(
     breaks = bins
-  ) 
+  ) +
+  coord_cartesian(
+    ylim = c(0, (.6 * e$chart_max))
+  )
     
   return(p)
 }
