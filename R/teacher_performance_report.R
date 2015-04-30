@@ -45,5 +45,3 @@ teacher_performance_update <- function(
     nrow = 3, heights = c(1,4,4)
   )
 }
-
-
