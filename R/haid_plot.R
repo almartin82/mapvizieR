@@ -88,6 +88,13 @@ haid_plot <- function(
     ,na.last = FALSE
   )
   
+  #make growth status an ordered factor
+  df$growth_status = factor(
+    x = df$growth_status,
+    levels = p_arrow_tiers,
+    ordered = TRUE
+  )
+  
   #tag rows pos / neg change
   if(single_season_flag) {
     df$neg_flag <- 0
@@ -106,13 +113,31 @@ haid_plot <- function(
   df$student_name_format <- ifelse(is.na(df$student_name_format), df$studentfirstlast, df$student_name_format)    
   
   #composite name position vector - if growth is NEGATIVE, use the endpoint
-  df$name_x <- ifelse(df$neg_flag == 1, df$end_rit - 6, df$base_rit - 0.25)
+  df$name_x <- ifelse(df$neg_flag == 1, df$end_testritscore - 6, df$start_testritscore - 0.25)
   #NAs
-  df$name_x <- ifelse(is.na(df$name_x), df$base_rit - 0.25, df$name_x)
+  df$name_x <- ifelse(is.na(df$name_x), df$start_testritscore - 0.25, df$name_x)
   
   df$rit_xoffset <- ifelse(df$neg_flag == 1, -.25, .25)
   df$rit_hjust <- ifelse(df$neg_flag == 1, 1, 0)
- 
+  
+  #colors for identity! 
+  arrow_colors <- data.frame(
+    status = p_arrow_tiers,
+    color = p_arrow_colors,
+    stringsAsFactors = FALSE
+  )
+  #cribbing off of 'subscripting' http://rwiki.sciviews.org/doku.php?id=tips:data-frames:merge
+  df$arrow_color_identity <- arrow_colors$color[match(df$growth_status, arrow_colors$status)]
+
+  #start/end quartile colors
+  quartile_colors <- data.frame(
+    quartile = c(1,2,3,4),
+    color = p_quartile_colors,
+    stringsAsFactors = FALSE
+  )
+  df$baseline_color <- quartile_colors$color[match(df$start_testquartile, quartile_colors$quartile)]
+  df$endpoint_color <- quartile_colors$color[match(df$end_testquartile, quartile_colors$quartile)]
+
   #thematic stuff
   pointsize <- 3
   segsize <- 1
@@ -122,8 +147,8 @@ haid_plot <- function(
   p <- ggplot(
     data = df
     ,aes(
-      x = start_testritscore
-     ,y = y_order
+      x = start_testritscore,
+      y = y_order
     )
   )
 
@@ -131,22 +156,18 @@ haid_plot <- function(
   #typical and college ready goal lines (want these behind segments)
   p <- p + 
   geom_point(
-    aes(
-      x = start_testritscore + typical_growth
-    )
-    ,size = pointsize - 0.5
-    ,shape = '|'
-    ,color = '#CFCCC1'
-    ,alpha = p_alpha
+    aes(x = start_testritscore + typical_growth),
+    size = pointsize - 0.5,
+    shape = '|',
+    color = '#CFCCC1',
+    alpha = p_alpha
   ) + 
   geom_point(
-    aes(
-      x = start_testritscore + accel_growth
-    )
-    ,size = pointsize - 0.5
-    ,shape = '|'
-    ,color = '#FEBC11'
-    ,alpha = p_alpha
+    aes(x = start_testritscore + accel_growth),
+    size = pointsize - 0.5,
+    shape = '|',
+    color = '#FEBC11',
+    alpha = p_alpha
   )  
 
   #typical and college ready goal labels
@@ -156,26 +177,56 @@ haid_plot <- function(
    ,aes(
       x = start_testritscore + typical_growth
      ,label = start_testritscore + typical_growth
-    )  
-    ,color = "#CFCCC1"
-    ,size = pointsize - 0.5 
-    ,hjust = 0.5
-    ,vjust = 0
-    ,alpha=p_alpha
+    ),
+    color = "#CFCCC1",
+    size = pointsize - 0.5,
+    hjust = 0.5,
+    vjust = 0,
+    alpha = p_alpha
   ) + 
   geom_text(
     data = df[df$student_name_format != ' ', ]
    ,aes(
       x = start_testritscore + accel_growth
      ,label = start_testritscore + accel_growth
-    )  
-    ,color = "#FEBC11"
-    ,size = pointsize - 0.5 
-    ,hjust = 0.5
-    ,vjust = 0
-    ,alpha=p_alpha
+    ), 
+    color = "#FEBC11",
+    size = pointsize - 0.5,
+    hjust = 0.5,
+    vjust = 0,
+    alpha = p_alpha
   ) +  
   scale_color_identity()  
+
+  #only do the following if there is data in end rit
+  if (any(df$complete_obsv)) {
+    #add segments
+    p <- p +
+    geom_segment(
+      data = df[!is.na(df$end_testritscore), ],
+      aes(
+        xend = end_testritscore,
+        yend = y_order,
+        group = arrow_color_identity,
+        color = arrow_color_identity
+      ),
+      arrow = arrow(length = unit(0.1, "cm"))
+    ) 
+
+    #add RIT text
+    p <- p +
+    geom_text(
+      data = df[!is.na(df$end_testritscore) & df$student_name_format != ' ', ],
+      aes(
+        x = end_testritscore + rit_xoffset,
+        group = endpoint_color,
+        color = endpoint_color,
+        label = paste0(end_testritscore, " (", end_testpercentile, ")"),
+        hjust = rit_hjust
+      ),
+      size = p_name_size
+    )
+  }
 
   return(p)  
 }

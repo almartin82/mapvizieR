@@ -12,7 +12,7 @@ calc_rit_growth_metrics(normed_df)
 each student/subject/season triplet.}
 }
 \value{
-a data frame the same as growth_df with the addiont
+a data frame the same as growth_df, with additional calcs
 }
 \description{
 a helper function  for \code{generate_growth_df}

@@ -148,7 +148,6 @@ add_accelerated_growth <- function(
   # is assigned.  That way it can be used in the constructor method or
   # outside of it for adding new growth to the 
    
-   
    goal_function_args$mapvizier_object <- ensure_is_mapvizieR(mapvizier_object)
    
    goals_obj <- do.call(goal_function, goal_function_args) %>%
@@ -208,7 +207,7 @@ add_accelerated_growth <- function(
 #' proper elements. 
 #' 
 #' @param . dot-placeholder, per ensurer doc.
-ensure_goals_names<-ensures_that(
+ensure_goals_names <- ensures_that(
   all(
     c("goals", "join_by_fields", "slot_name") %in% 
       names(.)) ~ 

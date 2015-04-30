@@ -1,6 +1,8 @@
-utils::globalVariables(c("%>%", "mutate", "end_testritscore", "start_testritscore",
-  "rit_growth", "reported_growth", "end_testpercentile", "start_testpercentile",
-  "std_dev_of_expectation", "cgi"))
+utils::globalVariables(
+  c("%>%", "mutate", "end_testritscore", "start_testritscore",
+  "rit_growth", "reported_growth", "end_testpercentile", 
+  "start_testpercentile", "std_dev_of_expectation", "cgi")
+)
 
 #' @title generate_growth_df
 #'
@@ -31,8 +33,8 @@ utils::globalVariables(c("%>%", "mutate", "end_testritscore", "start_testritscor
 
 generate_growth_dfs <- function(
   processed_cdf,
-  norm_df_long=norms_students_wide_to_long(norms_students_2011),
-  include_unsanctioned_windows=FALSE
+  norm_df_long = norms_students_wide_to_long(norms_students_2011),
+  include_unsanctioned_windows = FALSE
 ){  
   #input validation
   assert_that(
@@ -48,7 +50,7 @@ generate_growth_dfs <- function(
   #match start/end testids to cdf data
   with_scores <- growth_testid_lookup(scaffold, processed_cdf)
   
-  #look up normsand add growth metrics
+  #look up norms and add growth metrics
   with_norms <- growth_norm_lookup(
     with_scores, processed_cdf, norm_df_long, include_unsanctioned_windows
     ) %>%
@@ -57,9 +59,10 @@ generate_growth_dfs <- function(
   #todo: GOAL scores here
   
   growth_dfs <- list(
-    headline=with_norms
+    headline = with_norms
     #TODO: return goal scores df here
   )
+  
   return(growth_dfs)
 }
 
@@ -126,8 +129,8 @@ student_scaffold <- function(
   #namespace stuff
     #normally I avoid reference by index number since, uh, inputs change, but
     #we are hard coding the columns above, so it is OK.
-  start_prefixes <- c(rep("",2), rep("start_", 7))
-  end_prefixes <- c(rep("",2), rep("end_", 7))
+  start_prefixes <- c(rep("", 2), rep("start_", 7))
+  end_prefixes <- c(rep("", 2), rep("end_", 7))
 
   names(start) <- paste0(start_prefixes, names(start))
   names(end) <- paste0(end_prefixes, names(end))
@@ -162,7 +165,7 @@ student_scaffold <- function(
   matched_df$complete_obsv <- rep(TRUE, nrow(matched_df))
 
   #what rows are ONLY found in the start df?
-  only_start <- anti_join(
+  only_start <- dplyr::anti_join(
     x=start, y=matched_df, by=c("start_hash" = "start_hash")
   )
   if (nrow(only_start) > 0) {
@@ -174,7 +177,7 @@ student_scaffold <- function(
   }
   
   #what rows are ONLY found in the end df?
-  only_end <- anti_join(
+  only_end <- dplyr::anti_join(
     x=end, y=matched_df, by=c("end_hash"="matching_end_hash")
   )
   if (nrow(only_end) > 0) {
@@ -194,7 +197,7 @@ student_scaffold <- function(
   final$growth_window <- paste0(start_season, ' to ', end_season)
   
   #reorder
-  final <- final[ ,target_cols]
+  final <- final[ , target_cols]
       
   return(as.data.frame(final))
 }
@@ -221,7 +224,9 @@ scores_by_testid <- function(testid, processed_cdf, start_or_end) {
     start_or_end %in% c('start', 'end')
   )
 
-  matched <- left_join(as.data.frame(testid), processed_cdf, by="testid")
+  matched <- dplyr::left_join(
+    as.data.frame(testid), processed_cdf, by="testid"
+  )
   
   target_cols <- c("growthmeasureyn", "testtype", "testname", "teststartdate", 
     "testdurationminutes", "testritscore", "teststandarderror", "testpercentile", 
@@ -289,11 +294,11 @@ growth_testid_lookup <- function(scaffold, processed_cdf) {
 #' description.
 
 growth_norm_lookup <- function(
-  incomplete_growth_df
- ,processed_cdf
- ,norm_df_long
- ,include_unsanctioned_windows
- ,...
+  incomplete_growth_df,
+  processed_cdf,
+  norm_df_long,
+  include_unsanctioned_windows,
+  ...
 ) {
   
   if (include_unsanctioned_windows) {
@@ -302,7 +307,7 @@ growth_norm_lookup <- function(
     s2w <- growth_testid_lookup(scaffold, processed_cdf)
     
     #half of spring to spring for the norms
-    temp_norms <- norm_df_long[norm_df_long$growth_window=='Spring to Spring', ]
+    temp_norms <- norm_df_long[norm_df_long$growth_window == 'Spring to Spring', ]
     temp_norms$growth_window <- 'Spring to Winter'
     temp_norms$typical_growth <- temp_norms$typical_growth / 2
     temp_norms$reported_growth <- temp_norms$reported_growth / 2
@@ -316,7 +321,7 @@ growth_norm_lookup <- function(
     #todo: spring to fall (?)
   }
   
-  with_matched_norms <- left_join(
+  with_matched_norms <- dplyr::left_join(
     x=incomplete_growth_df, y=norm_df_long,
     by=c("measurementscale" = "measurementscale",
       "growth_window" = "growth_window", 
@@ -324,7 +329,7 @@ growth_norm_lookup <- function(
       "start_testritscore" = "startrit")
   )
   
-  with_matched_norms
+  return(with_matched_norms)
 }
 
 
@@ -336,10 +341,12 @@ growth_norm_lookup <- function(
 #' 
 #' @param normed_df a data frame that has matched growth windows for 
 #' each student/subject/season triplet. 
-#' @return a data frame the same as growth_df with the addiont
+#' @return a data frame the same as growth_df, with additional calcs
+
 calc_rit_growth_metrics <- function(normed_df){
+  
   out <- normed_df %>%
-    mutate(
+    dplyr::mutate(
       rit_growth = end_testritscore - start_testritscore,
       met_typical_growth = rit_growth >= reported_growth,
       change_testpercentile = end_testpercentile - start_testpercentile,
@@ -347,7 +354,35 @@ calc_rit_growth_metrics <- function(normed_df){
       sgp = pnorm(cgi)
     ) %>%
     as.data.frame
-           
-  # return 
-  out
+
+  return(out)
+}
+
+
+
+#' @title determine growth status
+#' 
+#' @description last thing that runs after accelerated growth is calculated
+#' 
+#' @param df output of add accelerated growth
+
+determine_growth_status <- function(df) {
+  
+  #growth status
+  df$growth_status <- ifelse(df$met_accel_growth, 'College Ready', NA)
+  
+  df$growth_status <- ifelse(
+    is.na(df$growth_status) & !df$met_accel_growth & df$met_typical_growth,
+    'Typical', NA  
+  )
+  df$growth_status <- ifelse(
+    is.na(df$growth_status) & df$rit_growth <= 0,
+    'Negative', NA  
+  )
+  df$growth_status <- ifelse(
+    is.na(df$growth_status) & df$rit_growth > 0 & !df$met_typical_growth,
+    'Positive', NA  
+  )
+  
+  return(df)
 }
