@@ -5,7 +5,8 @@
 \title{Teacher Performance Update}
 \usage{
 teacher_performance_update(mapvizieR_obj, studentids, measurementscale,
-  start_fws, start_academic_year, end_fws, end_academic_year, ...)
+  start_fws, start_academic_year, end_fws, end_academic_year, title_text = "",
+  ...)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -21,6 +22,8 @@ teacher_performance_update(mapvizieR_obj, studentids, measurementscale,
 \item{end_fws}{ending season}
 
 \item{end_academic_year}{ending academic year}
+
+\item{title_text}{what is this report called?}
 
 \item{...}{additional arguments}
 

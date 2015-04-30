@@ -1,7 +1,11 @@
-#' @title Chris Haid's class/cohort progress visualization
+#' @title Chris Haid's Waterfall-Rainbow-Arrow Chart
 #'
-#' @description
-#' 
+#' @description \code{haid_plot} returns a ggplot object showing student MAP performance 
+#' for a group of students
+#'
+#' @details This function builds and prints a graphic that plots MAP performance 
+#' over one or two seasons. RIT scores are color coded by percentile. 
+#'  
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
 #' @param measurementscale target subject
@@ -48,7 +52,7 @@ haid_plot <- function(
 
   #data processing ----------------------------------------------------------
   #just desired terms
-  this_growth <- growth_df %>%
+  df <- growth_df %>%
     dplyr::filter(
       start_map_year_academic == start_academic_year,
       start_fallwinterspring == start_fws,
@@ -56,13 +60,59 @@ haid_plot <- function(
       end_fallwinterspring == end_fws
     )
   
+  #get student name onto growth df
+  minimal_roster <- mapvizieR_obj[['roster']]
+  minimal_roster <- minimal_roster[, 
+    c('studentid', 'map_year_academic', 'fallwinterspring', 'studentfirstlast',
+      'studentlastfirst')]
+  
+  df <- dplyr::inner_join(
+    x = df,
+    y = minimal_roster,
+    by = c('studentid' = 'studentid', 
+      'start_map_year_academic' = 'map_year_academic', 
+      'start_fallwinterspring' = 'fallwinterspring')
+  )
+  
+  #is this ONE SEASON or TWO SEASON?
+  if (any(df$complete_obsv)) {
+    single_season_flag <- FALSE  
+  } else {
+    single_season_flag <- TRUE 
+  }
+  
   #make a psuedo-axis by ordering based on one variable
-  this_growth$y_order <- rank(
-    x = this_growth[ , sort_column]
+  df$y_order <- rank(
+    x = df[ , sort_column]
     ,ties.method = "first"
     ,na.last = FALSE
   )
   
+  #tag rows pos / neg change
+  if(single_season_flag) {
+    df$neg_flag <- 0
+  } else {
+    df$neg_flag <- ifelse(df$end_testritscore <= df$start_testritscore, 1, 0)
+  }
+  
+  #tag names
+  df$student_name_format <- ifelse(
+    df$neg_flag == 1, 
+    df$studentfirstlast, 
+    paste0(df$studentfirstlast, " ", df$start_testritscore, " ", "(", df$start_testpercentile, ") ")
+  )
+  
+  #NAs
+  df$student_name_format <- ifelse(is.na(df$student_name_format), df$studentfirstlast, df$student_name_format)    
+  
+  #composite name position vector - if growth is NEGATIVE, use the endpoint
+  df$name_x <- ifelse(df$neg_flag == 1, df$end_rit - 6, df$base_rit - 0.25)
+  #NAs
+  df$name_x <- ifelse(is.na(df$name_x), df$base_rit - 0.25, df$name_x)
+  
+  df$rit_xoffset <- ifelse(df$neg_flag == 1, -.25, .25)
+  df$rit_hjust <- ifelse(df$neg_flag == 1, 1, 0)
+ 
   #thematic stuff
   pointsize <- 3
   segsize <- 1
@@ -70,13 +120,14 @@ haid_plot <- function(
 
   #base ggplot object
   p <- ggplot(
-    data = this_growth
+    data = df
     ,aes(
       x = start_testritscore
      ,y = y_order
     )
   )
 
+  #make chart ----------------------------------------------------------
   #typical and college ready goal lines (want these behind segments)
   p <- p + 
   geom_point(
@@ -97,6 +148,34 @@ haid_plot <- function(
     ,color = '#FEBC11'
     ,alpha = p_alpha
   )  
+
+  #typical and college ready goal labels
+  p <- p +
+  geom_text(
+    data = df[df$student_name_format != ' ', ]
+   ,aes(
+      x = start_testritscore + typical_growth
+     ,label = start_testritscore + typical_growth
+    )  
+    ,color = "#CFCCC1"
+    ,size = pointsize - 0.5 
+    ,hjust = 0.5
+    ,vjust = 0
+    ,alpha=p_alpha
+  ) + 
+  geom_text(
+    data = df[df$student_name_format != ' ', ]
+   ,aes(
+      x = start_testritscore + accel_growth
+     ,label = start_testritscore + accel_growth
+    )  
+    ,color = "#FEBC11"
+    ,size = pointsize - 0.5 
+    ,hjust = 0.5
+    ,vjust = 0
+    ,alpha=p_alpha
+  ) +  
+  scale_color_identity()  
 
   return(p)  
 }
