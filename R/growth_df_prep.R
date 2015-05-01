@@ -373,15 +373,15 @@ determine_growth_status <- function(df) {
   
   df$growth_status <- ifelse(
     is.na(df$growth_status) & !df$met_accel_growth & df$met_typical_growth,
-    'Typical', NA  
+    'Typical', df$growth_status  
   )
   df$growth_status <- ifelse(
     is.na(df$growth_status) & df$rit_growth <= 0,
-    'Negative', NA  
+    'Negative', df$growth_status  
   )
   df$growth_status <- ifelse(
     is.na(df$growth_status) & df$rit_growth > 0 & !df$met_typical_growth,
-    'Positive', NA  
+    'Positive', df$growth_status
   )
   
   return(df)
