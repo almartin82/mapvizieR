@@ -1,6 +1,8 @@
 #' @title populate_constants
 #' 
 #' @description global variables to make tests run faster.  this might be a bad idea.
+#' 
+#' @export
 
 populate_constants <- function() {
 
