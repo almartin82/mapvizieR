@@ -141,8 +141,13 @@ haid_plot <- function(
     color = p_growth_colors,
     stringsAsFactors = FALSE
   )
-  #cribbing off of 'subscripting' http://rwiki.sciviews.org/doku.php?id=tips:data-frames:merge
-  df$growth_color_identity <- growth_colors$color[match(df$growth_status, growth_colors$status)]
+  
+  df$growth_color_identity <- 'black'
+  
+  if (!single_season_flag) {
+    #cribbing off of 'subscripting' http://rwiki.sciviews.org/doku.php?id=tips:data-frames:merge
+    df$growth_color_identity <- growth_colors$color[match(df$growth_status, growth_colors$status)]
+  }
 
   #start/end quartile colors
   quartile_colors <- data.frame(
@@ -153,40 +158,42 @@ haid_plot <- function(
   df$baseline_color <- quartile_colors$color[match(df$start_testquartile, quartile_colors$quartile)]
   df$endpoint_color <- quartile_colors$color[match(df$end_testquartile, quartile_colors$quartile)]
   
-    #massage df so that no quartiles get dropped
+  #massage df so that no quartiles get dropped
   df$start_testquartile_format <- paste('Quartile', as.factor(df$start_testquartile))
 
-  start_qs <- unique(na.omit(df$start_testquartile))
-  end_qs <- unique(na.omit(df$end_testquartile))
-  missing_qs <- end_qs[!(end_qs %in% start_qs)]
-  if(length(end_qs)==0) missing_qs <- start_qs  
-
-  #loop over missing qs and insert an empty row into the data frame
-    #dummy row
-    foo <- df[1, ]  
-    foo[1, ] <- NA
-    
-  if (length(missing_qs) > 0) {
-    for (i in missing_qs) {
-      foo[ , c('start_testquartile', 'end_testquartile')] <- i
-      foo[ , c('start_testquartile_format')] <- paste('Quartile', i) 
+  if (!single_season_flag){
+    start_qs <- unique(na.omit(df$start_testquartile))
+    end_qs <- unique(na.omit(df$end_testquartile))
+    missing_qs <- end_qs[!(end_qs %in% start_qs)]
+    if(length(end_qs)==0) missing_qs <- start_qs  
+  
+    #loop over missing qs and insert an empty row into the data frame
+      #dummy row
+      foo <- df[1, ]  
+      foo[1, ] <- NA
       
-      #if 1 is missing, insert at y=1
-      if (i == 1) {
-        insert_point <- 1
-      #otherwise insert at max of i-1
-      } else {
-        insert_point <- max(df[df$start_testquartile < i, 'y_order'], na.rm=T) + 1
+    if (length(missing_qs) > 0) {
+      for (i in missing_qs) {
+        foo[ , c('start_testquartile', 'end_testquartile')] <- i
+        foo[ , c('start_testquartile_format')] <- paste('Quartile', i) 
+        
+        #if 1 is missing, insert at y=1
+        if (i == 1) {
+          insert_point <- 1
+        #otherwise insert at max of i-1
+        } else {
+          insert_point <- max(df[df$start_testquartile < i, 'y_order'], na.rm=T) + 1
+        }
+        
+        df[df$y_order >= insert_point, 'y_order'] <- df[df$y_order >= insert_point, 'y_order'] + 1
+        
+        foo[ , 'y_order'] <- insert_point
+        foo[ , 'start_testritscore'] <- min(df$start_testritscore, na.rm=T)
+        foo[ , 'student_name_format'] <- ' '
+        
+        df <- rbind(df, foo)
       }
-      
-      df[df$y_order >= insert_point, 'y_order'] <- df[df$y_order >= insert_point, 'y_order'] + 1
-      
-      foo[ , 'y_order'] <- insert_point
-      foo[ , 'start_testritscore'] <- min(df$start_testritscore, na.rm=T)
-      foo[ , 'student_name_format'] <- ' '
-      
-      df <- rbind(df, foo)
-    }
+    }    
   }
   
   #make placeholders white
@@ -194,6 +201,7 @@ haid_plot <- function(
     df[df$student_name_format == ' ', 'baseline_color'] <- 'white'
     df[df$student_name_format == ' ', 'endpoint_color'] <- 'white'    
   }
+
   
   #make chart ----------------------------------------------------------
   #capture environment to use variables inside of ggplot calls
@@ -255,7 +263,7 @@ haid_plot <- function(
   scale_color_identity()  
 
   #only do the following if we have SOME end rit data
-  if (any(df$complete_obsv)) {
+  if (!single_season_flag) {
     #add segments showing change
     p <- p + geom_segment(
       aes(
@@ -354,11 +362,14 @@ haid_plot <- function(
   
   #scale stuff
   p <- p +
-    scale_y_continuous(
-      name = " "
-      ,breaks = seq(0:max(df$y_order) + 1)
-      ,expand = c(0,0.5)
-    )
+  scale_y_continuous(
+    name = " ",
+    breaks = seq(0:max(df$y_order) + 1),
+    expand = c(0,0.5)
+  ) +
+  scale_x_continuous(
+    limits = c(x_min, x_max)
+  )
 
   #titles etc
   p <- p +
@@ -373,17 +384,19 @@ haid_plot <- function(
   )  
   start_labels$start_testquartile_format <- paste('Quartile', start_labels$start_testquartile)
   
-  #repeat for end quartile
-  end_labels <- get_group_stats(
-    df = df[!is.na(df$end_testritscore) & df$student_name_format != ' ', ]
-    ,grp = 'end_testquartile'
-    ,RIT = 'end_testritscore'
-    ,dummy_y =  'y_order'
-  )
-  
-  if (length(na.omit(end_labels$end_testquartile)) > 0) {
-    end_labels$quartile_label_pos <- NA
-    end_labels$start_testquartile_format <- paste('Quartile', end_labels$end_testquartile)
+  if (!single_season_flag) {
+      #repeat for end quartile
+    end_labels <- get_group_stats(
+      df = df[!is.na(df$end_testritscore) & df$student_name_format != ' ', ]
+      ,grp = 'end_testquartile'
+      ,RIT = 'end_testritscore'
+      ,dummy_y =  'y_order'
+    )
+    
+    if (length(na.omit(end_labels$end_testquartile)) > 0) {
+      end_labels$quartile_label_pos <- NA
+      end_labels$start_testquartile_format <- paste('Quartile', end_labels$end_testquartile)
+    }    
   }
   
   #calculate x position
@@ -400,7 +413,6 @@ haid_plot <- function(
   #add x position to summary dfs
   start_labels$quartile_label_pos <- NA
   start_labels$start_testquartile <- as.numeric(start_labels$start_testquartile)
-  end_labels$end_testquartile <- as.numeric(end_labels$end_testquartile)
   
   if (length(na.omit(start_labels$start_testquartile) <= 2) > 0) {
     start_labels[start_labels$start_testquartile <= 2, 'quartile_label_pos'] <- quartile_label_max
@@ -409,124 +421,129 @@ haid_plot <- function(
   if (length(na.omit(start_labels$start_testquartile) >= 3) > 0) {
     start_labels[start_labels$start_testquartile >= 3, 'quartile_label_pos'] <- quartile_label_min
   }
-
-
   
-  if (length(na.omit(end_labels$end_testquartile) <= 2) > 0) {
-    end_labels[end_labels$end_testquartile <= 2, 'quartile_label_pos'] <- quartile_label_max
-  }
-
-  if (length(na.omit(end_labels$end_testquartile) >= 3) > 0) {
-    end_labels[end_labels$end_testquartile >= 3, 'quartile_label_pos'] <- quartile_label_min
-  }
-
   start_labels$count_label <- paste0(
     start_fws, ': ', start_labels$count_students, 
       " students (", round(start_labels$pct_of_total * 100), "%)"
   )
-  
-  end_labels$count_label <- paste0(
-    end_fws, ': ', end_labels$count_students, 
-      " students (", round(end_labels$pct_of_total * 100), "%)"
-  )
+
+
+
+  if (!single_season_flag) {
     
-  #make annotation lables so that season 2 is after season 1
-  #god this is the absolute worst.
-  #begin by flipping back to data frame  
-  start_labels <- as.data.frame(start_labels, stringsAsFactors = FALSE)
-  end_labels <- as.data.frame(end_labels, stringsAsFactors = FALSE)
-  #grab everything in the start that matches the end
-  #this is necessary when there are quartiles present in the end data not present in the start
-  matched_label = start_labels[start_labels$start_testquartile_format %in% end_labels$start_testquartile_format, 'start_testquartile_format']
-  matched_ypos = start_labels[start_labels$start_testquartile_format %in% end_labels$start_testquartile_format, 'avg_y_dummy']
-  
-  #make it a df
-  label_match_df <- data.frame(
-    label = matched_label
-    #offset lower; if n is small, only offset by 1.
-    ,ypos = matched_ypos - (1 +  floor(num_stu / 30))
-    ,stringsAsFactors = FALSE
-  )
-  
-  #for the ones you can match, replace with the adjusted start, so they print below
-  #unmatched will remain in the avg/middle position
-  end_labels[end_labels$start_testquartile_format %in% label_match_df$label, 'avg_y_dummy'] <- label_match_df$ypos
-  
-  #backmatch
-    #IN START but NOT END?
-    missing_start <- end_qs[!(end_qs %in% start_qs)]
+    end_labels$end_testquartile <- as.numeric(end_labels$end_testquartile)
+
+    if (length(na.omit(end_labels$end_testquartile) <= 2) > 0) {
+      end_labels[end_labels$end_testquartile <= 2, 'quartile_label_pos'] <- quartile_label_max
+    }
+
+    if (length(na.omit(end_labels$end_testquartile) >= 3) > 0) {
+      end_labels[end_labels$end_testquartile >= 3, 'quartile_label_pos'] <- quartile_label_min
+    }
     
-    #IN END but NOT START?
-    missing_end <- start_qs[!(start_qs %in% end_qs)]
+    end_labels$count_label <- paste0(
+      end_fws, ': ', end_labels$count_students, 
+        " students (", round(end_labels$pct_of_total * 100), "%)"
+    )
+    
+    #make annotation lables so that season 2 is after season 1
+    #god this is the absolute worst.
+    #begin by flipping back to data frame  
+    start_labels <- as.data.frame(start_labels, stringsAsFactors = FALSE)
+    end_labels <- as.data.frame(end_labels, stringsAsFactors = FALSE)
+    #grab everything in the start that matches the end
+    #this is necessary when there are quartiles present in the end data not present in the start
+    matched_label = start_labels[start_labels$start_testquartile_format %in% end_labels$start_testquartile_format, 'start_testquartile_format']
+    matched_ypos = start_labels[start_labels$start_testquartile_format %in% end_labels$start_testquartile_format, 'avg_y_dummy']
+    
+    #make it a df
+    label_match_df <- data.frame(
+      label = matched_label
+      #offset lower; if n is small, only offset by 1.
+      ,ypos = matched_ypos - (1 +  floor(num_stu / 30))
+      ,stringsAsFactors = FALSE
+    )
+    
+    #for the ones you can match, replace with the adjusted start, so they print below
+    #unmatched will remain in the avg/middle position
+    end_labels[end_labels$start_testquartile_format %in% label_match_df$label, 'avg_y_dummy'] <- label_match_df$ypos
+    
+    #backmatch
+      #IN START but NOT END?
+      missing_start <- end_qs[!(end_qs %in% start_qs)]
+      
+      #IN END but NOT START?
+      missing_end <- start_qs[!(start_qs %in% end_qs)]
+    
+      if (length(missing_start) > 0) {
+        foo <- start_labels[0, ]
+        foo[1, ] <- NA
   
-    if (length(missing_start) > 0) {
-      foo <- start_labels[0, ]
-      foo[1, ] <- NA
-
-      for (i in missing_start) {
-        foo$start_testquartile <- i
-        foo[, 'start_testquartile_format'] <- paste('Quartile', i)
-        foo[, 'count_students'] <- 0
-        foo[, 'count_label'] <- paste0(start_season_abbrev, ': 0 students (0%)')
-
-        if (i <= 2) {
-          foo[, 'quartile_label_pos'] <- quartile_label_max
-        } else if (i >= 3) {
-          foo[, 'quartile_label_pos'] <- quartile_label_min         
-        }
-
-        #if 1 is missing, insert at y=1
-        if (i == 1) {
-          insert_point <- 1
-        #otherwise insert at max of i-1
-        } else {
-          insert_point <- max(df[df$start_testquartile < i, 'y_order'], na.rm=T) + 1
-        }
-
-        foo[, 'avg_y_dummy'] <- insert_point + 1
-        
-        start_labels <- rbind(start_labels, foo)
-        #matching the other way is different
-        #they are already in end labels, but we need to fix the avg_y_dummy so it matches insert_point
-        end_labels[end_labels$start_testquartile_format == paste('Quartile', i), 'avg_y_dummy'] <- insert_point
-      }    
-    }    
+        for (i in missing_start) {
+          foo$start_testquartile <- i
+          foo[, 'start_testquartile_format'] <- paste('Quartile', i)
+          foo[, 'count_students'] <- 0
+          foo[, 'count_label'] <- paste0(start_season_abbrev, ': 0 students (0%)')
   
-    if (length(missing_end) > 0) {
-      foo <- end_labels[0, ]
-      foo[1, ] <- NA
-
-      for (i in missing_end) {
-        foo$end_testquartile <- i
-        foo[, 'start_testquartile_format'] <- paste('Quartile', i)
-        foo[, 'count_students'] <- 0
-        foo[, 'count_label'] <-  paste0(end_season_abbrev, ': 0 students (0%)')
-
-        if (i <= 2) {
-          foo[, 'quartile_label_pos'] <- quartile_label_max
-        } else if (i >= 3) {
-          foo[, 'quartile_label_pos'] <- quartile_label_min         
-        }
-
-        
-        #if 1 is missing, insert at y=1
-        if (i == 1) {
-          insert_point <- 1
-        #otherwise insert at max of i-1
-        } else {
-          if (length(df[df$start_testquartile < i, 'y_order']) > 0) {
-            insert_point <- max(df[df$start_testquartile < i, 'y_order'], na.rm=T) + 1
-          } else {
-            insert_point <- 0
+          if (i <= 2) {
+            foo[, 'quartile_label_pos'] <- quartile_label_max
+          } else if (i >= 3) {
+            foo[, 'quartile_label_pos'] <- quartile_label_min         
           }
-        }
-
-        foo[, 'avg_y_dummy'] <- insert_point + 1
-        
-        end_labels <- rbind(end_labels, foo)
-      }    
-    }    
   
+          #if 1 is missing, insert at y=1
+          if (i == 1) {
+            insert_point <- 1
+          #otherwise insert at max of i-1
+          } else {
+            insert_point <- max(df[df$start_testquartile < i, 'y_order'], na.rm=T) + 1
+          }
+  
+          foo[, 'avg_y_dummy'] <- insert_point + 1
+          
+          start_labels <- rbind(start_labels, foo)
+          #matching the other way is different
+          #they are already in end labels, but we need to fix the avg_y_dummy so it matches insert_point
+          end_labels[end_labels$start_testquartile_format == paste('Quartile', i), 'avg_y_dummy'] <- insert_point
+        }    
+      }    
+    
+      if (length(missing_end) > 0) {
+        foo <- end_labels[0, ]
+        foo[1, ] <- NA
+  
+        for (i in missing_end) {
+          foo$end_testquartile <- i
+          foo[, 'start_testquartile_format'] <- paste('Quartile', i)
+          foo[, 'count_students'] <- 0
+          foo[, 'count_label'] <-  paste0(end_season_abbrev, ': 0 students (0%)')
+  
+          if (i <= 2) {
+            foo[, 'quartile_label_pos'] <- quartile_label_max
+          } else if (i >= 3) {
+            foo[, 'quartile_label_pos'] <- quartile_label_min         
+          }
+  
+          
+          #if 1 is missing, insert at y=1
+          if (i == 1) {
+            insert_point <- 1
+          #otherwise insert at max of i-1
+          } else {
+            if (length(df[df$start_testquartile < i, 'y_order']) > 0) {
+              insert_point <- max(df[df$start_testquartile < i, 'y_order'], na.rm=T) + 1
+            } else {
+              insert_point <- 0
+            }
+          }
+  
+          foo[, 'avg_y_dummy'] <- insert_point + 1
+          
+          end_labels <- rbind(end_labels, foo)
+        }    
+      }        
+  }
+
   #lookup colors
   annotate_colors <- data.frame(
     quartile = c('Quartile 1', 'Quartile 2', 'Quartile 3', 'Quartile 4')
@@ -535,7 +552,6 @@ haid_plot <- function(
   )
   
   start_labels$color_identity <- annotate_colors$color[match(start_labels$start_testquartile_format, annotate_colors$quartile)]
-  end_labels$color_identity <- annotate_colors$color[match(end_labels$start_testquartile_format, annotate_colors$quartile)]
   
   #add to plot
   #base students
@@ -572,6 +588,8 @@ haid_plot <- function(
   }
   
   if(!single_season_flag){
+    end_labels$color_identity <- annotate_colors$color[match(end_labels$start_testquartile_format, annotate_colors$quartile)]
+
     if (nrow(end_labels[end_labels$end_testquartile <= 2, ]) > 0) {
       p <- p + geom_text(
         data = end_labels[end_labels$end_testquartile <= 2, ]
