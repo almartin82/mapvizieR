@@ -33,36 +33,40 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
   
   out <- growth_df %>%
     as.data.frame %>%
-    dplyr::select(studentid, 
-           measurementscale, 
-           start_testid,
-           start_grade,
-           growth_window,
-           start_grade_level_season,
-           start_fallwinterspring,
-           end_testid,
-           end_fallwinterspring,
-           start_testritscore,
-           start_testpercentile,
-           reported_growth,
-           rit_growth,
-           iter) %>%
-    dplyr::mutate(start_testquartile=kipp_quartile(start_testpercentile),
-           kipp_tiered_growth=tiered_growth_factors(quartile = start_testquartile, 
-                                                    grade=start_grade),
-           accel_growth=reported_growth*kipp_tiered_growth,
-           met_accel_growth=rit_growth>=accel_growth,
-           iter=iter+1) %>%
-    dplyr::select(studentid, 
-                  measurementscale,
-                  start_testid, 
-                  end_testid,
-                  growth_window,
-                  start_fallwinterspring,
-                  end_fallwinterspring, 
-                  accel_growth, 
-                  met_accel_growth, 
-                  iter) %>%
+    dplyr::select(
+      studentid, 
+      measurementscale, 
+      start_testid,
+      start_grade,
+      growth_window,
+      start_grade_level_season,
+      start_fallwinterspring,
+      end_testid,
+      end_fallwinterspring,
+      start_testritscore,
+      start_testpercentile,
+      reported_growth,
+      rit_growth,
+    iter) %>%
+    dplyr::mutate(
+      start_testquartile = kipp_quartile(start_testpercentile),
+      kipp_tiered_growth = tiered_growth_factors(
+        quartile = start_testquartile, 
+        grade = start_grade),
+      accel_growth = round(reported_growth * kipp_tiered_growth, 0),
+      met_accel_growth = rit_growth >= accel_growth,
+      iter = iter + 1) %>%
+    dplyr::select(
+      studentid, 
+      measurementscale,
+      start_testid, 
+      end_testid,
+      growth_window,
+      start_fallwinterspring,
+      end_fallwinterspring, 
+      accel_growth, 
+      met_accel_growth, 
+      iter) %>%
     as.data.frame
   
   if(iterations > 1){
@@ -148,7 +152,6 @@ add_accelerated_growth <- function(
   # is assigned.  That way it can be used in the constructor method or
   # outside of it for adding new growth to the 
    
-   
    goal_function_args$mapvizier_object <- ensure_is_mapvizieR(mapvizier_object)
    
    goals_obj <- do.call(goal_function, goal_function_args) %>%
@@ -208,7 +211,7 @@ add_accelerated_growth <- function(
 #' proper elements. 
 #' 
 #' @param . dot-placeholder, per ensurer doc.
-ensure_goals_names<-ensures_that(
+ensure_goals_names <- ensures_that(
   all(
     c("goals", "join_by_fields", "slot_name") %in% 
       names(.)) ~ 

@@ -77,7 +77,9 @@ mapvizieR.default <- function(cdf, roster, verbose=FALSE, ...) {
       goal_function = goal_kipp_tiered,  
       goal_function_args = list(iterations=1),
       update_growth_df = TRUE
-  ) 
+  )
+  
+  mapviz[['growth_df']] <- determine_growth_status(mapviz[['growth_df']])
    
   return(mapviz)
 }

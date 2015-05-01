@@ -13,8 +13,7 @@
 #' 
 #' @export
 
-prep_roster <- function(students_by_school, 
-                        kinder_codes=NULL) {
+prep_roster <- function(students_by_school, kinder_codes=NULL) {
   
   #df names
   roster <- roster_prep_names(students_by_school)
@@ -22,6 +21,10 @@ prep_roster <- function(students_by_school,
   roster <- extract_academic_year(roster)
   # translate kindergarten ("K", 13, etc) to grade 0
   roster$grade <- standardize_kinder(roster$grade, other_codes = kinder_codes)
+  
+  roster$studentlastfirst <- paste0(roster$studentlastname, ', ', roster$studentfirstname)
+  roster$studentfirstlast <- paste0(roster$studentfirstname, ' ', roster$studentlastname)
+  
   #check that roster conforms to our expectations
   assert_that(check_roster(roster))
   
