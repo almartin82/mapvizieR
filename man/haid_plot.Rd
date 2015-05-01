@@ -6,12 +6,10 @@
 \usage{
 haid_plot(mapvizieR_obj, studentids, measurementscale, start_fws,
   start_academic_year, end_fws, end_academic_year,
-  sort_column = "start_testritscore", p_arrow_colors = c("tan4", "snow4",
-  "gold", "red"), p_arrow_tiers = c("Positive", "Typical", "College Ready",
-  "Negative"), p_name_colors = c("#f3716b", "#79ac41", "#1ebdc2", "#a57eb8"),
-  p_name_color_tiers = c("1", "2", "3", "4"),
-  p_quartile_colors = c("#f3716b", "#79ac41", "#1ebdc2", "#a57eb8"),
-  p_name_size = 3, p_alpha = 1)
+  sort_column = "start_testritscore", p_growth_colors = c("tan4", "snow4",
+  "gold", "red"), p_growth_tiers = c("Positive", "Typical", "College Ready",
+  "Negative"), p_quartile_colors = c("#f3716b", "#79ac41", "#1ebdc2",
+  "#a57eb8"), p_name_size = 3, p_alpha = 1, p_name_offset = 0.04)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -28,19 +26,18 @@ haid_plot(mapvizieR_obj, studentids, measurementscale, start_fws,
 
 \item{end_academic_year}{ending academic year}
 
-\item{p_arrow_colors}{vector of colors passed to ggplot.}
+\item{p_growth_colors}{vector of colors passed to ggplot.}
 
-\item{p_arrow_tiers}{vector of colors passed to ggplot.}
-
-\item{p_name_colors}{vector of colors passed to ggplot.}
-
-\item{p_name_color_tiers}{vector of colors passed to ggplot.}
+\item{p_growth_tiers}{vector of colors passed to ggplot.}
 
 \item{p_quartile_colors}{vector of colors passed to ggplot.}
 
 \item{p_name_size}{sets point size of student names.}
 
 \item{p_alpha}{sets level fo transparency for goals.}
+
+\item{p_name_offset}{percentage to offset for negative names.  make bigger if plot
+is smaller.}
 }
 \value{
 prints a ggplot object
