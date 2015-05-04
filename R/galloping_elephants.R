@@ -43,7 +43,7 @@ galloping_elephants <- function (
     ) %>%
     dplyr::filter(
       count > 2
-    ) 
+    )
 
   #need SOME season with 2 or more rows
   ensure_rows_in_df(term_counts)
@@ -63,6 +63,7 @@ galloping_elephants <- function (
    ,aes(
       x = testritscore
      ,group = grade_season_label
+     ,label = grade_season_label
     )
   ) + 
   geom_density()
@@ -70,15 +71,26 @@ galloping_elephants <- function (
   
   #just get the data
   density_raw <- points$data[[1]]
+  
   #extract the max per group
   max_points <- density_raw %>%
-    dplyr::group_by(group) %>%
+    dplyr::group_by(group, label) %>%
     dplyr::summarize(
-      y=max(y, na.rm=TRUE)  
+      y = max(y, na.rm=TRUE)  
+    )
+
+  #ahhhhhhhhhhhhhhhhhhhhhhhhhh
+  #under certain circumstances, due to rounding, the maximum value is NOT guaranteed to be unique
+  #ensure only one point is returned by grouping and calling max.
+  density_raw <- density_raw %>%
+    dplyr::group_by(group, label) %>%
+    summarize(
+      x = max(x, na.rm = TRUE),
+      y = max(y, na.rm = TRUE)
     )
 
   #join a DF with extracted data & max values - this tags all the max rows in the df
-  full_max <- dplyr::inner_join(density_raw, max_points, by=c("y", "group"))
+  full_max <- dplyr::inner_join(max_points, density_raw, by=c("y", "group", "label"))
   
   #cbind in the factor names (ie the group names)
   full_max <- cbind(full_max, grade_labels=term_counts$grade_season_label)
