@@ -34,14 +34,13 @@ amys_lists <- function(
 
   #unpack the mapvizieR object and limit to desired students
   growth_df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale) %>%
-    dplyr::inner_join(mapvizieR_obj$roster %>%
-                        dplyr::filter(fallwinterspring == end_fws,
-                                      map_year_academic == end_academic_year
-                                      ),
-                      by="studentid") %>%
-    dplyr::mutate(studentfirstlastrit=sprintf("%s (%s)",
-                                              studentfirstlast,
-                                              end_testritscore)
+    dplyr::inner_join(
+      mapvizieR_obj$roster %>%
+        dplyr::filter(fallwinterspring == end_fws, map_year_academic == end_academic_year),
+        by = "studentid"
+      ) %>%
+    dplyr::mutate(
+      studentfirstlastrit = sprintf("%s (%s)", studentfirstlast, end_testritscore)
     )
 
   #data processing
@@ -58,72 +57,61 @@ amys_lists <- function(
   ensure_rows_in_df(this_growth[!is.na(this_growth$sgp), ])
 
   this_growth2 <- this_growth %>%
-    dplyr::mutate(growth_status=ifelse(growth_status == "Positive",
-                                        "Not Typical",
-                                        growth_status)
-                   ) %>%
+    dplyr::mutate(growth_status = ifelse(growth_status == "Positive", "Not Typical", growth_status)) %>%
     dplyr::group_by(end_grade, measurementscale, growth_status) %>%
-    dplyr::mutate(growth_status_rank=dplyr::row_number(end_testritscore))
+    dplyr::mutate(growth_status_rank = dplyr::row_number(end_testritscore))
 
 
-  statuses <- c("College Ready",
-                "Typical",
-                "Not Typical",
-                "Negative")
+  statuses <- c("College Ready", "Typical", "Not Typical", "Negative")
 
   this_growth2_summary <- this_growth2 %>%
     dplyr::group_by(end_grade, measurementscale, growth_status) %>%
-    dplyr::summarise(N=n()) %>%
-    dplyr::mutate(Tot=sum(N),
-                  Percent=N/Tot,
-                  Text=paste0("% ",
-                              growth_status,
-                              " = ",
-                              round(Percent * 100),
-                              "% (",
-                              N,"/",
-                              Tot, ")"
-                              )
-                  ) %>%
-    dplyr::inner_join(data.frame(growth_status=statuses,
-                                 loc=c(40, 37.5, 35, 32.5),
-                                 stringsAsFactors=FALSE
-                                 ),
-                      by="growth_status"
-                      ) %>%
-    dplyr::mutate(growth_status2 = factor(growth_status,
-                                          levels=rev(statuses)
-                                          )
-                  )
+    dplyr::summarise(n = n()) %>%
+    dplyr::mutate(
+      tot = sum(n),
+      percent = n/tot,
+      text = paste0("% ", growth_status, " = ", round(percent * 100), "% (", n,"/", tot, ")")
+    ) %>%
+    dplyr::inner_join(
+      data.frame(
+        growth_status = statuses,
+        loc = c(40, 37.5, 35, 32.5),
+        stringsAsFactors = FALSE
+      ),
+      by = "growth_status"
+    ) %>%
+    dplyr::mutate(
+      growth_status2 = factor(growth_status, levels = rev(statuses))
+    )
 
-  # makes gorwth status a factor
+  # makes growth status a factor
   this_growth2 <- this_growth2 %>%
-    dplyr::mutate(growth_status2 = factor(growth_status,
-                                          levels=rev(statuses)
-                                          )
-                  )
+    dplyr::mutate(growth_status2 = factor(growth_status, levels = rev(statuses)))
 
 
-    p <- ggplot(this_growth2, aes(x=growth_status2, y=growth_status_rank)) +
-      geom_text(aes(label=studentfirstlastrit, color=growth_status2), size=1.75) +
-      geom_text(data=this_growth2_summary,
-                aes(x="Negative", y=loc, label=Text, color=growth_status2),
-                size=3,
-                hjust=0
-      ) +
-      scale_color_manual(values=c("red",
-                                  "#C49A6C",
-                                  "#8D8685",
-                                  "#FEBC11")) +
-      facet_grid(end_grade ~ measurementscale) +
-      theme_bw() +
-      theme(legend.position="bottom") +
-      xlab("Growth Type") +
-      ylab("Count of Students")
+  p <- ggplot(
+    data = this_growth2, 
+    aes(x = growth_status2, y = growth_status_rank)
+  ) +
+  #student names
+  geom_text(
+    aes(label = studentfirstlastrit, color = growth_status2),
+    size = 1.75
+  ) +
+  #summary labels
+  geom_text(
+    data = this_growth2_summary,
+    aes(x = "Negative", y = loc, label = text, color = growth_status2),
+    size = 3,
+    hjust = 0
+  ) +
+  scale_color_manual(values = c("red", "#C49A6C", "#8D8685", "#FEBC11")) +
+  facet_grid(end_grade ~ measurementscale) +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  xlab("Growth Type") +
+  ylab("Count of Students")
 
-    # return
-    p
-
-
-
+  # return
+  p
 }
