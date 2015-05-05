@@ -92,7 +92,7 @@ haid_plot <- function(
   pointsize <- 3
   segsize <- 1
   annotate_size <- 5
-  x_min <- round_to_any(min(c(df$start_testritscore, calc_df$end_testritscore)) - 2, 5, floor)
+  x_min <- round_to_any(min(c(df$start_testritscore, df$end_testritscore)) - 2, 5, floor)
   x_max <- round_to_any(max(c(df$start_testritscore, df$end_testritscore)) + 2, 5, f = ceiling)
   name_offset <- p_name_offset * (x_max - x_min)      
   
