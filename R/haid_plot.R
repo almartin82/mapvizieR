@@ -92,8 +92,8 @@ haid_plot <- function(
   pointsize <- 3
   segsize <- 1
   annotate_size <- 5
-  x_min <- round_to_any(min(c(df$start_testritscore, df$end_testritscore)), 5, f = floor)
-  x_max <- round_to_any(max(c(df$start_testritscore, df$end_testritscore)), 5, f = ceiling) 
+  x_min <- round_to_any(min(c(df$start_testritscore, df$end_testritscore)) - 2, 5, floor)
+  x_max <- round_to_any(max(c(df$start_testritscore, df$end_testritscore)) + 2, 5, f = ceiling)
   name_offset <- p_name_offset * (x_max - x_min)      
   
   #make a psuedo-axis by ordering based on one variable
@@ -168,9 +168,9 @@ haid_plot <- function(
     if(length(end_qs)==0) missing_qs <- start_qs  
   
     #loop over missing qs and insert an empty row into the data frame
-      #dummy row
-      foo <- df[1, ]  
-      foo[1, ] <- NA
+    #dummy row
+    foo <- df[1, ]  
+    foo[1, ] <- NA
       
     if (length(missing_qs) > 0) {
       for (i in missing_qs) {
@@ -182,7 +182,7 @@ haid_plot <- function(
           insert_point <- 1
         #otherwise insert at max of i-1
         } else {
-          insert_point <- max(df[df$start_testquartile < i, 'y_order'], na.rm=T) + 1
+          insert_point <- max(df[as.numeric(df$start_testquartile) < i, 'y_order'], na.rm=T) + 1
         }
         
         df[df$y_order >= insert_point, 'y_order'] <- df[df$y_order >= insert_point, 'y_order'] + 1
@@ -278,6 +278,7 @@ haid_plot <- function(
     #add RIT text
     p <- p +
       geom_text(
+        data = df[!is.na(df$end_testritscore) & df$student_name_format != ' ', ],
         aes(
           x = end_testritscore + rit_xoffset,
           group = endpoint_color,
@@ -292,6 +293,7 @@ haid_plot <- function(
   #add name labels
   p <- p +
     geom_text(
+      data = df[df$student_name_format != ' ', ],
       aes(
         x = name_x,
         label = student_name_format,
@@ -401,13 +403,13 @@ haid_plot <- function(
   
   #calculate x position
   if(single_season_flag){
-    calc_df <- df[!is.na(df$start_testritscore), ]
-    quartile_label_min <- round_to_any(min(calc_df$start_testritscore) - 10, 10, floor) + 10
-    quartile_label_max <- round_to_any(max(calc_df$start_testritscore) + 10, 10, ceiling) - 10 
+    calc_df <- df[!is.na(df$start_testritscore), ]    
+    quartile_label_min <- round_to_any(min(calc_df$start_testritscore), 5, floor)
+    quartile_label_max <- round_to_any(max(calc_df$start_testritscore), 5, ceiling) 
   } else {
     calc_df <- df[!is.na(df$start_testritscore) & !is.na(df$end_testritscore), ]
-    quartile_label_min <- round_to_any(min(c(calc_df$start_testritscore, calc_df$end_testritscore)) - 10, 10, floor) + 10
-    quartile_label_max <- round_to_any(max(c(calc_df$start_testritscore, calc_df$end_testritscore)) + 10, 10, ceiling) - 10     
+    quartile_label_min <- round_to_any(min(c(calc_df$start_testritscore, calc_df$end_testritscore)), 5, floor)
+    quartile_label_max <- round_to_any(max(c(calc_df$start_testritscore, calc_df$end_testritscore)), 5, ceiling)     
   }
   
   #add x position to summary dfs
@@ -427,10 +429,7 @@ haid_plot <- function(
       " students (", round(start_labels$pct_of_total * 100), "%)"
   )
 
-
-
-  if (!single_season_flag) {
-    
+  if (!single_season_flag) {    
     end_labels$end_testquartile <- as.numeric(end_labels$end_testquartile)
 
     if (length(na.omit(end_labels$end_testquartile) <= 2) > 0) {
@@ -483,7 +482,7 @@ haid_plot <- function(
           foo$start_testquartile <- i
           foo[, 'start_testquartile_format'] <- paste('Quartile', i)
           foo[, 'count_students'] <- 0
-          foo[, 'count_label'] <- paste0(start_season_abbrev, ': 0 students (0%)')
+          foo[, 'count_label'] <- paste0(start_fws, ': 0 students (0%)')
   
           if (i <= 2) {
             foo[, 'quartile_label_pos'] <- quartile_label_max
@@ -496,7 +495,7 @@ haid_plot <- function(
             insert_point <- 1
           #otherwise insert at max of i-1
           } else {
-            insert_point <- max(df[df$start_testquartile < i, 'y_order'], na.rm=T) + 1
+            insert_point <- max(df[as.numeric(df$start_testquartile) < i, 'y_order'], na.rm=T) + 1
           }
   
           foo[, 'avg_y_dummy'] <- insert_point + 1
@@ -516,7 +515,7 @@ haid_plot <- function(
           foo$end_testquartile <- i
           foo[, 'start_testquartile_format'] <- paste('Quartile', i)
           foo[, 'count_students'] <- 0
-          foo[, 'count_label'] <-  paste0(end_season_abbrev, ': 0 students (0%)')
+          foo[, 'count_label'] <-  paste0(end_fws, ': 0 students (0%)')
   
           if (i <= 2) {
             foo[, 'quartile_label_pos'] <- quartile_label_max
@@ -557,17 +556,18 @@ haid_plot <- function(
   #base students
   if (nrow(start_labels[start_labels$start_testquartile <= 2, ]) > 0) {
     p <- p + geom_text(
-      data = start_labels[start_labels$start_testquartile <= 2, ]
-     ,aes(
-        x = quartile_label_pos
-       ,y = avg_y_dummy
-       ,label = count_label
-       ,group = start_testquartile_format
-       ,color = color_identity
-      )
-      ,vjust = 0.5
-      ,hjust = 1
-      ,size = annotate_size
+      data = start_labels[start_labels$start_testquartile <= 2, ],
+      aes(
+        x = quartile_label_pos,
+        y = avg_y_dummy,
+        label = count_label,
+        group = start_testquartile_format,
+        color = color_identity
+      ),
+      inherit.aes = FALSE,
+      vjust = 0.5,
+      hjust = 1,
+      size = annotate_size
     )    
   }
 
