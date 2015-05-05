@@ -1,4 +1,4 @@
-context("Galloping elephants tests")
+context("galloping elephants tests")
 
 #make sure that constants used below exist
 testing_constants()
