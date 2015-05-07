@@ -1,4 +1,7 @@
 box: rocker/hadleyverse
+
+no-response-timeout: 15
+
 build:
   steps:
     - jimhester/r-dependencies
