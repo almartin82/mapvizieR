@@ -379,3 +379,69 @@ npr_to_rit <- function(measurementscale, grade, season, npr) {
     matches[1, 'RIT']    
   }
 }
+
+
+
+#' @title mapvizieR interface to simplify CGP calculations
+#'
+#' @param mapvizieR_obj mapvizieR object
+#' @param studentids target students
+#' @param measurementscale target subject
+#' @param start_fws starting season
+#' @param start_academic_year starting academic year
+#' @param end_fws ending season
+#' @param end_academic_year ending academic year
+
+mapviz_cgp <- function(
+  mapvizieR_obj, 
+  studentids,
+  measurementscale,
+  start_fws, 
+  start_academic_year, 
+  end_fws, 
+  end_academic_year
+) {
+
+  #data validation and unpack
+  mv_opening_checks(mapvizieR_obj, studentids, 1)
+
+  #unpack the mapvizieR object and limit to desired students
+  growth_df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale)
+
+  #data processing
+  #just desired terms
+  this_growth <- growth_df %>%
+    dplyr::filter(
+      start_map_year_academic == start_academic_year,
+      start_fallwinterspring == start_fws,
+      end_map_year_academic == end_academic_year,
+      end_fallwinterspring == end_fws
+    )
+
+  approx_grade <- round(mean(this_growth$start_grade, na.rm=TRUE), 0)  
+  
+  df <- this_growth %>%
+  summarize(
+    avg_start_rit = mean(start_testritscore, na.rm=TRUE),
+    avg_end_rit = mean(end_testritscore, na.rm=TRUE),
+    avg_rit_change = mean(rit_growth, na.rm=TRUE),
+    avg_start_npr = mean(start_consistent_percentile, na.rm=TRUE),
+    avg_end_npr = mean(end_consistent_percentile, na.rm=TRUE),
+    avg_npr_change = mean(start_consistent_percentile - end_consistent_percentile, na.rm=TRUE),
+    n = n()
+  ) %>%       
+  #add cgp
+  rowwise() %>%
+  mutate(
+    cgp = calc_cgp(
+      measurementscale = measurementscale,
+      grade = approx_grade,
+      growth_window = paste(start_fws, 'to', end_fws),
+      baseline_avg_rit = avg_start_rit,
+      ending_avg_rit = avg_end_rit
+    )[['results']] 
+  ) %>%
+  as.data.frame
+  
+  return(df)
+}
