@@ -26,6 +26,8 @@ haid_plot(mapvizieR_obj, studentids, measurementscale, start_fws,
 
 \item{end_academic_year}{ending academic year}
 
+\item{sort_column}{column to sort by, usually the assessments RIT scores.}
+
 \item{p_growth_colors}{vector of colors passed to ggplot.}
 
 \item{p_growth_tiers}{vector of colors passed to ggplot.}

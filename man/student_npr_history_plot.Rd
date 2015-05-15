@@ -4,20 +4,24 @@
 \alias{student_npr_history_plot}
 \title{A small multiples plot of a set of students' national percentile rank histories.}
 \usage{
-student_npr_history_plot(mv_obj, studentids, measurment_scale)
+student_npr_history_plot(mapvizieR_obj, studentids, measurementscale)
 }
 \arguments{
-\item{mv_obj}{a \code{\link{mapvizier}} object}
+\item{mapvizieR_obj}{a \code{\link{mapvizieR}} object}
 
 \item{studentids}{a set of student ids to subset too.}
 
-\item{measurment_scale}{the subject of interest}
+\item{measurementscale}{the subject of interest}
 }
 \value{
 a ggplot2 object
 }
 \description{
-A small multiples plot of a set of students' national percentile rank histories.
+This plots a proto-typical example of Edward Tufte's small multiples
+concept.  A class of students in one subject and grade is plotted, witch each
+student's historical national percentile rank plotted with a simple liear fit.
+
+The background colors indicate the quartile the assessment earned.
 }
 \examples{
 data("ex_CombinedStudentsBySchool")
@@ -25,8 +29,15 @@ data("ex_CombinedAssessmentResults")
 
 map_mv<-mapvizieR(ex_CombinedAssessmentResults, ex_CombinedStudentsBySchool)
 
-ids<-ex_CombinedStudentsBySchool \%>\% filter(Grade==8, SchoolName=="Mt. Bachelor Middle School", TermName=="Spring 2013-2014") \%>\% select(StudentID) \%>\% unique()
+ids<-ex_CombinedStudentsBySchool \%>\% filter(
+   Grade==8,
+   SchoolName=="Mt. Bachelor Middle School",
+   TermName=="Spring 2013-2014") \%>\% select(StudentID) \%>\%
+   unique()
 
-student_npr_history_plot(map_mv, studentids = ids[1:80, "StudentID"], measurment_scale = "Reading")
+student_npr_history_plot(
+    map_mv,
+    studentids = ids[1:80, "StudentID"],
+    measurementscale = "Reading")
 }
 
