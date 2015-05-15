@@ -419,6 +419,7 @@ mapviz_cgp <- function(
     )
 
   approx_grade <- round(mean(this_growth$start_grade, na.rm=TRUE), 0)  
+  this_growth
   
   df <- this_growth %>%
   summarize(
@@ -428,8 +429,13 @@ mapviz_cgp <- function(
     avg_start_npr = mean(start_consistent_percentile, na.rm=TRUE),
     avg_end_npr = mean(end_consistent_percentile, na.rm=TRUE),
     avg_npr_change = mean(start_consistent_percentile - end_consistent_percentile, na.rm=TRUE),
+    n_typ_true = sum(met_typical_growth, na.rm = TRUE),
+    n_typ_false = sum(!met_typical_growth, na.rm = TRUE),
     n = n()
   ) %>%       
+  mutate(
+    percent_typ = n_typ_true / (n_typ_true + n_typ_false)
+  ) %>%
   #add cgp
   rowwise() %>%
   mutate(
