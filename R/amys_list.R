@@ -11,7 +11,6 @@
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
 #' @param measurementscale target subject
-#' @param grade_level target ending grade level
 #' @param start_fws starting season
 #' @param start_academic_year starting academic year
 #' @param end_fws ending season
@@ -90,7 +89,7 @@ amys_lists <- function(
 
 
   p <- ggplot(
-    data = this_growth2, 
+    data = this_growth2,
     aes(x = growth_status2, y = growth_status_rank)
   ) +
   #student names

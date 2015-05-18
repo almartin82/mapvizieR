@@ -21,8 +21,6 @@ amys_lists(mapvizieR_obj, studentids, measurementscale, start_fws,
 \item{end_fws}{ending season}
 
 \item{end_academic_year}{ending academic year}
-
-\item{grade_level}{target ending grade level}
 }
 \description{
 \code{amys_lists} implements bar charts that created by ranking and

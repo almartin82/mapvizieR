@@ -8,7 +8,7 @@ Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email =
     "chaid@kippchicago.org"))
 Description: Visualizations for NWEA MAP Data
 License: No license
-Depends: 
+Depends:
     assertthat,
     ensurer,
     lubridate,
@@ -18,7 +18,7 @@ Depends:
     grid,
     gridExtra,
     R(>= 2.10.0)
-Suggests: 
+Suggests:
     testthat,
     knitr
 LazyData: true

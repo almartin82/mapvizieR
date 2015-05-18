@@ -51,11 +51,6 @@ is considered ontrack?}
 
 \item{complete_obsv}{if TRUE, limit only to students who have BOTH a start
 and end score. default is FALSE.}
-
-\item{subgroup_cols}{what subgroups in mapvizier roster do you want to cut by?  default
-is starting_quartile}
-
-\item{pretty_names}{nicely formatted names for the column cuts used above.}
 }
 \description{
 a simple bar chart that shows the percentage of a cohort at different goal

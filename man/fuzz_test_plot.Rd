@@ -15,6 +15,8 @@ fuzz_test_plot(plot_name, n = 100, additional_args = list(),
 
 \item{additional_args}{all plots will get "mapvizieR_obj" and "studentids".  if your
 plot needs additional args, pass them here.}
+
+\item{mapviz}{a \code{\link{mapvizieR}} object.}
 }
 \description{
 throws a random subset of students against a plot n times, and reports back

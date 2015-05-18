@@ -18,6 +18,8 @@ unsanctioned windows.}
 
 \item{include_unsanctioned_windows}{check generate_growth_df for a
 description.}
+
+\item{...}{currently not used.}
 }
 \description{
 called by \code{generate_growth_df} to return
