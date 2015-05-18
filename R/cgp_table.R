@@ -23,13 +23,13 @@ cgp_table <- function(
   cgp_df <- mapviz_cgp(mapvizieR_obj, studentids, measurementscale,
     start_fws, start_academic_year, end_fws, end_academic_year)
   
-  l1 <- h_var("% Making Typical Growth", 18)
-  l2 <- h_var("RIT Change", 18)
-  l3 <- h_var("Cohort Growth Percentile", 18)
+  l1 <- h_var("% Making\nTypical Growth", 12)
+  l2 <- h_var("RIT Change", 12)
+  l3 <- h_var("Cohort Growth Percentile", 12)
   
-  s1 <- h_var(paste0(round(cgp_df$percent_typ * 100, 0), '%'), 50)
-  s2 <- h_var(round(cgp_df$avg_rit_change, 1), 50)
-  s3 <- h_var(round(cgp_df$cgp, 0), 50)
+  s1 <- h_var(paste0(round(cgp_df$percent_typ * 100, 0), '%'), 60)
+  s2 <- h_var(paste0(ifelse(cgp_df$avg_rit_change >= 0, '+',''), round(cgp_df$avg_rit_change, 1)), 60)
+  s3 <- h_var(toOrdinal::toOrdinal(round(cgp_df$cgp, 0)), 60)
   
   r1 <- gridExtra::arrangeGrob(l1, l2, l3, ncol = 3)
   r2 <- gridExtra::arrangeGrob(s1, s2, s3, ncol = 3)

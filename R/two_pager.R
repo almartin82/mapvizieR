@@ -29,8 +29,17 @@ two_pager <- function(
   #title
   title_bar <- h_var(title_text, 24)
 
-  #three key
-  three_key <- minimal
+  #cgp_table
+  three_key <- cgp_table(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale = measurementscale,
+    start_fws = start_fws,
+    start_academic_year = start_academic_year,
+    end_fws = end_fws,
+    end_academic_year = end_academic_year
+  )  
+
   
   #elephants
   ele <- galloping_elephants(
