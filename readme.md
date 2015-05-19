@@ -1,7 +1,7 @@
 # mapvizieR:
 ### an R package that generates visualizations and reports for NWEA MAP data.
 
-[![wercker status](https://app.wercker.com/status/9148019dd43b8d0b5bd8f88f8ba51e37/m "wercker status")](https://app.wercker.com/project/bykey/9148019dd43b8d0b5bd8f88f8ba51e37)
+[![wercker status](https://app.wercker.com/status/9148019dd43b8d0b5bd8f88f8ba51e37/m "wercker status")](https://app.wercker.com/project/bykey/9148019dd43b8d0b5bd8f88f8ba51e37) [![codecov.io](http://codecov.io/github/almartin82/mapvizieR/coverage.svg?branch=master)](http://codecov.io/github/almartin82/mapvizieR?branch=master)
 
 ...because how else are you going to get a capital 'R' into mapviz?
 <br><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Arolsen_Klebeband_02_327.jpg/255px-Arolsen_Klebeband_02_327.jpg">
@@ -38,8 +38,8 @@ these plots show MAP scores for a group of students across multiple testing term
 unlike the functions above, which can take 1, 2, 3, n... test seasons, a lot of MAP analysis revolves around growth windows.  these visualization functions expect a 'cdf_growth' dataframe.  examples include:
 
 - `quealy_subgroups()`
-- `haid_plot()` _to come_
-- `goal_bar()`  _to come_
+- `haid_plot()`
+- `goal_bar()`
 
 ### multiple term student longitudinal visualizations
 _college ready/rutgers ready growth stuff will go here_
