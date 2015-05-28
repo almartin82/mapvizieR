@@ -679,20 +679,3 @@ get_group_stats <- function(df, grp, RIT, dummy_y) {
 
   return(group_stats)
 }
-
-
-
-
-test_it <- function() {
-  foo2 <- haid_plot(
-    mapvizieR_obj = mapviz,
-    studentids = studentids_normal_use,
-    measurementscale = 'Mathematics',
-    start_fws = 'Fall',
-    start_academic_year = 2013,
-    end_fws = 'Spring',
-    end_academic_year = 2013
-  )
-
-  print(foo2)
-}
