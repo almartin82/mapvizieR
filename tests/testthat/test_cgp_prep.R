@@ -126,3 +126,27 @@ test_that("calc_cgp results handle missing data", {
   expect_true(is.na(npr_ex))
   
 })
+
+
+test_that("mapviz_cgp calculates cgp for sample data", {
+  
+  ex_cgp <- mapviz_cgp(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Reading',
+    start_fws = 'Fall',
+    start_academic_year = 2013,
+    end_fws = 'Spring',
+    end_academic_year = 2013
+  )
+  
+  expect_equal(ex_cgp$avg_start_rit, 207.3226, tolerance = 0.01)
+  expect_equal(ex_cgp$avg_end_rit, 213.8065, tolerance = 0.01)
+  expect_equal(ex_cgp$avg_rit_change, 6.483871, tolerance = 0.01)
+  expect_equal(ex_cgp$avg_start_npr, 38.62366, tolerance = 0.01)
+  expect_equal(ex_cgp$avg_end_npr, 44.53763, tolerance = 0.01)
+  expect_equal(ex_cgp$avg_npr_change, -5.913978, tolerance = 0.01)
+  expect_equal(ex_cgp$n, 93)
+  expect_equal(ex_cgp$cgp, 60.95068, tolerance = 0.01)
+  
+})

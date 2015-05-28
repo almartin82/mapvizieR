@@ -20,6 +20,7 @@ Depends:
     R(>= 2.10.0)
 Suggests: 
     testthat,
-    knitr
+    knitr,
+    toOrdinal
 LazyData: true
 VignetteBuilder: knitr
