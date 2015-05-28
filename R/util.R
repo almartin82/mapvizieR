@@ -624,7 +624,7 @@ force_string_breaks <- function(string, n_char) {
 #' 
 #' @param . dot-placeholder, per ensurer doc.
 
-ensure_rows_in_df <- ensures_that(
+ensure_rows_in_df <- ensurer::ensures_that(
   nrow(.) > 0 ~ "Sorry, can't plot that: a data prep step returned a df of 0 rows."
 )
 
@@ -636,7 +636,7 @@ ensure_rows_in_df <- ensures_that(
 #' 
 #' @param . dot-placeholder, per ensurer doc.
 
-ensure_nonzero_students_with_norms <- ensures_that(
+ensure_nonzero_students_with_norms <- ensurer::ensures_that(
   nrow(
     subset(., !is.na(typical_growth))
   ) > 0 ~ paste0("Sorry, can't plot that: None of the students in your selection have",

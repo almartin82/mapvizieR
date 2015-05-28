@@ -103,7 +103,7 @@ is.mapvizieR <- function(x) inherits(x, "mapvizieR")
 #' 
 #' @param . dot-placeholder, per ensurer doc.
 
-ensure_is_mapvizieR <- ensures_that(
+ensure_is_mapvizieR <- ensurer::ensures_that(
   is.mapvizieR(.) ~ paste0("The object you passed is not a conforming mapvizieR object.\n",
      "Look at the examples in the mapvizieR() to see more about generating\n",
      "a valid mapvizieR object.")
