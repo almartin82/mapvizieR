@@ -106,7 +106,7 @@ check_cdf_names <- function(prepped_cdf_long) {
     
     return(msg)
   }
-  assert_that(has_valid_names(names_test))
+  assert_that::assert_that(has_valid_names(names_test))
   
   return(names_test)
   

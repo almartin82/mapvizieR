@@ -401,12 +401,12 @@ mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu=1) {
   
   #gotta have this many kids
   studentids %>% 
-    ensure_that(
+    ensurer::ensure_that(
       length(.) > min_stu ~ paste("this plot requires at least", min_stu, "student.")
     )
   
   mapvizieR_obj[['cdf']] %>%  
-    ensure_that(
+    ensurer::ensure_that(
       check_cdf_long(.)$boolean == TRUE ~ "your mapvizieR CDF is not conforming."
     )
 }
@@ -592,7 +592,7 @@ n_timings <- function(n, test_function, test_args) {
 ensure_fields <- function(fields_vector, df) {
   
   df %>%
-  ensure_that(
+  ensurer::ensure_that(
     all(fields_vector %in% names(df)) ~ paste(
       "this function requires the following fields:",
       fields_vector[!fields_vector %in% names(df)],

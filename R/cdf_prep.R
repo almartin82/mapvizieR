@@ -78,7 +78,7 @@ process_cdf_long <- function(prepped_cdf) {
 
 dedupe_cdf <- function(prepped_cdf, method="NWEA") {
   #verify inputs
-  assert_that(
+  assert_that::assert_that(
     is.data.frame(prepped_cdf),
     method %in% c("NWEA", "high RIT", "most recent"),
     check_cdf_long(prepped_cdf)$boolean

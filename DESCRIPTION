@@ -7,7 +7,7 @@ Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email =
     "almartin@gmail.com"), person("Chris", "Haid", role = "aut", email =
     "chaid@kippchicago.org"))
 Description: Visualizations for NWEA MAP Data
-License: No license
+License: file LICENSE
 Imports:
     assertthat,
     ensurer,

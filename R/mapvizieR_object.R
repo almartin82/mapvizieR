@@ -46,7 +46,7 @@ mapvizieR.default <- function(cdf, roster, verbose=FALSE, ...) {
     processed_cdf <- process_cdf_long(prepped_cdf)
   
     #check to see that result conforms
-    assert_that(check_processed_cdf(processed_cdf)$boolean)  
+    assert_that::assert_that(check_processed_cdf(processed_cdf)$boolean)  
   }
   
   #headline growth df
