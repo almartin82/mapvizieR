@@ -1,6 +1,6 @@
 Package: mapvizieR
 Type: Package
-Title: What the package does (short line)
+Title: Data Analysis with NWEA MAP Data
 Version: 0.1
 Date: 2015-01-14
 Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email =

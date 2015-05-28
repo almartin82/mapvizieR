@@ -13,6 +13,7 @@ vignette: >
 ```{r silent1, echo=F, results='hide', message=F}
 #libraries and functions etc
 require(assertthat)
+require(dplyr)
 ```
 
 ## big idea

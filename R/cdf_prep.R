@@ -49,7 +49,7 @@ process_cdf_long <- function(prepped_cdf) {
     grade_season_labelify() %>%
     grade_season_factors() %>%
     make_npr_consistent() %>%
-    mutate(
+    dplyr::mutate(
       testquartile = kipp_quartile(consistent_percentile),
       #testids for client server are NULL.  we'll force a unique identifier here.
       testid = ifelse(
@@ -126,7 +126,7 @@ grade_level_seasonify <- function(cdf) {
   
   #inputs consistency check 
   cdf %>%
-    ensures_that(
+    ensurer::ensures_that(
       c('grade', 'fallwinterspring') %in% names() ~ "'grade' 
         and 'fallwinterspring' must be in in your cdf to 
         grade_seasonify"
