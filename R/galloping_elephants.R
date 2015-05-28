@@ -152,12 +152,12 @@ galloping_elephants <- function (
    ,size = 7
   )
   
-  plot_min <- round_to_any(
+  plot_min <- mapvizieR::round_to_any(
     x = min(munge$testritscore, na.rm=TRUE)
    ,accuracy = 10
    ,f = floor
   )  
-  plot_max <- round_to_any(
+  plot_max <- mapvizieR::round_to_any(
     x = max(munge$testritscore, na.rm=TRUE)
    ,accuracy = 10
    ,f = ceiling
