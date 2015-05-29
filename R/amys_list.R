@@ -88,17 +88,17 @@ amys_lists <- function(
     dplyr::mutate(growth_status2 = factor(growth_status, levels = rev(statuses)))
 
 
-  p <- ggplot(
+  p <- ggplot2::ggplot(
     data = this_growth2,
     aes(x = growth_status2, y = growth_status_rank)
   ) +
   #student names
-  geom_text(
+  ggplot2::geom_text(
     aes(label = studentfirstlastrit, color = growth_status2),
     size = 1.75
   ) +
   #summary labels
-  geom_text(
+  ggplot2::geom_text(
     data = this_growth2_summary,
     aes(x = "Negative", y = loc, label = text, color = growth_status2),
     size = 3,

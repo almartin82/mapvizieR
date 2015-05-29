@@ -15,7 +15,7 @@ test_that("becca_plot errors when handed an improper mapviz object", {
 test_that("becca_plot produces proper plot with a grade level of kids", {
         
   p <- becca_plot(mapviz, studentids_normal_use, 'Mathematics', detail_academic_year=2013)
-  p_build <- ggplot_build(p)
+  p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 6)
   expect_equal(ncol(p_build$data[[2]]), 10)
@@ -29,12 +29,12 @@ test_that("becca_plot returns expected data with a variety of groupings of kids"
   valid_grades <- c(c(-0.8,4.2), seq(0:13))
     
   p <- becca_plot(mapviz, studentids_subset, 'Mathematics')
-  p_build <- ggplot_build(p)
+  p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 8)
 
   p <- becca_plot(mapviz, studentids_subset, 'Mathematics', first_and_spring_only=FALSE)
-  p_build <- ggplot_build(p)
+  p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 12)
   expect_equal(ncol(p_build$data[[1]]), 10)
@@ -43,7 +43,7 @@ test_that("becca_plot returns expected data with a variety of groupings of kids"
 
   p <- becca_plot(mapviz, studentids_subset, 'Mathematics', first_and_spring_only=TRUE,
     entry_grade_seasons=c(7.2), small_n_cutoff=0.3)
-  p_build <- ggplot_build(p)
+  p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 16)
   expect_equal(ncol(p_build$data[[1]]), 10)
@@ -51,7 +51,7 @@ test_that("becca_plot returns expected data with a variety of groupings of kids"
   expect_equal(sum(p_build$data[[3]][, 2]),  456.7542, tolerance=.001)
 
   p <- becca_plot(mapviz, studentids_normal_use, 'Mathematics', detail_academic_year=2016)
-  p_build <- ggplot_build(p)
+  p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 2)
   expect_equal(ncol(p_build$data[[1]]), 10)
@@ -59,7 +59,7 @@ test_that("becca_plot returns expected data with a variety of groupings of kids"
   expect_equal(sum(p_build$data[[3]][, 2]), 46.77419, tolerance=.001)
   
   p <- becca_plot(mapviz, studentids_normal_use, 'Mathematics', first_and_spring_only=FALSE)
-  p_build <- ggplot_build(p)
+  p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 6)
   expect_equal(ncol(p_build$data[[1]]), 10)
@@ -68,13 +68,13 @@ test_that("becca_plot returns expected data with a variety of groupings of kids"
   
   #alt colors
   p <- becca_plot(mapviz, studentids_subset, 'Mathematics', color_scheme='Sequential Blues')
-  p_build <- ggplot_build(p)
+  p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 8)
 
   p <- becca_plot(mapviz, studentids_subset, 'Mathematics', 
     color_scheme=c('gray30', 'gray50', 'hotpink', 'dodgerblue'))
-  p_build <- ggplot_build(p)
+  p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 8)
   

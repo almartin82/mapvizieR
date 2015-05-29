@@ -55,7 +55,7 @@ calc_cgp <- function(
     )
       
   #start of growth window
-  start_season <- str_sub(growth_window, 1, str_locate(growth_window, ' ')[1]-1)
+  start_season <- stringr::str_sub(growth_window, 1, stringr::str_locate(growth_window, ' ')[1]-1)
   
   #if one of the baselines are NA, look up the value.
   if (is.na(baseline_avg_npr)) {

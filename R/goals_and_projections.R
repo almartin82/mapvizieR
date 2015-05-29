@@ -184,17 +184,16 @@ add_accelerated_growth <- function(
      }
        
      #remove .x from names
-     names(new_growth_df)<-gsub("\\.x","", names(new_growth_df))
+     names(new_growth_df) <- gsub("\\.x","", names(new_growth_df))
      
      #eliminate .y colums
-     return_cols<-
-       names(new_growth_df)[!grepl("\\.y",names(new_growth_df))]
+     return_cols <- names(new_growth_df)[!grepl("\\.y",names(new_growth_df))]
      
      new_growth_df <- new_growth_df[,return_cols] %>%
-       select(-iter) %>%
+       dplyr::select(-iter) %>%
        as.data.frame
      
-     mapvizier_object$growth_df<-new_growth_df
+     mapvizier_object$growth_df <- new_growth_df
    }
    
    #return
