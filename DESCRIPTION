@@ -1,6 +1,6 @@
 Package: mapvizieR
 Type: Package
-Title: What the package does (short line)
+Title: Visualizing NWEA MAP student data
 Version: 0.1
 Date: 2015-01-14
 Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email =
@@ -24,3 +24,4 @@ Suggests:
     toOrdinal
 LazyData: true
 VignetteBuilder: knitr
+Imports: reshape2
