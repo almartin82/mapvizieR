@@ -24,7 +24,7 @@ prep_cdf_long <- function(cdf_long) {
   cdf_long$teststartdate <- munge_startdate(cdf_long$teststartdate)
   cdf_long$growthmeasureyn <- as.logical(cdf_long$growthmeasureyn)
   
-  assert_that(check_cdf_long(cdf_long)$boolean)
+  assertthat::assert_that(check_cdf_long(cdf_long)$boolean)
   
   return(cdf_long)
 }
@@ -78,7 +78,7 @@ process_cdf_long <- function(prepped_cdf) {
 
 dedupe_cdf <- function(prepped_cdf, method="NWEA") {
   #verify inputs
-  assert_that::assert_that(
+  assertthat::assert_that(
     is.data.frame(prepped_cdf),
     method %in% c("NWEA", "high RIT", "most recent"),
     check_cdf_long(prepped_cdf)$boolean
@@ -167,7 +167,7 @@ grade_level_seasonify <- function(cdf) {
 
 grade_season_labelify <- function(x) {
   
-  assert_that('grade_level_season' %in% names(x))
+  assertthat::assert_that('grade_level_season' %in% names(x))
   x$grade_season_label <- fall_spring_me(x$grade_level_season)
     
   return(as.data.frame(x))

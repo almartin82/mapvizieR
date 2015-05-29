@@ -61,7 +61,7 @@ names(mapviz)
 
 ```{r silent2, echo=F, results='hide', message=F}
 howmany <- 4
-assert_that::assert_that(length(names(mapviz))==4)
+assertthat::assert_that(length(names(mapviz))==4)
 ```
 
 the mapvizieR object is really just a named list; it has a number of data frames that plot functions can access.  rather than trying to keep one dataframe to rule them all (which inevitably requires concessions that aren't ideal) we get to keep roster, cdf and growth data on separate objects, and then mix them together when needed to generate reports.

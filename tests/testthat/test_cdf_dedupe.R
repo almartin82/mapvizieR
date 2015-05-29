@@ -33,7 +33,7 @@ test_that("dedupe high RIT style returns one row per student/subject/term", {
     map_year_academic, fallwinterspring, sep='_'))  
   counts <- as.data.frame(table(hash))  
   #there should only ever be one count if dedupe is working
-  assert_that(all(unlist(counts[,2])==TRUE))
+  assertthat::assert_that(all(unlist(counts[,2])==TRUE))
   
   expect_equal(nrow(counts), 8525)
 
