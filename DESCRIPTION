@@ -9,6 +9,7 @@ Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email =
 Description: Visualizations for NWEA MAP Data
 License: file LICENSE
 Imports:
+    origin/master
     assertthat,
     ensurer,
     lubridate,
@@ -18,7 +19,7 @@ Imports:
     grid,
     gridExtra,
     toOrdinal
-Suggests:
+Suggests: 
     testthat,
     knitr
 Depends:
