@@ -108,36 +108,36 @@ goal_strand_plot <- function(mapvizieR_obj,
   
   
   # melt scores
-  m_melt_scores<-reshape2::melt(m_sub_scores, 
+  m_melt_scores <- reshape2::melt(m_sub_scores, 
                                id.vars = names(m_sub_scores)[1:8], 
                                measure.vars = names(m_sub_scores)[-c(1:8)]
   ) %>% 
-    dplyr::mutate(value=as.numeric(value))
+    dplyr::mutate(value = as.numeric(value))
   
-  m_melt_names<-reshape2::melt(m_sub_names, 
-                              id.vars=names(m_sub_names)[1:8],
+  m_melt_names <- reshape2::melt(m_sub_names, 
+                              id.vars = names(m_sub_names)[1:8],
                               measure.vars = names(m_sub_names)[-c(1:8)]
   )
   
- assertthat::assert_that(nrow(m_melt_scores)==nrow(m_melt_names))
+ assertthat::assert_that(nrow(m_melt_scores) == nrow(m_melt_names))
   
   
   # m.melt.scores2<-left_join(m.melt.scores, homerooms, by="StudentID")
   #  assert_that(nrow(m.melt.scores)==nrow(m.melt.scores2))
   
-  m_long<-m_melt_scores
+  m_long <- m_melt_scores
   
-  m_long$goal_name<-m_melt_names$value
+  m_long$goal_name <- m_melt_names$value
   
-  assertthat::assert_that(nrow(m_long)==nrow(m_melt_names))
+  assertthat::assert_that(nrow(m_long) == nrow(m_melt_names))
   
-  m_long_2<-filter(m_long, !is.na(goal_name)) %>%
+  m_long_2 <- filter(m_long, !is.na(goal_name)) %>%
     filter(!is.na(value))
   
-  assertthat::assert_that(nrow(m_long)>=nrow(m_long_2))  
+  assertthat::assert_that(nrow(m_long) >= nrow(m_long_2))  
   
-  m_plot<-m_long_2 %>% 
-    dplyr::mutate(rank=rank(testritscore, ties.method="first")) %>%
+  m_plot <- m_long_2 %>% 
+    dplyr::mutate(rank = rank(testritscore, ties.method = "first")) %>%
     dplyr::group_by(schoolname, 
              grade,
              measurementscale) %>%
@@ -151,17 +151,17 @@ goal_strand_plot <- function(mapvizieR_obj,
                                     x = value
                                     )
                       ) +
-    ggplot2::geom_point(aes(fill = value-testritscore), 
-                        shape=21,
-                        color=NA
+    ggplot2::geom_point(ggplot2::aes(fill = value - testritscore), 
+                        shape = 21,
+                        color = NA
                       ) + 
-    ggplot2::geom_vline(aes(xintercept = mean(testritscore)), 
+    ggplot2::geom_vline(ggplot2::aes(xintercept = mean(testritscore)), 
                         color = "gray") + 
-    ggplot2::geom_vline(aes(xintercept = testritscore, 
+    ggplot2::geom_vline(ggplot2::aes(xintercept = testritscore, 
                             color = testquartile
                             ), 
-                        size=1.5, 
-                        show_guide=T
+                        size = 1.5, 
+                        show_guide = T
                         ) + 
     ggplot2::scale_fill_gradient("Deviation from\nOverall RIT",
                                  low = "red", 
@@ -171,8 +171,8 @@ goal_strand_plot <- function(mapvizieR_obj,
     ggplot2::ylab("Strand Name") +
     ggplot2::facet_grid(student_display_name ~ .) + 
     ggplot2::theme_bw() +
-    ggplot2::theme(strip.text.y=element_text(angle = 0), 
-                 axis.text.y=element_text(size = 5)
+    ggplot2::theme(strip.text.y = ggplot2::element_text(angle = 0), 
+                 axis.text.y = ggplot2::element_text(size = 5)
                  )
   
   # return
