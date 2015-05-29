@@ -10,7 +10,6 @@ Description: Visualizations for NWEA MAP Data
 License: file LICENSE
 Imports:
     assertthat,
-    ensurer,
     lubridate,
     stringr,
     dplyr,
@@ -22,6 +21,8 @@ Suggests:
     testthat,
     knitr
 Depends:
+    ensurer,
+    magrittr,
     R(>= 2.10.0)
 LazyData: true
 VignetteBuilder: knitr

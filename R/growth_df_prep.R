@@ -189,7 +189,7 @@ student_scaffold <- function(
   }
 
   #build the df to return
-  final <- rbind_all(list(matched_df, only_start, only_end))
+  final <- dplyr::rbind_all(list(matched_df, only_start, only_end))
 
   #discard some helpers
   final <- final[ ,!names(final) %in% c('start_hash', 'end_hash', 'matching_end_hash')]

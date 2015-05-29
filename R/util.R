@@ -168,9 +168,10 @@ tiered_growth_factors <- function(quartile, grade){
   stopifnot(length(quartile)==length(grade))
   
   # Create data.frame lookup of KIPP Foundation Growth Targts
-  tgrowth<-data.frame(grade.type=c(rep(0,4),rep(1,4)), 
-                      quartile = as.factor(rep(1:4, 2)), 
-                      KIPPTieredGrowth=c(1.5,1.5,1.25,1.25,2,1.75,1.5,1.25)
+  tgrowth <- data.frame(
+    grade.type=c(rep(0,4),rep(1,4)), 
+    quartile = as.factor(rep(1:4, 2)), 
+    KIPPTieredGrowth=c(1.5,1.5,1.25,1.25,2,1.75,1.5,1.25)
   )
   
   grade.type <- rep(NA, times = length(quartile))
@@ -180,7 +181,7 @@ tiered_growth_factors <- function(quartile, grade){
   
   df <- data.frame(grade, grade.type, quartile = as.factor(quartile))
   
-  df2 <- left_join(df, tgrowth, by=c("quartile", "grade.type"))
+  df2 <- dplyr::left_join(df, tgrowth, by=c("quartile", "grade.type"))
   
   #return
   df2$KIPPTieredGrowth 
@@ -274,7 +275,7 @@ fall_spring_me <- function(x) {
     stringsAsFactors = FALSE
   )
   
-  munge <- left_join(
+  munge <- dplyr::left_join(
     x = input_df,
     y = labels_df,
     by = c('grade_level_season' = 'grade_level_season')
@@ -500,19 +501,19 @@ min_term_filter <- function(cdf, small_n_cutoff=-1) {
     dplyr::summarize(
       n=n()
     ) %>%
-    mutate(
+    dplyr::mutate(
       include=n >= max(n) * small_n_cutoff
     ) %>%
-    filter(
+    dplyr::filter(
       include==TRUE
     ) %>%
-    select(
+    dplyr::select(
       grade_level_season  
     ) %>%
     as.data.frame()
  
   cdf %>%
-    filter(
+    dplyr::filter(
       grade_level_season %in% as.vector(grade_seasons_to_keep$grade_level_season)
     )  
 }

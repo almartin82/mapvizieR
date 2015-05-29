@@ -99,9 +99,9 @@ dedupe_cdf <- function(prepped_cdf, method="NWEA") {
   
   #dedupe using dplyr mutate
   dupe_tagged <- prepped_cdf %>%
-    group_by(studentid, measurementscale, map_year_academic, fallwinterspring) %>%
+    dplyr::group_by(studentid, measurementscale, map_year_academic, fallwinterspring) %>%
     #using mutate_ because we want to hand our function to mutate as a string. 
-    mutate_(
+    dplyr::mutate_(
       rn=do_call_rank_with_method
     )  
   deduped <- dupe_tagged[dupe_tagged$rn==1, ]
@@ -138,17 +138,17 @@ grade_level_seasonify <- function(cdf) {
   )
   
   #get the offset
-  munge <- left_join(
+  munge <- dplyr::left_join(
     x = cdf,
     y = season_offsets,
     by = c('fallwinterspring' = 'season')
   )
   
   munge %>%
-    mutate(
+    dplyr::mutate(
       grade_level_season = grade + offset
     ) %>%
-    select(-offset) %>%
+    dplyr::select(-offset) %>%
     as.data.frame()
 }
 

@@ -94,11 +94,11 @@ check_cdf_names <- function(prepped_cdf_long) {
     "goal8stderr", "goal8range", "goal8adjective", "teststarttime", 
     "percentcorrect", "projectedproficiency", "fallwinterspring", 
     "map_year_academic")
-  names_test <- all(has_name(prepped_cdf_long, expected_names))
+  names_test <- all(assertthat::has_name(prepped_cdf_long, expected_names))
   
   has_valid_names <- function(x) {x==TRUE}
-  on_failure(has_valid_names) <- function(call, env) {
-    mask <- ! expected_names %in% names(prepped_cdf_long) 
+  assertthat::on_failure(has_valid_names) <- function(call, env) {
+    mask <- !expected_names %in% names(prepped_cdf_long) 
     failed_names <- expected_names[mask]
     msg <- paste0("Your CDF failed the VALID NAMES test.\n",
      "Your CDF is missing the following fields that are required\n",
@@ -133,7 +133,7 @@ check_cdf_fws <- function(prepped_cdf_long) {
   season_test <- all(seasons_present %in% valid_seasons)
 
   has_valid_seasons <- function(x) {x==TRUE}
-  on_failure(has_valid_seasons) <- function(call, env) {
+  assertthat::on_failure(has_valid_seasons) <- function(call, env) {
     mask <- !seasons_present %in% valid_seasons
     failed_seasons <- seasons_present[mask]
     msg <- paste0("Your CDF failed the VALID SEASONS test.\n",
@@ -166,10 +166,10 @@ check_processed_names <- function(processed_cdf) {
   #the names of the data frame should include the following
   expected_names <- c("grade", "grade_level_season", 
     "grade_season_label", "consistent_percentile")
-  names_test <- all(has_name(processed_cdf, expected_names))
+  names_test <- all(assertthat::has_name(processed_cdf, expected_names))
   
   has_valid_names <- function(x) {x==TRUE}
-  on_failure(has_valid_names) <- function(call, env) {
+  assertthat::on_failure(has_valid_names) <- function(call, env) {
     mask <- ! expected_names %in% names(processed_cdf) 
     failed_names <- expected_names[mask]
     msg <- paste0("Your processed CDF failed the VALID NAMES test.\n",
