@@ -11,7 +11,7 @@
 #' 
 #' @param mapvizieR_obj a \code{mapvizieR} object 
 #' @param studentids vector of student id numbers for students to plot
-#' @param measurementscale measurementscale to plot
+#' @param measurement_scale measurementscale to plot
 #' @param fws season (fall, winter, or spring) to plot
 #' @param year academic year to plot
 #' 

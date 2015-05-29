@@ -11,11 +11,11 @@ goal_strand_plot(mapvizieR_obj, studentids, measurement_scale, fws, year)
 
 \item{studentids}{vector of student id numbers for students to plot}
 
+\item{measurement_scale}{measurementscale to plot}
+
 \item{fws}{season (fall, winter, or spring) to plot}
 
 \item{year}{academic year to plot}
-
-\item{measurementscale}{measurementscale to plot}
 }
 \value{
 a ggplot2 object
