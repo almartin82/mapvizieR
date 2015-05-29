@@ -38,7 +38,7 @@ calc_cgp <- function(
 ) {
   #cant have a calc_for value 0 or below, or above 100 - those aren't valid growth %iles.
   calc_for %>%
-    ensure_that(
+    ensurer::ensure_that(
       min(.) > 0, max(.) < 100,
       fail_with = function(...) {
         stop("valid calc_for values are between 1 and 99", call. = FALSE)
@@ -47,7 +47,7 @@ calc_cgp <- function(
   
   #you have to specify AT LEAST one of baseline_rit or baseline_npr
   c(is.na(baseline_avg_rit), is.na(baseline_avg_npr)) %>%
-    ensure_that(
+    ensurer::ensure_that(
       !all(.),
       fail_with = function(...) {
         stop("You must specify *either* a baseline RIT or a baseline NPR.", call. = FALSE)

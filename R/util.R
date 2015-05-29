@@ -403,12 +403,12 @@ mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu=1) {
   
   #gotta have this many kids
   studentids %>% 
-    ensure_that(
+    ensurer::ensure_that(
       length(.) > min_stu ~ paste("this plot requires at least", min_stu, "student.")
     )
   
   mapvizieR_obj[['cdf']] %>%  
-    ensure_that(
+    ensurer::ensure_that(
       check_cdf_long(.)$boolean == TRUE ~ "your mapvizieR CDF is not conforming."
     )
 }
@@ -594,7 +594,7 @@ n_timings <- function(n, test_function, test_args) {
 ensure_fields <- function(fields_vector, df) {
   
   df %>%
-  ensure_that(
+  ensurer::ensure_that(
     all(fields_vector %in% names(df)) ~ paste(
       "this function requires the following fields:",
       fields_vector[!fields_vector %in% names(df)],
@@ -626,7 +626,7 @@ force_string_breaks <- function(string, n_char) {
 #' 
 #' @param . dot-placeholder, per ensurer doc.
 
-ensure_rows_in_df <- ensures_that(
+ensure_rows_in_df <- ensurer::ensures_that(
   nrow(.) > 0 ~ "Sorry, can't plot that: a data prep step returned a df of 0 rows."
 )
 
@@ -638,7 +638,7 @@ ensure_rows_in_df <- ensures_that(
 #' 
 #' @param . dot-placeholder, per ensurer doc.
 
-ensure_nonzero_students_with_norms <- ensures_that(
+ensure_nonzero_students_with_norms <- ensurer::ensures_that(
   nrow(
     subset(., !is.na(typical_growth))
   ) > 0 ~ paste0("Sorry, can't plot that: None of the students in your selection have",

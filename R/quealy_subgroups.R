@@ -37,7 +37,7 @@ quealy_subgroups <- function(
 
   #data validation and unpack
   mv_opening_checks(mapvizieR_obj, studentids, 1)
-  assert_that(length(subgroup_cols) == length(pretty_names))
+  assertthat::assert_that(length(subgroup_cols) == length(pretty_names))
   
   #unpack the mapvizieR object and limit to desired students
   roster <- mapvizieR_obj[['roster']]
@@ -83,7 +83,7 @@ quealy_subgroups <- function(
   
   #require that all subgroups match names of the roster.
   roster %>% 
-    ensure_that(
+    ensurer::ensure_that(
       all(subgroup_cols %in% names(roster)) ~ "subgroup_cols must match column names in your mapvizieR roster."
     )
   

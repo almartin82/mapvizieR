@@ -1,6 +1,6 @@
 Package: mapvizieR
 Type: Package
-Title: Visualizing NWEA MAP student data
+Title: Visualization and Data Analysis tools for NWEA MAP student data
 Version: 0.1
 Date: 2015-01-14
 Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email =
@@ -8,7 +8,7 @@ Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email =
     "chaid@kippchicago.org"))
 Description: Visualizations for NWEA MAP Data
 License: file LICENSE
-Depends: 
+Imports:
     assertthat,
     ensurer,
     lubridate,
@@ -17,11 +17,12 @@ Depends:
     ggplot2,
     grid,
     gridExtra,
-    R(>= 2.10.0)
+    toOrdinal
 Suggests: 
     testthat,
-    knitr,
-    toOrdinal
+    knitr
+Depends:
+    R(>= 2.10.0)
 LazyData: true
 VignetteBuilder: knitr
 Imports: reshape2

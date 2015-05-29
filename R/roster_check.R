@@ -32,7 +32,7 @@ check_roster <- function(roster) {
 #' 
 #' @inheritParams ensure_is_mapvizieR
 
-ensure_roster_names <- ensures_that(
+ensure_roster_names <- ensurer::ensures_that(
     c('studentid') %in% names(.) ~ 
       "check your roster - it must have a field named studentid.",
     c('grade') %in% names(.) ~ 
@@ -47,7 +47,7 @@ ensure_roster_names <- ensures_that(
 #' 
 #' @inheritParams ensure_is_mapvizieR
 
-ensure_roster_types <- ensures_that(  
+ensure_roster_types <- ensurer::ensures_that(  
   class(.$grade) == "integer" ~ 
     "check type on grade field, should be integer.",
   class(.$map_year_academic) == "integer" ~ 

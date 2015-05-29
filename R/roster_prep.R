@@ -26,7 +26,7 @@ prep_roster <- function(students_by_school, kinder_codes=NULL) {
   roster$studentfirstlast <- paste0(roster$studentfirstname, ' ', roster$studentlastname)
   
   #check that roster conforms to our expectations
-  assert_that(check_roster(roster))
+  assertthat::assert_that(check_roster(roster))
   
   return(roster)
 }

@@ -8,7 +8,6 @@
 #' @param start_academic_year starting academic year
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
-#' @param detail_academic_year don't mask any data for this academic year
 #' @param title_text what is this report called?
 #' @param ... additional arguments
 #' 

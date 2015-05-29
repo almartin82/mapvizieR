@@ -106,7 +106,7 @@ check_cdf_names <- function(prepped_cdf_long) {
     
     return(msg)
   }
-  assert_that(has_valid_names(names_test))
+  assertthat::assert_that(has_valid_names(names_test))
   
   return(names_test)
   
@@ -142,7 +142,7 @@ check_cdf_fws <- function(prepped_cdf_long) {
     
     return(msg)
   }
-  assert_that(has_valid_seasons(season_test))
+  assertthat::assert_that(has_valid_seasons(season_test))
   
   return(season_test)
 }
@@ -178,7 +178,7 @@ check_processed_names <- function(processed_cdf) {
     
     return(msg)
   }
-  assert_that(has_valid_names(names_test))
+  assertthat::assert_that(has_valid_names(names_test))
   
   return(names_test)
   

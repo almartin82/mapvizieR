@@ -37,7 +37,7 @@ generate_growth_dfs <- function(
   include_unsanctioned_windows = FALSE
 ){
   #input validation
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(processed_cdf),
     is.data.frame(norm_df_long),
     is.logical(include_unsanctioned_windows),
@@ -88,7 +88,7 @@ student_scaffold <- function(
   year_offset
 ) {
   #input validation
-  assert_that(
+  assertthat::assert_that(
     is.data.frame(processed_cdf),
     start_season %in% c("Fall", "Spring", "Winter"),
     end_season %in% c("Fall", "Spring", "Winter"),
@@ -217,7 +217,7 @@ student_scaffold <- function(
 
 scores_by_testid <- function(testid, processed_cdf, start_or_end) {
   #input validation
-  assert_that(
+  assertthat::assert_that(
     #testids can't be null
     is.data.frame(processed_cdf),
     check_processed_cdf(processed_cdf)$boolean,

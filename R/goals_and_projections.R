@@ -203,7 +203,6 @@ add_accelerated_growth <- function(
   
     
 
-
 # ensures ####
 #' @title ensure_goals_names
 #' 
@@ -211,7 +210,7 @@ add_accelerated_growth <- function(
 #' proper elements. 
 #' 
 #' @param . dot-placeholder, per ensurer doc.
-ensure_goals_names <- ensures_that(
+ensure_goals_names <- ensurer::ensures_that(
   all(
     c("goals", "join_by_fields", "slot_name") %in% 
       names(.)) ~ 
@@ -227,7 +226,7 @@ ensure_goals_names <- ensures_that(
 #' \code{accel_growth} and \code{met_acc}
 #' 
 #' @param . dot-placeholder, per ensurer doc.
-ensure_goals_obj<- ensures_that(+ensure_goals_names,
+ensure_goals_obj <- ensurer::ensures_that(+ensure_goals_names,
   all(
     c("accel_growth",  "met_accel_growth") %in% names(.$goals)) ~
               paste0("Your goals function's goals data frame ", "

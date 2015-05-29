@@ -46,7 +46,7 @@ mapvizieR.default <- function(cdf, roster, verbose=FALSE, ...) {
     processed_cdf <- process_cdf_long(prepped_cdf)
   
     #check to see that result conforms
-    assert_that(check_processed_cdf(processed_cdf)$boolean)  
+    assertthat::assert_that(check_processed_cdf(processed_cdf)$boolean)  
   }
   
   #headline growth df
@@ -103,7 +103,7 @@ is.mapvizieR <- function(x) inherits(x, "mapvizieR")
 #' 
 #' @param . dot-placeholder, per ensurer doc.
 
-ensure_is_mapvizieR <- ensures_that(
+ensure_is_mapvizieR <- ensurer::ensures_that(
   is.mapvizieR(.) ~ paste0("The object you passed is not a conforming mapvizieR object.\n",
      "Look at the examples in the mapvizieR() to see more about generating\n",
      "a valid mapvizieR object.")
@@ -224,7 +224,7 @@ grade_levelify_cdf <- function(prepped_cdf, roster) {
 
 cdf_roster_match <- function(assessment_results, roster) {
   # Validation
-  assert_that(
+  assertthat::assert_that(
     check_cdf_long(assessment_results)$boolean, 
     check_roster(roster)
   )
