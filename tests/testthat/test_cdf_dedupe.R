@@ -16,7 +16,7 @@ test_that("dedupe NWEA style returns one row per student/subject/term", {
   #build a df of counts (should be unique, ie 1)
   counts <- as.data.frame(table(hash))  
   #there should only ever be one count if dedupe is working
-  expect_equal(all(unlist(counts[,2]), TRUE))
+  expect_true(all(unlist(counts[,2]), TRUE))
   
   #how many with this test?
   expect_equal(nrow(counts), 8551)

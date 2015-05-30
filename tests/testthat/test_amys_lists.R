@@ -23,7 +23,7 @@ test_that("amys_lists produces proper plot with a grade level of kids", {
     measurementscale = c("Reading", "Mathematics")
   )
 
-  p_build <- ggplot::ggplot_build(p)
+  p_build <- ggplot2::ggplot_build(p)
 
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$plot$data), 186)
