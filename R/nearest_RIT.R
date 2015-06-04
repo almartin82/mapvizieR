@@ -34,6 +34,7 @@ nearest_rit <- function(
   if (!forward) {
     student <- student[student$teststartdate <= as.Date(target_date),]
   }
+  student <- student[order(student$teststartdate),]
 
   # find closest date and return rit score on that day
   diff <- as.numeric(as.Date(target_date) - student$teststartdate)
