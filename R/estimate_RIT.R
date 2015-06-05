@@ -42,8 +42,15 @@ estimate_rit <- function(
   
   # return error if student does not have take a test for given measurementscale
   if (dim(student)[1] == 0) {
+    
     warning('student does not have a test for given measurementscale')
     return(NA)
+    
+  } else if (dim(student)[1] == 1) {
+    
+    warning('student only has one test event for given measurementscale')
+    return(student$testritscore[1])
+    
   }
   
   # if target_date is one of the test dates, return that rit score
@@ -55,7 +62,7 @@ estimate_rit <- function(
   predict_date <- data.frame(teststartdate = as.Date(target_date))
   
   if (method == 'closest') {
-    # filter out rows if forward = FALSE
+    # filter out rows after target date if forward = FALSE
     if (!forward) {
       student <- student[student$teststartdate < as.Date(target_date),]
     }
