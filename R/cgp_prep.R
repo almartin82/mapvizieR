@@ -8,7 +8,7 @@
 #' @param baseline_avg_rit the baseline mean rit for the group of students
 #' @param baseline_avg_npr the baseleine mean percentile rank for the group of students
 #' @param ending_avg_rit the baseline mean rit for the group of students
-#' @param ending_avg_npr the baseleine mean percentile rank for the group of students
+#' @param ending_avg_npr the baseline mean percentile rank for the group of students
 #' @param tolerance NWEA has published empirical lookup tables for growth.  these tables cover 
 #' the middle of the distribution, meaning that data for most cohorts can be found in the table.
 #' but say that you have a cohort that is 10 rit points below the lowest mean RIT reported in the 

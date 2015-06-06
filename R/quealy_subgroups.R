@@ -118,7 +118,10 @@ quealy_subgroups <- function(
         grade = approximate_grade,
         growth_window = paste(start_fws, 'to', end_fws),
         baseline_avg_rit = start_rit,
-        ending_avg_rit = end_rit
+        ending_avg_rit = end_rit,
+        baseline_avg_npr = start_npr,
+        ending_avg_npr = end_npr,
+        tolerance = 99
       )[['results']] 
     ) %>%
     as.data.frame
@@ -182,8 +185,8 @@ quealy_subgroups <- function(
     geom_segment(
       aes(
         size = size_scaled
-      )
-     ,arrow = arrow(length = unit(0.2 + (0.075 * df$size_scaled), "cm"))
+      ),
+     arrow = arrow(length = unit(0.2 + (0.075 * df$size_scaled), "cm"))
     ) +
     #start rit
     geom_text(
@@ -232,14 +235,16 @@ quealy_subgroups <- function(
       panel.grid.minor.y = element_blank(),
       panel.border = element_blank(),
       panel.margin = unit(0, "lines"),
-      plot.margin=unit(c(1,1,1,1),"mm")
+      plot.margin = unit(c(1,1,1,1), "mm")
     ) +
     labs(x = 'RIT') +
     scale_size_identity()
   
     #title
     p_title <- grob_justifier(
-      textGrob(subgroup, gp=gpar(fontsize=18, fontface = 'bold')), 
+      textGrob(
+        subgroup, gp = gpar(fontsize = 18, fontface = 'bold')
+      ), 
       "center", "center"
     )
     
@@ -341,9 +346,8 @@ quealy_subgroups <- function(
   plot_list[['heights']] <- unlist(nrow_list)
   
   do.call(
-    what="arrangeGrob",
-    args=plot_list,
+    what = "arrangeGrob",
+    args = plot_list,
   )
 
 }
-
