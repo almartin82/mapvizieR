@@ -57,24 +57,22 @@ report_dispatcher <- function(
   #now get the permutations at each depth
   for (i in 1:length(cols)) {
     
-    this_headers <- cols[1:i]
-    
-    mask <- names(unq_ele) %in% this_headers
-    
-    #grab the unique permutations at this depth level as data frame
-    this_perms <- as.data.frame(unique(unq_ele[,mask]))
-    names(this_perms) <- this_headers
-
     #if we should call the report at this level, add it to the perm_list
     if (call_list[[i]]) {
-            
-      perm_list[[counter]] <- this_perms
+    
+      this_headers <- cols[1:i]
+      
+      mask <- names(unq_ele) %in% this_headers
+      
+      #grab the unique permutations at this depth level as data frame
+      perm_list[[counter]] <- as.data.frame(unique(unq_ele[, mask, drop=FALSE]))
       counter <- counter + 1
       
     #end call test conditional
     }
   #end make perm list loop  
   }
+  
   if (verbose) writeLines('permutations on selected cuts are:'); print(perm_list)
 
   #iterate over the perm list
