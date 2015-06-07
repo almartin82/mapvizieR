@@ -315,8 +315,8 @@ round_to_any <- function(x, accuracy, f = round) {
 
 df_sorter <- function(x, by = 1, decreasing = FALSE, ... ) {
   f <- function(...) order(...,decreasing=decreasing)
-  i <- do.call(f,x[by])
-  x[i,,drop=FALSE]
+  i <- do.call(f, x[by])
+  x[i,,drop = FALSE]
 }
 
 
