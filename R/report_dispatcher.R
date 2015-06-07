@@ -35,8 +35,8 @@ report_dispatcher <- function(
   ) {
   #use ensureR to check if this is a mapvizieR object
   mapvizieR_obj %>% ensure_is_mapvizieR()
-  
   roster <- mapvizieR_obj[['roster']]
+  
   #put mapvizieR object onto the arg list
   arg_list <- append(arg_list, list(mapvizieR_obj=mapvizieR_obj))
   
@@ -46,41 +46,8 @@ report_dispatcher <- function(
 
   #find the unique pairs
   cols <- unlist(cut_list)
-  
-  #empty data structures
-  pairs_vector <- vector(mode='character', length=nrow(roster))
-  pairs_df <- data.frame(
-    foo=rep(NA, nrow(roster))
-  )
-  counter <- 1
-  
-  #todo - test data frame for text to make sure sep is unq
-  hash_sep <- '@@@'
-  
-  #populate data structure to facilitate  unique pairs
-  for (c in cols) {
-    pairs_vector <- paste(pairs_vector, roster[,c], sep=hash_sep)  
-    
-    pairs_df[,counter] <- roster[,c]
-    names(pairs_df)[counter] <- c
-    
-    counter <- counter + 1    
-  }
-  
-  #trim leading hash_sep
-  pairs_vector <- substr(pairs_vector, 4, 1000000)
-  
-  #put has back on the larger df
-  pairs_df$hash <- pairs_vector
-
-  #get unique keys
-  unq_keys <- unique(pairs_vector)
-  
-  #strsplit on the sep_hash gets us back to data frame
-  unq_ele <- do.call(rbind,strsplit(unq_keys, hash_sep, fixed=TRUE))
-  #back to df and sort
-  unq_ele <- as.data.frame(unq_ele, stringsAsFactors=F)
-  names(unq_ele) <- cols  
+  pairs_roster <- roster[ , names(roster) %in% cols, drop = FALSE]
+  unq_ele <- unique(pairs_roster)
   #nifty little sort function
   unq_ele <- df_sorter(unq_ele, by=names(unq_ele))   
   
@@ -90,24 +57,22 @@ report_dispatcher <- function(
   #now get the permutations at each depth
   for (i in 1:length(cols)) {
     
-    this_headers <- cols[1:i]
-    
-    mask <- names(unq_ele) %in% this_headers
-    
-    #grab the unique permutations at this depth level as data frame
-    this_perms <- as.data.frame(unique(unq_ele[,mask]))
-    names(this_perms) <- this_headers
-
     #if we should call the report at this level, add it to the perm_list
     if (call_list[[i]]) {
-            
-      perm_list[[counter]] <- this_perms
+    
+      this_headers <- cols[1:i]
+      
+      mask <- names(unq_ele) %in% this_headers
+      
+      #grab the unique permutations at this depth level as data frame
+      perm_list[[counter]] <- as.data.frame(unique(unq_ele[, mask, drop=FALSE]))
       counter <- counter + 1
       
     #end call test conditional
     }
   #end make perm list loop  
   }
+  
   if (verbose) writeLines('permutations on selected cuts are:'); print(perm_list)
 
   #iterate over the perm list
