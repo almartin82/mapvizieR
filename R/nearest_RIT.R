@@ -36,7 +36,7 @@ nearest_rit <- function(
   # find closest date and return rit score on that day
   diff <- as.numeric(as.Date(target_date) - student$teststartdate)
   
-  if (min(abs(diff)) <= 180) {
+  if (min(abs(diff)) <= num_days) {
     return(student$testritscore[match(min(abs(diff)),abs(diff))])
   } else {
     warning('no test score within num_days')
