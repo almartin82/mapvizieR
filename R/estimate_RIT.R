@@ -52,7 +52,7 @@ estimate_rit <- function(
     
   } else if (nrow(student) == 1) {
     
-    if (as.numeric(abs(as.Date(target_date) - student$teststartdate)) <= 180) {
+    if (as.numeric(abs(as.Date(target_date) - student$teststartdate)) <= num_days) {
       
       warning('student only has one test event for given measurementscale')
       return(student$testritscore[1])

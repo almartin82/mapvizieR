@@ -40,6 +40,11 @@ test_that("estimate_rit does expected stuff ", {
   expect_error(estimate_rit(mapviz,'F08000002','Mathematics','2013-10-20','logistic'))
   
   # test num_days
-  samp_val <- estimate_rit(mapviz,'F08000002','Mathematics','2018-10-20','closest')
+  samp_val <- estimate_rit(mapviz,'F08000002','Mathematics','2014-9-20','closest')
   expect_true(is.na(samp_val))
+  
+  # change num_days to include this date
+  samp_val <- estimate_rit(mapviz,'F08000002','Mathematics','2014-9-20','closest',num_days=200)
+  expect_equal(samp_val,219)
+  
 })
