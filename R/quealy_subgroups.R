@@ -98,7 +98,7 @@ quealy_subgroups <- function(
   #2| INTERNAL FUNCTIONS
   group_summary <- function(grouped_df, subgroup) {
     
-    approximate_grade <- round(mean(grouped_df$start_grade, na.rm=TRUE), 0)  
+    approximate_grade <- round(mean(grouped_df$end_grade, na.rm=TRUE), 0)  
     
     df <- grouped_df %>%
     summarize(
@@ -107,7 +107,7 @@ quealy_subgroups <- function(
       rit_change = mean(rit_growth, na.rm=TRUE),
       start_npr = mean(start_consistent_percentile, na.rm=TRUE),
       end_npr = mean(end_consistent_percentile, na.rm=TRUE),
-      npr_change = mean(start_consistent_percentile - end_consistent_percentile, na.rm=TRUE),
+      npr_change = mean(end_consistent_percentile - start_consistent_percentile, na.rm=TRUE),
       n = n()
     ) %>%       
     #add cgp
@@ -296,6 +296,7 @@ quealy_subgroups <- function(
   #all students
   this_growth$all_students <- 'All Students'
   total_change <- group_summary(dplyr::group_by(this_growth, all_students), 'all_students')
+  
   p_all <- facet_one_subgroup(
     df = total_change, 
     subgroup = 'All Students',
