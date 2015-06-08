@@ -22,7 +22,7 @@ calc_cgp(measurementscale, grade, growth_window, baseline_avg_rit = NA,
 
 \item{ending_avg_rit}{the baseline mean rit for the group of students}
 
-\item{ending_avg_npr}{the baseleine mean percentile rank for the group of students}
+\item{ending_avg_npr}{the baseline mean percentile rank for the group of students}
 
 \item{tolerance}{NWEA has published empirical lookup tables for growth.  these tables cover
 the middle of the distribution, meaning that data for most cohorts can be found in the table.

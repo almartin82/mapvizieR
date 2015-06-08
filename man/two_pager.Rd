@@ -28,8 +28,6 @@ two_pager(mapvizieR_obj, studentids, measurementscale, start_fws,
 \item{title_text}{what is this report called?}
 
 \item{...}{additional arguments}
-
-\item{detail_academic_year}{don't mask any data for this academic year}
 }
 \value{
 prints a ggplot object
