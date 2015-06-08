@@ -85,15 +85,17 @@ report_dispatcher <- function(
     
     for (j in 1:nrow(this_depth)) {
       this_perm <- this_depth[j, ,drop=FALSE]
+
+      rd_env <- new.env()
       
       #generic names for depth of tree
       generic_perm <- this_perm
       names(generic_perm) <- paste0('depth_', seq(1:ncol(this_perm)))
 
       #friendly name string of this depth:
-      depth_string <- paste(names(this_perm), this_perm[1,], sep=": ")
-      depth_string <- paste(depth_string, collapse=" | ")
-      if (verbose) print(depth_string)
+      rd_env$depth_string <- paste(names(this_perm), this_perm[1,], sep=": ")
+      rd_env$depth_string <- paste(rd_env$depth_string, collapse=" | ")
+      if (verbose) print(rd_env$depth_string)
       
       #get the matching kids
       studentids <- unique(merge(roster, this_perm))$studentid
@@ -103,7 +105,10 @@ report_dispatcher <- function(
       this_arg_list <- append(this_arg_list, list(studentids=studentids))
       this_arg_list <- append(this_arg_list, unlist(this_perm))
       this_arg_list <- append(this_arg_list, unlist(generic_perm))
-      this_arg_list <- append(this_arg_list, list(depth_string=depth_string))
+      this_arg_list <- append(this_arg_list, list(depth_string=rd_env$depth_string))
+      
+      #inject all the args into the rd_env
+      list2env(x=this_arg_list, envir=rd_env)
       
       #get the names of the function to call
       func_names <- names(formals(func_to_call))
@@ -116,9 +121,9 @@ report_dispatcher <- function(
       #now that we have the studentids and arg list, call the function      
       this_output <- try(
         do.call(
-          what=func_to_call
-         ,args=this_arg_list
-         ,envir=calling_env
+          what = func_to_call,
+          args = this_arg_list,
+          envir = rd_env
         )
       )
       
