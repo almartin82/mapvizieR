@@ -15,6 +15,7 @@
 #' @param start_academic_year starting academic year
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
+#' @param report_title text grob to put on the report tile
 #' @param complete_obsv if TRUE, limit only to students who have BOTH a start
 #' and end score. default is FALSE.
 #' 
@@ -30,6 +31,7 @@ quealy_subgroups <- function(
   start_academic_year,
   end_fws,
   end_academic_year,
+  report_title = NA,
   complete_obsv = FALSE
 ) {
   
@@ -346,9 +348,18 @@ quealy_subgroups <- function(
   plot_list[['nrow']] <- length(plot_list)
   plot_list[['heights']] <- unlist(nrow_list)
   
-  do.call(
+  final <- do.call(
     what = "arrangeGrob",
     args = plot_list,
   )
-
+  
+  if (!is.na(report_title)) {
+    title <- h_var(report_title, 16)
+    
+    final <- gridExtra::arrangeGrob(
+      title, final, nrow = 2, heights = c(1, 19)
+    ) 
+  }
+  
+  return(final)
 }
