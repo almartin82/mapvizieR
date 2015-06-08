@@ -4,10 +4,11 @@
 #' function will return an estimated score based on selected method 
 #' 
 #' @param mapvizieR_obj mapvizieR object
-#' @param sid target studentid
-#' @param measurescale target subject
+#' @param studentid target studentid
+#' @param measurementscale target subject
 #' @param target_date date of interest, %Y-%m-%d format
 #' @param method which method to use to estimate RIT score
+#' @param num_days function will only return test score within num_days of target_date
 #' @param foward default is TRUE, set to FALSE if only scores before target_date should be chosen for 'closest' method
 #' 
 #' @export
@@ -15,42 +16,53 @@
 
 estimate_rit <- function(
   mapvizieR_obj,
-  sid,
-  measurescale,
+  studentid,
+  measurementscale,
   target_date,
   method = c('closest','lm','interpolate'),
+  num_days = 180,
   forward = TRUE
 ) {
   
   # throw an error if method is not given
   if (missing(method)) {
     stop('method not given')
+  } else if (!(method %in% c('closest','lm','interpolate'))) {
+    stop('method not available')
   }
-  
+
+
   # pull out the cdf
   cdf <- mapvizieR_obj[['cdf']]
+  
+  if (!(studentid %in% cdf$studentid)) {
+    stop('studentid not in mapvizieR cdf object')
+  }
   
   target_date <- as.Date(target_date)
   
   # find the matchings rows
-  if (require(dplyr)) {
-    student <- cdf %>% dplyr::filter(studentid == sid,
-                                     measurementscale == measurescale)
-  } else {
-    student <- subset(cdf, studentid == sid & measurementscale == measurescale)
-  }
+  student <- cdf[(cdf$studentid == studentid & cdf$measurementscale == measurementscale),]
   
   # return error if student does not have take a test for given measurementscale
-  if (dim(student)[1] == 0) {
+  if (nrow(student) == 0) {
     
     warning('student does not have a test for given measurementscale')
     return(NA)
     
-  } else if (dim(student)[1] == 1) {
+  } else if (nrow(student) == 1) {
     
-    warning('student only has one test event for given measurementscale')
-    return(student$testritscore[1])
-    
+    if (as.numeric(abs(as.Date(target_date) - student$teststartdate)) <= 180) {
+      
+      warning('student only has one test event for given measurementscale')
+      return(student$testritscore[1])
+      
+    } else {
+      
+      warning('no test score within num_days')
+      return(NA)
+      
+    }
   }
   
   # if target_date is one of the test dates, return that rit score
@@ -71,16 +83,30 @@ estimate_rit <- function(
     # find closest date and return rit score on that day
     diff <- as.numeric(as.Date(target_date) - student$teststartdate)
     
-    return(student$testritscore[match(min(abs(diff)),abs(diff))])
+    if (min(abs(diff)) <= num_days) {
+      return(student$testritscore[match(min(abs(diff)),abs(diff))])
+    } else {
+      warning('No test score within num_days')
+      return(NA)
+    }
     
   } else if (method == 'lm') {
     fit <- lm(testritscore~teststartdate,student)
     
-    return(round(predict(fit,newdata = predict_date)))
+    if (target_date < min(student$teststartdate) | target_date > max(student$teststartdate)) {
+      
+      warning('estimating score before earliest or after latest teststartdate')
+      return(round(predict(fit,newdata = predict_date)))
+      
+    } else {
+      
+      return(round(predict(fit,newdata = predict_date)))
+      
+    }
     
   } else if (method == 'interpolate' & (target_date < min(student$teststartdate) | target_date > max(student$teststartdate))) {
     
-    warning('Cannot interpolate a date before earliest or after latest teststartdate')
+    warning('Cannot interpolate for a date before earliest or after latest teststartdate')
     return(NA)
   
   } else if (method =='interpolate') {

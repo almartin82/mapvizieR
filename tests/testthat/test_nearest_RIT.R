@@ -31,4 +31,8 @@ test_that("nearest_rit does expected stuff ", {
   
   samp_val <- nearest_rit(mapviz,'F08000006','General Science','2013-11-30',forward=FALSE)
   expect_equal(samp_val, 194)
+  
+  # test num_days
+  samp_val <- estimate_rit(mapviz,'F08000002','Mathematics','2018-10-20','closest')
+  expect_true(is.na(samp_val))
 })

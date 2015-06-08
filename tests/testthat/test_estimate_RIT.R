@@ -18,11 +18,11 @@ test_that("estimate_rit does expected stuff ", {
   samp_val <- estimate_rit(mapviz,'F08000002','Mathematics','2013-10-20',method='interpolate')
   expect_true(is.numeric(samp_val))
   
-  # target_date is an test date
+  # target_date is a test date
   samp_val <- estimate_rit(mapviz,'F08000002','Mathematics','2014-03-16',method='closest')
   expect_equal(samp_val,219)
   
-  # check when student hasn't take test in given measurementscale
+  # check when student hasn't taken a test in given measurementscale
   samp_val <- estimate_rit(mapviz,'F08000002','General Science','2013-10-20',method='closest')
   expect_true(is.na(samp_val))
   
@@ -32,5 +32,14 @@ test_that("estimate_rit does expected stuff ", {
   
   # target_date after last test event
   samp_val <- estimate_rit(mapviz,'F08000002','Mathematics','2014-5-16',method='interpolate')
+  expect_true(is.na(samp_val))
+  
+  # test that error is returned
+  expect_error(estimate_rit(mapviz,'F08000002','Mathematics','2013-10-20'))
+  
+  expect_error(estimate_rit(mapviz,'F08000002','Mathematics','2013-10-20','logistic'))
+  
+  # test num_days
+  samp_val <- estimate_rit(mapviz,'F08000002','Mathematics','2018-10-20','closest')
   expect_true(is.na(samp_val))
 })
