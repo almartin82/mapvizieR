@@ -21,12 +21,23 @@ nearest_rit <- function(
   forward=TRUE
 ) {
 
+    # check that measurementscale is given / valid
+  if (missing(measurementscale)) {
+    stop('mesaurementscale not given')
+  } else if (!(measurementscale %in% c('General Science','Language Usage','Mathematics','Reading'))) {
+    stop('invalid measurementscale')
+  }
+  
   # pull out the cdf
   cdf <- mapvizieR_obj[['cdf']]
   
   # find the matchings rows
   student <- cdf[(cdf$studentid == studentid & cdf$measurementscale == measurementscale),]
 
+  if (!(studentid %in% cdf$studentid)) {
+    stop('studentid not in mapvizieR cdf object')
+  }
+  
   # filter out rows if forward = FALSE
   if (!forward) {
     student <- student[student$teststartdate <= as.Date(target_date),]

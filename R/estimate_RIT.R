@@ -24,11 +24,18 @@ estimate_rit <- function(
   forward = TRUE
 ) {
   
-  # throw an error if method is not given
+  # check that method is given / valid
   if (missing(method)) {
     stop('method not given')
   } else if (!(method %in% c('closest','lm','interpolate'))) {
     stop('method not available')
+  }
+  
+  # check that measurementscale is given / valid
+  if (missing(measurementscale)) {
+    stop('mesaurementscale not given')
+  } else if (!(measurementscale %in% c('General Science','Language Usage','Mathematics','Reading'))) {
+    stop('invalid measurementscale')
   }
 
 

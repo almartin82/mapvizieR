@@ -1,9 +1,5 @@
 context("nearest_rit tests")
 
-#make sure that constants used below exist
-# testing_constants()
-
-
 test_that("nearest_rit does expected stuff ", {
 
   # test that it works to find closest
@@ -33,9 +29,14 @@ test_that("nearest_rit does expected stuff ", {
   expect_equal(samp_val, 194)
   
   # test num_days
-  samp_val <- estimate_rit(mapviz,'F08000002','Mathematics','2014-9-20','closest')
+  samp_val <- nearest_rit(mapviz,'F08000002','Mathematics','2014-9-20')
   expect_true(is.na(samp_val))
   
-  samp_val <- estimate_rit(mapviz,'F08000002','Mathematics','2014-9-20','closest',num_days=200)
+  samp_val <- nearest_rit(mapviz,'F08000002','Mathematics','2014-9-20',num_days=200)
   expect_equal(samp_val,219)
+  
+  # test errors
+  expect_error(nearest_rit(mapviz,'F08000002','2013-10-20'))
+  expect_error(nearest_rit(mapviz,'F08000002','Mathatacsa','2013-9-20'))
+  expect_error(nearest_rit(mapviz,'abcdefg','Mathematics','2013-10-20'))
 })
