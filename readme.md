@@ -49,6 +49,7 @@ _college ready/rutgers ready growth stuff will go here_
 ### style
 - follow the `lintr` conventions https://github.com/jimhester/lintr
 - `.lintr` has configuration options for the lintr bot.
+- read about rstudio code analysis integration [here](https://support.rstudio.com/hc/en-us/articles/205753617-Code-Diagnostics)
 
 ### testing
 - write tests & vignettes off of the sample CDF in `data/CombinedAssessmentRsults.csv`
