@@ -7,3 +7,4 @@ build:
     - jimhester/r-dependencies
     - jimhester/r-check
     - jimhester/r-coverage
+    - jimhester/r-lint
