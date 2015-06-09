@@ -53,22 +53,15 @@ estimate_rit <- function(
   
   # return error if student does not have take a test for given measurementscale
   if (nrow(student) == 0) {
-    
     warning('student does not have a test for given measurementscale')
     return(NA)
-    
   } else if (nrow(student) == 1) {
-    
     if (as.numeric(abs(as.Date(target_date) - student$teststartdate)) <= num_days) {
-      
       warning('student only has one test event for given measurementscale')
       return(student$testritscore[1])
-      
     } else {
-      
       warning('no test score within num_days')
       return(NA)
-      
     }
   }
   
