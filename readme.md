@@ -46,6 +46,10 @@ _college ready/rutgers ready growth stuff will go here_
 
 ## development guidelines
 
+### style
+- follow the `lintr` conventions https://github.com/jimhester/lintr
+- `.lintr` has configuration options for the lintr bot.
+
 ### testing
 - write tests & vignettes off of the sample CDF in `data/CombinedAssessmentRsults.csv`
 
