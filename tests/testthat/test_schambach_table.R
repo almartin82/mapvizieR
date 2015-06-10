@@ -4,7 +4,7 @@ context("schambach_table tests")
 testing_constants()
 
 test_that("schambach_table produces proper table dimensions", {
-  samp_dflist <- schambach_table_1d(mapvizieR_obj = mmapviz,
+  samp_dflist <- schambach_table_1d(mapvizieR_obj = mapviz,
                                 measurementscale_is = 'Reading',
                                 grade = 5,
                                 subgroup_cols = c('end_schoolname'),
@@ -20,7 +20,7 @@ test_that("schambach_table produces proper table dimensions", {
   expect_equal(nrow(samp_dflist[[1]]), 3)
   expect_equal(ncol(samp_dflist[[1]]), 8)
   
-  samp_df <- schambach_table_1d(mapvizieR_obj = mmapviz,
+  samp_df <- schambach_table_1d(mapvizieR_obj = mapviz,
                                 measurementscale_is = 'Reading',
                                 grade = 5,
                                 subgroup_cols = c('end_schoolname','studentgender','studentethnicgroup'),
