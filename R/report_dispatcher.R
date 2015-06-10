@@ -26,8 +26,10 @@
 
 report_dispatcher <- function(
     mapvizieR_obj,
-    cut_list, call_list, 
-    func_to_call, arg_list=list(),
+    cut_list, 
+    call_list, 
+    func_to_call, 
+    arg_list=list(),
     calling_env = parent.frame(),
     post_process = "only_valid_plots",
     verbose = TRUE,
@@ -38,7 +40,7 @@ report_dispatcher <- function(
   roster <- mapvizieR_obj[['roster']]
   
   #put mapvizieR object onto the arg list
-  arg_list <- append(arg_list, list(mapvizieR_obj=mapvizieR_obj))
+  arg_list <- append(arg_list, list(mapvizieR_obj = mapvizieR_obj))
   
   #all of the cuts provided need to match columns in the roster.
   cuts_unlisted <- unlist(cut_list)
@@ -81,10 +83,10 @@ report_dispatcher <- function(
   counter <- 1
 
   for (i in 1:length(perm_list)) {
-    this_depth <- as.data.frame(perm_list[[i]], drop=FALSE)
+    this_depth <- as.data.frame(perm_list[[i]], drop = FALSE)
     
     for (j in 1:nrow(this_depth)) {
-      this_perm <- this_depth[j, ,drop=FALSE]
+      this_perm <- this_depth[j, ,drop = FALSE]
 
       rd_env <- new.env()
       
@@ -93,8 +95,8 @@ report_dispatcher <- function(
       names(generic_perm) <- paste0('depth_', seq(1:ncol(this_perm)))
 
       #friendly name string of this depth:
-      rd_env$depth_string <- paste(names(this_perm), this_perm[1,], sep=": ")
-      rd_env$depth_string <- paste(rd_env$depth_string, collapse=" | ")
+      rd_env$depth_string <- paste(names(this_perm), this_perm[1,], sep = ": ")
+      rd_env$depth_string <- paste(rd_env$depth_string, collapse = " | ")
       if (verbose) print(rd_env$depth_string)
       
       #get the matching kids
@@ -102,7 +104,7 @@ report_dispatcher <- function(
       
       #create a local arg list that includes the current perm context
       this_arg_list <- append(arg_list, as.list(this_perm))
-      this_arg_list <- append(this_arg_list, list(studentids=studentids))
+      this_arg_list <- append(this_arg_list, list(studentids = studentids))
       this_arg_list <- append(this_arg_list, unlist(this_perm))
       this_arg_list <- append(this_arg_list, unlist(generic_perm))
       this_arg_list <- append(this_arg_list, list(depth_string=rd_env$depth_string))

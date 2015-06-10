@@ -6,7 +6,7 @@ Date: 2015-01-14
 Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email =
     "almartin@gmail.com"), person("Chris", "Haid", role = "aut", email =
     "chaid@kippchicago.org"))
-Description: Visualizations for NWEA MAP Data
+Description: mapzivieR is a suite of analytic, visualization, and reporting tools for NWEA MAP Data.
 License: file LICENSE
 Depends:
     assertthat,
