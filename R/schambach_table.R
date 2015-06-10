@@ -21,8 +21,8 @@ schambach_table <- function(
   mapvizieR_obj, 
   measurementscale_is,
   grade,
-  subgroup_cols,
-  pretty_names,
+  subgroup_cols = c('end_schoolname'),
+  pretty_names = c('School Name'),
   start_fws,
   start_academic_year,
   end_fws,
@@ -30,13 +30,13 @@ schambach_table <- function(
   complete_obsv = FALSE
 ) {
   
-  if (missing(subgroup_cols) | missing(pretty_names)) {
-    subgroup_cols <- c('end_schoolname')
-    pretty_names <- c('School Name')
-  } else {
-    subgroup_cols <- c('end_schoolname',subgroup_cols)
-    pretty_names <- c('School Name',pretty_names)
-  }
+#   if (missing(subgroup_cols) | missing(pretty_names)) {
+#     subgroup_cols <- c('end_schoolname')
+#     pretty_names <- c('School Name')
+#   } else {
+#     subgroup_cols <- c('end_schoolname',subgroup_cols)
+#     pretty_names <- c('School Name',pretty_names)
+#   }
   
   #data validation and unpack
   assertthat::assert_that(length(subgroup_cols) == length(pretty_names))
@@ -99,7 +99,7 @@ schambach_table <- function(
         end_rit = mean(end_testritscore, na.rm=TRUE),
         start_top75 = sum(start_testpercentile >= 75) / nrow(grouped_df),
         end_top75 = sum(end_testpercentile >= 75) / nrow(grouped_df),
-        avg_pg = mean(end_testpercentile - start_testpercentile,na.rm=TRUE),
+        avg_pg = mean((end_testpercentile - start_testpercentile),na.rm=TRUE),
         p_ku = sum(met_typical_growth, na.rm=TRUE) / nrow(grouped_df),
         p_rr = sum(met_accel_growth, na.rm=TRUE) / nrow(grouped_df),
         n = n()
@@ -114,21 +114,31 @@ schambach_table <- function(
   tables <- list()
   for (i in 1:length(subgroup_cols)) {
     subgroup <- subgroup_cols[i]
+    
     #join roster and data
-    minimal_roster <- roster[, c('studentid', 'map_year_academic', 
-                                 'fallwinterspring','end_schoolname', subgroup)]
+    if (subgroup == 'end_schoolname') {
+      minimal_roster <- roster[, c('studentid', 'map_year_academic', 
+                                   'fallwinterspring')]
+    } else {
+     minimal_roster <- roster[, c('studentid','map_year_academic',
+                                  'fallwinterspring','end_schoolname',subgroup)]
+    }
+
     combined_df <- dplyr::inner_join(
       x = this_growth,
       y = minimal_roster,
       by = c('studentid' = 'studentid', 
              'start_map_year_academic' = 'map_year_academic', 
-             'start_fallwinterspring' = 'fallwinterspring',
-             'end_schoolname' = 'end_schoolname')
-    )
+             'start_fallwinterspring' = 'fallwinterspring')
+      )
     
     #now group by subgroup and summarize
     grouped_df <- dplyr::group_by_(combined_df, subgroup)
     this_summary <- group_summary(grouped_df, subgroup)
+    names(this_summary) <- c(pretty_names[i],'Avg. Ending RIT', 'Percent Started in Top 75%',
+                             'Percent Ended in Top 75%', 'Avg. Percentile Growth',
+                             'Percent Meeting KU', 'Percent Meeting RR','Number of Students')
+    
     tables[[i]] <- this_summary
   }
   
