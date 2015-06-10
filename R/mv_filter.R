@@ -3,7 +3,7 @@
 #' @description filter a mapvizieR object by academic year, or any variable in the roster.
 #' 
 #' @param mapvizieR_obj mapvizieR object
-#' @param cdf_filter a filter, or filters to apply on fields in the cdf.  wrap it in `quote()`
+#' @param cdf_filter a filter, or filters to apply on fields in the cdf.  wrap it in \code{quote()}
 #' @param roster_filter a filter, or filters to apply on fields in the roster.  will also filter
 #' the cdf to only return those students.  wrap it in `quote()`
 #'

@@ -15,13 +15,13 @@ estimate_rit(mapvizieR_obj, studentid, measurementscale, target_date,
 
 \item{measurementscale}{target subject}
 
-\item{target_date}{date of interest, %Y-%m-%d format}
+\item{target_date}{date of interest, \code{Y-m-d} format}
 
 \item{method}{which method to use to estimate RIT score}
 
 \item{num_days}{function will only return test score within num_days of target_date}
 
-\item{foward}{default is TRUE, set to FALSE if only scores before target_date should be chosen for 'closest' method}
+\item{forward}{default is TRUE, set to FALSE if only scores before target_date should be chosen for 'closest' method}
 }
 \description{
 Given studentid, measurementscale, and a target_date, the

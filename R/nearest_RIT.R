@@ -1,13 +1,14 @@
 #' @title find nearest RIT score for a student, by date
 #' 
-#' @description Given studentid, measurementscale, and a target_date, the function will return the closest RIT score. 
+#' @description Given studentid, measurementscale, and a target_date, the function will return 
+#' the closest RIT score. 
 #' 
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentid target studentid
 #' @param measurementscale target subject
-#' @param target_date date of interest, %Y-%m-%d format
+#' @param target_date date of interest, \code{Y-m-d} format
 #' @param num_days function will only return test score within num_days of target_date
-#' @param foward default is TRUE, set to FALSE if only scores before target_date should be chosen
+#' @param forward default is TRUE, set to FALSE if only scores before target_date should be chosen
 #' 
 #' @export
 
@@ -21,7 +22,7 @@ nearest_rit <- function(
   forward=TRUE
 ) {
 
-    # check that measurementscale is given / valid
+  # check that measurementscale is given / valid
   if (missing(measurementscale)) {
     stop('mesaurementscale not given')
   } else if (!(measurementscale %in% c('General Science','Language Usage','Mathematics','Reading'))) {

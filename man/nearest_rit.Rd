@@ -14,13 +14,14 @@ nearest_rit(mapvizieR_obj, studentid, measurementscale, target_date,
 
 \item{measurementscale}{target subject}
 
-\item{target_date}{date of interest, %Y-%m-%d format}
+\item{target_date}{date of interest, \code{Y-m-d} format}
 
 \item{num_days}{function will only return test score within num_days of target_date}
 
-\item{foward}{default is TRUE, set to FALSE if only scores before target_date should be chosen}
+\item{forward}{default is TRUE, set to FALSE if only scores before target_date should be chosen}
 }
 \description{
-Given studentid, measurementscale, and a target_date, the function will return the closest RIT score.
+Given studentid, measurementscale, and a target_date, the function will return
+the closest RIT score.
 }
 
