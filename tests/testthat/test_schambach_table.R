@@ -35,7 +35,7 @@ test_that("schambach_table produces proper table dimensions", {
   expect_equal(length(samp_dflist), 3)
   expect_equal(nrow(samp_dflist[[1]]), 3)
   expect_equal(nrow(samp_dflist[[2]]), 3)
-  expect_equal(nrow(samp_dflist[[3]]), 3)
+  expect_equal(nrow(samp_dflist[[3]]), 6)
   
   expect_equal(ncol(samp_dflist[[1]]), 8)
   expect_equal(ncol(samp_dflist[[2]]), 8)
