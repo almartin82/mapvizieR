@@ -134,6 +134,11 @@ quealy_subgroups <- function(
   }
     
   facet_one_subgroup <- function(df, subgroup, xlims, n_range, ref_lines) {
+    
+    if (nrow(df) == 0) {
+      stop("your feature/facet df is zero rows long.  check your inputs?")
+    }
+    
     #add newline breaks to the facet text
     df$facet_format <- unlist(lapply(df$facet_me, force_string_breaks, 15))
     
@@ -267,29 +272,29 @@ quealy_subgroups <- function(
   min_n <- 1000000
   max_n <- -1
   
-  for (i in subgroup_cols) {    
-    minimal_roster <- roster[, c('studentid', 'map_year_academic', 'fallwinterspring', i)]
+  for (i in subgroup_cols) {
+    minimal_roster <- roster[, c('studentid', i)]
+    #get uniques
+    minimal_roster <- unique(minimal_roster)
     int_df <- dplyr::inner_join(
       x = this_growth,
       y = minimal_roster,
-      by = c('studentid' = 'studentid', 
-        'start_map_year_academic' = 'map_year_academic', 
-        'start_fallwinterspring' = 'fallwinterspring')
+      by = c('studentid' = 'studentid')
     )
 
     int_df <- dplyr::group_by_(
-      int_df, i  
+      int_df, i
     ) %>%
     summarize(
-      start_rit = round_to_any(mean(start_testritscore, na.rm=TRUE), 2, f=floor),
-      end_rit = round_to_any(mean(end_testritscore, na.rm=TRUE), 2, f=ceiling),
+      start_rit = round_to_any(mean(start_testritscore, na.rm = TRUE), 2, f = floor),
+      end_rit = round_to_any(mean(end_testritscore, na.rm = TRUE), 2, f = ceiling),
       n = n()
     )
     
-    if(min(int_df$start_rit) < x_min) x_min <- min(int_df$start_rit)
-    if(max(int_df$end_rit) > x_max) x_max <- max(int_df$end_rit)
-    if(min(int_df$n) < min_n) min_n <- min(int_df$n)
-    if(max(int_df$n) > max_n) max_n <- max(int_df$n)
+    if (min(int_df$start_rit, na.rm = TRUE) < x_min) x_min <- min(int_df$start_rit, na.rm = TRUE)
+    if (max(int_df$end_rit, na.rm = TRUE) > x_max) x_max <- max(int_df$end_rit, na.rm = TRUE)
+    if (min(int_df$n, na.rm = TRUE) < min_n) min_n <- min(int_df$n, na.rm = TRUE)
+    if (max(int_df$n, na.rm = TRUE) > max_n) max_n <- max(int_df$n, na.rm = TRUE)
   }
   
   plot_lims <- c(x_min, x_max)
@@ -306,7 +311,7 @@ quealy_subgroups <- function(
     n_range = n_range,
     ref_lines = c(total_change$start_rit, total_change$end_rit)
   )
-  
+
   #iterate over subgroups
   plot_list <- list()
   nrow_list <- list()
@@ -319,14 +324,14 @@ quealy_subgroups <- function(
     subgroup <- subgroup_cols[i]
     
     #join roster and data
-    minimal_roster <- roster[, c('studentid', 'map_year_academic', 
-      'fallwinterspring', subgroup)]
+    minimal_roster <- roster[, c('studentid', subgroup)]
+    #get uniques
+    minimal_roster <- unique(minimal_roster)
+    
     combined_df <- dplyr::inner_join(
       x = this_growth,
       y = minimal_roster,
-      by = c('studentid' = 'studentid', 
-        'start_map_year_academic' = 'map_year_academic', 
-        'start_fallwinterspring' = 'fallwinterspring')
+      by = c('studentid' = 'studentid')
     )
     
     #now group by subgroup and summarize
