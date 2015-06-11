@@ -14,9 +14,9 @@ schambach_table_1d(mapvizieR_obj, measurementscale_is, grade,
 
 \item{measurementscale_is}{target subject}
 
-\item{grade}{target grade(s)}
+\item{grade}{target grade}
 
-\item{subgroup_cols}{what subgroups to explore, default is by end_schoolname}
+\item{subgroup_cols}{what subgroups to explore, default is by school}
 
 \item{pretty_names}{nicely formatted names for the column cuts used above.}
 

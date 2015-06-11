@@ -4,8 +4,8 @@
 #' 
 #' @param mapvizieR_obj mapvizieR object
 #' @param measurementscale_is target subject
-#' @param grade target grade(s)
-#' @param subgroup_cols what subgroups to explore, default is by end_schoolname
+#' @param grade target grade
+#' @param subgroup_cols what subgroups to explore, default is by school
 #' @param pretty_names nicely formatted names for the column cuts used above.
 #' @param start_fws starting season
 #' @param start_academic_year starting academic year
