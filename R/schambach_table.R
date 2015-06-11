@@ -1,6 +1,6 @@
 #' @title schambach_table
 #' 
-#' @description Given grade level, shows summary table for provided subgroups.
+#' @description Given grade level(s), shows summary table for provided subgroups.
 #' 
 #' @param mapvizieR_obj mapvizieR object
 #' @param measurementscale_is target subject
@@ -90,11 +90,11 @@ schambach_table_1d <- function(
       df <- grouped_df %>%
         summarize(
           end_rit = round(mean(end_testritscore, na.rm=TRUE), digits=1),
-          start_top75 = round(100 * sum(start_testpercentile >= 75) / n(), digits=1),
-          end_top75 = round(100 * sum(end_testpercentile >= 75) / n(), digits=1),
+          start_top75 = round(100 * sum(start_testpercentile >= 75) / n(), digits=0),
+          end_top75 = round(100 * sum(end_testpercentile >= 75) / n(), digits=0),
           avg_pg = round(mean((end_testpercentile - start_testpercentile), na.rm=TRUE), digits=1),
-          p_ku = round(100 * sum(met_typical_growth, na.rm=TRUE) / n(), digits=1),
-          p_rr = round(100 * sum(met_accel_growth, na.rm=TRUE) / n(), digits=1),
+          p_ku = round(100 * sum(met_typical_growth, na.rm=TRUE) / n(), digits=0),
+          p_rr = round(100 * sum(met_accel_growth, na.rm=TRUE) / n(), digits=0),
           n = n()
         ) %>% 
         as.data.frame
@@ -127,11 +127,11 @@ schambach_table_1d <- function(
       row1 <- c(
         paste('Total: Grade',gr),
         round(mean(combined_df$end_testritscore, na.rm=TRUE), digits=1),
-        round(100 * sum(combined_df$start_testpercentile >= 75) / nrow(combined_df), digits=1),
-        round(100 * sum(combined_df$end_testpercentile >= 75) / nrow(combined_df), digits=1),
+        round(100 * sum(combined_df$start_testpercentile >= 75) / nrow(combined_df), digits=0),
+        round(100 * sum(combined_df$end_testpercentile >= 75) / nrow(combined_df), digits=0),
         round(mean((combined_df$end_testpercentile - combined_df$start_testpercentile), na.rm=TRUE), digits=1),
-        round(100 * sum(combined_df$met_typical_growth, na.rm=TRUE) / nrow(combined_df), digits=1),
-        round(100 * sum(combined_df$met_accel_growth, na.rm=TRUE) / nrow(combined_df), digits=1),
+        round(100 * sum(combined_df$met_typical_growth, na.rm=TRUE) / nrow(combined_df), digits=0),
+        round(100 * sum(combined_df$met_accel_growth, na.rm=TRUE) / nrow(combined_df), digits=0),
         nrow(combined_df)
       )
       
