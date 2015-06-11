@@ -34,7 +34,6 @@ quealy_subgroups <- function(
   report_title = NA,
   complete_obsv = FALSE
 ) {
-  
   #1| DATA PROCESSING
 
   #data validation and unpack
@@ -57,7 +56,7 @@ quealy_subgroups <- function(
   #throw a warning if multiple grade levels
   grades_present <- unique(this_growth$start_grade)
   
-  if(length(grades_present) > 1) {
+  if (length(grades_present) > 1) {
     warning(
       sprintf(paste0("%i distinct grade levels present in your data! NWEA ",
         "school growth study tables assume cohorts composed of students ",
@@ -81,7 +80,7 @@ quealy_subgroups <- function(
     NA
   )
   
-  names(roster)[names(roster)=='start_testquartile'] <- 'starting_quartile'
+  names(roster)[names(roster) == 'start_testquartile'] <- 'starting_quartile'
   
   #require that all subgroups match names of the roster.
   roster %>% 
@@ -100,16 +99,16 @@ quealy_subgroups <- function(
   #2| INTERNAL FUNCTIONS
   group_summary <- function(grouped_df, subgroup) {
     
-    approximate_grade <- round(mean(grouped_df$end_grade, na.rm=TRUE), 0)  
+    approximate_grade <- round(mean(grouped_df$end_grade, na.rm = TRUE), 0)  
     
     df <- grouped_df %>%
     summarize(
-      start_rit = mean(start_testritscore, na.rm=TRUE),
-      end_rit = mean(end_testritscore, na.rm=TRUE),
-      rit_change = mean(rit_growth, na.rm=TRUE),
-      start_npr = mean(start_consistent_percentile, na.rm=TRUE),
-      end_npr = mean(end_consistent_percentile, na.rm=TRUE),
-      npr_change = mean(end_consistent_percentile - start_consistent_percentile, na.rm=TRUE),
+      start_rit = mean(start_testritscore, na.rm = TRUE),
+      end_rit = mean(end_testritscore, na.rm = TRUE),
+      rit_change = mean(rit_growth, na.rm = TRUE),
+      start_npr = mean(start_consistent_percentile, na.rm = TRUE),
+      end_npr = mean(end_consistent_percentile, na.rm = TRUE),
+      npr_change = mean(end_consistent_percentile - start_consistent_percentile, na.rm = TRUE),
       n = n()
     ) %>%       
     #add cgp
@@ -153,17 +152,20 @@ quealy_subgroups <- function(
     
     #cgp labeler
     cgp_labeler <- function(n, cgp) {
-      if((start_fws == 'Fall' & end_fws == 'Winter') | 
+      if ((start_fws == 'Fall' & end_fws == 'Winter') | 
         (start_fws == 'Spring' & end_fws == 'Winter')
       ) {
         return(paste(n, 'stu')) 
       }
-      if(n < 10) {
+      if (n < 10) {
         return(paste(n, 'stu')) 
       } else {
         return(paste(n, 'stu', '| CGP:', round(cgp, 0)))
       }
     }
+    
+    e <- new.env()
+    e$xlims <- xlims
     
     df <- df %>%
       rowwise %>%
@@ -174,13 +176,14 @@ quealy_subgroups <- function(
   
     #make
     p <- ggplot(
-      data=df
-     ,aes(
+      data = df,
+      aes(
         x = start_rit,
         xend = end_rit,
         y = 1,
         yend = 1
-      )
+      ),
+      environment = e
     ) +
     annotate(
       geom = 'rect',
@@ -189,6 +192,18 @@ quealy_subgroups <- function(
       alpha = 0.15,
       size = 1.25
     ) +
+    #labels
+    geom_text(
+      aes(
+        x = start_rit + 0.5 * (end_rit - start_rit),
+        y = 0.75,
+        label = facet_format
+      ),
+      inherit.aes = FALSE,
+      size = 16,
+      alpha = 0.1,
+      color = 'gray20'
+    ) +        
     geom_segment(
       aes(
         size = size_scaled
@@ -227,8 +242,8 @@ quealy_subgroups <- function(
       size = 4
     ) +
     coord_cartesian(
-      xlim=c(xlims[1] - 0.5, xlims[2] + 0.5),
-      ylim=c(0, 2)
+      xlim = c(xlims[1] - 0.5, xlims[2] + 0.5),
+      ylim = c(0, 2)
     ) +
     facet_grid(
       facet_format ~ . 
@@ -255,7 +270,7 @@ quealy_subgroups <- function(
       "center", "center"
     )
     
-    first_row <- if(nrow(df) <= 2) {1.5} else {1}
+    first_row <- if (nrow(df) <= 2) {1.5} else {1}
     #arrange and return
     arrangeGrob(
       p_title, p,
