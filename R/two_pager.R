@@ -24,7 +24,7 @@ two_pager <- function(
  
   minimal = rectGrob(gp=gpar(col="white"))
   
-  #CHARTS -----------------------------------
+  #P1 CHARTS -----------------------------------
   #title
   title_bar <- h_var(title_text, 24)
 
@@ -87,6 +87,18 @@ two_pager <- function(
   #growth_status
   growth_status <- minimal
   
+  #P2 CHARTS -----------------------------------
+  haid_plot <- haid_plot(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale = measurementscale,
+    start_fws = start_fws,
+    start_academic_year = start_academic_year,
+    end_fws = end_fws,
+    end_academic_year = end_academic_year
+  )
+
+  
   #LAYOUT -----------------------------------
   #upper left
   ul <- gridExtra::arrangeGrob(
@@ -118,9 +130,17 @@ two_pager <- function(
   br <- gridExtra::arrangeGrob(
     bl, growth_status, ncol = 2, widths = c(2, 3)
   )
-    
-  arrangeGrob(
+  
+  #page 1
+  p1 <- arrangeGrob(
     ur, br,
     nrow = 2, heights = c(1,3)
   )
+  
+  #page 2
+  p2 <- arrangeGrob(
+    haid_plot
+  )
+  
+  return(list(p1, p2))
 }
