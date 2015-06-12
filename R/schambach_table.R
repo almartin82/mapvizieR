@@ -1,9 +1,12 @@
 #' @title schambach_table
 #' 
-#' @description Given grade level(s), shows summary table for provided subgroups.
+#' @description \code{schambach_table} Given grade level(s), shows summary table for provided subgroups.
+#' Table includes average ending RIT, percent started in top 75%, percented ended in 75%, average
+#' percentile growth, percent meeting "Keep Up", percent meeting "Rutgers Ready", and the number of 
+#' students in each subgroup. Named after Lindsay Schambach, who provided initial table.
 #' 
 #' @param mapvizieR_obj mapvizieR object
-#' @param measurementscale_is target subject
+#' @param measurementscale_in target subject
 #' @param grade target grade(s)
 #' @param subgroup_cols what subgroups to explore, default is by school
 #' @param pretty_names nicely formatted names for the column cuts used above.
@@ -18,7 +21,7 @@
 
 schambach_table_1d <- function(
   mapvizieR_obj, 
-  measurementscale_is,
+  measurementscale_in,
   grade,
   subgroup_cols = c('end_schoolname'),
   pretty_names = c('School Name'),
@@ -42,7 +45,7 @@ schambach_table_1d <- function(
     growth_df <- growth_df %>% 
       dplyr::filter(
         end_grade == gr,
-        measurementscale == measurementscale_is
+        measurementscale == measurementscale_in
       )
     
     #just desired terms
@@ -89,16 +92,19 @@ schambach_table_1d <- function(
       
       df <- grouped_df %>%
         summarize(
-          end_rit = round(mean(end_testritscore, na.rm=TRUE), digits=1),
-          start_top75 = round(100 * sum(start_testpercentile >= 75) / n(), digits=0),
-          end_top75 = round(100 * sum(end_testpercentile >= 75) / n(), digits=0),
-          avg_pg = round(mean((end_testpercentile - start_testpercentile), na.rm=TRUE), digits=1),
-          p_ku = round(100 * sum(met_typical_growth, na.rm=TRUE) / n(), digits=0),
-          p_rr = round(100 * sum(met_accel_growth, na.rm=TRUE) / n(), digits=0),
+          end_rit = round(mean(end_testritscore, na.rm = TRUE), digits = 1),
+          start_top75 = round(100 * sum(start_testpercentile >= 75) / n(), digits = 0),
+          end_top75 = round(100 * sum(end_testpercentile >= 75) / n(), digits = 0),
+          avg_pg = round(mean((end_testpercentile - start_testpercentile), na.rm = TRUE), digits = 1),
+          p_ku = round(100 * sum(met_typical_growth, na.rm = TRUE) / n(), digits = 0),
+          p_rr = round(100 * sum(met_accel_growth, na.rm = TRUE) / n(), digits = 0),
           n = n()
         ) %>% 
         as.data.frame
       
+      for (c in 2:ncol(df)) {
+        df[, c] <- as.numeric(df[, c])
+      }
       df
     }
     
@@ -107,12 +113,13 @@ schambach_table_1d <- function(
       subgroup <- subgroup_cols[i]
       
       #join roster and data
+      #if statement to avoid duplicate end_schoolname on inner_join
       if (subgroup == 'end_schoolname') {
         minimal_roster <- roster[, c('studentid', 'map_year_academic', 
                                      'fallwinterspring')]
       } else {
         minimal_roster <- roster[, c('studentid','map_year_academic',
-                                     'fallwinterspring','end_schoolname',subgroup)]
+                                     'fallwinterspring', subgroup)]
       }
       
       combined_df <- dplyr::inner_join(
@@ -120,40 +127,38 @@ schambach_table_1d <- function(
         y = minimal_roster,
         by = c('studentid' = 'studentid', 
                'start_map_year_academic' = 'map_year_academic', 
-               'start_fallwinterspring' = 'fallwinterspring')
+               'start_fallwinterspring' = 'fallwinterspring'
+               )
       )
       
       #first row: summary of entire grade level
       row1 <- c(
-        paste('Total: Grade',gr),
-        round(mean(combined_df$end_testritscore, na.rm=TRUE), digits=1),
-        round(100 * sum(combined_df$start_testpercentile >= 75) / nrow(combined_df), digits=0),
-        round(100 * sum(combined_df$end_testpercentile >= 75) / nrow(combined_df), digits=0),
-        round(mean((combined_df$end_testpercentile - combined_df$start_testpercentile), na.rm=TRUE), digits=1),
-        round(100 * sum(combined_df$met_typical_growth, na.rm=TRUE) / nrow(combined_df), digits=0),
-        round(100 * sum(combined_df$met_accel_growth, na.rm=TRUE) / nrow(combined_df), digits=0),
+        paste('Total: Grade', gr),
+        round(mean(combined_df$end_testritscore, na.rm = TRUE), digits = 1),
+        round(100 * sum(combined_df$start_testpercentile >= 75) / nrow(combined_df), digits = 0),
+        round(100 * sum(combined_df$end_testpercentile >= 75) / nrow(combined_df), digits = 0),
+        round(mean((combined_df$end_testpercentile - combined_df$start_testpercentile), na.rm = TRUE), digits = 1),
+        round(100 * sum(combined_df$met_typical_growth, na.rm = TRUE) / nrow(combined_df), digits = 0),
+        round(100 * sum(combined_df$met_accel_growth, na.rm = TRUE) / nrow(combined_df), digits = 0),
         nrow(combined_df)
       )
       
       #now group by subgroup and summarize
       grouped_df <- dplyr::group_by_(combined_df, subgroup)
       this_summary <- group_summary(grouped_df)
-      names(this_summary) <- c(pretty_names[i],'Avg. Ending RIT', 'Percent Started in Top 75%',
+      names(this_summary) <- c(pretty_names[i], 'Avg. Ending RIT', 'Percent Started in Top 75%',
                                'Percent Ended in Top 75%', 'Avg. Percentile Growth',
-                               'Percent Meeting KU', 'Percent Meeting RR','Number of Students')
+                               'Percent Met Typical Growth', 'Percent Met Accel Growth', 'Number of Students')
       
-      sub_tables[[i]] <- rbind(row1,this_summary)
-      for (c in 2:ncol(sub_tables[[i]])) {
-        sub_tables[[i]][,c] <- as.numeric(sub_tables[[i]][,c])
-      }
+      sub_tables[[i]] <- rbind(row1, this_summary)
     }
     names(sub_tables) <- tolower(gsub(' ', '_', pretty_names))
     if (length(grade) == 1) {
       return(sub_tables)
     } else {
-      tables[[match(gr,grade)]] <- sub_tables
+      tables[[match(gr, grade)]] <- sub_tables
     }
   }
-  names(tables) <- paste0('grade_',grade)
+  names(tables) <- paste0('grade_', grade)
   tables
 }
