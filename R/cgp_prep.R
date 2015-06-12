@@ -401,7 +401,6 @@ mapviz_cgp <- function(
   end_fws, 
   end_academic_year
 ) {
-
   #data validation and unpack
   mv_opening_checks(mapvizieR_obj, studentids, 1)
 
@@ -419,7 +418,6 @@ mapviz_cgp <- function(
     )
 
   approx_grade <- round(mean(this_growth$start_grade, na.rm=TRUE), 0)  
-  this_growth
   
   df <- this_growth %>%
   summarize(

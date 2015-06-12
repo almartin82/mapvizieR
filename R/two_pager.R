@@ -73,7 +73,13 @@ two_pager <- function(
   )
 
   #strand boxplots
-  strand_boxes <- minimal
+  strand_boxes <- strand_boxes(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale_in = measurementscale,
+    fws = end_fws,
+    academic_year = end_academic_year
+  )
   
   #kipp_comparison
   kipp_comp <- minimal
