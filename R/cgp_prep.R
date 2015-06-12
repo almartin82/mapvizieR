@@ -417,24 +417,26 @@ mapviz_cgp <- function(
       end_fallwinterspring == end_fws
     )
 
-  approx_grade <- round(mean(this_growth$start_grade, na.rm=TRUE), 0)  
+  approx_grade <- round(mean(this_growth$end_grade, na.rm = TRUE), 0)  
   
   df <- this_growth %>%
   summarize(
-    avg_start_rit = mean(start_testritscore, na.rm=TRUE),
-    avg_end_rit = mean(end_testritscore, na.rm=TRUE),
-    avg_rit_change = mean(rit_growth, na.rm=TRUE),
-    avg_start_npr = mean(start_consistent_percentile, na.rm=TRUE),
-    avg_end_npr = mean(end_consistent_percentile, na.rm=TRUE),
-    avg_npr_change = mean(start_consistent_percentile - end_consistent_percentile, na.rm=TRUE),
+    avg_start_rit = mean(start_testritscore, na.rm = TRUE),
+    avg_end_rit = mean(end_testritscore, na.rm = TRUE),
+    avg_rit_change = mean(rit_growth, na.rm = TRUE),
+    avg_start_npr = mean(start_consistent_percentile, na.rm = TRUE),
+    avg_end_npr = mean(end_consistent_percentile, na.rm = TRUE),
+    avg_npr_change = mean(end_consistent_percentile - start_consistent_percentile, na.rm = TRUE),
     n_typ_true = sum(met_typical_growth, na.rm = TRUE),
     n_typ_false = sum(!met_typical_growth, na.rm = TRUE),
     n = n()
   ) %>%       
   mutate(
     percent_typ = n_typ_true / (n_typ_true + n_typ_false)
-  ) %>%
+  ) 
+  
   #add cgp
+  df <- df %>%
   rowwise() %>%
   mutate(
     cgp = calc_cgp(
@@ -442,7 +444,8 @@ mapviz_cgp <- function(
       grade = approx_grade,
       growth_window = paste(start_fws, 'to', end_fws),
       baseline_avg_rit = avg_start_rit,
-      ending_avg_rit = avg_end_rit
+      ending_avg_rit = avg_end_rit,
+      tolerance = 99
     )[['results']] 
   ) %>%
   as.data.frame

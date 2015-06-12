@@ -16,13 +16,18 @@
 #' @export
 
 two_pager <- function(
-  mapvizieR_obj, studentids, measurementscale, 
-  start_fws, start_academic_year, end_fws, end_academic_year, detail_academic_year,
+  mapvizieR_obj, 
+  studentids, 
+  measurementscale, 
+  start_fws, start_academic_year, 
+  end_fws, end_academic_year, 
+  detail_academic_year,
+  national_data_frame = NA,
   title_text = '', 
   ...
 ) {
  
-  minimal = rectGrob(gp=gpar(col="white"))
+  minimal = rectGrob(gp = gpar(col = "white"))
   
   #P1 CHARTS -----------------------------------
   #title
@@ -82,10 +87,50 @@ two_pager <- function(
   )
   
   #kipp_comparison
-  kipp_comp <- minimal
+  if (is.na(national_data_frame)) {
+    kipp_comp <- minimal
+  } else {
+    #data processing
+    growth_df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale)
+    #just desired terms
+    this_growth <- growth_df %>%
+      dplyr::filter(
+        start_map_year_academic == start_academic_year,
+        start_fallwinterspring == start_fws,
+        end_map_year_academic == end_academic_year,
+        end_fallwinterspring == end_fws
+      )
+
+    minimal_sch <- mapvizieR_obj[['roster']] %>%
+      dplyr::filter(
+        studentid %in% this_growth$studentid
+      ) %>%
+      dplyr::select(
+        studentid, school
+      )
+    
+    kipp_comp <- kipp_typ_growth_distro(
+      nat_results_df = national_data_frame,
+      measurementscale = measurementscale, 
+      academic_year = 2013,
+      grade_level = round(mean(this_growth$end_grade, na.rm = TRUE), 0),
+      start_fws = start_fws,
+      end_fws = end_fws,
+      comparison_name = table(minimal_sch$school)[[1]],
+      comparison_pct_typ_growth = mean(this_growth$met_typical_growth, na.rm = TRUE)
+    )
+  }
+  
   
   #growth_status
-  growth_status <- minimal
+  growth_status <- growth_status_scatter(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale_in = measurementscale,
+    fws = end_fws,
+    academic_year = end_academic_year
+  ) 
+
   
   #P2 CHARTS -----------------------------------
   haid_plot <- haid_plot(

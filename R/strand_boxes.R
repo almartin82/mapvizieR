@@ -6,7 +6,7 @@
 #' @param fws season
 #' @param academic_year academic year
 #' 
-#' @return prints a ggplot object
+#' @return a ggplot object
 #' 
 #' @export
 
