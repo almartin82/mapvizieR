@@ -33,7 +33,7 @@ estimate_rit <- function(
   
   # check that measurementscale is given / valid
   if (missing(measurementscale)) {
-    stop('mesaurementscale not given')
+    stop('measurementscale not given')
   } else if (!(measurementscale %in% c('General Science','Language Usage','Mathematics','Reading'))) {
     stop('invalid measurementscale')
   }
