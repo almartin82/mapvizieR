@@ -82,3 +82,10 @@ test_that("mapvizier filters cdf AND roster", {
   
   expect_equal(nrow(filter_ex[['cdf']]), 1401)
 })
+
+
+test_that("mapvizier filters errors if not given at least one option", {
+  expect_error(
+    mv_filter(mapvizieR_obj = mapviz), "at least one type of filter needed"
+  )
+})
