@@ -40,7 +40,12 @@ mv_filter <- function(mapvizieR_obj, cdf_filter=NA, roster_filter=NA) {
     
     #then use those studentids to filter the cdf
     mapviz[['cdf']] <-  mapviz[['cdf']] %>% 
-      dplyr::filter(studentid %in% target_stu) 
+      dplyr::filter(studentid %in% target_stu)
+    
+    #and the growth_df
+    mapviz[['growth_df']] <-  mapviz[['growth_df']] %>% 
+      dplyr::filter(studentid %in% target_stu)
+    
   }
   
   return(mapviz)

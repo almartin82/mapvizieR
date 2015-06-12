@@ -34,7 +34,6 @@ quealy_subgroups <- function(
   report_title = NA,
   complete_obsv = FALSE
 ) {
-  
   #1| DATA PROCESSING
 
   #data validation and unpack
@@ -57,7 +56,7 @@ quealy_subgroups <- function(
   #throw a warning if multiple grade levels
   grades_present <- unique(this_growth$start_grade)
   
-  if(length(grades_present) > 1) {
+  if (length(grades_present) > 1) {
     warning(
       sprintf(paste0("%i distinct grade levels present in your data! NWEA ",
         "school growth study tables assume cohorts composed of students ",
@@ -81,7 +80,7 @@ quealy_subgroups <- function(
     NA
   )
   
-  names(roster)[names(roster)=='start_testquartile'] <- 'starting_quartile'
+  names(roster)[names(roster) == 'start_testquartile'] <- 'starting_quartile'
   
   #require that all subgroups match names of the roster.
   roster %>% 
@@ -100,16 +99,16 @@ quealy_subgroups <- function(
   #2| INTERNAL FUNCTIONS
   group_summary <- function(grouped_df, subgroup) {
     
-    approximate_grade <- round(mean(grouped_df$end_grade, na.rm=TRUE), 0)  
+    approximate_grade <- round(mean(grouped_df$end_grade, na.rm = TRUE), 0)  
     
     df <- grouped_df %>%
     summarize(
-      start_rit = mean(start_testritscore, na.rm=TRUE),
-      end_rit = mean(end_testritscore, na.rm=TRUE),
-      rit_change = mean(rit_growth, na.rm=TRUE),
-      start_npr = mean(start_consistent_percentile, na.rm=TRUE),
-      end_npr = mean(end_consistent_percentile, na.rm=TRUE),
-      npr_change = mean(end_consistent_percentile - start_consistent_percentile, na.rm=TRUE),
+      start_rit = mean(start_testritscore, na.rm = TRUE),
+      end_rit = mean(end_testritscore, na.rm = TRUE),
+      rit_change = mean(rit_growth, na.rm = TRUE),
+      start_npr = mean(start_consistent_percentile, na.rm = TRUE),
+      end_npr = mean(end_consistent_percentile, na.rm = TRUE),
+      npr_change = mean(end_consistent_percentile - start_consistent_percentile, na.rm = TRUE),
       n = n()
     ) %>%       
     #add cgp
@@ -134,6 +133,11 @@ quealy_subgroups <- function(
   }
     
   facet_one_subgroup <- function(df, subgroup, xlims, n_range, ref_lines) {
+    
+    if (nrow(df) == 0) {
+      stop("your feature/facet df is zero rows long.  check your inputs?")
+    }
+    
     #add newline breaks to the facet text
     df$facet_format <- unlist(lapply(df$facet_me, force_string_breaks, 15))
     
@@ -148,17 +152,20 @@ quealy_subgroups <- function(
     
     #cgp labeler
     cgp_labeler <- function(n, cgp) {
-      if((start_fws == 'Fall' & end_fws == 'Winter') | 
+      if ((start_fws == 'Fall' & end_fws == 'Winter') | 
         (start_fws == 'Spring' & end_fws == 'Winter')
       ) {
         return(paste(n, 'stu')) 
       }
-      if(n < 10) {
+      if (n < 10) {
         return(paste(n, 'stu')) 
       } else {
         return(paste(n, 'stu', '| CGP:', round(cgp, 0)))
       }
     }
+    
+    e <- new.env()
+    e$xlims <- xlims
     
     df <- df %>%
       rowwise %>%
@@ -169,13 +176,14 @@ quealy_subgroups <- function(
   
     #make
     p <- ggplot(
-      data=df
-     ,aes(
+      data = df,
+      aes(
         x = start_rit,
         xend = end_rit,
         y = 1,
         yend = 1
-      )
+      ),
+      environment = e
     ) +
     annotate(
       geom = 'rect',
@@ -184,6 +192,18 @@ quealy_subgroups <- function(
       alpha = 0.15,
       size = 1.25
     ) +
+    #labels
+    geom_text(
+      aes(
+        x = start_rit + 0.5 * (end_rit - start_rit),
+        y = 0.75,
+        label = facet_format
+      ),
+      inherit.aes = FALSE,
+      size = 16,
+      alpha = 0.1,
+      color = 'gray20'
+    ) +        
     geom_segment(
       aes(
         size = size_scaled
@@ -222,8 +242,8 @@ quealy_subgroups <- function(
       size = 4
     ) +
     coord_cartesian(
-      xlim=c(xlims[1] - 0.5, xlims[2] + 0.5),
-      ylim=c(0, 2)
+      xlim = c(xlims[1] - 0.5, xlims[2] + 0.5),
+      ylim = c(0, 2)
     ) +
     facet_grid(
       facet_format ~ . 
@@ -250,7 +270,7 @@ quealy_subgroups <- function(
       "center", "center"
     )
     
-    first_row <- if(nrow(df) <= 2) {1.5} else {1}
+    first_row <- if (nrow(df) <= 2) {1.5} else {1}
     #arrange and return
     arrangeGrob(
       p_title, p,
@@ -267,29 +287,29 @@ quealy_subgroups <- function(
   min_n <- 1000000
   max_n <- -1
   
-  for (i in subgroup_cols) {    
-    minimal_roster <- roster[, c('studentid', 'map_year_academic', 'fallwinterspring', i)]
+  for (i in subgroup_cols) {
+    minimal_roster <- roster[, c('studentid', i)]
+    #get uniques
+    minimal_roster <- unique(minimal_roster)
     int_df <- dplyr::inner_join(
       x = this_growth,
       y = minimal_roster,
-      by = c('studentid' = 'studentid', 
-        'start_map_year_academic' = 'map_year_academic', 
-        'start_fallwinterspring' = 'fallwinterspring')
+      by = c('studentid' = 'studentid')
     )
 
     int_df <- dplyr::group_by_(
-      int_df, i  
+      int_df, i
     ) %>%
     summarize(
-      start_rit = round_to_any(mean(start_testritscore, na.rm=TRUE), 2, f=floor),
-      end_rit = round_to_any(mean(end_testritscore, na.rm=TRUE), 2, f=ceiling),
+      start_rit = round_to_any(mean(start_testritscore, na.rm = TRUE), 2, f = floor),
+      end_rit = round_to_any(mean(end_testritscore, na.rm = TRUE), 2, f = ceiling),
       n = n()
     )
     
-    if(min(int_df$start_rit) < x_min) x_min <- min(int_df$start_rit)
-    if(max(int_df$end_rit) > x_max) x_max <- max(int_df$end_rit)
-    if(min(int_df$n) < min_n) min_n <- min(int_df$n)
-    if(max(int_df$n) > max_n) max_n <- max(int_df$n)
+    if (min(int_df$start_rit, na.rm = TRUE) < x_min) x_min <- min(int_df$start_rit, na.rm = TRUE)
+    if (max(int_df$end_rit, na.rm = TRUE) > x_max) x_max <- max(int_df$end_rit, na.rm = TRUE)
+    if (min(int_df$n, na.rm = TRUE) < min_n) min_n <- min(int_df$n, na.rm = TRUE)
+    if (max(int_df$n, na.rm = TRUE) > max_n) max_n <- max(int_df$n, na.rm = TRUE)
   }
   
   plot_lims <- c(x_min, x_max)
@@ -306,7 +326,7 @@ quealy_subgroups <- function(
     n_range = n_range,
     ref_lines = c(total_change$start_rit, total_change$end_rit)
   )
-  
+
   #iterate over subgroups
   plot_list <- list()
   nrow_list <- list()
@@ -319,14 +339,14 @@ quealy_subgroups <- function(
     subgroup <- subgroup_cols[i]
     
     #join roster and data
-    minimal_roster <- roster[, c('studentid', 'map_year_academic', 
-      'fallwinterspring', subgroup)]
+    minimal_roster <- roster[, c('studentid', subgroup)]
+    #get uniques
+    minimal_roster <- unique(minimal_roster)
+    
     combined_df <- dplyr::inner_join(
       x = this_growth,
       y = minimal_roster,
-      by = c('studentid' = 'studentid', 
-        'start_map_year_academic' = 'map_year_academic', 
-        'start_fallwinterspring' = 'fallwinterspring')
+      by = c('studentid' = 'studentid')
     )
     
     #now group by subgroup and summarize
