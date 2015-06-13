@@ -27,12 +27,12 @@ becca_plot <- function(
   mapvizieR_obj, 
   studentids, 
   measurementscale, 
-  first_and_spring_only=TRUE, 
-  entry_grade_seasons=c(-0.8, 4.2), 
-  detail_academic_year=2014, 
-  small_n_cutoff=.5,
-  color_scheme='KIPP Report Card'
-  ) {
+  first_and_spring_only = TRUE, 
+  entry_grade_seasons = c(-0.8, 4.2), 
+  detail_academic_year = 2014, 
+  small_n_cutoff = .5,
+  color_scheme = 'KIPP Report Card'
+) {
 
   #data validation
   mv_opening_checks(mapvizieR_obj, studentids, 1)
@@ -52,7 +52,7 @@ becca_plot <- function(
   #tag with quartiles
   munge <- munge %>%
     dplyr::mutate(
-      quartile=kipp_quartile(testpercentile)
+      quartile = kipp_quartile(testpercentile)
     )
   
   #TRANSFORMATION 2 - BIN COUNTS FOR BECCA PLOT
@@ -68,7 +68,7 @@ becca_plot <- function(
       measurementscale, grade_level_season  
     ) %>%
     dplyr::summarize(
-      n_total=n()
+      n_total = n()
     ) %>%
     as.data.frame()
   
@@ -79,27 +79,26 @@ becca_plot <- function(
     ) %>%
     #include at grade level flag
     dplyr::summarize(
-      n_quartile=n()
+      n_quartile = n()
     ) %>%
     dplyr::mutate(
-      at_grade_level_dummy=ifelse(quartile %in% c(3, 4), 'Yes', 'No'),
-      order=quartile_order(as.numeric(quartile))
+      at_grade_level_dummy = ifelse(quartile %in% c(3, 4), 'Yes', 'No'),
+      order = quartile_order(as.numeric(quartile))
     )
           
   
   prepped <- dplyr::left_join(
       quartile_totals, 
       term_totals[, c(2,3)],
-      by="grade_level_season"
+      by = "grade_level_season"
     ) %>%
     dplyr::mutate(
-      pct=n_quartile /  n_total * 100
+      pct = n_quartile /  n_total * 100
     ) %>%
     as.data.frame()
   
   #TRANSFORMATION - TWO dfs FOR CHART
   #super helpful advice from: http://stackoverflow.com/a/13734448/561698
-
   npr_above <- prepped[prepped$at_grade_level_dummy == 'Yes', ]
   npr_below <- prepped[prepped$at_grade_level_dummy == 'No', ]
 
@@ -128,74 +127,74 @@ becca_plot <- function(
    p <- ggplot() +
     #top half of NPR plots
     geom_bar(
-      data = npr_above
-     ,aes(
-        x = grade_level_season
-       ,y = pct
-       ,fill = factor(quartile)
-       ,order = order
-      )
-     ,stat = "identity"
+      data = npr_above,
+      aes(
+        x = grade_level_season,
+        y = pct,
+        fill = factor(quartile),
+        order = order
+      ),
+      stat = "identity"
     ) +
     #bottom half of NPR plots
     geom_bar(
-      data = npr_below
-     ,aes(
-        x = grade_level_season
-       ,y = pct
-       ,fill = factor(quartile)
-       ,order = order
-      )
-     ,stat = "identity"
+      data = npr_below,
+      aes(
+        x = grade_level_season,
+        y = pct,
+        fill = factor(quartile),
+        order = order
+      ),
+      stat = "identity"
     ) +
     #labels above
     geom_text(
-      data = npr_above
-     ,aes(
-        x = grade_level_season
-       ,y = midpoint
-       ,label = round(pct,0)
-      )
-     ,size = 4
+      data = npr_above,
+      aes(
+        x = grade_level_season,
+        y = midpoint,
+        label = round(pct,0)
+      ),
+      size = 4
     ) +
     #labels below
     geom_text(
-      data = npr_below
-     ,aes(
-        x = grade_level_season
-       ,y = midpoint
-       ,label = abs(round(pct, 0))
-      )
-     ,size = 4
+      data = npr_below,
+      aes(
+        x = grade_level_season,
+        y = midpoint,
+        label = abs(round(pct, 0))
+      ),
+      size = 4
     ) +
     #axis labels
     labs(
-      x = 'Grade Level'
-     ,y = 'Percentage of Cohort'
+      x = 'Grade Level',
+      y = 'Percentage of Cohort'
     ) +
     theme_bw() +
     #zero out cetain formatting
     theme(      
-      panel.grid.major = element_blank()
-     ,panel.grid.minor = element_blank()
-     ,panel.border = element_blank()
-     ,axis.ticks.y = element_blank()
-     ,axis.text.y = element_blank()
-     ,axis.title.x = element_text(size = rel(0.9))   
-     ,plot.margin = rep(unit(0,"null"),4)
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.border = element_blank(),
+      axis.ticks.y = element_blank(),
+      axis.text.y = element_blank(),
+      axis.title.x = element_text(size = rel(0.9)),
+      plot.margin = rep(unit(0,"null"),4)
     ) +
     scale_x_continuous(
-      breaks = x_breaks
-     ,labels = x_labels
+      breaks = x_breaks,
+      labels = x_labels
     ) +
     coord_cartesian(
-      xlim=c(min(x_breaks) - 0.25, max(x_breaks) + 0.25)  
+      xlim = c(min(x_breaks) - 0.25, max(x_breaks) + 0.25)  
     )
 
   legend_labels = c('1st', '2nd', '3rd', '4th')
   
   #color style?
-  if(color_scheme == 'KIPP Report Card') {
+  if (color_scheme == 'KIPP Report Card') {
     p <- p + scale_fill_manual(
       values = kipp_4col, labels = legend_labels, name = 'Quartiles' 
     )

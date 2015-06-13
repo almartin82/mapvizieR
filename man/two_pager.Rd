@@ -6,7 +6,7 @@
 \usage{
 two_pager(mapvizieR_obj, studentids, measurementscale, start_fws,
   start_academic_year, end_fws, end_academic_year, detail_academic_year,
-  title_text = "", ...)
+  national_data_frame = NA, title_text = "", ...)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -24,6 +24,9 @@ two_pager(mapvizieR_obj, studentids, measurementscale, start_fws,
 \item{end_academic_year}{ending academic year}
 
 \item{detail_academic_year}{don't mask any data for this academic year}
+
+\item{national_data_frame}{for internal KIPP use - a data frame showing % making
+typ growth across KIPP}
 
 \item{title_text}{what is this report called?}
 

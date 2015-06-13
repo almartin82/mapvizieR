@@ -3,8 +3,10 @@
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
 #' @param measurementscale_in target subject
-#' @param fws season
-#' @param academic_year academic year
+#' @param start_fws starting season
+#' @param start_academic_year starting academic year
+#' @param end_fws ending season
+#' @param end_academic_year ending academic year
 #' 
 #' @return a ggplot object
 #' 
@@ -14,8 +16,10 @@ growth_status_scatter <- function(
   mapvizieR_obj,
   studentids,
   measurementscale_in,
-  fws,
-  academic_year
+  start_fws,
+  start_academic_year,
+  end_fws,
+  end_academic_year
 ) {
 
   #data
@@ -24,7 +28,10 @@ growth_status_scatter <- function(
       measurementscale == measurementscale_in & studentid %in% studentids
     ) %>%
     dplyr::filter(
-      (end_map_year_academic == academic_year & end_fallwinterspring == fws) 
+      (end_map_year_academic == end_academic_year & end_fallwinterspring == end_fws) 
+    ) %>%
+    dplyr::filter(
+      (start_map_year_academic == start_academic_year & start_fallwinterspring == start_fws) 
     )
   #add student name
   goal_df <- goal_df %>%
@@ -66,7 +73,7 @@ growth_status_scatter <- function(
     x = annotation_df$lab_x,
     y = annotation_df$lab_y,
     label = annotation_df$lab_text,
-    size = 12,
+    size = 9,
     color = 'gray80',
     alpha = 0.8
   )
@@ -81,10 +88,11 @@ growth_status_scatter <- function(
    ) +
    #chart elements
    geom_text(
-     size = rel(3), alpha = .5
+     size = rel(3), alpha = .4, color = 'gray10'
    ) +
    geom_jitter(
-     size = 3, shape = 1, position = position_jitter(height = 0.75, width = .75)
+     size = 2, shape = 1, position = position_jitter(height = 0.75, width = .75),
+     alpha = .4, color = 'gray50'
    ) +
    #scale
    coord_cartesian(

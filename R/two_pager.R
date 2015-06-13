@@ -8,6 +8,8 @@
 #' @param start_academic_year starting academic year
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
+#' @param national_data_frame for internal KIPP use - a data frame showing % making
+#' typ growth across KIPP
 #' @param title_text what is this report called?
 #' @param ... additional arguments
 #' 
@@ -31,7 +33,7 @@ two_pager <- function(
   
   #P1 CHARTS -----------------------------------
   #title
-  title_bar <- h_var(title_text, 24)
+  title_bar <- h_var(title_text, 20)
 
   #cgp_table
   three_key <- cgp_table(
@@ -87,9 +89,9 @@ two_pager <- function(
   )
   
   #kipp_comparison
-  if (is.na(national_data_frame)) {
-    kipp_comp <- minimal
-  } else {
+  kipp_comp <- minimal
+  
+  if (!is.na(national_data_frame) > 0) {
     #data processing
     growth_df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale)
     #just desired terms
@@ -127,8 +129,10 @@ two_pager <- function(
     mapvizieR_obj = mapvizieR_obj,
     studentids = studentids,
     measurementscale_in = measurementscale,
-    fws = end_fws,
-    academic_year = end_academic_year
+    start_fws = start_fws,
+    start_academic_year = start_academic_year,
+    end_fws = end_fws,
+    end_academic_year = end_academic_year
   ) 
 
   
@@ -142,13 +146,12 @@ two_pager <- function(
     end_fws = end_fws,
     end_academic_year = end_academic_year
   )
-
   
   #LAYOUT -----------------------------------
   #upper left
   ul <- gridExtra::arrangeGrob(
     title_bar, three_key,
-    nrow = 2, heights = c(1, 5)
+    nrow = 2, heights = c(1, 4)
   )
   #upper row
   ur <- gridExtra::arrangeGrob(

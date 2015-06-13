@@ -4,8 +4,8 @@
 \alias{growth_status_scatter}
 \title{growth status scatter}
 \usage{
-growth_status_scatter(mapvizieR_obj, studentids, measurementscale_in, fws,
-  academic_year)
+growth_status_scatter(mapvizieR_obj, studentids, measurementscale_in, start_fws,
+  start_academic_year, end_fws, end_academic_year)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -14,9 +14,13 @@ growth_status_scatter(mapvizieR_obj, studentids, measurementscale_in, fws,
 
 \item{measurementscale_in}{target subject}
 
-\item{fws}{season}
+\item{start_fws}{starting season}
 
-\item{academic_year}{academic year}
+\item{start_academic_year}{starting academic year}
+
+\item{end_fws}{ending season}
+
+\item{end_academic_year}{ending academic year}
 }
 \value{
 a ggplot object

@@ -62,20 +62,17 @@ haid_plot <- function(
 
   #get student name onto growth df
   minimal_roster <- mapvizieR_obj[['roster']]
-  minimal_roster <- minimal_roster[,
-    c('studentid', 'map_year_academic', 'fallwinterspring', 'studentfirstlast',
-      'studentlastfirst')]
+  minimal_roster <- unique(
+    minimal_roster[,c('studentid', 'studentfirstlast', 'studentlastfirst')]
+  )
 
   df <- dplyr::inner_join(
     x = df,
     y = minimal_roster,
-    by = c('studentid' = 'studentid',
-      'start_map_year_academic' = 'map_year_academic',
-      'start_fallwinterspring' = 'fallwinterspring')
+    by = 'studentid'
   )
 
   #if a student doesn't have a base rit, plot will break
-  ommitted_count <- sum(is.na(df$start_testritscore))
   df <- df[!is.na(df$start_testritscore), ]
   num_stu <- nrow(df)
   stopifnot(
@@ -98,10 +95,12 @@ haid_plot <- function(
   name_offset <- p_name_offset * (x_max - x_min)
 
   #make a psuedo-axis by ordering based on one variable
+  #need to allow for holdovers
+  #make a fake ranking value that is quartile in thousands value, plus rit
+  df$for_ranking <- (as.numeric(df[,'start_testquartile']) * 1000) + df[ , sort_column]
+  
   df$y_order <- rank(
-    x = df[ , sort_column]
-    ,ties.method = "first"
-    ,na.last = FALSE
+    x = df[ , 'for_ranking'], ties.method = "first", na.last = FALSE
   )
 
   #make growth status an ordered factor

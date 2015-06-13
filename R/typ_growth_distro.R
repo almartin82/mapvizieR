@@ -79,7 +79,7 @@ kipp_typ_growth_distro <- function (
   #text size
   e$hacky_text_size <- 6 + -.12 * e$kipp_denom
   
-  if(e$hacky_text_size < 2) {
+  if (e$hacky_text_size < 2) {
     e$hacky_text_size <- 2
   }
   
