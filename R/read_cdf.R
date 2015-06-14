@@ -1,3 +1,22 @@
+#' Reads CDF csv files from a director
+#'
+#' @param path the path to the CSV files as character vector
+#' @param verbose defaults is TRUE
+#'
+#' @return a list holding data frames with of stacked longitudinal MAP data.  
+#' There are slots for each CSV provided in a test session by NWEA: 
+#' `assessment_results`, `students_by_school`, `class_assignments`, 
+#' `accommodation_assignments`, and `program_assignments`.
+#' 
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' cdf<-read_cdf("data/")
+#' 
+#' str(cdf)
+#' }
+#' 
 read_cdf <- function(path = ".",
                      verbose = TRUE) {
   
@@ -53,15 +72,20 @@ read_cdf <- function(path = ".",
   if (verbose) message("Stacking separate CDF tables into single data frames")
   
   assessemnt_results <- dplyr::rbind_all(assessments_list)
- 
+  if (nrow(assessemnt_results) == 0) warning("Your AssessmentResults files lack data.")
+    
   students_by_school <- dplyr::rbind_all(students_list)
+  if (nrow(students_by_school) == 0) warning("Your StudentsBySchool files lack data.")
   
   class_assignments <- dplyr::rbind_all(class_list)
+  if (nrow(class_assignments) == 0) message("Your ClassAssignments files lack data.")
   
   accommodation_assignments <- dplyr::rbind_all(accommodation_list)
+  if (nrow(accommodation_assignments) == 0) message("Your AccommodationAssignments files lack data.")
   
   program_assignments <- dplyr::rbind_all(programs_list)
- 
+  if (nrow(program_assignments) == 0) message("Your ProgramAssignments files lack data.")
+  
  # Construct output object with each set of files as member of list
   cdf_out <- list(assessemnt_results = assessemnt_results, 
                  students_by_school = students_by_school,
