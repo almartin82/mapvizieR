@@ -4,19 +4,19 @@
 \alias{schambach_figure}
 \title{schambach_fig}
 \usage{
-schambach_figure(mapvizieR_obj, measurementscale_in, grade,
-  subgroup_cols = c("end_schoolname"), pretty_names = c("School Name"),
-  start_fws, start_academic_year, end_fws, end_academic_year,
-  report_title = NA, complete_obsv = FALSE)
+schambach_figure(mapvizieR_obj, measurementscale_in, studentids_in,
+  subgroup_cols = c("grade"), pretty_names = c("Grade"), start_fws,
+  start_academic_year, end_fws, end_academic_year, report_title = NA,
+  complete_obsv = FALSE)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
 
 \item{measurementscale_in}{target subject}
 
-\item{grade}{target grade(s)}
+\item{studentids_in}{target studentids}
 
-\item{subgroup_cols}{what subgroups to explore, default is by school}
+\item{subgroup_cols}{what subgroups to explore, default is by grade}
 
 \item{pretty_names}{nicely formatted names for the column cuts used above.}
 

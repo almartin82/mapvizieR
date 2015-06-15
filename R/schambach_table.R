@@ -50,12 +50,6 @@ schambach_table_1d <- function(
       end_fallwinterspring == end_fws
     )
   
-  #     roster <- dplyr::left_join(
-  #       x = roster,
-  #       y = this_growth[ , c('studentid','end_grade')],
-  #       by = 'studentid'
-  #     )
-  
   roster %>% 
     ensurer::ensure_that(
       all(subgroup_cols %in% names(roster)) ~ "subgroup_cols must match column names in your mapvizieR roster."
@@ -92,15 +86,7 @@ schambach_table_1d <- function(
   for (i in 1:length(subgroup_cols)) {
     subgroup <- subgroup_cols[i]
     
-    #join roster and data
-    #if statement to avoid duplicate end_schoolname on inner_join
-#     if (subgroup == 'end_schoolname') {
-#       minimal_roster <- roster[, c('studentid', 'map_year_academic', 
-#                                    'fallwinterspring')]
-#     } else {
-      minimal_roster <- roster[, c('studentid', 'map_year_academic',
-                                   'fallwinterspring', subgroup)]
-    # }
+    minimal_roster <- roster[, c('studentid', 'map_year_academic', 'fallwinterspring', subgroup)]
     
     combined_df <- dplyr::inner_join(
       x = this_growth,
