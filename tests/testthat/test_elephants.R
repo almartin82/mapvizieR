@@ -29,7 +29,7 @@ test_that("galloping_elephants returns expected data with a nonsense grouping of
   p <- galloping_elephants(mapviz, studentids_subset, 'Mathematics')
   p_build <- ggplot_build(p)
   expect_true(is.ggplot(p))
-  expect_equal(nrow(p_build$plot$data), 1290)
+  expect_equal(nrow(p_build$plot$data), 1326)
 
   p <- galloping_elephants(mapviz, studentids_subset, 'Mathematics', first_and_spring_only=FALSE)
   p_build <- ggplot_build(p)

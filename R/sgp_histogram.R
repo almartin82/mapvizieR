@@ -47,13 +47,13 @@ sgp_histogram <- function (
   ensure_rows_in_df(this_growth[!is.na(this_growth$sgp), ]) 
   
   #helper
-  bins <- c(0, seq(10, 90, by = 10), 100)
-  bins_7 <- seq(0, 105, by = 7.5)
+  e <- new.env()
+  e$bins <- c(0, seq(20, 80, by = 20), 100)
+  e$bins_7 <- seq(0, 105, by = 7.5)
 
   #get the count by bin?
-  simple_hist <- hist(this_growth$sgp * 100, breaks = bins, plot=FALSE)
+  simple_hist <- hist(this_growth$sgp * 100, breaks = e$bins, plot=FALSE)
   
-  e <- new.env()
 
   e$chart_max <- max(simple_hist$counts) + 5
   #calculate median SGP
@@ -61,23 +61,22 @@ sgp_histogram <- function (
   
   #plot
   p <- ggplot(
-    data = this_growth
-   ,environment = e
-   ,aes(
+    data = this_growth,
+    aes(
       x = sgp * 100
-    )
+    ),
+    environment = e
   ) +
-  geom_text (
-    data = NULL
-   ,aes(
-      x = 50
-     ,y = .5 * chart_max
-     ,label = round(med_sgp, 0)
-     ,alpha = 0.7
-    )
-   ,environment = e
-   ,size = 26
-   ,color = if(e$med_sgp >= perf_breaks[1]) {
+  geom_text(
+    data = NULL,
+    aes(
+      x = 50,
+      y = .5 * e$chart_max,
+      label = round(e$med_sgp, 0),
+      alpha = 0.7
+    ),
+    size = 26,
+    color = if(e$med_sgp >= perf_breaks[1]) {
          'lightgreen'
        } else if (e$med_sgp >= perf_breaks[2]) {
          'orange'
@@ -86,27 +85,25 @@ sgp_histogram <- function (
        }
   ) +
   geom_histogram(
-   ,binwidth = 10
-   ,alpha = 0.85
-   #'TEAM blue'
-   #,color = '#0067AC'
-   #,fill = '#0067AC'
-   ,fill = 'gray60'
+    binwidth = 10,
+    alpha = 0.85,
+    fill = 'gray60'
   ) +    
   #labels
    labs(
-     x = 'Student Growth Percentile'
-    ,y = 'Number of Students'
+     x = 'Student Growth Percentile',
+     y = 'Number of Students'
    ) +
-   theme(    #zero out cetain formatting
-     panel.background = element_blank()
-    ,plot.background = element_blank()
-    ,panel.grid.major = element_blank()
-    ,panel.grid.minor = element_blank()
-    ,legend.position="none"
+   theme(    
+     #zero out cetain formatting
+     panel.background = element_blank(),
+     plot.background = element_blank(),
+     panel.grid.major = element_blank(),
+     panel.grid.minor = element_blank(),
+     legend.position = "none"
    ) + 
   scale_x_continuous(
-    breaks = bins
+    breaks = e$bins
   ) +
   coord_cartesian(
     ylim = c(0, (.6 * e$chart_max))

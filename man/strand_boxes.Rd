@@ -13,16 +13,12 @@ strand_boxes(mapvizieR_obj, studentids, measurementscale_in, fws, academic_year)
 
 \item{measurementscale_in}{target subject}
 
-\item{start_fws}{starting season}
+\item{fws}{season}
 
-\item{start_academic_year}{starting academic year}
-
-\item{end_fws}{ending season}
-
-\item{end_academic_year}{ending academic year}
+\item{academic_year}{academic year}
 }
 \value{
-prints a ggplot object
+a ggplot object
 }
 \description{
 goal strand boxes

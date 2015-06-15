@@ -101,6 +101,7 @@ galloping_elephants <- function (mapvizieR_obj,
     theme(
       #zero out formats
       panel.background = element_blank(),
+      panel.border = element_blank(),
       plot.background = element_blank(),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),

@@ -3,12 +3,10 @@
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
 #' @param measurementscale_in target subject
-#' @param start_fws starting season
-#' @param start_academic_year starting academic year
-#' @param end_fws ending season
-#' @param end_academic_year ending academic year
+#' @param fws season
+#' @param academic_year academic year
 #' 
-#' @return prints a ggplot object
+#' @return a ggplot object
 #' 
 #' @export
 
