@@ -1,4 +1,4 @@
-#' @title KIPP % Typ Growth Network Distribution
+#' @title KIPP Percent Making Typ Growth Network Distribution
 #'
 #' @description shows your school relative to KIPP schools nationwide (if you have that dataset :))
 #'
@@ -8,9 +8,7 @@
 #' @param academic_year the academic year
 #' @param grade_level comparison grade level
 #' @param start_fws starting season
-#' @param start_academic_year starting academic year
 #' @param end_fws ending season
-#' @param end_academic_year ending academic year
 #' @param comparison_name this school name
 #' @param comparison_pct_typ_growth pct keep up, this school
 #' @param replace_nat_results_match if using last year's data, remove this school's name

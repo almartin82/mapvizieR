@@ -25,4 +25,6 @@ Suggests:
     knitr
 LazyData: true
 VignetteBuilder: knitr
-Imports: reshape2
+Imports: 
+    reshape2,
+    ggplot2    

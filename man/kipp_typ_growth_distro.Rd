@@ -2,7 +2,7 @@
 % Please edit documentation in R/typ_growth_distro.R
 \name{kipp_typ_growth_distro}
 \alias{kipp_typ_growth_distro}
-\title{KIPP % Typ Growth Network Distribution}
+\title{KIPP Percent Making Typ Growth Network Distribution}
 \usage{
 kipp_typ_growth_distro(nat_results_df, measurementscale, academic_year,
   grade_level, start_fws, end_fws, comparison_name, comparison_pct_typ_growth,
@@ -32,10 +32,6 @@ in the HSR tableau reports.}
 \item{de_kippify_names}{shorten names by removing KIPP prefix}
 
 \item{de_schoolify_names}{shorten names by removing 'Academy', 'Primary', etc.}
-
-\item{start_academic_year}{starting academic year}
-
-\item{end_academic_year}{ending academic year}
 }
 \value{
 a ggplot chart
