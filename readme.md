@@ -1,7 +1,7 @@
 # mapvizieR:
 ### an R package that generates visualizations and reports for NWEA MAP data.
 
-[![wercker status](https://app.wercker.com/status/9148019dd43b8d0b5bd8f88f8ba51e37/m "wercker status")](https://app.wercker.com/project/bykey/9148019dd43b8d0b5bd8f88f8ba51e37) [![codecov.io](http://codecov.io/github/almartin82/mapvizieR/coverage.svg?branch=master)](http://codecov.io/github/almartin82/mapvizieR?branch=master)
+[![wercker status](https://app.wercker.com/status/9148019dd43b8d0b5bd8f88f8ba51e37/m/master "wercker status")](https://app.wercker.com/project/bykey/9148019dd43b8d0b5bd8f88f8ba51e37) [![codecov.io](http://codecov.io/github/almartin82/mapvizieR/coverage.svg?branch=master)](http://codecov.io/github/almartin82/mapvizieR?branch=master)
 ![codecov.io](http://codecov.io/github/almartin82/mapvizieR/branch.svg?branch=master)
 
 ...because how else are you going to get a capital 'R' into mapviz?
