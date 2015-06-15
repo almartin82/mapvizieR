@@ -40,6 +40,36 @@ populate_constants <- function() {
       TermName != 'Spring 2013-2014'), ], 
     roster = ex_CombinedStudentsBySchool
   )
+  
+  #simulated KIPP data
+  #TOTALLY FAKE.  the distributions do not even match KIPP data.  you should not
+  #(and cannot) make any conclusions about the performance of KIPP schools from 
+  #this data.  this data frame exists ONLY for automated testing and bears
+  #no relation to actual data.
+  fake_kipp_data <<- data.frame(
+    School_Display_Name = c("KIPP Harmony Academy", "KIPP Harmony Academy", "KIPP Legacy Preparatory School", 
+  "KIPP Austin Comunidad", "KIPP Harmony Academy", "KIPP Legacy Preparatory School", 
+  "KIPP Harmony Academy", "KIPP Harmony Academy", "KIPP Harmony Academy", 
+  "KIPP Harmony Academy", "KIPP Harmony Academy", "KIPP Harmony Academy", 
+  "KIPP SHARP College Prep Lower School", "KIPP Austin Connections Elementary", 
+  "KIPP Explore Academy", "KIPP Harmony Academy", "KIPP Austin Comunidad", 
+  "KIPP Explore Academy", "KIPP Harmony Academy", "KIPP Harmony Academy", 
+  "KIPP Harmony Academy", "KIPP Harmony Academy", "KIPP Empower Academy", 
+  "KIPP Explore Academy", "KIPP SHINE Prep", "KIPP Explore Academy", 
+  "KIPP Explore Academy", "KIPP ZENITH Academy", "KIPP DC: Heights Academy", 
+  "KIPP Dream Prep"), 
+    Start_RIT = rnorm(30, 165, 10), 
+    End_RIT = rnorm(30, 175, 12), 
+    Perc_Growth = rnorm(30, 0.50, .12), 
+    N = rnorm(30, 100, 15), 
+    Growth_Grade_Level = rep(1, 30), 
+    Sub_Test_Name = rep('Mathematics', 30), 
+    Start_Season = rep('FALL', 30), 
+    End_Season = rep('SPRING', 30),
+    Growth_Academic_Year = rep(2013, 30),
+    stringsAsFactors = FALSE
+  )
+
 }
 
 
@@ -49,9 +79,12 @@ populate_constants <- function() {
 #' environment 
 
 testing_constants <- function() {
-  if (!exists(c("mapviz", "cdf", "roster", "growth_df", 
+  if (!exists(
+    c("mapviz", "cdf", "roster", "growth_df", 
       "prepped_cdf", "processed_cdf",
-      "studentids_normal_use", "studentids_random", "studentids_subset"))) {
+      "studentids_normal_use", "studentids_random", "studentids_subset",
+      "fake_kipp_data")
+  )) {
     populate_constants()
   } 
 }

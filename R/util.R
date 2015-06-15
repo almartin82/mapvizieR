@@ -427,19 +427,24 @@ mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu=1) {
 #' @param detail_academic_year what is the 'current' year?  never drop data for
 #' this year.
 
-valid_grade_seasons <- function(cdf, first_and_spring_only=TRUE,
-  entry_grade_seasons=c(-0.8, 4.2), detail_academic_year=2014) {
+valid_grade_seasons <- function(
+  cdf, 
+  first_and_spring_only = TRUE,
+  entry_grade_seasons = c(-0.8, 4.2), 
+  detail_academic_year = 2014
+) {
   #only these seasons
   if (first_and_spring_only) {
-    valid_grade_seasons <- c(entry_grade_seasons, seq(0:13))
+    valid_grade_seasons <- c(entry_grade_seasons, 0, seq(0:11))
   } else {
     valid_grade_seasons <- unique(cdf$grade_level_season)
   }
   
   #only valid grade level seasons or detail year
   cdf %>%
-    filter(
-      grade_level_season %in% valid_grade_seasons | map_year_academic==detail_academic_year
+    dplyr::filter(
+      round(grade_level_season, 1) %in% round(valid_grade_seasons, 1) | 
+        map_year_academic == detail_academic_year
     ) 
 }
 
@@ -499,13 +504,13 @@ min_term_filter <- function(cdf, small_n_cutoff=-1) {
   grade_seasons_to_keep <- cdf %>%
     dplyr::group_by(grade_level_season) %>%
     dplyr::summarize(
-      n=n()
+      n = n()
     ) %>%
     dplyr::mutate(
-      include=n >= max(n) * small_n_cutoff
+      include = n >= max(n) * small_n_cutoff
     ) %>%
     dplyr::filter(
-      include==TRUE
+      include == TRUE
     ) %>%
     dplyr::select(
       grade_level_season  
@@ -527,8 +532,8 @@ min_term_filter <- function(cdf, small_n_cutoff=-1) {
 #' @param x a quartile (1-4)
 
 quartile_order <- function(x) { 
-  ifelse(x==2, 1,
-    ifelse(x==1, 2, x)       
+  ifelse(x == 2, 1,
+    ifelse(x == 1, 2, x)       
   )
 }
 
@@ -550,8 +555,8 @@ time_execution <- function (n, test_function, test_args) {
   for (itr in 1:n) {
     start <- Sys.time()
     do.call(
-      what=test_function, 
-      args=test_args
+      what = test_function, 
+      args = test_args
     )
     end <- Sys.time()
     timings[itr] <- end - start

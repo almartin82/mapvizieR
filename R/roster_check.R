@@ -35,8 +35,17 @@ check_roster <- function(roster) {
 ensure_roster_names <- ensurer::ensures_that(
     c('studentid') %in% names(.) ~ 
       "check your roster - it must have a field named studentid.",
+    
     c('grade') %in% names(.) ~ 
-      "check your roster - it must have a field named grade."
+      "check your roster - it must have a field named grade.",
+    
+    all(c('studentlastname', 'studentfirstname') %in% names(.)) ~
+      "check your roster - it must have fields named 'studentlastname' and 'studentfirstname'.",
+    
+    all(c('studentlastfirst', 'studentfirstlast') %in% names(.)) ~
+      "check your roster - it must have fields named 'studentlastfirst' and 'studentfirstlast'.\n
+       these fields are built by `prep_roster()` if reading from NWEA files.\n
+       if you are generating your own roster file, please include these fields."
 )
 
 

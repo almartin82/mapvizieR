@@ -7,3 +7,10 @@ build:
     - jimhester/r-dependencies
     - jimhester/r-check
     - jimhester/r-coverage
+
+  after-steps:
+    - wantedly/pretty-slack-notify:
+      team: knjdata
+      token: $SLACK_TOKEN
+      channel: mapvizier_dev
+      username: wercker

@@ -5,7 +5,7 @@
 \title{display table for school/cohort growth percentile (CGP)}
 \usage{
 cgp_table(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_academic_year, end_fws, end_academic_year)
+  start_academic_year, end_fws, end_academic_year, big_font = 50)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -21,6 +21,8 @@ cgp_table(mapvizieR_obj, studentids, measurementscale, start_fws,
 \item{end_fws}{ending season}
 
 \item{end_academic_year}{ending academic year}
+
+\item{big_font}{how big are the stats}
 }
 \description{
 display table for school/cohort growth percentile (CGP)
