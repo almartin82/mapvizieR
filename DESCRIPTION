@@ -28,4 +28,4 @@ LazyData: true
 VignetteBuilder: knitr
 Imports: 
     reshape2,
-    ggplot2    
+    ggplot2
