@@ -8,7 +8,7 @@ test_that("schambach_table produces proper table dimensions", {
   # one grade level, one cut
   samp_dflist <- schambach_table_1d(mapvizieR_obj = mapviz,
                                 measurementscale_in = 'Reading',
-                                grade = 5,
+                                studentids = c(paste0('F0800000', 1:9), paste0('F080000', 10:99)),
                                 subgroup_cols = c('end_schoolname'),
                                 pretty_names = c('School Name'),
                                 start_fws = 'Fall',
@@ -25,7 +25,7 @@ test_that("schambach_table produces proper table dimensions", {
   # one grade level, three cuts
   samp_dflist <- schambach_table_1d(mapvizieR_obj = mapviz,
                                 measurementscale_in = 'Reading',
-                                grade = 5,
+                                studentids = c(paste0('F0800000', 1:9), paste0('F080000', 10:99)),
                                 subgroup_cols = c('end_schoolname', 'studentgender', 'studentethnicgroup'),
                                 pretty_names = c('School Name', 'Gender', 'Ethnicity'),
                                 start_fws = 'Fall',
@@ -63,7 +63,7 @@ test_that("schambach_table produces proper table dimensions", {
   #complete_obsv = TRUE
   samp_dflist <- schambach_table_1d(mapvizieR_obj = mapviz,
                                     measurementscale_in = 'Reading',
-                                    grade = 5,
+                                    studentids = c(paste0('F0800000', 1:9), paste0('F080000', 10:99)),
                                     subgroup_cols = c('end_schoolname'),
                                     pretty_names = c('School Name'),
                                     start_fws = 'Fall',

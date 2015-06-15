@@ -4,8 +4,8 @@
 #' 
 #' @param mapvizieR_obj mapvizieR object
 #' @param measurementscale_in target subject
-#' @param grade target grade(s)
-#' @param subgroup_cols what subgroups to explore, default is by school
+#' @param studentids target studentids
+#' @param subgroup_cols what subgroups to explore, default is by grade
 #' @param pretty_names nicely formatted names for the column cuts used above.
 #' @param start_fws starting season
 #' @param start_academic_year starting academic year
@@ -20,9 +20,9 @@
 schambach_figure <- function(
   mapvizieR_obj, 
   measurementscale_in,
-  grade,
-  subgroup_cols = c('end_schoolname'),
-  pretty_names = c('School Name'),
+  studentids,
+  subgroup_cols = c('grade'),
+  pretty_names = c('Grade'),
   start_fws,
   start_academic_year,
   end_fws,
@@ -34,7 +34,7 @@ schambach_figure <- function(
   schambach_dflist <- schambach_table_1d(
     mapvizieR_obj,
     measurementscale_in,
-    grade,
+    studentids,
     subgroup_cols,
     pretty_names,
     start_fws,
@@ -58,7 +58,7 @@ schambach_figure <- function(
   }
   
   tables <- list()
-  if (length(grade) == 1) {
+#   if (length(schambach_dflist) == 1) {
     for (i in 1:length(schambach_dflist)) {
       df <- schambach_dflist[[i]]
       df <- formatter(df)
@@ -86,43 +86,43 @@ schambach_figure <- function(
                                            nrow = 2,
                                            heights = c(1, 4)
                                            )
-     names(tables)[i] <- paste0('grade_', grade, '_', tolower(gsub(' ', '_', pretty_names[i])))
+#      names(tables)[i] <- paste0('grade_', grade, '_', tolower(gsub(' ', '_', pretty_names[i])))
     }
     return(tables)
-  } else {
-    count <- 1
-    for (i in 1:length(schambach_dflist)) {
-      for (n in 1:length(subgroup_cols)) {
-        df <- schambach_dflist[[i]][[n]]
-        df <- formatter(df)
-        
-        col <- c(paste(pretty_names[n]), 'Avg. Ending\n RIT', 'Percent Started\n in Top 75%',
-                 'Percent Ended\n in Top 75%', 'Avg. Percentile\n Growth', 'Percent Met\n Typical Growth',
-                 'Percent Met\n Accel Growth', 'Number of\n Students')
-        t <- gridExtra::tableGrob(df,
-                                  gpar.corefill = gpar(fill = 'lightgreen', alpha = 0.5, col = NA),
-                                  h.even.alpha = 1,
-                                  h.odd.alpha = 0.5,
-                                  v.even.alpha = 1,
-                                  v.odd.alpha = 1,
-                                  core.just = 'center',
-                                  rows = c(),
-                                  cols = col,
-                                  col.just = 'center',
-                                  gpar.coretext = gpar(fontsize = 10, fontface = 'bold'),
-                                  gpar.coltext = gpar(fontsize = 12, fontface = 'bold', separator = 'black'),
-                                  gpar.rowtext = gpar(fontsize = 12, fontface = 'bold', separator = 'black'),
-                                  show.box = TRUE
-        )
-        tables[[count]] <- gridExtra::arrangeGrob(grob_justifier(title, 'center', 'bottom'),
-                                                  grob_justifier(t, 'center', 'top'),
-                                                  nrow = 2,
-                                                  heights = c(1, 4)
-                                                  )
-        names(tables)[count] <- paste0('grade_', grade[i], '_', tolower(gsub(' ', '_', pretty_names[n])))
-        count <- count + 1
-      }
-    }
-    return(tables)
-  }
+#   } else {
+#     count <- 1
+#     for (i in 1:length(schambach_dflist)) {
+#       for (n in 1:length(subgroup_cols)) {
+#         df <- schambach_dflist[[i]][[n]]
+#         df <- formatter(df)
+#         
+#         col <- c(paste(pretty_names[n]), 'Avg. Ending\n RIT', 'Percent Started\n in Top 75%',
+#                  'Percent Ended\n in Top 75%', 'Avg. Percentile\n Growth', 'Percent Met\n Typical Growth',
+#                  'Percent Met\n Accel Growth', 'Number of\n Students')
+#         t <- gridExtra::tableGrob(df,
+#                                   gpar.corefill = gpar(fill = 'lightgreen', alpha = 0.5, col = NA),
+#                                   h.even.alpha = 1,
+#                                   h.odd.alpha = 0.5,
+#                                   v.even.alpha = 1,
+#                                   v.odd.alpha = 1,
+#                                   core.just = 'center',
+#                                   rows = c(),
+#                                   cols = col,
+#                                   col.just = 'center',
+#                                   gpar.coretext = gpar(fontsize = 10, fontface = 'bold'),
+#                                   gpar.coltext = gpar(fontsize = 12, fontface = 'bold', separator = 'black'),
+#                                   gpar.rowtext = gpar(fontsize = 12, fontface = 'bold', separator = 'black'),
+#                                   show.box = TRUE
+#         )
+#         tables[[count]] <- gridExtra::arrangeGrob(grob_justifier(title, 'center', 'bottom'),
+#                                                   grob_justifier(t, 'center', 'top'),
+#                                                   nrow = 2,
+#                                                   heights = c(1, 4)
+#                                                   )
+# #         names(tables)[count] <- paste0('grade_', grade[i], '_', tolower(gsub(' ', '_', pretty_names[n])))
+#         count <- count + 1
+#       }
+#     }
+#     return(tables)
+#   }
 }
