@@ -108,7 +108,7 @@ two_pager <- function(
         studentid %in% this_growth$studentid
       ) %>%
       dplyr::select(
-        studentid, school
+        studentid, schoolname
       )
     
     kipp_comp <- kipp_typ_growth_distro(
