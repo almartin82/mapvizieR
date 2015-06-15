@@ -16,9 +16,12 @@
 prep_roster <- function(students_by_school, kinder_codes=NULL) {
   
   #df names
-  roster <- roster_prep_names(students_by_school)
+  roster <- students_by_school %>%
+    lower_df_names()
+  
   #year prep stuff
   roster <- extract_academic_year(roster)
+  
   # translate kindergarten ("K", 13, etc) to grade 0
   roster$grade <- standardize_kinder(roster$grade, other_codes = kinder_codes)
   
@@ -30,20 +33,3 @@ prep_roster <- function(students_by_school, kinder_codes=NULL) {
   
   return(roster)
 }
-
-
-
-#' @title roster_prep_names
-#'
-#' @description
-#' \code{roster_prep_names} turns the CamelCase names of a StudentsBySchool to lowercase.
-#'
-#' @inheritParams prep_roster
-#' 
-#' @return a roster with lowercase data frame names
-
-roster_prep_names <- function(students_by_school) {
-  return(lower_df_names(students_by_school))
-}
-
-
