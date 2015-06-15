@@ -40,7 +40,7 @@ kipp_typ_growth_distro <- function (
       Start_Season == toupper(start_fws) &
       End_Season == toupper(end_fws)
     )
-
+  
   #strip KIPP from name?
   if (de_kippify_names == TRUE) {
     #corner case, TEAM

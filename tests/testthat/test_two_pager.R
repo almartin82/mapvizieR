@@ -20,3 +20,25 @@ test_that("two-pager report should return ggplot object", {
   expect_true("grob" %in% class(tp_test[[1]]))
   expect_true("gTree" %in% class(tp_test[[1]]))
 })  
+
+
+test_that("two-pager with KIPP report", {  
+  tp_test <- two_pager(
+    mapvizieR_obj = mapviz,
+    studentids = mapviz[['roster']] %>% dplyr::filter(grade == 1 & map_year_academic == 2013) %>% 
+      dplyr::select(studentid) %>% unlist() %>% unname() %>% as.vector(),
+    measurementscale = 'Mathematics',
+    start_fws = 'Fall',
+    start_academic_year = 2013,
+    end_fws = 'Spring',
+    end_academic_year = 2013,
+    detail_academic_year = 2013,
+    national_data_frame = fake_kipp_data,
+    replace_nat_results_match = FALSE
+  )  
+  expect_equal(length(tp_test), 2)
+  expect_true("list" %in% class(tp_test))
+  expect_true("ggplot" %in% class(tp_test[[1]]))
+  expect_true("grob" %in% class(tp_test[[1]]))
+  expect_true("gTree" %in% class(tp_test[[1]]))
+})  
