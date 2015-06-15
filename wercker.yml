@@ -7,3 +7,8 @@ build:
     - jimhester/r-dependencies
     - jimhester/r-check
     - jimhester/r-coverage
+    - iansmith9876/pretty-slack-notify@0.0.8
+      team: knjdata
+      token: $SLACK_TOKEN
+      channel: mapvizier_dev
+      username: wercker
