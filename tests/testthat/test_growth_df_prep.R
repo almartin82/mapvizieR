@@ -153,3 +153,13 @@ test_that("growth_norm_lookup with unsanctioned windows", {
   expect_equal(sum(norm_matched$reported_growth, na.rm=T), 46086.5)
   
 })
+
+
+test_that("scaffold with no matching data returns empty", {
+  empty_scaffold <- student_scaffold(
+    processed_cdf = processed_cdf %>% dplyr::filter(fallwinterspring == 'Fall') 
+   ,start_season = 'Fall'
+   ,end_season = 'Spring'
+   ,year_offset = 0
+  )
+})

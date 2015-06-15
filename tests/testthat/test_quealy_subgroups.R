@@ -95,6 +95,35 @@ test_that("quealy_subgroups with no CGP", {
 })
 
 
+test_that("quealy_subgroups with no school growth study", {
+  samp_nyt <- quealy_subgroups(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Reading',
+    subgroup_cols = c('starting_quartile', 'studentgender'),
+    pretty_names = c('Starting Quartile', 'Gender'),
+    start_fws = 'Fall',
+    start_academic_year = 2013,
+    end_fws = 'Winter',
+    end_academic_year = 2013,
+    complete_obsv = TRUE
+  )
+  
+  expect_is(samp_nyt, 'arrange')
+  expect_is(samp_nyt, 'ggplot')
+  expect_is(samp_nyt, 'gTree')
+  expect_is(samp_nyt, 'grob')
+  expect_is(samp_nyt, 'gDesc')
+  
+  expect_equal(length(samp_nyt), 5)
+  expect_equal(names(samp_nyt), c("name", "gp", "vp", "children", "childrenOrder"))
+  
+  expect_equal(dimnames(summary(samp_nyt[[4]]))[[2]], c("Length", "Class", "Mode"))
+  expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
+})
+
+
+
 test_that("quealy_subgroups generates a warning when multiple grade levels passed", {
   
   expect_warning(
