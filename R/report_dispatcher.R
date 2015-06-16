@@ -57,7 +57,10 @@ report_dispatcher <- function(
   counter <- 1
   
   #set names of each cut to 'All' so that sbugroups can be referenced before 
-  
+  for (cut in cut_list) {
+    assign(cut, 'All')
+  }
+    
   
   #now get the permutations at each depth
   for (i in 1:length(cols)) {
