@@ -80,3 +80,33 @@ test_that("only_valid_plots correctly handles a list of ggplot", {
   
 })  
 
+
+test_that("report dispatcher with two pager", {
+  cut_list <- list('schoolname', 'grade')
+  call_list <- list(TRUE, TRUE)
+  
+  samp_rd <- report_dispatcher(
+    mapvizieR_obj = mapvizieR::mv_filter(
+      mapviz, 
+      roster_filter = quote(map_year_academic == 2013 & grade < 5)
+    ),
+    cut_list = cut_list,
+    call_list = call_list,
+    func_to_call = "two_pager",
+    arg_list = list(
+     'measurementscale' = 'Mathematics',
+     'start_fws' = 'Fall',
+     'start_academic_year' = 2013,
+     'end_fws' = 'Spring',
+     'end_academic_year' =  2013,
+     'detail_academic_year' = 2099,
+     'title_text' = quote(measurementscale)
+    ), 
+    verbose = FALSE
+  )
+  expect_equal(length(samp_rd), 6)
+  expect_is(samp_rd[[1]][[1]], "grob")
+  expect_is(samp_rd[[1]][[1]], "ggplot")
+  expect_is(samp_rd[[1]][[1]], "gTree")
+
+})
