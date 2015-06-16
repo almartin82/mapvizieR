@@ -8,7 +8,9 @@ build:
         - jimhester/r-check
         - jimhester/r-coverage
     after-steps:
-        - wantedly/pretty-slack-notify@0.2.9:
-            webhook_url: $SLACK_TOKEN
-            channel: mapvizier_dev
+        - sherzberg/slack-notify:
+            subdomain: knjdata
+            token: $SLACK_TOKEN
+            channel: "#mapvizier_dev"
             username: wercker
+            icon_emoji: tophat
