@@ -33,7 +33,7 @@ typ growth across KIPP}
 \item{...}{additional arguments}
 }
 \value{
-prints a ggplot object
+a list of grid graphics objects
 }
 \description{
 MAP two-pager

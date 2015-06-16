@@ -13,7 +13,7 @@
 #' @param title_text what is this report called?
 #' @param ... additional arguments
 #' 
-#' @return prints a ggplot object
+#' @return a list of grid graphics objects
 #' 
 #' @export
 
@@ -191,4 +191,89 @@ two_pager <- function(
   )
   
   return(list(p1, p2))
+}
+
+
+
+#' @title two-pager, KNJ style
+#' 
+#' @description similar to the existing two pager, but attempts to auto-set fall-spring vs 
+#' spring/spring
+#'
+#' @param mapvizieR_obj mapvizieR object
+#' @param studentids target students
+#' @param measurementscale target subject
+#' @param end_fws ending season
+#' @param end_academic_year ending academic year
+#' @param detail_academic_year don't mask any data for this academic year
+#' @param candidate_start_fws what possible start terms should we consider?
+#' @param start_year_offsets using same order as candidate_start_fws, if we pick this year, what should we add
+#' to the end_academic_year to get the right year's data?  eg, -1 for spring/spring.
+#' @param prefer_fws what is the 'best' start term?
+#' @param national_data_frame for internal KIPP use - a data frame showing % making
+#' typ growth across KIPP
+#' @param title_text what is this report called?
+#' @param ... additional arguments
+#' 
+#' @return a ggplot object
+#' 
+#' @export
+
+knj_two_pager <- function(
+  mapvizieR_obj, 
+  studentids, 
+  measurementscale, 
+  end_fws, 
+  end_academic_year,
+  detail_academic_year,
+  candidate_start_fws = c('Fall', 'Spring'),
+  start_year_offsets = c(0, -1),
+  prefer_fws = 'Spring',
+  national_data_frame = NA,
+  title_text = '', 
+  ...
+) {
+
+  measurementscale_in <- measurementscale
+  this_growth <- mapvizier_obj[['growth_df']] %>%
+    dplyr::filter(
+      studentid %in% studentids & 
+        end_map_year_academic == end_academic_year &
+        end_fallwinterspring == end_fws &
+        start_fallwinterspring %in% candidate_start_fws &
+        measurementscale == measurementscale_in
+    )
+  
+  term_counts <- this_growth %>%
+    dplyr::filter(complete_obsv == TRUE) %>%
+    dplyr::select(growth_window) %>% table()
+  
+  term_coverage <- term_counts/length(unique(this_growth$studentid))
+  is_preferred <- names(term_counts) == paste(prefer_fws, 'to', end_fws)
+
+  #look at the coverage and guess the start season and year
+  if (term_coverage[is_preferred] > 0.5) {
+    inferred_start_fws <- prefer_fws
+    inferred_start_academic_year <- end_academic_year + start_year_offsets[candidate_start_fws == prefer_fws]
+  } else {
+    inferred_start_fws <- candidate_start_fws[candidate_start_fws != prefer_fws]
+    inferred_start_academic_year <- end_academic_year + start_year_offsets[candidate_start_fws != prefer_fws]
+  }
+  
+  #hand that to two-pager
+  p <- two_pager(
+    mapvizieR_obj = mapvizieR_obj, 
+    studentids = studentids, 
+    measurementscale = measurementscale, 
+    start_fws = inferred_start_fws, 
+    start_academic_year = inferred_start_academic_year, 
+    end_fws = end_fws, 
+    end_academic_year = end_academic_year, 
+    detail_academic_year = detail_academic_year,
+    national_data_frame = national_data_frame,
+    title_text = title_text, 
+    ... = ...
+  ) 
+  
+  return(p)
 }
