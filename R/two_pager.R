@@ -234,32 +234,30 @@ knj_two_pager <- function(
   ...
 ) {
 
+  #NSE problems... :(
   measurementscale_in <- measurementscale
+  
   this_growth <- mapvizieR_obj[['growth_df']] %>%
     dplyr::filter(
       studentid %in% studentids & 
         end_map_year_academic == end_academic_year &
         end_fallwinterspring == end_fws &
         start_fallwinterspring %in% candidate_start_fws &
-        measurementscale == measurementscale_in
+        measurementscale == measurementscale_in &
+        complete_obsv == TRUE
     )
-  
-  term_counts <- this_growth %>%
-    dplyr::filter(complete_obsv == TRUE) %>%
-    dplyr::select(growth_window) %>% table()
-  
-  term_coverage <- term_counts/length(unique(this_growth$studentid))
-  is_preferred <- names(term_counts) == paste(prefer_fws, 'to', end_fws)
 
-  #look at the coverage and guess the start season and year
-  if (term_coverage[is_preferred] > 0.5) {
+  exists_test <- prefer_fws %in% unique(this_growth$start_fallwinterspring)
+  coverage_test <- sum(this_growth$start_fallwinterspring == prefer_fws) / length(unique(this_growth$studentid))
+  
+  if (all(exists_test & coverage_test > 0.5)) {
     inferred_start_fws <- prefer_fws
     inferred_start_academic_year <- end_academic_year + start_year_offsets[candidate_start_fws == prefer_fws]
   } else {
     inferred_start_fws <- candidate_start_fws[candidate_start_fws != prefer_fws]
     inferred_start_academic_year <- end_academic_year + start_year_offsets[candidate_start_fws != prefer_fws]
   }
-  
+     
   #hand that to two-pager
   p <- two_pager(
     mapvizieR_obj = mapvizieR_obj, 
