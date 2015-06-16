@@ -125,18 +125,18 @@ abbrev <- function(x, exceptions = NULL){
 kipp_quartile <- function(x, return_factor = TRUE, proper_quartile = FALSE){
   
   #defactor factors
-  if(is.factor(x)) x<-as.numeric(as.character(x))
+  if (is.factor(x)) x <- as.numeric(as.character(x))
   
   # Error handling 
-  stopifnot(x>0 | is.na(x), x<100 | is.na(x))
+  stopifnot(x > 0 | is.na(x), x < 100 | is.na(x))
   
   # if proper.quartile is false adjust x's to return Foundation quartile 
-  if(!proper_quartile) x <- x+1
+  if (!proper_quartile) x <- x + 1
   #calculate quartile
   y <- ceiling(x/25)
   
   #transform to factor
-  if(return_factor) y <- factor(y, levels=c(1:4))
+  if (return_factor) y <- factor(y, levels = c(1:4))
   
   #return
   y
@@ -165,13 +165,13 @@ kipp_quartile <- function(x, return_factor = TRUE, proper_quartile = FALSE){
 tiered_growth_factors <- function(quartile, grade){
   
   #Error handling 
-  stopifnot(length(quartile)==length(grade))
+  stopifnot(length(quartile) == length(grade))
   
   # Create data.frame lookup of KIPP Foundation Growth Targts
   tgrowth <- data.frame(
-    grade.type=c(rep(0,4),rep(1,4)), 
+    grade.type = c(rep(0,4),rep(1,4)), 
     quartile = as.factor(rep(1:4, 2)), 
-    KIPPTieredGrowth=c(1.5,1.5,1.25,1.25,2,1.75,1.5,1.25)
+    KIPPTieredGrowth = c(1.5,1.5,1.25,1.25,2,1.75,1.5,1.25)
   )
   
   grade.type <- rep(NA, times = length(quartile))
@@ -181,7 +181,7 @@ tiered_growth_factors <- function(quartile, grade){
   
   df <- data.frame(grade, grade.type, quartile = as.factor(quartile))
   
-  df2 <- dplyr::left_join(df, tgrowth, by=c("quartile", "grade.type"))
+  df2 <- dplyr::left_join(df, tgrowth, by = c("quartile", "grade.type"))
   
   #return
   df2$KIPPTieredGrowth 
@@ -217,18 +217,18 @@ tiered_growth_factors <- function(quartile, grade){
 #' x3 <- ifelse(x=="K", "Kinder", x)
 #' standardize_kinder(x2, other_codes="Kinder")
 
-standardize_kinder<- function(x, other_codes = NULL){
+standardize_kinder <- function(x, other_codes = NULL){
   
   # use other codes first
-  if(!is.null(other_codes)){
-    x<-ifelse(x %in% other_codes, 0, x)
+  if (!is.null(other_codes)) {
+    x <- ifelse(x %in% other_codes, 0, x)
   }
   
   # change "K" to 0
-  x <- ifelse(x=="K", 0, x)
+  x <- ifelse(x == "K", 0, x)
   
   # change 13 to 0
-  x <- ifelse(x==13, 0, x)
+  x <- ifelse(x == 13, 0, x)
   
   # cast as integer.vector
   x <- as.integer(x)
@@ -314,7 +314,7 @@ round_to_any <- function(x, accuracy, f = round) {
 #' @param ... additional arguments
 
 df_sorter <- function(x, by = 1, decreasing = FALSE, ... ) {
-  f <- function(...) order(...,decreasing=decreasing)
+  f <- function(...) order(...,decreasing = decreasing)
   i <- do.call(f, x[by])
   x[i,,drop = FALSE]
 }
@@ -368,8 +368,8 @@ rand_stu <- function(mapvizieR_obj, low = 20, high = 500) {
 
 clean_measurementscale <- function(x) {
   
-  x <- ifelse(x=='Science - General Science', 'General Science', x) 
-  x <- ifelse(x=='Science - Concepts and Processes', 'Concepts and Processes', x) 
+  x <- ifelse(x == 'Science - General Science', 'General Science', x) 
+  x <- ifelse(x == 'Science - Concepts and Processes', 'Concepts and Processes', x) 
 
   return(x)
 }
@@ -549,7 +549,7 @@ quartile_order <- function(x) {
 #' to do.call
 #' @export
 
-time_execution <- function (n, test_function, test_args) {
+time_execution <- function(n, test_function, test_args) {
   timings <- rep(NA, n)
  
   for (itr in 1:n) {
