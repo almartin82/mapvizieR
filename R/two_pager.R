@@ -235,7 +235,7 @@ knj_two_pager <- function(
 ) {
 
   measurementscale_in <- measurementscale
-  this_growth <- mapvizier_obj[['growth_df']] %>%
+  this_growth <- mapvizieR_obj[['growth_df']] %>%
     dplyr::filter(
       studentid %in% studentids & 
         end_map_year_academic == end_academic_year &
