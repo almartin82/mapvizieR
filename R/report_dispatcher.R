@@ -51,10 +51,16 @@ report_dispatcher <- function(
   pairs_roster <- roster[ , names(roster) %in% cols, drop = FALSE]
   unq_ele <- unique(pairs_roster)
   #nifty little sort function
-  unq_ele <- df_sorter(unq_ele, by=names(unq_ele))   
+  unq_ele <- df_sorter(unq_ele, by = names(unq_ele))   
   
   perm_list <- list()
   counter <- 1
+  
+  #set names of each cut to 'All' so that sbugroups can be referenced before 
+  for (cut in cut_list) {
+    assign(cut, 'All')
+  }
+    
   
   #now get the permutations at each depth
   for (i in 1:length(cols)) {
@@ -67,7 +73,7 @@ report_dispatcher <- function(
       mask <- names(unq_ele) %in% this_headers
       
       #grab the unique permutations at this depth level as data frame
-      perm_list[[counter]] <- as.data.frame(unique(unq_ele[, mask, drop=FALSE]))
+      perm_list[[counter]] <- as.data.frame(unique(unq_ele[, mask, drop = FALSE]))
       counter <- counter + 1
       
     #end call test conditional
@@ -107,15 +113,15 @@ report_dispatcher <- function(
       this_arg_list <- append(this_arg_list, list(studentids = studentids))
       this_arg_list <- append(this_arg_list, unlist(this_perm))
       this_arg_list <- append(this_arg_list, unlist(generic_perm))
-      this_arg_list <- append(this_arg_list, list(depth_string=rd_env$depth_string))
+      this_arg_list <- append(this_arg_list, list(depth_string = rd_env$depth_string))
       
       #inject all the args into the rd_env
-      list2env(x=this_arg_list, envir=rd_env)
+      list2env(x = this_arg_list, envir = rd_env)
       
       #get the names of the function to call
       func_names <- names(formals(func_to_call))
       #drop the arguments that aren't used by the function
-      if (! "..." %in% func_names) {
+      if (!"..." %in% func_names) {
         mask <- names(this_arg_list) %in% func_names
         this_arg_list <- this_arg_list[mask]
       } 
@@ -130,6 +136,7 @@ report_dispatcher <- function(
       )
       
       output_list[[counter]] <- this_output
+      names(output_list)[[counter]] <- rd_env$depth_string
       counter <- counter + 1
     #end call elements of perm list loop
     }

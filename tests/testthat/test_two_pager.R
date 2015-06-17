@@ -42,3 +42,21 @@ test_that("two-pager with KIPP report", {
   expect_true("grob" %in% class(tp_test[[1]]))
   expect_true("gTree" %in% class(tp_test[[1]]))
 })  
+
+
+test_that("KNJ style two-pager", {  
+  knj_test <- knj_two_pager(
+    mapvizieR_obj = mapviz,
+    studentids = mapviz[['roster']] %>% dplyr::filter(grade == 1 & map_year_academic == 2013) %>% 
+      dplyr::select(studentid) %>% unlist() %>% unname() %>% as.vector(),
+    measurementscale = 'Mathematics',
+    end_fws = 'Spring',
+    end_academic_year = 2013,
+    detail_academic_year = 2013
+  )  
+  expect_equal(length(knj_test), 2)
+  expect_true("list" %in% class(knj_test))
+  expect_true("ggplot" %in% class(knj_test[[1]]))
+  expect_true("grob" %in% class(knj_test[[1]]))
+  expect_true("gTree" %in% class(knj_test[[1]]))
+})  
