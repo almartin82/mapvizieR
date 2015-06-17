@@ -1,7 +1,7 @@
-#' @title sgp_histogram
+#' @title growth_histogram
 #'
 #' @description
-#' \code{sgp_histogram} a simple visualization of the distribution of student SGPs.
+#' \code{growth_histogram} a simple visualization of the distribution of student growth percentiles.
 #'
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
@@ -10,13 +10,13 @@
 #' @param start_academic_year starting academic year
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
-#' @param perf_breaks sgp_histogram will color the median growth percentile
+#' @param perf_breaks growth_histogram will color the median growth percentile
 #' green, yellow, or red.  where to break between colors?  default is 55 and 45.
 #' 
 #' @return returns a ggplot object
 #' @export
 
-sgp_histogram <- function (
+growth_histogram <- function(
     mapvizieR_obj,
     studentids,
     measurementscale,
@@ -52,7 +52,7 @@ sgp_histogram <- function (
   e$bins_7 <- seq(0, 105, by = 7.5)
 
   #get the count by bin?
-  simple_hist <- hist(this_growth$sgp * 100, breaks = e$bins, plot=FALSE)
+  simple_hist <- hist(this_growth$sgp * 100, breaks = e$bins, plot = FALSE)
   
 
   e$chart_max <- max(simple_hist$counts) + 5
@@ -76,7 +76,7 @@ sgp_histogram <- function (
       alpha = 0.7
     ),
     size = 26,
-    color = if(e$med_sgp >= perf_breaks[1]) {
+    color = if (e$med_sgp >= perf_breaks[1]) {
          'lightgreen'
        } else if (e$med_sgp >= perf_breaks[2]) {
          'orange'

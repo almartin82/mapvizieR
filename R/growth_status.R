@@ -81,10 +81,10 @@ growth_status_scatter <- function(
   #stu scatter
   p <- p +              
    geom_vline(
-     xintercept = c(34,66), size = 1, color = 'gray50', alpha = .6
+     xintercept = c(34,66), size = 0.5, color = 'gray50', alpha = .6
    ) +
    geom_hline(
-     yintercept = c(50), size = 1, color = 'gray50', alpha = .6 
+     yintercept = c(50), size = 0.5, color = 'gray50', alpha = .6 
    ) +
    #chart elements
    geom_text(
@@ -114,7 +114,8 @@ growth_status_scatter <- function(
      panel.background = element_blank(),
      panel.grid.major = element_line(
        color = 'gray95',
-       linetype = 'longdash'
+       linetype = 'longdash',
+       size = 0.25
      )
    )
   return(p)

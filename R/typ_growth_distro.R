@@ -148,12 +148,12 @@ kipp_typ_growth_distro <- function (
   ) + 
   annotate(
     geom = 'text',
-    x = 1,
+    x = 1.25,
     y = .7 * nat_plus[nat_plus$dummy_x == max(nat_plus$dummy_x), 'Perc_Growth'],
     label = paste0(toOrdinal::toOrdinal(e$kipp_rank), ' of ', e$kipp_denom),
     color = 'gray20',
     alpha = .8,
-    size = 9,
+    size = 8,
     vjust = 1,
     angle = 0
   )

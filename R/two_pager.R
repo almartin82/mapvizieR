@@ -58,7 +58,7 @@ two_pager <- function(
   )
 
   #histogram
-  sgp <- sgp_histogram(
+  growth_hist <- growth_histogram(
     mapvizieR_obj = mapvizieR_obj,
     studentids = studentids,
     measurementscale = measurementscale,
@@ -68,7 +68,7 @@ two_pager <- function(
     end_academic_year = end_academic_year
   ) +
   labs(
-    title = 'SGP Distribution'
+    title = 'Growth Percentile\nDistribution'
   )
   
   #becca
@@ -91,7 +91,7 @@ two_pager <- function(
   #kipp_comparison
   kipp_comp <- minimal
   
-  if (!is.na(national_data_frame) > 0) {
+  if (class(national_data_frame) == 'data.frame') {
     #data processing
     growth_df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale)
     #just desired terms
@@ -160,7 +160,7 @@ two_pager <- function(
   
   #bottom left, top
   blt <- gridExtra::arrangeGrob(
-    sgp, becca, ncol = 2
+    growth_hist, becca, ncol = 2
   )
   
   
