@@ -133,8 +133,9 @@ grade_level_seasonify <- function(cdf) {
     )
   
   season_offsets <- data.frame(
-    season=c('Fall', 'Winter', 'Spring', 'Summer')
-   ,offset=c(-0.8, -0.5, 0, 0.1)
+    season=c('Fall', 'Winter', 'Spring', 'Summer'),
+    offset=c(-0.8, -0.5, 0, 0.1),
+    stringsAsFactors = FALSE
   )
   
   #get the offset
