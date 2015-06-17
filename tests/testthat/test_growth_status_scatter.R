@@ -3,13 +3,6 @@ context("growth_status_scatter tests")
 #make sure that constants used below exist
 testing_constants()
 
-test_that("growth_status_scatter errors when handed an improper mapviz object", {
-  expect_error(
-    growth_status_scatter(processed_cdf, studentids), 
-    "The object you passed is not a conforming mapvizieR object"
-  )  
-})
-
 
 test_that("growth_status_scatter produces proper plot with a grade level of kids", {
   samp_scatter <- growth_status_scatter(
