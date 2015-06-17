@@ -209,8 +209,8 @@ haid_plot <- function(
 
   #base ggplot object
   p <- ggplot(
-    data = df
-    ,aes(
+    data = df,
+    aes(
       x = start_testritscore,
       y = y_order
     ),
@@ -237,10 +237,10 @@ haid_plot <- function(
   #typical and college ready goal labels
   p <- p +
   geom_text(
-    data = df[df$student_name_format != ' ', ]
-   ,aes(
-      x = start_testritscore + reported_growth
-     ,label = start_testritscore + reported_growth
+    data = df[df$student_name_format != ' ', ],
+    aes(
+      x = start_testritscore + reported_growth,
+      label = start_testritscore + reported_growth
     ),
     color = "#CFCCC1",
     size = pointsize - 0.5,
@@ -249,10 +249,10 @@ haid_plot <- function(
     alpha = p_alpha
   ) +
   geom_text(
-    data = df[df$student_name_format != ' ', ]
-   ,aes(
-      x = start_testritscore + accel_growth
-     ,label = start_testritscore + accel_growth
+    data = df[df$student_name_format != ' ', ],
+    aes(
+      x = start_testritscore + accel_growth,
+      label = start_testritscore + accel_growth
     ),
     color = "#FEBC11",
     size = pointsize - 0.5,
@@ -309,7 +309,7 @@ haid_plot <- function(
     p <- p + geom_text(
       data = df[df$neg_flag == 1 & !is.na(df$neg_flag) & df$student_name_format != ' ', ],
       aes(
-        x = start_testritscore + 0.4 * name_offset,
+        x = start_testritscore + 0.4 * p_name_offset,
         label = start_testritscore,
         group = baseline_color,
         color = baseline_color

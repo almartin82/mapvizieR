@@ -91,7 +91,7 @@ two_pager <- function(
   #kipp_comparison
   kipp_comp <- minimal
   
-  if (class(national_data_frame)=='data.frame') {
+  if (class(national_data_frame) == 'data.frame') {
     #data processing
     growth_df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale)
     #just desired terms
