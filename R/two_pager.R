@@ -58,7 +58,7 @@ two_pager <- function(
   )
 
   #histogram
-  sgp <- sgp_histogram(
+  growth_hist <- growth_histogram(
     mapvizieR_obj = mapvizieR_obj,
     studentids = studentids,
     measurementscale = measurementscale,
@@ -68,7 +68,7 @@ two_pager <- function(
     end_academic_year = end_academic_year
   ) +
   labs(
-    title = 'SGP Distribution'
+    title = 'Growth Percentile\nDistribution'
   )
   
   #becca
@@ -160,7 +160,7 @@ two_pager <- function(
   
   #bottom left, top
   blt <- gridExtra::arrangeGrob(
-    sgp, becca, ncol = 2
+    growth_hist, becca, ncol = 2
   )
   
   

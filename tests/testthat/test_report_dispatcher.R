@@ -67,15 +67,15 @@ test_that("only_valid_plots correctly handles a list of ggplot", {
    ,cut_list = cut_by
    ,call_list = call_these
    ,func_to_call = "galloping_elephants"
-   ,arg_list = list('measurementscale'='Mathematics')
+   ,arg_list = list('measurementscale' = 'Mathematics')
   )
 
   expect_equal(length(more_realistic), 17)
-  expect_equal(sapply(more_realistic, class)[2,], c(rep("ggplot", 17)))
+  expect_equal(sapply(more_realistic, class)[2,] %>% unname(), c(rep("ggplot", 17)))
   
   realistic_build <- sapply(more_realistic, ggplot_build)
   expect_equal(length(realistic_build), 51)
-  expect_equal(summary(realistic_build[1,])[,1], c(rep('3', 17)))
+  expect_equal(summary(realistic_build[1,])[,1] %>% unname(), c(rep('3', 17)))
   expect_equal(rownames(summary(realistic_build[,1])), c('data', 'panel', 'plot'))
   
 })  

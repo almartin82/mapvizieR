@@ -1,18 +1,18 @@
-context("sgp_histogram tests")
+context("growth_histogram tests")
 
 #make sure that constants used below exist
 testing_constants()
 
-test_that("sgp_histogram errors when handed an improper mapviz object", {
+test_that("growth_histogram errors when handed an improper mapviz object", {
   expect_error(
-    sgp_histogram(processed_cdf, studentids), 
+    growth_histogram(processed_cdf, studentids), 
     "The object you passed is not a conforming mapvizieR object"
   )  
 })
 
 
-test_that("sgp_histogram produces proper plot with a grade level of kids", {
-  samp_sgp <- sgp_histogram(
+test_that("growth_histogram produces proper plot with a grade level of kids", {
+  samp_sgp <- growth_histogram(
     mapvizieR_obj = mapviz,
     studentids = studentids_normal_use,
     measurementscale = 'Reading',
@@ -39,18 +39,18 @@ test_that("sgp_histogram produces proper plot with a grade level of kids", {
     c("y", "count", "x", "ndensity", "ncount", "density", "PANEL", 
       "group", "ymin", "ymax", "xmin", "xmax")
   )
-  expect_equal(sum(p_build[[1]][[2]]$density), 0.1, tolerance=0.01)
+  expect_equal(sum(p_build[[1]][[2]]$density), 0.1, tolerance = 0.01)
   
 })
 
 
-test_that("sgp_histogram produces proper plot with a grade level of kids", {
+test_that("growth_histogram produces proper plot with a grade level of kids", {
     
   studentids_orange <- cdf[with(cdf, 
     map_year_academic == 2013 & measurementscale == 'Mathematics' & 
     fallwinterspring == 'Fall' & grade == 2), ]$studentid
   
-  sgp_orange <- sgp_histogram(
+  sgp_orange <- growth_histogram(
     mapvizieR_obj = mapviz,
     studentids = studentids_orange,
     measurementscale = 'Reading',
@@ -72,7 +72,7 @@ test_that("sgp_histogram produces proper plot with a grade level of kids", {
   p_build <- ggplot_build(sgp_orange)
   
   expect_equal(length(p_build), 3)
-  expect_equal(sum(p_build[[1]][[2]]$density), 0.1, tolerance=0.01)
+  expect_equal(sum(p_build[[1]][[2]]$density), 0.1, tolerance = 0.01)
 
   
   #test sgp red
@@ -80,7 +80,7 @@ test_that("sgp_histogram produces proper plot with a grade level of kids", {
     map_year_academic == 2013 & measurementscale == 'Mathematics' & 
     fallwinterspring == 'Fall' & grade == 6 & testpercentile < 30), ]$studentid
   
-  sgp_red <- sgp_histogram(
+  sgp_red <- growth_histogram(
     mapvizieR_obj = mapviz,
     studentids = studentids_red,
     measurementscale = 'Mathematics',
@@ -96,11 +96,11 @@ test_that("sgp_histogram produces proper plot with a grade level of kids", {
 })
 
 
-test_that("fuzz test sgp_histogram", {
+test_that("fuzz test growth_histogram", {
   results <- fuzz_test_plot(
-    'sgp_histogram', 
-    n=10,
-    additional_args=list(
+    'growth_histogram', 
+    n = 10,
+    additional_args = list(
       'measurementscale' = 'Reading',
       'start_fws' = 'Fall',
       'start_academic_year' = 2013,
