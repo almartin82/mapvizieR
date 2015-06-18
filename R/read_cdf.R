@@ -2,6 +2,7 @@
 #'
 #' @param path the path to the CSV files as character vector
 #' @param verbose defaults is TRUE
+#' @param bad_students StudentIDs to ignore
 #'
 #' @return a list holding data frames with of stacked longitudinal MAP data.  
 #' There are slots for each CSV provided in a test session by NWEA: 
@@ -17,11 +18,13 @@
 #' str(cdf)
 #' }
 #' 
-read_cdf <- function(path = ".",
-                     verbose = TRUE) {
+read_cdf <- function(
+  path = ".",
+  verbose = TRUE,
+  bad_students = NA
+) {
   
   # Read in assessmentResults and StudentsBy school filenames
-  
   if (verbose) message("Reading path names to CDF files")
   assessment_files <- dir(path = path, 
                           pattern = "AssessmentResults",
@@ -55,8 +58,8 @@ read_cdf <- function(path = ".",
                              recursive = TRUE,
                              full.names = TRUE)
    
-  # Write files to list objects
   
+  # Write files to list objects
   if (verbose) message("Reading CSV files.")
   assessments_list <- lapply(assessment_files, read.csv, stringsAsFactors = FALSE)
   
@@ -68,7 +71,8 @@ read_cdf <- function(path = ".",
   
   programs_list <- lapply(program_files, read.csv, stringsAsFactors = FALSE)
  
-  # rbind_list eahc list
+  
+  # rbind_list each list
   if (verbose) message("Stacking separate CDF tables into single data frames")
   
   assessemnt_results <- dplyr::rbind_all(assessments_list)
@@ -86,13 +90,32 @@ read_cdf <- function(path = ".",
   program_assignments <- dplyr::rbind_all(programs_list)
   if (nrow(program_assignments) == 0) message("Your ProgramAssignments files lack data.")
   
- # Construct output object with each set of files as member of list
+  
+  #drop students if given a list of bad studentids
+  if (class(bad_students) == 'numeric') {
+    if (verbose) message("Filtering bad studentids from data frames.")
+
+    bad_stu_filter <- function(df, studentid_vector) {
+      if(nrow(df) > 0) {
+        df %>% dplyr::filter(!StudentID %in% studentid_vector)
+      } else { df }
+    }
+    
+    assessemnt_results <- bad_stu_filter(assessemnt_results, bad_students)
+    students_by_school <- bad_stu_filter(students_by_school, bad_students)
+    class_assignments <- bad_stu_filter(class_assignments, bad_students)
+    accommodation_assignments <- bad_stu_filter(accommodation_assignments, bad_students)
+    program_assignments <- bad_stu_filter(program_assignments, bad_students)
+  }
+
+  
+  #Construct output object with each set of files as member of list
   cdf_out <- list(assessemnt_results = assessemnt_results, 
                  students_by_school = students_by_school,
                  class_assignments = class_assignments,
                  accommodation_assignments = accommodation_assignments,
                  program_assignments = program_assignments)
  
- #return object
- cdf_out
+  #return object
+  cdf_out
 }
