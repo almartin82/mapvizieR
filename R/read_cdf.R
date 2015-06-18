@@ -93,6 +93,7 @@ read_cdf <- function(
   
   #drop students if given a list of bad studentids
   if (class(bad_students) == 'numeric') {
+    if (verbose) message("Filtering bad studentids from data frames.")
 
     bad_stu_filter <- function(df, studentid_vector) {
       if(nrow(df) > 0) {
