@@ -43,7 +43,7 @@ becca_plot <- function(
     
   #detect entry grade seasons
   if (entry_grade_seasons == 'detect') {
-    entry_grade_seasons == min_term_filter(this_cdf, small_n_cutoff) %>% 
+    entry_grade_seasons <- min_term_filter(this_cdf, small_n_cutoff) %>% 
       dplyr::select(grade_level_season) %>%
       min()
   }
