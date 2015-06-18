@@ -45,10 +45,10 @@ haid_plot <- function(
 ) {
 
   #data validation and unpack
-  mapvizieR:::mv_opening_checks(mapvizieR_obj, studentids, 1)
+  mv_opening_checks(mapvizieR_obj, studentids, 1)
 
   #unpack the mapvizieR object and limit to desired students
-  growth_df <- mapvizieR:::mv_limit_growth(mapvizieR_obj, studentids, measurementscale)
+  growth_df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale)
 
   #data processing ----------------------------------------------------------
   #just desired terms
