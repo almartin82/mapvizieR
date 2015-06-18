@@ -261,8 +261,6 @@ knj_two_pager <- function(
     inferred_start_academic_year <- end_academic_year + start_year_offsets[candidate_start_fws != prefer_fws]
   }
   
-  entry_grade_seasons = c(-0.8, 4.2)
-    
   #hand that to two-pager
   p <- two_pager(
     mapvizieR_obj = mapvizieR_obj, 
@@ -275,7 +273,7 @@ knj_two_pager <- function(
     detail_academic_year = detail_academic_year,
     national_data_frame = national_data_frame,
     title_text = title_text,
-    entry_grade_seasons = entry_grade_seasons,
+    entry_grade_seasons = 'detect',
     ... = ...
   ) 
   
