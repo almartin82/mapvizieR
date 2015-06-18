@@ -90,8 +90,12 @@ haid_plot <- function(
   pointsize <- 3
   segsize <- 1
   annotate_size <- 5
-  x_min <- round_to_any(min(c(df$start_testritscore, df$end_testritscore)) - 2, 5, floor)
-  x_max <- round_to_any(max(c(df$start_testritscore, df$end_testritscore)) + 2, 5, f = ceiling)
+  x_min <- round_to_any(
+    min(c(df$start_testritscore, df$end_testritscore), na.rm = TRUE) - 2, 5, floor
+  )
+  x_max <- round_to_any(
+    max(c(df$start_testritscore, df$end_testritscore), na.rm = TRUE) + 2, 5, f = ceiling
+  )
   name_offset <- p_name_offset * (x_max - x_min)
 
   #make a psuedo-axis by ordering based on one variable
@@ -312,12 +316,13 @@ haid_plot <- function(
     p <- p + geom_text(
       data = df[df$neg_flag == 1 & !is.na(df$neg_flag) & df$student_name_format != ' ', ],
       aes(
-        x = start_testritscore + 0.4 * p_name_offset,
+        x = start_testritscore + 0.4 * name_offset,
         label = start_testritscore,
         group = baseline_color,
         color = baseline_color
       ),
-      size = p_name_size
+      size = p_name_size,
+      hjust = 0
     )
   }
 
