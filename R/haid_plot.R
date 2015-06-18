@@ -45,10 +45,10 @@ haid_plot <- function(
 ) {
 
   #data validation and unpack
-  mv_opening_checks(mapvizieR_obj, studentids, 1)
+  mapvizieR:::mv_opening_checks(mapvizieR_obj, studentids, 1)
 
   #unpack the mapvizieR object and limit to desired students
-  growth_df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale)
+  growth_df <- mapvizieR:::mv_limit_growth(mapvizieR_obj, studentids, measurementscale)
 
   #data processing ----------------------------------------------------------
   #just desired terms
@@ -115,6 +115,8 @@ haid_plot <- function(
     df$neg_flag <- 0
   } else {
     df$neg_flag <- ifelse(df$end_testritscore <= df$start_testritscore, 1, 0)
+    #untested END kids should be set to 0
+    df$neg_flag <- ifelse(is.na(df$end_testritscore), 0, df$neg_flag)
   }
 
   #tag names
@@ -137,16 +139,17 @@ haid_plot <- function(
 
   #colors for identity!
   growth_colors <- data.frame(
-    status = p_growth_tiers,
-    color = p_growth_colors,
+    #NA is the status for students with a baseline but no end score.
+    status = c(p_growth_tiers, NA),
+    color = c(p_growth_colors, 'gray50'),
     stringsAsFactors = FALSE
   )
-
-  df$growth_color_identity <- 'black'
 
   if (!single_season_flag) {
     #cribbing off of 'subscripting' http://rwiki.sciviews.org/doku.php?id=tips:data-frames:merge
     df$growth_color_identity <- growth_colors$color[match(df$growth_status, growth_colors$status)]
+  } else {
+    df$growth_color_identity <- 'black'
   }
 
   #start/end quartile colors
