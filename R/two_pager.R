@@ -260,7 +260,7 @@ knj_two_pager <- function(
     inferred_start_fws <- candidate_start_fws[candidate_start_fws != prefer_fws]
     inferred_start_academic_year <- end_academic_year + start_year_offsets[candidate_start_fws != prefer_fws]
   }
-  
+   
   #hand that to two-pager
   p <- two_pager(
     mapvizieR_obj = mapvizieR_obj, 
