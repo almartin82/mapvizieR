@@ -11,6 +11,7 @@
 #' @param national_data_frame for internal KIPP use - a data frame showing % making
 #' typ growth across KIPP
 #' @param title_text what is this report called?
+#' @param entry_grade_seasons for becca plot.  default is c(-0.8, 4.2)
 #' @param ... additional arguments
 #' 
 #' @return a list of grid graphics objects
@@ -26,6 +27,7 @@ two_pager <- function(
   detail_academic_year,
   national_data_frame = NA,
   title_text = '', 
+  entry_grade_seasons = c(-0.8, 4.2),
   ...
 ) {
  
@@ -76,7 +78,8 @@ two_pager <- function(
     mapvizieR_obj = mapvizieR_obj, 
     studentids = studentids,
     measurementscale = measurementscale,
-    detail_academic_year = detail_academic_year
+    detail_academic_year = detail_academic_year,
+    entry_grade_seasons = entry_grade_seasons
   )
 
   #strand boxplots
@@ -257,7 +260,9 @@ knj_two_pager <- function(
     inferred_start_fws <- candidate_start_fws[candidate_start_fws != prefer_fws]
     inferred_start_academic_year <- end_academic_year + start_year_offsets[candidate_start_fws != prefer_fws]
   }
-     
+  
+  entry_grade_seasons = c(-0.8, 4.2)
+    
   #hand that to two-pager
   p <- two_pager(
     mapvizieR_obj = mapvizieR_obj, 
@@ -269,7 +274,8 @@ knj_two_pager <- function(
     end_academic_year = end_academic_year, 
     detail_academic_year = detail_academic_year,
     national_data_frame = national_data_frame,
-    title_text = title_text, 
+    title_text = title_text,
+    entry_grade_seasons = entry_grade_seasons,
     ... = ...
   ) 
   

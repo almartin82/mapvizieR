@@ -397,6 +397,8 @@ munge_startdate <- function(x) {
 #' @param mapvizieR_obj a valid mapvizieR object.
 #' @param studentids vector of studentids to run for this plot
 #' @param min_stu minimum number of students for this plot.  default is 1.
+#' 
+#' @export
 
 mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu=1) {
   #has to be a mapvizieR obj
@@ -457,6 +459,8 @@ valid_grade_seasons <- function(
 #' @param mapvizieR_obj a conforming mapvizieR object
 #' @param studentids vector of studentids
 #' @param measurementscale_in a MAP subject
+#' 
+#' @export
 
 mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale_in) {
   
@@ -476,6 +480,8 @@ mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale_in) {
 #' 
 #' @description extract the growth df and limit it to target students
 #' @inheritParams mv_limit_cdf
+#' 
+#' @export
 
 mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale_in) {
   
