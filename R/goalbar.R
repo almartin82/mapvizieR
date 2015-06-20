@@ -203,17 +203,17 @@ goalbar <- function(
   #3| REDUCE, SUMMARIZE
   g_sum <- g_plot %>%
     dplyr::group_by(goal_status, goal_color, status_ordered) %>%
-    summarize(
+    dplyr::summarize(
       count = n(),
       label_disp = paste0('(', round(count / nrow(g_plot) * 100, 0), '%)')
     ) %>%
     #this was tricky!
     as.data.frame %>%
-    mutate(
-      label_pos = order_by(status_ordered, cumsum(count)),
+    dplyr::mutate(
+      label_pos = dplyr::with_order(order_by = status_ordered, fun = cumsum, x = count),
       label_pos = label_pos - (0.5 * count)
     ) %>%
-    arrange(status_ordered)
+    dplyr::arrange(status_ordered)
 
   g_sum
 
@@ -227,7 +227,7 @@ goalbar <- function(
      ,fill = goal_color
     )
   ) +
-  geom_bar(stat="identity") +
+  geom_bar(stat = "identity") +
   geom_text(
     aes(
      y = label_pos
@@ -237,16 +237,16 @@ goalbar <- function(
   ) +
   coord_flip() +
   theme(
-     axis.line=element_blank()
-    ,axis.text=element_blank()
-    ,axis.ticks=element_blank()
-    ,axis.title=element_blank()
-    ,legend.position="none"
-    ,panel.background=element_blank()
-    ,panel.border=element_blank()
-    ,panel.grid.major=element_blank()
-    ,panel.grid.minor=element_blank()
-    ,plot.background=element_blank()
+     axis.line = element_blank()
+    ,axis.text = element_blank()
+    ,axis.ticks = element_blank()
+    ,axis.title = element_blank()
+    ,legend.position = "none"
+    ,panel.background = element_blank()
+    ,panel.border = element_blank()
+    ,panel.grid.major = element_blank()
+    ,panel.grid.minor = element_blank()
+    ,plot.background = element_blank()
   ) +
   scale_fill_identity()
 
