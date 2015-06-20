@@ -33,9 +33,9 @@ test_that("student_npr_history_plot produces proper plot with a grade level of k
 test_that("fuzz test student_npr_history_plot plot", {
 
   mapviz2 <- mapvizieR(ex_CombinedAssessmentResults %>%
-                        filter(StudentID %in% studentids$studentid),
+                        dplyr::filter(StudentID %in% studentids$studentid),
                       ex_CombinedStudentsBySchool %>%
-                        filter(StudentID %in% studentids$studentid)
+                        dplyr::filter(StudentID %in% studentids$studentid)
                       )
 
   results <- fuzz_test_plot(
