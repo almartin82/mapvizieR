@@ -45,7 +45,10 @@ fuzz_test_plot <- function(
       silent = TRUE
     )
 
-    known_error <- try(str_detect(p, fixed("Sorry, can't plot that")), silent = TRUE)
+    known_error <- try(stringr::str_detect(p, 
+                                           stringr::fixed("Sorry, can't plot that")
+                                           ), 
+                       silent = TRUE)
 
     if(known_error==TRUE) {
       #known errors are passed tests
