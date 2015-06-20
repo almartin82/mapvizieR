@@ -10,6 +10,7 @@ Description: mapzivieR is a suite of analytic, visualization, and reporting
     tools for NWEA MAP Data.
 License: file LICENSE
 Depends:
+    grid,
     ggplot2,
     R(>= 2.10.0)
 Suggests:
@@ -24,8 +25,6 @@ Imports:
     stringr,
     dplyr,
     ensurer,
-    ggplot2,
-    grid,
     gridExtra,
     magrittr,
     toOrdinal

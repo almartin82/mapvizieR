@@ -31,7 +31,7 @@ two_pager <- function(
   ...
 ) {
  
-  minimal = rectGrob(gp = gpar(col = "white"))
+  minimal = grid::rectGrob(gp = grid::gpar(col = "white"))
   
   #P1 CHARTS -----------------------------------
   #title

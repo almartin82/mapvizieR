@@ -67,7 +67,7 @@ schambach_figure <- function(
                'Percent Ended\n in Top 75%', 'Avg. Percentile\n Growth', 'Percent Met\n Typical Growth',
                'Percent Met\n Accel Growth', 'Number of\n Students')
       t <- gridExtra::tableGrob(df,
-                                gpar.corefill = gpar(fill = 'lightgreen', alpha = 0.5, col = NA),
+                                gpar.corefill = grid::gpar(fill = 'lightgreen', alpha = 0.5, col = NA),
                                 h.even.alpha = 1,
                                 h.odd.alpha = 0.5,
                                 v.even.alpha = 1,
@@ -76,9 +76,9 @@ schambach_figure <- function(
                                 rows = c(),
                                 cols = col,
                                 col.just = 'center',
-                                gpar.coretext = gpar(fontsize = 10),
-                                gpar.coltext = gpar(fontsize = 12, fontface = 'bold', separator = 'black'),
-                                gpar.rowtext = gpar(fontsize = 12, fontface = 'bold', separator = 'black'),
+                                gpar.coretext = grid::gpar(fontsize = 10),
+                                gpar.coltext = grid::gpar(fontsize = 12, fontface = 'bold', separator = 'black'),
+                                gpar.rowtext = grid::gpar(fontsize = 12, fontface = 'bold', separator = 'black'),
                                 show.box = TRUE
       )
      tables[[i]] <- gridExtra::arrangeGrob(grob_justifier(title, 'center', 'bottom'),

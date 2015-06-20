@@ -8,18 +8,18 @@ test_that("grade_level_ify correctly processes CDF", {
   grade_freq <- table(ex_cdf$grades)
   
   ex_roster_termname_missing <- ex_roster %>%
-    filter(termname=="Fall 2013-2014") %>%
-    sample_n(10)
+    dplyr::filter(termname == "Fall 2013-2014") %>%
+    dplyr::sample_n(10)
     
   
-  ex_cdf_termname_missing <- semi_join(
-    ex_cdf %>% select(-grades),
+  ex_cdf_termname_missing <- dplyr::semi_join(
+    ex_cdf %>% dplyr::select(-grades),
     ex_roster_termname_missing,
-    by=c("studentid", "termname")
+    by = c("studentid", "termname")
   )
   
   ex_roster_termname_missing <- ex_roster_termname_missing %>%
-    mutate(termname=paste(termname,".xxx"))
+    dplyr::mutate(termname=paste(termname,".xxx"))
   
   ex_cdf_termname_missing$grades <- grade_levelify_cdf(ex_cdf_termname_missing, 
                                       ex_roster_termname_missing)
@@ -49,7 +49,7 @@ test_that("cdf_roster_match properly joins assessment results and rosters", {
   ex_matched <- cdf_roster_match(ex_cdf, ex_roster)
   
   expect_equal(nrow(ex_matched), nrow(ex_cdf))
-  expect_equal(ncol(ex_matched), ncol(ex_roster) + ncol(ex_cdf) -5) #-5 = -3 match columns and -2 duplicate columns
+  expect_equal(ncol(ex_matched), ncol(ex_roster) + ncol(ex_cdf) - 5) #-5 = -3 match columns and -2 duplicate columns
   
   expect_warning(cdf_roster_match(ex_cdf, ex_roster_small), "8848")
   
@@ -63,8 +63,8 @@ test_that("grade_season_factors return correct order", {
   )
   
   with_factors <- just_grade_season %>% 
-    rowwise() %>%
-    mutate(
+    dplyr::rowwise() %>%
+    dplyr::mutate(
       grade_season_label = fall_spring_me(grade_level_season)
     ) %>%
     grade_season_factors()
