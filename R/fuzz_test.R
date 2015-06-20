@@ -14,8 +14,8 @@ fuzz_test_plot <- function(
   n = 100,
   additional_args = list(),
   mapviz = mapvizieR(
-    cdf=ex_CombinedAssessmentResults,
-    roster=ex_CombinedStudentsBySchool
+    cdf = ex_CombinedAssessmentResults,
+    roster = ex_CombinedStudentsBySchool
   )
 ) {
 
@@ -31,16 +31,16 @@ fuzz_test_plot <- function(
       unique
 
     arg_list <- list(
-      "mapvizieR_obj"=mapviz
-     ,"studentids"=stu_random
+      "mapvizieR_obj" = mapviz
+     ,"studentids" = stu_random
     )
 
     arg_list <- c(arg_list, additional_args)
 
     p <- try(
       do.call(
-        what=plot_name,
-        args=arg_list
+        what = plot_name,
+        args = arg_list
       ),
       silent = TRUE
     )
@@ -50,7 +50,7 @@ fuzz_test_plot <- function(
                                            ), 
                        silent = TRUE)
 
-    if(known_error==TRUE) {
+    if(known_error == TRUE) {
       #known errors are passed tests
       results[[i]] <- known_error
       studentids[[i]] <- stu_random
@@ -79,8 +79,8 @@ fuzz_test_plot <- function(
     writeLines(paste('fuzz testing', plot_name, 'failed!'))
     writeLines(paste('outputting studentid vectors that caused', plot_name, 'to fail:'))
 
-    failed_on <- studentids[c(results==FALSE)] %>%
-      paste(collapse='\n\n\n') %>%
+    failed_on <- studentids[c(results == FALSE)] %>%
+      paste(collapse = '\n\n\n') %>%
       strwrap()
 
     writeLines(failed_on)
@@ -103,8 +103,8 @@ silly_plot <- function(mapvizieR_obj, studentids) {
   mapvizieR_obj %>% ensure_is_mapvizieR()
 
   p <- ggplot(
-    data=mapvizieR_obj[['cdf']]
-   ,aes(x=testritscore)
+    data = mapvizieR_obj[['cdf']]
+   ,aes(x = testritscore)
   ) +
   geom_histogram()
 
@@ -122,11 +122,11 @@ silly_plot <- function(mapvizieR_obj, studentids) {
 
 error_ridden_plot <- function(mapvizieR_obj, studentids) {
   cdf <- mapvizieR_obj[['cdf']]
-  cdf <- cdf[cdf$studentid=='pancakes', ]
+  cdf <- cdf[cdf$studentid == 'pancakes', ]
 
   p <- ggplot(
-    data=cdf
-   ,aes(x=testritscore)
+    data = cdf
+   ,aes(x = testritscore)
   ) +
   geom_histogram()
 

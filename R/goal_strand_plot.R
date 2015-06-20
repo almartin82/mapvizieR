@@ -131,8 +131,8 @@ goal_strand_plot <- function(mapvizieR_obj,
   
   assertthat::assert_that(nrow(m_long) == nrow(m_melt_names))
   
-  m_long_2 <- filter(m_long, !is.na(goal_name)) %>%
-    filter(!is.na(value))
+  m_long_2 <- dplyr::filter(m_long, !is.na(goal_name)) %>%
+    dplyr::filter(!is.na(value))
   
   assertthat::assert_that(nrow(m_long) >= nrow(m_long_2))  
   
