@@ -154,7 +154,7 @@ cohort_expectation_via_lookup <- function(
     what = sch_growth_lookup,
     args = list(
       measurementscale_in = measurementscale_in,
-      grade_in =grade_in,
+      grade_in = grade_in,
       growth_window_in = growth_window_in,
       baseline_avg_rit = baseline_avg_rit
     )
@@ -277,7 +277,7 @@ determine_cgp_method <- function(
   }
   
   norm_match <- sch_growth_study %>%
-    filter(
+    dplyr::filter(
       measurementscale == measurementscale_in, 
       growth_window == growth_window_in, 
       grade == grade_in
@@ -313,18 +313,18 @@ sch_growth_lookup <- function(
  ,sch_growth_study = sch_growth_norms_2012
 ) {    
   norm_match <- sch_growth_study %>%
-    filter(
+    dplyr::filter(
       measurementscale == measurementscale_in, 
       growth_window == growth_window_in, 
         grade == grade_in
     ) %>%
-    mutate(
+    dplyr::mutate(
       diff = abs(rit - baseline_avg_rit)
     )
   
-  best_match <- rank(norm_match$diff, ties.method=c("first"))
+  best_match <- rank(norm_match$diff, ties.method = c("first"))
   
-  as.list(norm_match[best_match==1, ])
+  as.list(norm_match[best_match == 1, ])
 
 }
 
@@ -347,7 +347,7 @@ rit_to_npr <- function(measurementscale, grade, season, RIT) {
       grade == grade & fallwinterspring == season &
       round(RIT, 0) == RIT),]
   
-  if (nrow(matches)==0) {
+  if (nrow(matches) == 0) {
     NA
   } else{
     matches[1, 'percentile']    
@@ -420,26 +420,26 @@ mapviz_cgp <- function(
   approx_grade <- round(mean(this_growth$end_grade, na.rm = TRUE), 0)  
   
   df <- this_growth %>%
-  summarize(
-    avg_start_rit = mean(start_testritscore, na.rm = TRUE),
-    avg_end_rit = mean(end_testritscore, na.rm = TRUE),
-    avg_rit_change = mean(rit_growth, na.rm = TRUE),
-    avg_start_npr = mean(start_consistent_percentile, na.rm = TRUE),
-    avg_end_npr = mean(end_consistent_percentile, na.rm = TRUE),
-    avg_npr_change = mean(end_consistent_percentile - start_consistent_percentile, na.rm = TRUE),
-    n_typ_true = sum(met_typical_growth, na.rm = TRUE),
-    n_typ_false = sum(!met_typical_growth, na.rm = TRUE),
-    n = n()
-  ) %>%       
-  mutate(
-    percent_typ = n_typ_true / (n_typ_true + n_typ_false)
+    dplyr::summarize(
+      avg_start_rit = mean(start_testritscore, na.rm = TRUE),
+      avg_end_rit = mean(end_testritscore, na.rm = TRUE),
+      avg_rit_change = mean(rit_growth, na.rm = TRUE),
+      avg_start_npr = mean(start_consistent_percentile, na.rm = TRUE),
+      avg_end_npr = mean(end_consistent_percentile, na.rm = TRUE),
+      avg_npr_change = mean(end_consistent_percentile - start_consistent_percentile, na.rm = TRUE),
+      n_typ_true = sum(met_typical_growth, na.rm = TRUE),
+      n_typ_false = sum(!met_typical_growth, na.rm = TRUE),
+      n = n()
+      ) %>%       
+    dplyr::mutate(
+      percent_typ = n_typ_true / (n_typ_true + n_typ_false)
   ) 
   
   #add cgp
   df <- df %>%
-  rowwise() %>%
-  mutate(
-    cgp = calc_cgp(
+    dplyr::rowwise() %>%
+    dplyr::mutate(
+      cgp = calc_cgp(
       measurementscale = measurementscale,
       grade = approx_grade,
       growth_window = paste(start_fws, 'to', end_fws),
