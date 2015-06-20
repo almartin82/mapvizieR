@@ -65,7 +65,7 @@ schambach_table_1d <- function(
   group_summary <- function(grouped_df) {
     
     df <- grouped_df %>%
-      summarize(
+      dplyr::summarize(
         end_rit = round(mean(end_testritscore, na.rm = TRUE), digits = 1),
         start_top75 = round(100 * sum(start_testpercentile >= 75) / n(), digits = 0),
         end_top75 = round(100 * sum(end_testpercentile >= 75) / n(), digits = 0),
