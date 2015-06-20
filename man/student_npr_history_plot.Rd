@@ -24,6 +24,8 @@ student's historical national percentile rank plotted with a simple liear fit.
 The background colors indicate the quartile the assessment earned.
 }
 \examples{
+require(dplyr)
+
 data("ex_CombinedStudentsBySchool")
 data("ex_CombinedAssessmentResults")
 

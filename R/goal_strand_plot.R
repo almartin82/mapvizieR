@@ -18,6 +18,8 @@
 #' @return a ggplot2 object
 #' 
 #' @examples 
+#' require(dplyr)
+#' 
 #' data("ex_CombinedStudentsBySchool")
 #' data("ex_CombinedAssessmentResults")
 #'

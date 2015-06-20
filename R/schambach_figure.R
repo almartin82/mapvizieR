@@ -11,7 +11,7 @@
 #' @param start_academic_year starting academic year
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
-#' @param report title text grob to put on report
+#' @param report_title text grob to put on report
 #' @param complete_obsv if TRUE, limit only to students who have BOTH a start
 #' and end score. default is FALSE.
 #' 

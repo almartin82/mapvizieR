@@ -26,5 +26,4 @@ Imports:
     dplyr,
     ensurer,
     gridExtra,
-    magrittr,
     toOrdinal
