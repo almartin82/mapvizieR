@@ -3,6 +3,20 @@ context("two-pager report tests")
 #make sure that constants used below exist
 testing_constants()
 
+
+test_that("cgp_table works", {
+  ex_cgp <- cgp_table(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Reading',
+    start_fws = 'Fall',
+    start_academic_year = 2013,
+    end_fws = 'Spring',
+    end_academic_year = 2013
+  )  
+})
+
+
 test_that("two-pager report should return ggplot object", {  
   tp_test <- two_pager(
     mapvizieR_obj = mapviz,

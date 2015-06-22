@@ -83,8 +83,9 @@ kipp_typ_growth_distro <- function (
   
   #add a row for comparison school
   nat$highlight_me <- 0
-  new_row <- c(comparison_name, NA, NA, comparison_pct_typ_growth, NA, grade_level
-              ,measurementscale, start_fws, end_fws, academic_year, 1)
+  new_row <- c(
+    comparison_name, NA, NA, comparison_pct_typ_growth, NA, grade_level,
+    measurementscale, start_fws, end_fws, academic_year, 1)
   nat_plus <- rbind(nat, new_row)
 
   head(nat)

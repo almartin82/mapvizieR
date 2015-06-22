@@ -118,7 +118,7 @@ two_pager <- function(
       grade_level = round(mean(this_growth$end_grade, na.rm = TRUE), 0),
       start_fws = start_fws,
       end_fws = end_fws,
-      comparison_name = table(minimal_sch$school)[[1]],
+      comparison_name = names(table(minimal_sch$school))[1],
       comparison_pct_typ_growth = mean(this_growth$met_typical_growth, na.rm = TRUE)
     )
   }
