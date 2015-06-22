@@ -183,7 +183,7 @@ two_pager <- function(
   )
   
   #page 1
-  p1 <- arrangeGrob(
+  p1 <-arrangeGrob(
     ur, br,
     nrow = 2, heights = c(1,3)
   )
@@ -193,7 +193,9 @@ two_pager <- function(
     haid_plot
   )
   
-  return(list(p1, p2))
+  out <- list(p1, p2)
+  
+  out
 }
 
 
