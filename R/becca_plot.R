@@ -38,10 +38,16 @@ becca_plot <- function(
   mv_opening_checks(mapvizieR_obj, studentids, 1)
 
   #TRANSFORMATION 1 - DATA PROCESSING
-
   #unpack the mapvizieR object and limit to desired students
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
     
+  #detect entry grade seasons
+  if (entry_grade_seasons == 'detect') {
+    entry_grade_seasons <- min_term_filter(this_cdf, small_n_cutoff) %>% 
+      dplyr::select(grade_level_season) %>%
+      min()
+  }
+  
   #only valid seasons
   munge <- valid_grade_seasons(this_cdf, first_and_spring_only, 
     entry_grade_seasons, detail_academic_year)
@@ -109,14 +115,14 @@ becca_plot <- function(
   npr_above <- npr_above %>%
     dplyr::group_by(grade_level_season) %>%
     dplyr::mutate(
-      cumsum = order_by(order, cumsum(pct)),
+      cumsum = dplyr::with_order(order_by = order, fun = cumsum, x = pct),
       midpoint = cumsum - (0.5 * pct)
     )
 
   npr_below <- npr_below %>%
     dplyr::group_by(grade_level_season) %>%
     dplyr::mutate(
-      cumsum = order_by(order, cumsum(pct)),
+      cumsum = dplyr::with_order(order_by = order, fun = cumsum, x = pct),
       midpoint = cumsum - (0.5 * pct)
     )
   
@@ -181,7 +187,7 @@ becca_plot <- function(
       axis.ticks.y = element_blank(),
       axis.text.y = element_blank(),
       axis.title.x = element_text(size = rel(0.9)),
-      plot.margin = rep(unit(0,"null"),4)
+      plot.margin = rep(grid::unit(0,"null"),4)
     ) +
     scale_x_continuous(
       breaks = x_breaks,
@@ -208,6 +214,7 @@ becca_plot <- function(
     )
   }
   
-  return(p)
+  # return
+  p
   
 }

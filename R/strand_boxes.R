@@ -131,9 +131,9 @@ strand_boxes <- function(
     panel.grid.minor = element_blank(),
     axis.title.y = element_blank(),
     axis.text.x = element_blank(),
-    panel.margin = unit(0, "null"),
-    plot.margin = rep(unit(0, "null"), 4),
-    axis.ticks.margin = unit(0, "null")
+    panel.margin = grid::unit(0, "null"),
+    plot.margin = rep(grid::unit(0, "null"), 4),
+    axis.ticks.margin = grid::unit(0, "null")
   ) +
   theme(legend.position = "none")
 

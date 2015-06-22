@@ -102,7 +102,7 @@ quealy_subgroups <- function(
     approximate_grade <- round(mean(grouped_df$end_grade, na.rm = TRUE), 0)  
     
     df <- grouped_df %>%
-    summarize(
+    dplyr::summarize(
       start_rit = mean(start_testritscore, na.rm = TRUE),
       end_rit = mean(end_testritscore, na.rm = TRUE),
       rit_change = mean(rit_growth, na.rm = TRUE),
@@ -112,8 +112,8 @@ quealy_subgroups <- function(
       n = n()
     ) %>%       
     #add cgp
-    rowwise() %>%
-    mutate(
+    dplyr::rowwise() %>%
+    dplyr::mutate(
       cgp = calc_cgp(
         measurementscale = measurementscale,
         grade = approximate_grade,
@@ -168,8 +168,8 @@ quealy_subgroups <- function(
     e$xlims <- xlims
     
     df <- df %>%
-      rowwise %>%
-      mutate(
+      dplyr::rowwise() %>%
+      dplyr::mutate(
         cgp_label = cgp_labeler(n, cgp)  
       ) %>%
       as.data.frame
@@ -208,7 +208,7 @@ quealy_subgroups <- function(
       aes(
         size = size_scaled
       ),
-     arrow = arrow(length = unit(0.2 + (0.075 * df$size_scaled), "cm"))
+     arrow = grid::arrow(length = grid::unit(0.2 + (0.075 * df$size_scaled), "cm"))
     ) +
     #start rit
     geom_text(
@@ -256,23 +256,23 @@ quealy_subgroups <- function(
       panel.grid.major.y = element_blank(),
       panel.grid.minor.y = element_blank(),
       panel.border = element_blank(),
-      panel.margin = unit(0, "lines"),
-      plot.margin = unit(c(1,1,1,1), "mm")
+      panel.margin = grid::unit(0, "lines"),
+      plot.margin = grid::unit(c(1,1,1,1), "mm")
     ) +
     labs(x = 'RIT') +
     scale_size_identity()
   
     #title
     p_title <- grob_justifier(
-      textGrob(
-        subgroup, gp = gpar(fontsize = 18, fontface = 'bold')
+      grid::textGrob(
+        subgroup, gp = grid::gpar(fontsize = 18, fontface = 'bold')
       ), 
       "center", "center"
     )
     
     first_row <- if (nrow(df) <= 2) {1.5} else {1}
     #arrange and return
-    arrangeGrob(
+    gridExtra::arrangeGrob(
       p_title, p,
       nrow = 2, heights = c(first_row, 9)
     )    
@@ -300,7 +300,7 @@ quealy_subgroups <- function(
     int_df <- dplyr::group_by_(
       int_df, i
     ) %>%
-    summarize(
+    dplyr::summarize(
       start_rit = round_to_any(mean(start_testritscore, na.rm = TRUE), 2, f = floor),
       end_rit = round_to_any(mean(end_testritscore, na.rm = TRUE), 2, f = ceiling),
       n = n()
@@ -381,5 +381,6 @@ quealy_subgroups <- function(
     ) 
   }
   
-  return(final)
+  # return 
+  final
 }

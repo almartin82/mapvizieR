@@ -44,7 +44,7 @@ report_dispatcher <- function(
   
   #all of the cuts provided need to match columns in the roster.
   cuts_unlisted <- unlist(cut_list)
-  assertthat::assert_that(all(has_name(roster, cuts_unlisted)))
+  assertthat::assert_that(all(assertthat::has_name(roster, cuts_unlisted)))
 
   #find the unique pairs
   cols <- unlist(cut_list)

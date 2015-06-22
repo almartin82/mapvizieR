@@ -43,23 +43,23 @@ prep_cdf_long <- function(cdf_long) {
 
 process_cdf_long <- function(prepped_cdf) {
   
-  prepped_cdf %>% 
-    dedupe_cdf(method="NWEA") %>%
+  munge <- prepped_cdf %>% 
+    dedupe_cdf(method = "NWEA") %>%
     grade_level_seasonify() %>%
     grade_season_labelify() %>%
     grade_season_factors() %>%
-    make_npr_consistent() %>%
-    dplyr::mutate(
-      testquartile = kipp_quartile(consistent_percentile),
-      #testids for client server are NULL.  we'll force a unique identifier here.
-      testid = ifelse(
-        #test
-        is.na(testid),
-        #if TRUE
-        paste(studentid, measurementscale, teststartdate, teststarttime, sep='_'), 
-        #if FALSE
-        testid)
-    )
+    make_npr_consistent()
+  
+  #tried to do this with dplyr::mutate but it threw a weird segfault!
+  munge$testquartile <- kipp_quartile(munge$consistent_percentile)
+  munge$testid <- ifelse(
+    is.na(munge$testid), 
+    paste(munge$studentid, munge$measurementscale, munge$teststartdate, 
+          munge$teststarttime, sep = '_'),
+    munge$testid
+  )
+  
+  return(munge)
 }
 
 
@@ -133,8 +133,9 @@ grade_level_seasonify <- function(cdf) {
     )
   
   season_offsets <- data.frame(
-    season=c('Fall', 'Winter', 'Spring', 'Summer')
-   ,offset=c(-0.8, -0.5, 0, 0.1)
+    season=c('Fall', 'Winter', 'Spring', 'Summer'),
+    offset=c(-0.8, -0.5, 0, 0.1),
+    stringsAsFactors = FALSE
   )
   
   #get the offset

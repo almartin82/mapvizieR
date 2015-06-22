@@ -31,6 +31,8 @@ Creates and prints a ggplot2 object showing both overall and goal strand RIT
 scores for each student in a subets.
 }
 \examples{
+require(dplyr)
+
 data("ex_CombinedStudentsBySchool")
 data("ex_CombinedAssessmentResults")
 

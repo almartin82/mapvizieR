@@ -4,11 +4,10 @@ author: "Andrew Martin and Chris Haid"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{your new mapvizieR object}
+  %\VignetteIndexEntry{report dispatcher}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
 ---
-
 ## big idea
 A common workflow in education analysis is to report progress against some internal slice of your organization - academic progress across schools, or student growth across classrooms, etc.
 

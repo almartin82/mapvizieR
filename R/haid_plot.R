@@ -88,10 +88,14 @@ haid_plot <- function(
 
   #thematic stuff
   pointsize <- 3
-  segsize <- 1
   annotate_size <- 5
-  x_min <- round_to_any(min(c(df$start_testritscore, df$end_testritscore)) - 2, 5, floor)
-  x_max <- round_to_any(max(c(df$start_testritscore, df$end_testritscore)) + 2, 5, f = ceiling)
+  x_min <- round_to_any(
+    min(c(df$start_testritscore, df$end_testritscore), na.rm = TRUE) - 2, 5, floor
+  )
+  x_max <- round_to_any(
+    max(c(df$start_testritscore, df$end_testritscore, 
+          df$start_testritscore + df$accel_growth), na.rm = TRUE) + 1, 5, f = ceiling
+  )
   name_offset <- p_name_offset * (x_max - x_min)
 
   #make a psuedo-axis by ordering based on one variable
@@ -115,6 +119,8 @@ haid_plot <- function(
     df$neg_flag <- 0
   } else {
     df$neg_flag <- ifelse(df$end_testritscore <= df$start_testritscore, 1, 0)
+    #untested END kids should be set to 0
+    df$neg_flag <- ifelse(is.na(df$end_testritscore), 0, df$neg_flag)
   }
 
   #tag names
@@ -137,16 +143,17 @@ haid_plot <- function(
 
   #colors for identity!
   growth_colors <- data.frame(
-    status = p_growth_tiers,
-    color = p_growth_colors,
+    #NA is the status for students with a baseline but no end score.
+    status = c(p_growth_tiers, NA),
+    color = c(p_growth_colors, 'gray50'),
     stringsAsFactors = FALSE
   )
-
-  df$growth_color_identity <- 'black'
 
   if (!single_season_flag) {
     #cribbing off of 'subscripting' http://rwiki.sciviews.org/doku.php?id=tips:data-frames:merge
     df$growth_color_identity <- growth_colors$color[match(df$growth_status, growth_colors$status)]
+  } else {
+    df$growth_color_identity <- 'black'
   }
 
   #start/end quartile colors
@@ -272,7 +279,7 @@ haid_plot <- function(
         group = growth_color_identity,
         color = growth_color_identity
       ),
-      arrow = arrow(length = unit(0.1,"cm"))
+      arrow = grid::arrow(length = grid::unit(0.1,"cm"))
     )
 
     #add RIT text
@@ -309,12 +316,13 @@ haid_plot <- function(
     p <- p + geom_text(
       data = df[df$neg_flag == 1 & !is.na(df$neg_flag) & df$student_name_format != ' ', ],
       aes(
-        x = start_testritscore + 0.4 * p_name_offset,
+        x = start_testritscore + 0.4 * name_offset,
         label = start_testritscore,
         group = baseline_color,
         color = baseline_color
       ),
-      size = p_name_size
+      size = p_name_size,
+      hjust = 0
     )
   }
 

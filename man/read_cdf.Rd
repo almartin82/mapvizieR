@@ -4,12 +4,14 @@
 \alias{read_cdf}
 \title{Reads CDF csv files from a director}
 \usage{
-read_cdf(path = ".", verbose = TRUE)
+read_cdf(path = ".", verbose = TRUE, bad_students = NA)
 }
 \arguments{
 \item{path}{the path to the CSV files as character vector}
 
 \item{verbose}{defaults is TRUE}
+
+\item{bad_students}{StudentIDs to ignore}
 }
 \value{
 a list holding data frames with of stacked longitudinal MAP data.

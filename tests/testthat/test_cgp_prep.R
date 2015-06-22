@@ -5,7 +5,8 @@ testing_constants()
 
 ex_target_rit <- calc_cgp(
     measurementscale = 'Reading', grade = 2, 
-    growth_window = 'Fall to Spring', baseline_avg_rit = 173
+    growth_window = 'Fall to Spring', 
+    baseline_avg_rit = 173
   )[['targets']]
 
 ex_target_npr <- calc_cgp(

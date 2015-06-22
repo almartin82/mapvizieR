@@ -21,7 +21,7 @@ teacher_performance_update <- function(
   ...
 ) {
 
-  minimal = rectGrob(gp = gpar(col = "white"))
+  minimal = grid::rectGrob(gp = grid::gpar(col = "white"))
 
   title_bar <- h_var(paste0('Teacher Performance Update: ', title_text), 24)
 
