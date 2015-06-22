@@ -6,10 +6,8 @@ output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{your new mapvizieR object}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
 ---
-
-
 ```{r silent1, echo=F, results='hide', message=F}
 #libraries and functions etc
 require(assertthat)
@@ -89,11 +87,10 @@ This dataframe is built automatically.  Having your data pre-processed in this f
 
 ## under the hood
 
-If you look at the source on [ mapvizieR](https://github.com/almartin82/mapvizieR/blob/master/R/mapvizieR_object.R#L23) you can see the workflow.
+If you look at the source on [mapvizieR](https://github.com/almartin82/mapvizieR/blob/master/R/mapvizieR_object.R#L23) you can see the workflow.
 
 - first calls `prep_cdf_long` on the raw cdf/AssessmentResults file
 - then calls `prep_roster` on the roster/StudentsBySchool file
 - with the roster in hand, it tags the CDF with grade levels by calling `grade_levelify_cdf`, which triggers a series of post-processing functions that generate labels based on grade level and season.
-
 
 

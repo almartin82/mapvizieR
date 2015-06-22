@@ -115,14 +115,14 @@ becca_plot <- function(
   npr_above <- npr_above %>%
     dplyr::group_by(grade_level_season) %>%
     dplyr::mutate(
-      cumsum = order_by(order, cumsum(pct)),
+      cumsum = dplyr::with_order(order_by = order, fun = cumsum, x = pct),
       midpoint = cumsum - (0.5 * pct)
     )
 
   npr_below <- npr_below %>%
     dplyr::group_by(grade_level_season) %>%
     dplyr::mutate(
-      cumsum = order_by(order, cumsum(pct)),
+      cumsum = dplyr::with_order(order_by = order, fun = cumsum, x = pct),
       midpoint = cumsum - (0.5 * pct)
     )
   
@@ -187,7 +187,7 @@ becca_plot <- function(
       axis.ticks.y = element_blank(),
       axis.text.y = element_blank(),
       axis.title.x = element_text(size = rel(0.9)),
-      plot.margin = rep(unit(0,"null"),4)
+      plot.margin = rep(grid::unit(0,"null"),4)
     ) +
     scale_x_continuous(
       breaks = x_breaks,
@@ -214,6 +214,7 @@ becca_plot <- function(
     )
   }
   
-  return(p)
+  # return
+  p
   
 }

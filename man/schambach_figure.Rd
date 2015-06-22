@@ -28,10 +28,10 @@ schambach_figure(mapvizieR_obj, measurementscale_in, studentids_in,
 
 \item{end_academic_year}{ending academic year}
 
+\item{report_title}{text grob to put on report}
+
 \item{complete_obsv}{if TRUE, limit only to students who have BOTH a start
 and end score. default is FALSE.}
-
-\item{report}{title text grob to put on report}
 }
 \description{
 Produces list of figures from list of data.frames returned by schambach_table_1d

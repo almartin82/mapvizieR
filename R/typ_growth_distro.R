@@ -139,9 +139,9 @@ kipp_typ_growth_distro <- function (
     axis.text.y = element_blank(),
     axis.ticks.y = element_blank(),
      
-    panel.margin = unit(0, "null"),
-    plot.margin = rep(unit(0, "null"), 4),
-    axis.ticks.margin = unit(0, "null")
+    panel.margin = grid::unit(0, "null"),
+    plot.margin = rep(grid::unit(0, "null"), 4),
+    axis.ticks.margin = grid::unit(0, "null")
   ) +
   scale_fill_manual(
     values = c('gray30', 'gold1')

@@ -279,7 +279,7 @@ haid_plot <- function(
         group = growth_color_identity,
         color = growth_color_identity
       ),
-      arrow = arrow(length = unit(0.1,"cm"))
+      arrow = grid::arrow(length = grid::unit(0.1,"cm"))
     )
 
     #add RIT text

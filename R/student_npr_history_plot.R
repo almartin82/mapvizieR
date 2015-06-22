@@ -15,6 +15,7 @@
 #' @export
 #'
 #' @examples
+#' require(dplyr)
 #'
 #' data("ex_CombinedStudentsBySchool")
 #' data("ex_CombinedAssessmentResults")

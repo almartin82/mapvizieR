@@ -4,7 +4,7 @@
 \alias{h_var}
 \title{h_var}
 \usage{
-h_var(text, size, gp = gpar(fontsize = size, fontface = "bold"))
+h_var(text, size, gp = grid::gpar(fontsize = size, fontface = "bold"))
 }
 \arguments{
 \item{text}{text you want on the grob}
