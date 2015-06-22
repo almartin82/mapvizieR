@@ -7,7 +7,7 @@ sudo: required
 env:
  global:
    - CRAN: http://cran.rstudio.com
-   
+
 r_github_packages:
   - jimhester/covr
 after_success:
@@ -15,8 +15,8 @@ after_success:
 
 notifications:
   email:
-  recipients:
+    recipients:
       - almartin@gmail.com
-      - chaid@kippchicago.org 
+      - chaid@kippchicago.org
     on_success: change
     on_failure: change
