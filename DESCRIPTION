@@ -11,7 +11,6 @@ Description: mapzivieR is a suite of analytic, visualization, and reporting
 License: file LICENSE
 Depends:
     ggplot2,
-    dplyr (<= 0.4.1),
     R(>= 2.10.0)
 Suggests:
     testthat,
@@ -19,6 +18,7 @@ Suggests:
 LazyData: true
 VignetteBuilder: knitr
 Imports:
+    dplyr,
     reshape2,
     assertthat,
     lubridate,

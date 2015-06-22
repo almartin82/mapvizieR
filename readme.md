@@ -1,7 +1,7 @@
 # mapvizieR:
 ### an R package that generates visualizations and reports for NWEA MAP data.
 
-[![Travis-CI Build Status](https://travis-ci.org/almartin82/mapvizieR.svg?branch=master)](https://travis-ci.org/almartin82/mapvizieR)![Coverage Status](https://img.shields.io/coveralls/almartin82/mapvizieR.svg)](https://coveralls.io/r/almartin82/mapvizieR?branch=master)
+[![Travis-CI Build Status](https://travis-ci.org/almartin82/mapvizieR.svg?branch=master)](https://travis-ci.org/almartin82/mapvizieR)[![Coverage Status](https://img.shields.io/coveralls/almartin82/mapvizieR.svg)](https://coveralls.io/r/almartin82/mapvizieR?branch=master)
 
 ...because how else are you going to get a capital 'R' into mapviz?
 <br><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Arolsen_Klebeband_02_327.jpg/255px-Arolsen_Klebeband_02_327.jpg">
