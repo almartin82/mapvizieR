@@ -25,7 +25,10 @@ find_duplicate_ids <- function(students_by_school) {
   
   
   df <- students_by_school
-  names(df) <- tolower(names(df))
+  
+  col_names <- names(df)
+  
+  names(df) <- tolower(col_names)
   
   # find all duplicate term_ids
   
@@ -61,23 +64,25 @@ find_duplicate_ids <- function(students_by_school) {
                           dplyr::select(-N),
                         by=c("studentid", "termname"))
     
-    
-    
-    
     n_problems <- nrow(df_problem_duplicates)
     
+    n_collapsible <- abs(n_duplicates-n_problems) 
+    
     if (n_problems == 0 ) {
-      message(sprintf(
-        "There are %s duplicates, but they all can be collapsed.",
+      m <- message(sprintf(
+        "There are %s duplicates, but they all can be collapsed.\n Simply run unique(df) on your data.frame to elminate them",
         n_collapsed))
       
-      return()
+      return(m)
     
       } else {
         message(sprintf("These data have %s duplicated rows.", n_duplicates))
-        message(sprintf("There are %s collapsable duplicates.", n_collapsed))
-        warning(sprintf("%s duplicate records with conflicting data. They are:", n_problems))
+        message(sprintf("There are %s duplicates, but they all can be collapsed.\n Simply run unique(df) on your data.frame to elminate them", n_collapsible))
+        warning(sprintf("%s duplicate records with conflicting data. Here's a hint on IDs and Terms", n_problems))
         
+        
+        names(df_problem_duplicates) <- col_names
+        #return
         df_problem_duplicates
         }
   }
