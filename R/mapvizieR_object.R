@@ -258,3 +258,36 @@ cdf_roster_match <- function(assessment_results, roster) {
   #return 
   matched_df
 }
+
+
+
+#' @title create mapvizieR object from single file
+#' 
+#' @param df a data frame with combined map roster and results
+#' 
+#' @export
+
+single_file_mapvizieR <- function(df) {
+  #lower names
+  df <- lower_df_names(df)
+  
+  #if termname present split
+  if ('termname' %in% names(df)) {
+    df <- extract_academic_year(df)
+  }
+  
+  #get the roster fields
+  roster_fields <- roster_reqs()
+  
+  #are all the roster fields there?  if not, throw an error
+  df %>% ensure_roster_reqs()
+  
+  #grab the roster fields and put in a separate df
+  
+  #we only need one entry per kid/term in roster.  unique the roster
+  
+  #grab the cdf fields and put in a separate df
+  
+  #mv flow
+  return(1)
+}

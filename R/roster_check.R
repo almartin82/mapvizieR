@@ -64,3 +64,54 @@ ensure_roster_types <- ensurer::ensures_that(
   class(.$fallwinterspring) == "character" ~ 
     "check type on fallwinterspring, should be character."
 )
+
+
+
+#' @title roster_reqs
+#' 
+#' @description what fields are required for your roster
+#' 
+#' @return vector of fields
+#' 
+#' @export
+
+roster_reqs <- function() {
+  c('studentid', 'studentlastname', 'studentfirstname', 'grade', 
+    'map_year_academic', 'fallwinterspring')
+}
+
+
+
+#' @title raises appropriate error if roster names are missing
+#' 
+#' @param e an error
+#' 
+#' @export
+
+roster_name_failure <- function(e) {
+  # fetch the dot.
+  . <- get(".", parent.frame())
+
+  fields <- roster_reqs()
+  mask <- names(.) %in% fields
+  
+  # compose a message detailing also the class of the object returned.
+  msg <- sprintf(
+    "your roster is missing: %s field(s).",
+     fields[!mask] %>% paste(collapse = ", ")
+  )
+
+  stop(msg)
+}
+
+
+
+#' @title ensure_roster_reqs
+#' 
+#' @description checks if certain roster fields exist
+#' 
+#' @inheritParams ensure_is_mapvizieR
+
+ensure_roster_reqs <- ensurer::ensures_that(
+    roster_reqs() %in% names(.), fail_with = roster_name_failure
+)

@@ -13,7 +13,7 @@
 #' 
 #' @export
 
-prep_roster <- function(students_by_school, kinder_codes=NULL) {
+prep_roster <- function(students_by_school, kinder_codes = NULL) {
   
   #df names
   roster <- students_by_school %>%
