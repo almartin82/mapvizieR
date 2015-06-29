@@ -81,15 +81,15 @@ extract_academic_year <- function(x) {
 #' abbrev(x, exceptions=altnames)
 
 abbrev <- function(x, exceptions = NULL){
-  x.out<- gsub(pattern="(\\w)\\w*\\W*", 
-               replacement="\\1",
-               x=x)
+  x.out <- gsub(pattern = "(\\w)\\w*\\W*", 
+               replacement = "\\1",
+               x = x)
   
   # pass list of exceptions to the abbrev function
-  if(!is.null(exceptions)){
-    x.changed<-with(exceptions, new[match(x.out, old)]) # create changes vector (non changes = NA)
-    x.changed[is.na(x.changed)]<-x.out[is.na(x.changed)] # replace NAs with non-changed values
-    x.out<-x.changed # replace original vector with changed vector               
+  if (!is.null(exceptions)) {
+    x.changed <- with(exceptions, new[match(x.out, old)]) # create changes vector (non changes = NA)
+    x.changed[is.na(x.changed)] <- x.out[is.na(x.changed)] # replace NAs with non-changed values
+    x.out <- x.changed # replace original vector with changed vector               
   }
   
   x.out
@@ -314,9 +314,9 @@ round_to_any <- function(x, accuracy, f = round) {
 #' @param ... additional arguments
 
 df_sorter <- function(x, by = 1, decreasing = FALSE, ... ) {
-  f <- function(...) order(...,decreasing = decreasing)
+  f <- function(...) order(..., decreasing = decreasing)
   i <- do.call(f, x[by])
-  x[i,,drop = FALSE]
+  x[i, , drop = FALSE]
 }
 
 
@@ -627,7 +627,7 @@ ensure_fields <- function(fields_vector, df) {
 force_string_breaks <- function(string, n_char) {
   breaks <- gsub(paste0('(.{1,', n_char, '})(\\s|$)'), '\\1\n', string)  
   #remove trailing and return
-  str_sub(breaks, 1, -2)
+  stringr::str_sub(breaks, 1, -2)
 }
 
 
@@ -657,4 +657,3 @@ ensure_nonzero_students_with_norms <- ensurer::ensures_that(
     " typical growth norms (possibly because they are too old or young and outside",
     " the NWEA norm study)")
 )
-  

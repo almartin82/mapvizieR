@@ -29,7 +29,7 @@ cgp_table <- function(
   l2 <- h_var("RIT Change", 13)
   l3a <- h_var("Cohort Growth\nPercentile", 13)
   l3b <- grob_justifier(
-    textGrob(paste0('(', start_fws, ' to ', end_fws, ')'), gp = gpar(fontsize = 10)), 
+    textGrob(paste0('(', start_fws, ' to ', end_fws, ')'), gp = grid::gpar(fontsize = 10)), 
     "center", "center"
   )
   l3 <- gridExtra::arrangeGrob(l3a, l3b, nrow = 2, heights = c(2, 1))

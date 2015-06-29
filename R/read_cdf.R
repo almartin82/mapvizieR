@@ -1,4 +1,4 @@
-#' Reads CDF csv files from a director
+#' @title Reads CDF csv files from a director
 #'
 #' @param path the path to the CSV files as character vector
 #' @param verbose defaults is TRUE
@@ -17,7 +17,7 @@
 #' 
 #' str(cdf)
 #' }
-#' 
+
 read_cdf <- function(
   path = ".",
   verbose = TRUE,
@@ -118,4 +118,91 @@ read_cdf <- function(
  
   #return object
   cdf_out
+}
+
+
+
+#' @title replace known bad studentids with good ones 
+#' 
+#' @description if you've identified some bad studentids in your map data file, 
+#' you'll want to make sure that they are globally updated to good ones.  this function
+#' takes the output of read cdf and a data frame of studentids to change, and updates
+#' the bad references with good ones.
+#' 
+#' ultimately you'll want to push these changes upstream to the NWEA site, but in a
+#' pinch, clean_cdf can help
+#'
+#' @param cdf_list the output of read cdf
+#' @param ids_df a data frame with the bad studentid, and the good replacement.
+#' look at the default parameter value to see how to pass the data.
+#' @param verbose default is TRUE
+#' 
+#' @export
+#' 
+#' @return same output as read_cdf, a list of NWEA MAP data files
+ 
+clean_cdf <- function(
+  cdf_list, 
+  ids_df = data.frame(
+      'bad_id' = c('INCORRECT STUDENTID #1'),
+      'good_id' = c('CORRECTED STUDENTID #1')
+    ),
+  verbose = TRUE
+  ) {
+  
+  #first, take the UNIQUES from students by school
+  nrow_before <- nrow(cdf_list$students_by_school)
+  cdf_list$students_by_school <- unique(cdf_list$students_by_school)
+  nrow_after <- nrow(cdf_list$students_by_school)
+  if (verbose) {
+    print(
+      paste('Dropped', nrow_before - nrow_after, 
+          'duplicate students from the students_by_school file.')
+    )
+  }
+  
+  #if there's a duplication, 
+  sub_studentid <- function(df, bad_id, good_id) {
+    if (nrow(df) == 0) {
+      df
+    } else {
+      df[df$StudentID == bad_id, 'StudentID'] <- good_id
+      df
+    }
+  }
+  
+  for (i in 1:nrow(ids_df)) {
+    if (verbose) {
+      student <- cdf_list$students_by_school[
+        cdf_list$students_by_school$StudentID == ids_df[i, 'bad_id'], 
+        c('StudentFirstName', 'StudentLastName')] %>% as.data.frame()
+      
+      print(
+        paste('cleaning bad id for', student[1, 'StudentFirstName'], 
+              student[1, 'StudentLastName'])
+      )
+    }
+    
+    cdf_list$assessemnt_results <- sub_studentid(
+      cdf_list$assessemnt_results, ids_df[i, 'bad_id'], ids_df[i, 'good_id']
+    )
+
+    cdf_list$students_by_school <- sub_studentid(
+      cdf_list$students_by_school, ids_df[i, 'bad_id'], ids_df[i, 'good_id']
+    )
+
+    cdf_list$class_assignments <- sub_studentid(
+      cdf_list$class_assignments, ids_df[i, 'bad_id'], ids_df[i, 'good_id']
+    )
+
+    cdf_list$accommodation_assignments <- sub_studentid(
+      cdf_list$accommodation_assignments, ids_df[i, 'bad_id'], ids_df[i, 'good_id']
+    )
+    
+    cdf_list$program_assignments <- sub_studentid(
+      cdf_list$program_assignments, ids_df[i, 'bad_id'], ids_df[i, 'good_id']
+    )
+  }
+  
+  return(cdf_list)
 }

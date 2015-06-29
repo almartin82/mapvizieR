@@ -4,14 +4,14 @@
 \alias{student_npr_history_plot}
 \title{A small multiples plot of a set of students' national percentile rank histories.}
 \usage{
-student_npr_history_plot(mapvizieR_obj, studentids, measurementscale)
+student_npr_history_plot(mapvizieR_obj, studentids, subject)
 }
 \arguments{
 \item{mapvizieR_obj}{a \code{\link{mapvizieR}} object}
 
 \item{studentids}{a set of student ids to subset too.}
 
-\item{measurementscale}{the subject of interest}
+\item{subject}{the subject of interest}
 }
 \value{
 a ggplot2 object
@@ -24,6 +24,8 @@ student's historical national percentile rank plotted with a simple liear fit.
 The background colors indicate the quartile the assessment earned.
 }
 \examples{
+require(dplyr)
+
 data("ex_CombinedStudentsBySchool")
 data("ex_CombinedAssessmentResults")
 
@@ -38,6 +40,6 @@ ids<-ex_CombinedStudentsBySchool \%>\% filter(
 student_npr_history_plot(
     map_mv,
     studentids = ids[1:80, "StudentID"],
-    measurementscale = "Reading")
+    subject = "Reading")
 }
 

@@ -8,13 +8,14 @@
 #'
 #' @param mapvizieR_obj a \code{\link{mapvizieR}} object
 #' @param studentids a set of student ids to subset too.
-#' @param measurementscale the subject of interest
+#' @param subject the subject of interest
 #'
 #' @return a ggplot2 object
 #'
 #' @export
 #'
 #' @examples
+#' require(dplyr)
 #'
 #' data("ex_CombinedStudentsBySchool")
 #' data("ex_CombinedAssessmentResults")
@@ -30,11 +31,11 @@
 #' student_npr_history_plot(
 #'     map_mv,
 #'     studentids = ids[1:80, "StudentID"],
-#'     measurementscale = "Reading")
+#'     subject = "Reading")
 
 student_npr_history_plot <- function(mapvizieR_obj,
                                      studentids,
-                                     measurementscale){
+                                     subject){
 
 
   # data validation
@@ -47,7 +48,7 @@ student_npr_history_plot <- function(mapvizieR_obj,
   cdf <- mapvizieR_obj$cdf %>%
     dplyr::filter(
       studentid %in% studentids,
-      measurementscale %in% measurementscale
+      measurementscale == subject
       )
 
   # combine roster and cdf form mapvizier_object
