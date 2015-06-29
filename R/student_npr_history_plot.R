@@ -31,7 +31,7 @@
 #' student_npr_history_plot(
 #'     map_mv,
 #'     studentids = ids[1:80, "StudentID"],
-#'     measurementscale = "Reading")
+#'     subject = "Reading")
 
 student_npr_history_plot <- function(mapvizieR_obj,
                                      studentids,
