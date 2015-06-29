@@ -30,7 +30,7 @@
 #' @return summary stats as a \code{mapvizier_summary} object.
 #' @rdname summary
 #' @export
-#' @examples 
+
 
 summary.mapvizieR <- function(mapvizieR_object, ..., digits = 2){
   
