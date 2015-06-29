@@ -77,7 +77,7 @@ find_duplicate_ids <- function(students_by_school) {
     
       } else {
         message(sprintf("These data have %s duplicated rows.", n_duplicates))
-        message(sprintf("There are %s duplicates, but they all can be collapsed.\n Simply run unique(df) on your data.frame to elminate them", n_collapsible))
+        message(sprintf("There are %s duplicates, but they all can be collapsed because the rows are identical. \nCollapsing these rows into a single row should pose no problems \n Simply run unique(df) on your data.frame to elminate them", n_collapsible))
         warning(sprintf("%s duplicate records with conflicting data. Here's a hint on IDs and Terms", n_problems))
         
         
