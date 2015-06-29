@@ -2,6 +2,7 @@
 
 S3method(mapvizieR,default)
 S3method(print,mapvizieR)
+S3method(summary,mapvizieR)
 export(abbrev)
 export(add_accelerated_growth)
 export(amys_lists)
