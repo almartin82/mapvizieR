@@ -9,6 +9,7 @@
 #' @param mapvizieR_obj a \code{\link{mapvizieR}} object
 #' @param studentids a set of student ids to subset too.
 #' @param subject the subject of interest
+#' @param title_text title as a character vector
 #'
 #' @return a ggplot2 object
 #'
@@ -35,7 +36,8 @@
 
 student_npr_history_plot <- function(mapvizieR_obj,
                                      studentids,
-                                     subject){
+                                     subject,
+                                     title_text = ""){
 
 
   # data validation
@@ -114,7 +116,8 @@ student_npr_history_plot <- function(mapvizieR_obj,
           axis.text.y = element_text(size=6),
           axis.text.x = element_text(size=4)
     ) +
-    ylab("National Percentile Rank")
+    ylab("National Percentile Rank") + 
+    ggtitle(title_text)
 
   #return
   p_indv
