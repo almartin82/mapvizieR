@@ -100,10 +100,9 @@ quealy_subgroups <- function(
   #2| INTERNAL FUNCTIONS
   group_summary <- function(grouped_df, subgroup) {
     
-    approximate_grade <- round(mean(grouped_df$end_grade, na.rm = TRUE), 0)  
-    
     df <- grouped_df %>%
-    dplyr::summarize(
+    dplyr::summarize(    
+      approximate_grade = round(mean(end_grade, na.rm = TRUE), 0), 
       start_rit = mean(start_testritscore, na.rm = TRUE),
       end_rit = mean(end_testritscore, na.rm = TRUE),
       rit_change = mean(rit_growth, na.rm = TRUE),
