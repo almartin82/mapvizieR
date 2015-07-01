@@ -16,10 +16,10 @@ test_that("quealy_subgroups produces proper plot with a grade level of kids", {
     mapvizieR_obj = mapviz,
     studentids = studentids_normal_use,
     measurementscale = 'Reading',
-    subgroup_cols = c('starting_quartile', 'studentgender'),
-    pretty_names = c('Starting Quartile', 'Gender'),
+    subgroup_cols = c('starting_quartile'),
+    pretty_names = c('Start Quartile'),
     start_fws = 'Fall',
-    start_academic_year = 2013,
+    start_year_offset = 0,
     end_fws = 'Spring',
     end_academic_year = 2013
   )
@@ -75,7 +75,7 @@ samp_nyt <- quealy_subgroups(
     subgroup_cols = c('starting_quartile', 'studentgender'),
     pretty_names = c('Starting Quartile', 'Gender'),
     start_fws = 'Winter',
-    start_academic_year = 2013,
+    start_year_offset = 0,
     end_fws = 'Spring',
     end_academic_year = 2013,
     complete_obsv = TRUE
@@ -103,7 +103,7 @@ test_that("quealy_subgroups with no school growth study", {
     subgroup_cols = c('starting_quartile', 'studentgender'),
     pretty_names = c('Starting Quartile', 'Gender'),
     start_fws = 'Fall',
-    start_academic_year = 2013,
+    start_year_offset = 0,
     end_fws = 'Winter',
     end_academic_year = 2013,
     complete_obsv = TRUE
@@ -134,7 +134,7 @@ test_that("quealy_subgroups generates a warning when multiple grade levels passe
       subgroup_cols = c('starting_quartile', 'studentgender'),
       pretty_names = c('Starting Quartile', 'Gender'),
       start_fws = 'Fall',
-      start_academic_year = 2013,
+      start_year_offset = 0,
       end_fws = 'Spring',
       end_academic_year = 2013,
       complete_obsv = TRUE
