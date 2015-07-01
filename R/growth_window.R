@@ -28,8 +28,8 @@ auto_growth_window <- function(
 ) {
   #data validation
   mv_opening_checks(mapvizieR_obj, studentids, 1)
-  
-  assertthat::assert_that(length(candidate_start_fws == 2))
+   
+  assertthat::assert_that(length(candidate_start_fws) == 2)
 
   #NSE problems... :(
   measurementscale_in <- measurementscale
