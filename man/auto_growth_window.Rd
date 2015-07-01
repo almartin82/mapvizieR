@@ -2,6 +2,7 @@
 % Please edit documentation in R/growth_window.R
 \name{auto_growth_window}
 \alias{auto_growth_window}
+\title{Extract likely growth window}
 \usage{
 auto_growth_window(mapvizieR_obj, studentids, measurementscale, end_fws,
   end_academic_year, candidate_start_fws = c("Fall", "Spring"),
@@ -17,6 +18,8 @@ auto_growth_window(mapvizieR_obj, studentids, measurementscale, end_fws,
 
 \item{end_fws}{desired end of growth term (season)}
 
+\item{end_academic_year}{desired end of growth term (year)}
+
 \item{candidate_start_fws}{two seasons to pick from}
 
 \item{candidate_year_offsets}{if prev spring, -1}
@@ -24,8 +27,9 @@ auto_growth_window(mapvizieR_obj, studentids, measurementscale, end_fws,
 \item{candidate_prefer}{which one is the 'best' term?}
 
 \item{tolerance}{revert to the other term if this one is below the tolerance}
-
-\item{end_academic}{year desired end of growth term (year)}
+}
+\value{
+a list with inferred start season and year
 }
 \description{
 utility function to determine the best growth window from the data presented

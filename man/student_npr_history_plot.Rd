@@ -26,6 +26,7 @@ student's historical national percentile rank plotted with a simple liear fit.
 The background colors indicate the quartile the assessment earned.
 }
 \examples{
+\dontrun{
 require(dplyr)
 
 data("ex_CombinedStudentsBySchool")
@@ -43,5 +44,6 @@ student_npr_history_plot(
     map_mv,
     studentids = ids[1:80, "StudentID"],
     subject = "Reading")
+}
 }
 
