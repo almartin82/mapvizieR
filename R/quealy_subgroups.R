@@ -13,12 +13,14 @@
 #' @param pretty_names nicely formatted names for the column cuts used above.
 #' @param start_fws one academic season (if known); pass vector of two and quealy subgroups will pick
 #' @param start_year_offset 0 if start season is same, -1 if start is prior year.
+#' @param start_fws_prefer which term is preferred? 
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
 #' @param report_title text grob to put on the report tile
 #' @param complete_obsv if TRUE, limit only to students who have BOTH a start
 #' and end score. default is FALSE.
 #' @param drop_NA should we ignore subgroups with value NA?  default is true
+#' @param ... additional arguments
 #' 
 #' @export
 
@@ -32,10 +34,12 @@ quealy_subgroups <- function(
   start_year_offset,
   end_fws,
   end_academic_year,
+  start_fws_prefer = NA,
   report_title = NA,
   complete_obsv = FALSE,
   drop_NA = TRUE,
-  include_all = TRUE
+  include_all = TRUE,
+  ...
 ) {
   #1| DATA PROCESSING
 
@@ -86,36 +90,55 @@ quealy_subgroups <- function(
   }
   
   #2| INTERNAL FUNCTIONS
-  group_summary <- function(grouped_df, subgroup) {
+  group_summary <- function(growth_df, subgroup) {
     
-    if (length(start_fws) > 1) {
-      auto_windows <- auto_growth_window(
-        mapvizieR_obj = mapvizieR_obj,
-        studentids = unique(grouped_df$studentid),
-        measurementscale = measurementscale,
-        end_fws = end_fws, 
-        end_academic_year = end_academic_year,
-        candidate_start_fws = start_fws,
-        candidate_year_offsets = start_year_offset,
-        candidate_prefer = 'Spring',
-        tolerance = 0.8
-      )
-      inferred_start_fws <- auto_windows[[1]]
-      inferred_start_academic_year <- auto_windows[[2]]
-    } else {
-      inferred_start_fws <- start_fws
-      inferred_start_academic_year <- end_academic_year + start_year_offset
-    }
+    #get uniques
+    growth_df <- growth_df %>% as.data.frame()
+    unq_sub <- unique(growth_df[,subgroup])
+    unq_sub <- unq_sub[!is.na(unq_sub)]
     
-    grouped_df <- grouped_df %>%
-      dplyr::filter(
+    #loop over uniques
+    #we have to do this because the determiniation of growth windows
+    #is *per group*
+    target_df <- growth_df[0, ]
+    
+    for (i in unq_sub) {
+      mask <- growth_df[, subgroup] == i
+      this_stu <- growth_df[mask, ]$studentid %>% unique()
+
+      if (length(start_fws) > 1) {
+        auto_windows <- auto_growth_window(
+          mapvizieR_obj = mapvizieR_obj,
+          studentids = this_stu,
+          measurementscale = measurementscale,
+          end_fws = end_fws, 
+          end_academic_year = end_academic_year,
+          candidate_start_fws = start_fws,
+          candidate_year_offsets = start_year_offset,
+          candidate_prefer = start_fws_prefer,
+          tolerance = 0.8
+        )
+        inferred_start_fws <- auto_windows[[1]]
+        inferred_start_academic_year <- auto_windows[[2]]
+      } else {
+        inferred_start_fws <- start_fws
+        inferred_start_academic_year <- end_academic_year + start_year_offset
+      }
+      
+      #filter using id'd start term
+      filtered_subgroup <- growth_df %>% dplyr::filter(
+        studentid %in% this_stu &
         start_fallwinterspring == inferred_start_fws &
         start_map_year_academic == inferred_start_academic_year
       )
+      
+      #put back together
+      target_df <- rbind(target_df, filtered_subgroup)
+    }
+    
 
     #throw a warning if multiple grade levels
-    grades_present <- unique(grouped_df$start_grade)
-
+    grades_present <- unique(target_df$start_grade)
     if (length(grades_present) > 1) {
       warning(
         sprintf(paste0("%i distinct grade levels present in your data! NWEA ",
@@ -127,7 +150,10 @@ quealy_subgroups <- function(
       )
     }
         
-    df <- grouped_df %>%
+    df <- target_df %>%
+    dplyr::group_by_(
+      subgroup, quote(start_fallwinterspring), quote(end_fallwinterspring)
+    ) %>%
     dplyr::summarize(    
       approximate_grade = round(mean(end_grade, na.rm = TRUE), 0), 
       start_rit = mean(start_testritscore, na.rm = TRUE),
@@ -389,10 +415,7 @@ quealy_subgroups <- function(
   nrow_list <- list()
 
   this_growth$all_students <- 'All Students'
-  total_change <- group_summary(
-    dplyr::group_by(this_growth, all_students, start_fallwinterspring, end_fallwinterspring),
-    'all_students'
-  )
+  total_change <- group_summary(this_growth, 'all_students')
   
   if (include_all == TRUE) {
     #all students
@@ -428,11 +451,9 @@ quealy_subgroups <- function(
       by = c('studentid' = 'studentid')
     )
     
-    #now group by subgroup and summarize
-    grouped_df <- dplyr::group_by_(
-      combined_df, subgroup, quote(start_fallwinterspring), quote(end_fallwinterspring)
-    )
-    this_summary <- group_summary(grouped_df, subgroup)
+    #now pass to group summary
+    this_summary <- group_summary(combined_df, subgroup)
+    
     plot_list[[counter]] <- facet_one_subgroup(
       df = this_summary, 
       subgroup = pretty_names[i],
