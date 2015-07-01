@@ -6,8 +6,9 @@
 \usage{
 quealy_subgroups(mapvizieR_obj, studentids, measurementscale,
   subgroup_cols = c("starting_quartile"),
-  pretty_names = c("Starting Quartile"), start_fws, start_academic_year,
-  end_fws, end_academic_year, report_title = NA, complete_obsv = FALSE)
+  pretty_names = c("Starting Quartile"), start_fws, start_year_offset,
+  end_fws, end_academic_year, report_title = NA, complete_obsv = FALSE,
+  drop_NA = TRUE)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -21,9 +22,9 @@ is starting_quartile}
 
 \item{pretty_names}{nicely formatted names for the column cuts used above.}
 
-\item{start_fws}{starting season}
+\item{start_fws}{one academic season (if known); pass vector of two and quealy subgroups will pick}
 
-\item{start_academic_year}{starting academic year}
+\item{start_year_offset}{0 if start season is same, -1 if start is prior year.}
 
 \item{end_fws}{ending season}
 
@@ -33,6 +34,8 @@ is starting_quartile}
 
 \item{complete_obsv}{if TRUE, limit only to students who have BOTH a start
 and end score. default is FALSE.}
+
+\item{drop_NA}{should we ignore subgroups with value NA?  default is true}
 }
 \description{
 kevin quealy of the nytimes did a nice job capturing change

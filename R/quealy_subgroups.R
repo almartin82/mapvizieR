@@ -11,13 +11,14 @@
 #' @param subgroup_cols what subgroups in mapvizier roster do you want to cut by?  default
 #' is starting_quartile
 #' @param pretty_names nicely formatted names for the column cuts used above.
-#' @param start_fws starting season
-#' @param start_academic_year starting academic year
+#' @param start_fws one academic season (if known); pass vector of two and quealy subgroups will pick
+#' @param start_year_offset 0 if start season is same, -1 if start is prior year.
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
 #' @param report_title text grob to put on the report tile
 #' @param complete_obsv if TRUE, limit only to students who have BOTH a start
 #' and end score. default is FALSE.
+#' @param drop_NA should we ignore subgroups with value NA?  default is true
 #' 
 #' @export
 
@@ -28,11 +29,12 @@ quealy_subgroups <- function(
   subgroup_cols = c('starting_quartile'),
   pretty_names = c('Starting Quartile'),
   start_fws,
-  start_academic_year,
+  start_year_offset,
   end_fws,
   end_academic_year,
   report_title = NA,
-  complete_obsv = FALSE
+  complete_obsv = FALSE,
+  drop_NA = TRUE
 ) {
   #1| DATA PROCESSING
 
@@ -48,25 +50,10 @@ quealy_subgroups <- function(
   #just desired terms
   this_growth <- growth_df %>%
     dplyr::filter(
-      start_map_year_academic == start_academic_year,
-      start_fallwinterspring == start_fws,
       end_map_year_academic == end_academic_year,
       end_fallwinterspring == end_fws
     )
   
-  #throw a warning if multiple grade levels
-  grades_present <- unique(this_growth$start_grade)
-  
-  if (length(grades_present) > 1) {
-    warning(
-      sprintf(paste0("%i distinct grade levels present in your data! NWEA ",
-        "school growth study tables assume cohorts composed of students ",
-        "of the *same grade level*.  quealy_subgroups will use the mean starting grade ",
-        "level to calculate growth scores, but you are advised to check your data and  ",
-        "attempt to use a cohort composed of students from the same grade."), 
-        length(grades_present))
-    )
-  }
   
   #put starting quartile on the roster and rename
   #if we add other 'out of the box' cuts that look at  
@@ -100,10 +87,48 @@ quealy_subgroups <- function(
   #2| INTERNAL FUNCTIONS
   group_summary <- function(grouped_df, subgroup) {
     
-    approximate_grade <- round(mean(grouped_df$end_grade, na.rm = TRUE), 0)  
+    if (length(start_fws) > 1) {
+      auto_windows <- auto_growth_window(
+        mapvizieR_obj = mapvizieR_obj,
+        studentids = unique(grouped_df$studentid),
+        measurementscale = measurementscale_in,
+        end_fws = end_fws, 
+        end_academic_year = end_academic_year,
+        candidate_start_fws = start_fws,
+        candidate_year_offsets = start_year_offset,
+        candidate_prefer = 'Spring',
+        tolerance = 0.8
+      )
+      inferred_start_fws <- auto_windows[[1]]
+      inferred_start_academic_year <- auto_windows[[2]]
+    } else {
+      inferred_start_fws <- start_fws
+      inferred_start_academic_year <- end_academic_year + start_year_offset
+    }
     
+    grouped_df <- grouped_df %>%
+      dplyr::filter(
+        start_fallwinterspring == inferred_start_fws &
+        start_map_year_academic == inferred_start_academic_year
+      )
+
+    #throw a warning if multiple grade levels
+    grades_present <- unique(grouped_df$start_grade)
+
+    if (length(grades_present) > 1) {
+      warning(
+        sprintf(paste0("%i distinct grade levels present in your data! NWEA ",
+          "school growth study tables assume cohorts composed of students ",
+          "of the *same grade level*.  quealy_subgroups will use the mean starting grade ",
+          "level to calculate growth scores, but you are advised to check your data and  ",
+          "attempt to use a cohort composed of students from the same grade."), 
+          length(grades_present))
+      )
+    }
+        
     df <- grouped_df %>%
-    dplyr::summarize(
+    dplyr::summarize(    
+      approximate_grade = round(mean(end_grade, na.rm = TRUE), 0), 
       start_rit = mean(start_testritscore, na.rm = TRUE),
       end_rit = mean(end_testritscore, na.rm = TRUE),
       rit_change = mean(rit_growth, na.rm = TRUE),
@@ -126,8 +151,13 @@ quealy_subgroups <- function(
         tolerance = 99
       )[['results']] 
     ) %>%
-    as.data.frame
+    as.data.frame()
     
+    if (drop_NA == TRUE) {
+      mask <- !is.na(df[, subgroup])
+      df <- df[mask, ]
+    }
+
     names(df)[names(df) == subgroup] <- 'facet_me'
     
     df
@@ -141,6 +171,8 @@ quealy_subgroups <- function(
     
     #add newline breaks to the facet text
     df$facet_format <- unlist(lapply(df$facet_me, force_string_breaks, 15))
+    #add the season
+    df$start_season <- 
     
     #get the arrow size on a universal scale
     min_width <- 0.1
@@ -150,11 +182,11 @@ quealy_subgroups <- function(
         
     all_na_test <- all(is.na(df$cgp))
     
-    
     #cgp labeler
+    
     cgp_labeler <- function(n, cgp) {
-      if ((start_fws == 'Fall' & end_fws == 'Winter') | 
-        (start_fws == 'Spring' & end_fws == 'Winter')
+      if ((unique(df$start_fallwinterspring) == 'Fall' & end_fws == 'Winter') | 
+        (unique(df$start_fallwinterspring) == 'Spring' & end_fws == 'Winter')
       ) {
         return(paste(n, 'stu')) 
       }
@@ -173,7 +205,7 @@ quealy_subgroups <- function(
       dplyr::mutate(
         cgp_label = cgp_labeler(n, cgp)  
       ) %>%
-      as.data.frame
+      as.data.frame()
   
     #make
     p <- ggplot(
@@ -216,7 +248,7 @@ quealy_subgroups <- function(
       aes(
         x = start_rit,
         y = 0.7,
-        label = round(start_rit, 1)
+        label = paste0(round(start_rit, 1), ' (', substr(start_fallwinterspring, 1, 1), ')')
       ),
       inherit.aes = FALSE,
       size = 4
@@ -226,7 +258,7 @@ quealy_subgroups <- function(
       aes(
         x = end_rit,
         y = 0.7,
-        label = round(end_rit, 1)
+        label = paste0(round(end_rit, 1), ' (', substr(end_fallwinterspring, 1, 1), ')')
       ),
       inherit.aes = FALSE,
       size = 4
@@ -289,11 +321,37 @@ quealy_subgroups <- function(
   max_n <- -1
   
   for (i in subgroup_cols) {
+    
+    if (length(start_fws) > 1) {
+      auto_windows <- auto_growth_window(
+        mapvizieR_obj = mapvizieR_obj,
+        studentids = unique(grouped_df$studentid),
+        measurementscale = measurementscale_in,
+        end_fws = end_fws, 
+        end_academic_year = end_academic_year,
+        candidate_start_fws = start_fws,
+        candidate_year_offsets = start_year_offset,
+        candidate_prefer = 'Spring',
+        tolerance = 0.8
+      )
+      inferred_start_fws <- auto_windows[[1]]
+      inferred_start_academic_year <- auto_windows[[2]]
+    } else {
+      inferred_start_fws <- start_fws
+      inferred_start_academic_year <- end_academic_year + start_year_offset
+    }
+    
+    this_window <- this_growth %>%
+      dplyr::filter(
+        start_fallwinterspring == inferred_start_fws &
+        start_map_year_academic == inferred_start_academic_year
+      )
+
     minimal_roster <- roster[, c('studentid', i)]
     #get uniques
     minimal_roster <- unique(minimal_roster)
     int_df <- dplyr::inner_join(
-      x = this_growth,
+      x = this_window,
       y = minimal_roster,
       by = c('studentid' = 'studentid')
     )
@@ -305,7 +363,12 @@ quealy_subgroups <- function(
       start_rit = round_to_any(mean(start_testritscore, na.rm = TRUE), 2, f = floor),
       end_rit = round_to_any(mean(end_testritscore, na.rm = TRUE), 2, f = ceiling),
       n = n()
-    )
+    ) %>% as.data.frame()
+    
+    if (drop_NA == TRUE) {
+      mask <- !is.na(int_df[, i])
+      int_df <- int_df[mask, ]
+    }
     
     if (min(int_df$start_rit, na.rm = TRUE) < x_min) x_min <- min(int_df$start_rit, na.rm = TRUE)
     if (max(int_df$end_rit, na.rm = TRUE) > x_max) x_max <- max(int_df$end_rit, na.rm = TRUE)
@@ -318,7 +381,10 @@ quealy_subgroups <- function(
   
   #all students
   this_growth$all_students <- 'All Students'
-  total_change <- group_summary(dplyr::group_by(this_growth, all_students), 'all_students')
+  total_change <- group_summary(
+    dplyr::group_by(this_growth, all_students, start_fallwinterspring, end_fallwinterspring),
+    'all_students'
+  )
   
   p_all <- facet_one_subgroup(
     df = total_change, 
@@ -351,7 +417,9 @@ quealy_subgroups <- function(
     )
     
     #now group by subgroup and summarize
-    grouped_df <- dplyr::group_by_(combined_df, subgroup)
+    grouped_df <- dplyr::group_by_(
+      combined_df, subgroup, quote(start_fallwinterspring), quote(end_fallwinterspring)
+    )
     this_summary <- group_summary(grouped_df, subgroup)
     plot_list[[counter]] <- facet_one_subgroup(
       df = this_summary, 
@@ -385,3 +453,6 @@ quealy_subgroups <- function(
   # return 
   final
 }
+
+
+
