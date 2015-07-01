@@ -34,7 +34,8 @@ quealy_subgroups <- function(
   end_academic_year,
   report_title = NA,
   complete_obsv = FALSE,
-  drop_NA = TRUE
+  drop_NA = TRUE,
+  include_all = TRUE
 ) {
   #1| DATA PROCESSING
 
@@ -91,7 +92,7 @@ quealy_subgroups <- function(
       auto_windows <- auto_growth_window(
         mapvizieR_obj = mapvizieR_obj,
         studentids = unique(grouped_df$studentid),
-        measurementscale = measurementscale_in,
+        measurementscale = measurementscale,
         end_fws = end_fws, 
         end_academic_year = end_academic_year,
         candidate_start_fws = start_fws,
@@ -175,8 +176,8 @@ quealy_subgroups <- function(
     df$start_season <- 
     
     #get the arrow size on a universal scale
-    min_width <- 0.1
-    max_width <- 1.5
+    min_width <- 0.2
+    max_width <- 0.5
     pct_of_range <- ((df$n - n_range[1]) / (n_range[2] - n_range[1]))
     df$size_scaled <- min_width + (pct_of_range * (max_width - min_width))
         
@@ -217,16 +218,20 @@ quealy_subgroups <- function(
         yend = 1
       ),
       environment = e
-    ) +
-    annotate(
-      geom = 'rect',
-      xmin = ref_lines[1], xmax = ref_lines[2], ymin = -1, ymax = 3,
-      fill = 'dodgerblue',
-      alpha = 0.15,
-      size = 1.25
-    ) +
+    )
+    
+    if (include_all == TRUE) {
+      p <- p + annotate(
+        geom = 'rect',
+        xmin = ref_lines[1], xmax = ref_lines[2], ymin = -1, ymax = 3,
+        fill = 'dodgerblue',
+        alpha = 0.15,
+        size = 1.25
+      ) 
+    }
+    
     #labels
-    geom_text(
+    p <- p + geom_text(
       aes(
         x = start_rit + 0.5 * (end_rit - start_rit),
         y = 0.75,
@@ -325,8 +330,8 @@ quealy_subgroups <- function(
     if (length(start_fws) > 1) {
       auto_windows <- auto_growth_window(
         mapvizieR_obj = mapvizieR_obj,
-        studentids = unique(grouped_df$studentid),
-        measurementscale = measurementscale_in,
+        studentids = unique(this_growth$studentid),
+        measurementscale = measurementscale,
         end_fws = end_fws, 
         end_academic_year = end_academic_year,
         candidate_start_fws = start_fws,
@@ -379,28 +384,35 @@ quealy_subgroups <- function(
   plot_lims <- c(x_min, x_max)
   n_range <- c(min_n, max_n)
   
-  #all students
+  counter <- 1
+  plot_list <- list()
+  nrow_list <- list()
+
   this_growth$all_students <- 'All Students'
   total_change <- group_summary(
     dplyr::group_by(this_growth, all_students, start_fallwinterspring, end_fallwinterspring),
     'all_students'
   )
   
-  p_all <- facet_one_subgroup(
-    df = total_change, 
-    subgroup = 'All Students',
-    xlims = plot_lims,
-    n_range = n_range,
-    ref_lines = c(total_change$start_rit, total_change$end_rit)
-  )
+  if (include_all == TRUE) {
+    #all students
+    p_all <- facet_one_subgroup(
+      df = total_change, 
+      subgroup = 'All Students',
+      xlims = plot_lims,
+      n_range = n_range,
+      ref_lines = c(total_change$start_rit, total_change$end_rit)
+    )
+    
+    plot_list[[counter]] <- p_all
+    nrow_list[[counter]] <- 1.5
+    
+    counter <- counter + 1
+  }
 
   #iterate over subgroups
-  plot_list <- list()
-  nrow_list <- list()
   #values for ALL students
-  plot_list[[1]] <- p_all
-  nrow_list[[1]] <- 1.5
-  counter <- 2
+  
   
   for (i in 1:length(subgroup_cols)) {
     subgroup <- subgroup_cols[i]
