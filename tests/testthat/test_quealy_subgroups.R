@@ -46,7 +46,7 @@ test_that("quealy_subgroups with complete_obsv and title", {
     subgroup_cols = c('starting_quartile', 'studentgender'),
     pretty_names = c('Starting Quartile', 'Gender'),
     start_fws = 'Fall',
-    start_academic_year = 2013,
+    start_year_offset = 0,
     end_fws = 'Spring',
     end_academic_year = 2013,
     complete_obsv = TRUE,
