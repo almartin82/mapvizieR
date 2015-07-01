@@ -171,6 +171,8 @@ quealy_subgroups <- function(
     
     #add newline breaks to the facet text
     df$facet_format <- unlist(lapply(df$facet_me, force_string_breaks, 15))
+    #add the season
+    df$start_season <- 
     
     #get the arrow size on a universal scale
     min_width <- 0.1
@@ -180,11 +182,11 @@ quealy_subgroups <- function(
         
     all_na_test <- all(is.na(df$cgp))
     
-    
     #cgp labeler
+    
     cgp_labeler <- function(n, cgp) {
-      if ((start_fws == 'Fall' & end_fws == 'Winter') | 
-        (start_fws == 'Spring' & end_fws == 'Winter')
+      if ((unique(df$start_fallwinterspring) == 'Fall' & end_fws == 'Winter') | 
+        (unique(df$start_fallwinterspring) == 'Spring' & end_fws == 'Winter')
       ) {
         return(paste(n, 'stu')) 
       }
@@ -246,7 +248,7 @@ quealy_subgroups <- function(
       aes(
         x = start_rit,
         y = 0.7,
-        label = round(start_rit, 1)
+        label = paste0(round(start_rit, 1), ' (', substr(start_fallwinterspring, 1, 1), ')')
       ),
       inherit.aes = FALSE,
       size = 4
@@ -256,7 +258,7 @@ quealy_subgroups <- function(
       aes(
         x = end_rit,
         y = 0.7,
-        label = round(end_rit, 1)
+        label = paste0(round(end_rit, 1), ' (', substr(end_fallwinterspring, 1, 1), ')')
       ),
       inherit.aes = FALSE,
       size = 4
@@ -379,7 +381,10 @@ quealy_subgroups <- function(
   
   #all students
   this_growth$all_students <- 'All Students'
-  total_change <- group_summary(dplyr::group_by(this_growth, all_students), 'all_students')
+  total_change <- group_summary(
+    dplyr::group_by(this_growth, all_students, start_fallwinterspring, end_fallwinterspring),
+    'all_students'
+  )
   
   p_all <- facet_one_subgroup(
     df = total_change, 
@@ -412,7 +417,9 @@ quealy_subgroups <- function(
     )
     
     #now group by subgroup and summarize
-    grouped_df <- dplyr::group_by_(combined_df, subgroup)
+    grouped_df <- dplyr::group_by_(
+      combined_df, subgroup, quote(start_fallwinterspring), quote(end_fallwinterspring)
+    )
     this_summary <- group_summary(grouped_df, subgroup)
     plot_list[[counter]] <- facet_one_subgroup(
       df = this_summary, 

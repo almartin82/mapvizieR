@@ -143,3 +143,23 @@ test_that("quealy_subgroups generates a warning when multiple grade levels passe
   )
     
 })
+
+
+
+test_that("quealy_subgroups with multiple growth windows", {
+  
+  auto_growth <- quealy_subgroups(
+    mapvizieR_obj = mapviz,
+    studentids = roster$studentid,
+    measurementscale = 'Reading',
+    subgroup_cols = c('grade', 'studentgender'),
+    pretty_names = c('Grade', 'Gender'),
+    start_fws = 'Fall',
+    start_year_offset = 0,
+    end_fws = 'Spring',
+    end_academic_year = 2013,
+    complete_obsv = TRUE
+  )
+
+    
+})
