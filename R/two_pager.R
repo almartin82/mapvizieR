@@ -121,7 +121,7 @@ two_pager <- function(
       grade_level = round(mean(this_growth$end_grade, na.rm = TRUE), 0),
       start_fws = start_fws,
       end_fws = end_fws,
-      comparison_name = table(minimal_sch$school)[[1]],
+      comparison_name = names(table(minimal_sch$school))[1],
       comparison_pct_typ_growth = mean(this_growth$met_typical_growth, na.rm = TRUE)
     )
   }
@@ -252,17 +252,17 @@ knj_two_pager <- function(
         complete_obsv == TRUE
     )
 
-  exists_test <- prefer_fws %in% unique(this_growth$start_fallwinterspring)
-  coverage_test <- sum(this_growth$start_fallwinterspring == prefer_fws) / length(unique(this_growth$studentid))
+  auto_windows <- auto_growth_window(
+    mapvizieR_obj = mapviz,
+    studentids = unique(this_growth$studentid),
+    measurementscale = measurementscale_in,
+    end_fws = end_fws, 
+    end_academic_year = end_academic_year
+  )
   
-  if (all(exists_test & coverage_test > 0.5)) {
-    inferred_start_fws <- prefer_fws
-    inferred_start_academic_year <- end_academic_year + start_year_offsets[candidate_start_fws == prefer_fws]
-  } else {
-    inferred_start_fws <- candidate_start_fws[candidate_start_fws != prefer_fws]
-    inferred_start_academic_year <- end_academic_year + start_year_offsets[candidate_start_fws != prefer_fws]
-  }
-   
+  inferred_start_fws <- auto_windows[[1]]
+  inferred_start_academic_year <- auto_windows[[2]]
+  
   #hand that to two-pager
   p <- two_pager(
     mapvizieR_obj = mapvizieR_obj, 

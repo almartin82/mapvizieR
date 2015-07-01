@@ -53,6 +53,7 @@ quealy_subgroups <- function(
       end_map_year_academic == end_academic_year,
       end_fallwinterspring == end_fws
     )
+  
   #throw a warning if multiple grade levels
   grades_present <- unique(this_growth$start_grade)
   
