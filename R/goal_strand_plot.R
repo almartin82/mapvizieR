@@ -18,7 +18,7 @@
 #' @return a ggplot2 object
 #' 
 #' @examples 
-#' require(dplyr)
+#' \dontrun{require(dplyr)
 #' 
 #' data("ex_CombinedStudentsBySchool")
 #' data("ex_CombinedAssessmentResults")
@@ -38,7 +38,7 @@
 #'  fws="Spring", 
 #'  year=2013
 #'  )
-#'
+#'}
 #'@export
 
 goal_strand_plot <- function(mapvizieR_obj,

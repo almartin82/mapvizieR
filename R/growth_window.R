@@ -1,14 +1,19 @@
-#' @description utility function to determine the best growth window from the data presented
+#' Extract likely growth window 
 #' 
+#' @description utility function to determine the best growth window from the data presented
+#'
 #' @param mapvizieR_obj a mapvizier object
 #' @param studentids the studentids in question
 #' @param measurementscale a NWEA MAP measurementscale
 #' @param end_fws desired end of growth term (season)
-#' @param end_academic year desired end of growth term (year)
+#' @param end_academic_year desired end of growth term (year)
 #' @param candidate_start_fws two seasons to pick from
 #' @param candidate_year_offsets if prev spring, -1
 #' @param candidate_prefer which one is the 'best' term?
 #' @param tolerance revert to the other term if this one is below the tolerance
+#'
+#' @return  a list with inferred start season and year
+#' @export
 
 auto_growth_window <- function(
   mapvizieR_obj, 

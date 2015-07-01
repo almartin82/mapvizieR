@@ -16,6 +16,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' require(dplyr)
 #'
 #' data("ex_CombinedStudentsBySchool")
@@ -33,6 +34,7 @@
 #'     map_mv,
 #'     studentids = ids[1:80, "StudentID"],
 #'     subject = "Reading")
+#'}
 
 student_npr_history_plot <- function(mapvizieR_obj,
                                      studentids,
