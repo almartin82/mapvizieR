@@ -1,3 +1,14 @@
+#' @description utility function to determine the best growth window from the data presented
+#' 
+#' @param mapvizieR_obj a mapvizier object
+#' @param studentids the studentids in question
+#' @param measurementscale a NWEA MAP measurementscale
+#' @param end_fws desired end of growth term (season)
+#' @param end_academic year desired end of growth term (year)
+#' @param candidate_start_fws two seasons to pick from
+#' @param candidate_year_offsets if prev spring, -1
+#' @param candidate_prefer which one is the 'best' term?
+#' @param tolerance revert to the other term if this one is below the tolerance
 
 auto_growth_window <- function(
   mapvizieR_obj, 
@@ -10,6 +21,11 @@ auto_growth_window <- function(
   candidate_prefer = 'Spring',
   tolerance = 0.5
 ) {
+  #data validation
+  mv_opening_checks(mapvizieR_obj, studentids, 1)
+  
+  assertthat::assert_that(length(candidate_start_fws == 2))
+
   #NSE problems... :(
   measurementscale_in <- measurementscale
   
