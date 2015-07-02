@@ -7,8 +7,8 @@
 quealy_subgroups(mapvizieR_obj, studentids, measurementscale,
   subgroup_cols = c("starting_quartile"),
   pretty_names = c("Starting Quartile"), start_fws, start_year_offset,
-  end_fws, end_academic_year, report_title = NA, complete_obsv = FALSE,
-  drop_NA = TRUE)
+  end_fws, end_academic_year, start_fws_prefer = NA, report_title = NA,
+  complete_obsv = FALSE, drop_NA = TRUE, include_all = TRUE)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -29,6 +29,8 @@ is starting_quartile}
 \item{end_fws}{ending season}
 
 \item{end_academic_year}{ending academic year}
+
+\item{start_fws_prefer}{which term is preferred?}
 
 \item{report_title}{text grob to put on the report tile}
 

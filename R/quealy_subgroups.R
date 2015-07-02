@@ -20,7 +20,6 @@
 #' @param complete_obsv if TRUE, limit only to students who have BOTH a start
 #' and end score. default is FALSE.
 #' @param drop_NA should we ignore subgroups with value NA?  default is true
-#' @param ... additional arguments
 #' 
 #' @export
 
@@ -38,8 +37,7 @@ quealy_subgroups <- function(
   report_title = NA,
   complete_obsv = FALSE,
   drop_NA = TRUE,
-  include_all = TRUE,
-  ...
+  include_all = TRUE
 ) {
   #1| DATA PROCESSING
 
@@ -116,7 +114,7 @@ quealy_subgroups <- function(
           candidate_start_fws = start_fws,
           candidate_year_offsets = start_year_offset,
           candidate_prefer = start_fws_prefer,
-          tolerance = 0.8
+          tolerance = 0.65
         )
         inferred_start_fws <- auto_windows[[1]]
         inferred_start_academic_year <- auto_windows[[2]]
