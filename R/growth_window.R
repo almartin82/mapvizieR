@@ -47,8 +47,6 @@ auto_growth_window <- function(
   exists_test <- candidate_prefer %in% unique(this_growth$start_fallwinterspring)
   coverage_test <- sum(this_growth$start_fallwinterspring == candidate_prefer) / length(unique(this_growth$studentid))
   
-  print(coverage_test)
-  
   if (all(exists_test & coverage_test > tolerance)) {
     inferred_start_fws <- candidate_prefer
     inferred_start_academic_year <- end_academic_year + candidate_year_offsets[candidate_start_fws == candidate_prefer]
