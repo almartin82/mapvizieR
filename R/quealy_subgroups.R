@@ -114,7 +114,7 @@ quealy_subgroups <- function(
           candidate_start_fws = start_fws,
           candidate_year_offsets = start_year_offset,
           candidate_prefer = start_fws_prefer,
-          tolerance = 0.65
+          window_tolerance = 0.66
         )
         inferred_start_fws <- auto_windows[[1]]
         inferred_start_academic_year <- auto_windows[[2]]
@@ -361,7 +361,7 @@ quealy_subgroups <- function(
         candidate_start_fws = start_fws,
         candidate_year_offsets = start_year_offset,
         candidate_prefer = 'Spring',
-        tolerance = 0.65
+        window_tolerance = 0.8
       )
       inferred_start_fws <- auto_windows[[1]]
       inferred_start_academic_year <- auto_windows[[2]]
@@ -405,7 +405,7 @@ quealy_subgroups <- function(
     if (max(int_df$n, na.rm = TRUE) > max_n) max_n <- max(int_df$n, na.rm = TRUE)
   }
   
-  plot_lims <- c(x_min, x_max)
+  plot_lims <- c(round_to_any(x_min, 5, f = floor), round_to_any(x_max, 5, f = ceiling))
   n_range <- c(min_n, max_n)
   
   counter <- 1
@@ -484,6 +484,4 @@ quealy_subgroups <- function(
   # return 
   final
 }
-
-
 
