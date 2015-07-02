@@ -407,7 +407,7 @@ quealy_subgroups <- function(
     if (max(int_df$n, na.rm = TRUE) > max_n) max_n <- max(int_df$n, na.rm = TRUE)
   }
   
-  plot_lims <- c(round_to_any(x_min, 5, f = floor), round_to_any(x_max, 5, f = ceiling))
+  plot_lims <- c(x_min, x_max)
   n_range <- c(min_n, max_n)
   
   counter <- 1
