@@ -11,6 +11,7 @@
 #' @param candidate_year_offsets if prev spring, -1
 #' @param candidate_prefer which one is the 'best' term?
 #' @param tolerance revert to the other term if this one is below the tolerance
+#' @param ... additional arguments
 #'
 #' @return  a list with inferred start season and year
 #' @export

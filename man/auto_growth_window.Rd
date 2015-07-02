@@ -7,7 +7,7 @@
 auto_growth_window(mapvizieR_obj, studentids, measurementscale, end_fws,
   end_academic_year, candidate_start_fws = c("Fall", "Spring"),
   candidate_year_offsets = c(0, -1), candidate_prefer = "Spring",
-  tolerance = 0.5)
+  tolerance = 0.5, ...)
 }
 \arguments{
 \item{mapvizieR_obj}{a mapvizier object}
@@ -27,6 +27,8 @@ auto_growth_window(mapvizieR_obj, studentids, measurementscale, end_fws,
 \item{candidate_prefer}{which one is the 'best' term?}
 
 \item{tolerance}{revert to the other term if this one is below the tolerance}
+
+\item{...}{additional arguments}
 }
 \value{
 a list with inferred start season and year
