@@ -361,7 +361,7 @@ quealy_subgroups <- function(
         candidate_start_fws = start_fws,
         candidate_year_offsets = start_year_offset,
         candidate_prefer = 'Spring',
-        tolerance = 0.8
+        tolerance = 0.65
       )
       inferred_start_fws <- auto_windows[[1]]
       inferred_start_academic_year <- auto_windows[[2]]
