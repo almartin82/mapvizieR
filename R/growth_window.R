@@ -24,7 +24,8 @@ auto_growth_window <- function(
   candidate_start_fws = c('Fall', 'Spring'),
   candidate_year_offsets = c(0, -1),
   candidate_prefer = 'Spring',
-  tolerance = 0.5
+  tolerance = 0.5,
+  ...
 ) {
   #data validation
   mv_opening_checks(mapvizieR_obj, studentids, 1)
