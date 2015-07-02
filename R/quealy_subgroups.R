@@ -90,7 +90,7 @@ quealy_subgroups <- function(
   }
   
   #2| INTERNAL FUNCTIONS
-  group_summary <- function(growth_df, subgroup) {
+  group_summary <- function(growth_df, subgroup, ...) {
     
     #get uniques
     growth_df <- growth_df %>% as.data.frame()
@@ -116,7 +116,7 @@ quealy_subgroups <- function(
           candidate_start_fws = start_fws,
           candidate_year_offsets = start_year_offset,
           candidate_prefer = start_fws_prefer,
-          tolerance = 0.8
+          ...
         )
         inferred_start_fws <- auto_windows[[1]]
         inferred_start_academic_year <- auto_windows[[2]]
@@ -363,7 +363,7 @@ quealy_subgroups <- function(
         candidate_start_fws = start_fws,
         candidate_year_offsets = start_year_offset,
         candidate_prefer = 'Spring',
-        tolerance = 0.8
+        ...
       )
       inferred_start_fws <- auto_windows[[1]]
       inferred_start_academic_year <- auto_windows[[2]]
