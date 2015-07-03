@@ -49,6 +49,9 @@ quealy_subgroups <- function(
   assertthat::assert_that(length(subgroup_cols) == length(pretty_names))
   
   #2. limit to kids, endpoint
+  #nse problems?
+  measurementscale <- measurementscale
+  
   df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale) %>%
     dplyr::filter(
       end_map_year_academic == end_academic_year,
@@ -126,7 +129,7 @@ quealy_subgroups <- function(
       )
       
       #calc subgroup stats
-      perm_stats <- quealy_permutation_stats(this_stu, i)
+      perm_stats <- quealy_permutation_stats(this_stu, i, measurementscale)
       perm_stats %>% ensurer::ensure_that(
         nrow(.) == 1 ~ 'there should only be one group!')
       
@@ -202,7 +205,7 @@ quealy_subgroups <- function(
       paste(collapse = ',') %>% strsplit(split = ',') %>% unlist()
     mask <- df$persistent_names %in% all_rownames
     #calc group stats on those stu
-    this_sum <- quealy_permutation_stats(df[mask, ], subgroup_cols[i])
+    this_sum <- quealy_permutation_stats(df[mask, ], subgroup_cols[i], measurementscale)
     names(this_sum)[names(this_sum) == subgroup_cols[i]] <- 'facet_me'
     
     plot_list[[plot_counter]] <- quealy_facet_one_subgroup(
@@ -254,7 +257,7 @@ quealy_subgroups <- function(
 #' 
 #' @export
 
-quealy_permutation_stats <- function(df, subgroup) {
+quealy_permutation_stats <- function(df, subgroup, measurementscale) {
   start_fws <- unique(df$start_fallwinterspring)[1]
   end_fws <- unique(df$end_fallwinterspring)[1]
 
@@ -335,8 +338,8 @@ quealy_facet_one_subgroup <- function(
   #cgp labeler
   
   cgp_labeler <- function(n, cgp) {
-    if ((unique(sum_df$start_fallwinterspring) == 'Fall' & end_fws == 'Winter') | 
-      (unique(sum_df$start_fallwinterspring) == 'Spring' & end_fws == 'Winter')
+    if ((unique(sum_df$start_fallwinterspring) == 'Fall' & unique(sum_df$end_fallwinterspring) == 'Winter') | 
+      (unique(sum_df$start_fallwinterspring) == 'Spring' & unique(sum_df$end_fallwinterspring) == 'Winter')
     ) {
       return(paste(n, 'stu')) 
     }
