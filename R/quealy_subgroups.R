@@ -408,7 +408,8 @@ quealy_facet_one_subgroup <- function(
       label = paste0(round(start_rit, 1), ' (', substr(start_fallwinterspring, 1, 1), ')')
     ),
     inherit.aes = FALSE,
-    size = 4
+    size = 3,
+    color = 'gray40'
   ) +
   #end rit
   geom_text(
@@ -418,7 +419,8 @@ quealy_facet_one_subgroup <- function(
       label = paste0(round(end_rit, 1), ' (', substr(end_fallwinterspring, 1, 1), ')')
     ),
     inherit.aes = FALSE,
-    size = 4
+    size = 3,
+    color = 'gray40'
   ) +    
   #n stu and CGP
   geom_text(

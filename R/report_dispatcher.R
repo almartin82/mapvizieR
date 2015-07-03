@@ -81,7 +81,7 @@ report_dispatcher <- function(
   #end make perm list loop  
   }
   
-  if (verbose) writeLines('permutations on selected cuts are:'); print(perm_list)
+  if (verbose) {writeLines('permutations on selected cuts are:'); print(perm_list)}
 
   #iterate over the perm list
   #these are the reports we need to generate
