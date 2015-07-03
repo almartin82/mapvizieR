@@ -16,8 +16,8 @@ test_that("quealy_subgroups produces proper plot with a grade level of kids", {
     mapvizieR_obj = mapviz,
     studentids = studentids_normal_use,
     measurementscale = 'Reading',
-    subgroup_cols = c('starting_quartile'),
-    pretty_names = c('Start Quartile'),
+    subgroup_cols = c('studentgender'),
+    pretty_names = c('Gender'),
     start_fws = 'Fall',
     start_year_offset = 0,
     end_fws = 'Spring',
@@ -43,8 +43,8 @@ test_that("quealy_subgroups with complete_obsv and title", {
     mapvizieR_obj = mapviz,
     studentids = studentids_normal_use,
     measurementscale = 'Reading',
-    subgroup_cols = c('starting_quartile', 'studentgender'),
-    pretty_names = c('Starting Quartile', 'Gender'),
+    subgroup_cols = c('studentethnicgroup', 'studentgender'),
+    pretty_names = c('Ethnicity', 'Gender'),
     start_fws = 'Fall',
     start_year_offset = 0,
     end_fws = 'Spring',
@@ -72,8 +72,8 @@ samp_nyt <- quealy_subgroups(
     mapvizieR_obj = mapviz,
     studentids = studentids_normal_use,
     measurementscale = 'Reading',
-    subgroup_cols = c('starting_quartile', 'studentgender'),
-    pretty_names = c('Starting Quartile', 'Gender'),
+    subgroup_cols = c('studentethnicgroup', 'studentgender'),
+    pretty_names = c('Ethnic Group', 'Gender'),
     start_fws = 'Winter',
     start_year_offset = 0,
     end_fws = 'Spring',
@@ -100,8 +100,8 @@ test_that("quealy_subgroups with no school growth study", {
     mapvizieR_obj = mapviz,
     studentids = studentids_normal_use,
     measurementscale = 'Reading',
-    subgroup_cols = c('starting_quartile', 'studentgender'),
-    pretty_names = c('Starting Quartile', 'Gender'),
+    subgroup_cols = c('studentethnicgroup', 'studentgender'),
+    pretty_names = c('Ethnic Group', 'Gender'),
     start_fws = 'Fall',
     start_year_offset = 0,
     end_fws = 'Winter',
@@ -123,29 +123,6 @@ test_that("quealy_subgroups with no school growth study", {
 })
 
 
-
-test_that("quealy_subgroups generates a warning when multiple grade levels passed", {
-  
-  expect_warning(
-    quealy_subgroups(
-      mapvizieR_obj = mapviz,
-      studentids = roster$studentid,
-      measurementscale = 'Reading',
-      subgroup_cols = c('starting_quartile', 'studentgender'),
-      pretty_names = c('Starting Quartile', 'Gender'),
-      start_fws = 'Fall',
-      start_year_offset = 0,
-      end_fws = 'Spring',
-      end_academic_year = 2013,
-      complete_obsv = TRUE
-    ),
-    "11 distinct grade levels present in your data!"
-  )
-    
-})
-
-
-
 test_that("quealy_subgroups with multiple growth windows", {
   
   auto_growth <- quealy_subgroups(
@@ -160,6 +137,4 @@ test_that("quealy_subgroups with multiple growth windows", {
     end_academic_year = 2013,
     complete_obsv = TRUE
   )
-
-    
 })

@@ -257,7 +257,7 @@ fall_spring_me <- function(x) {
     gr_spr <- c(0:12)
     gr_fall <- gr_spr - 0.8
     gr_wint <- gr_spr - 0.5
-    
+
     with_k <- c('K', gr_spr[2:13])
     #just the labels
     labels_spr <- paste0(with_k, 'S')
@@ -657,3 +657,33 @@ ensure_nonzero_students_with_norms <- ensurer::ensures_that(
     " typical growth norms (possibly because they are too old or young and outside",
     " the NWEA norm study)")
 )
+
+
+
+#' @title numeric_nwea_seasons
+#'
+#' @description
+#' tranforms fall, winter, spring into a numeric offset so things sort the right way
+#'
+#' @param x a vector of seasons
+#' 
+#' @return a vector of numeric offsets
+#' @export
+
+
+numeric_nwea_seasons <- function(x) {
+  #make the df
+  offsets <- data.frame(
+    'fallwinterspring' = c('Fall', 'Winter', 'Spring'),
+    'season_offset' = c(0.01, 0.02, 0.03),
+    stringsAsFactors = FALSE
+  )
+  
+  x_joined <- dplyr::left_join(
+    x = data.frame('fallwinterspring' = x, stringsAsFactors = FALSE),
+    y = offsets,
+    by = 'fallwinterspring'
+  ) %>% as.data.frame()
+  
+  return(x_joined[, 'season_offset', drop = TRUE])
+}

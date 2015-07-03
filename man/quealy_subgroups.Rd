@@ -8,7 +8,7 @@ quealy_subgroups(mapvizieR_obj, studentids, measurementscale,
   subgroup_cols = c("starting_quartile"),
   pretty_names = c("Starting Quartile"), start_fws, start_year_offset,
   end_fws, end_academic_year, start_fws_prefer = NA, report_title = NA,
-  complete_obsv = FALSE, drop_NA = TRUE, include_all = TRUE)
+  complete_obsv = FALSE, drop_NA_groups = TRUE, include_all = TRUE)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -30,14 +30,20 @@ is starting_quartile}
 
 \item{end_academic_year}{ending academic year}
 
-\item{start_fws_prefer}{which term is preferred?}
+\item{start_fws_prefer}{which term is preferred? not required if only one start_fws is passed}
 
 \item{report_title}{text grob to put on the report tile}
 
 \item{complete_obsv}{if TRUE, limit only to students who have BOTH a start
 and end score. default is FALSE.}
 
-\item{drop_NA}{should we ignore subgroups with value NA?  default is true}
+\item{drop_NA_groups}{should we ignore subgroups with value NA?  default is true}
+
+\item{include_all}{should the output have plot at the top showing the TOTAL
+variation?  not recommended for data spanning multiple grade levels.}
+}
+\value{
+a grob composed of multiple ggplots
 }
 \description{
 kevin quealy of the nytimes did a nice job capturing change

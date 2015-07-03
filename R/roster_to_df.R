@@ -1,6 +1,6 @@
 #' @title roster_to_cdf
 #' 
-#' @desciption when you need to put a roster object onto a cdf.  reasonably easy because this is 
+#' @description  when you need to put a roster object onto a cdf.  reasonably easy because this is 
 #' point in time data.
 #' 
 #' @param target_df the df you want to put stuff on

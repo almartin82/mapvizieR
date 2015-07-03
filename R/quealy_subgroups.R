@@ -13,13 +13,17 @@
 #' @param pretty_names nicely formatted names for the column cuts used above.
 #' @param start_fws one academic season (if known); pass vector of two and quealy subgroups will pick
 #' @param start_year_offset 0 if start season is same, -1 if start is prior year.
-#' @param start_fws_prefer which term is preferred? 
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
+#' @param start_fws_prefer which term is preferred? not required if only one start_fws is passed
 #' @param report_title text grob to put on the report tile
 #' @param complete_obsv if TRUE, limit only to students who have BOTH a start
 #' and end score. default is FALSE.
-#' @param drop_NA should we ignore subgroups with value NA?  default is true
+#' @param drop_NA_groups should we ignore subgroups with value NA?  default is true
+#' @param include_all should the output have plot at the top showing the TOTAL
+#' variation?  not recommended for data spanning multiple grade levels.
+#' 
+#' @return a grob composed of multiple ggplots
 #' 
 #' @export
 
@@ -36,78 +40,69 @@ quealy_subgroups <- function(
   start_fws_prefer = NA,
   report_title = NA,
   complete_obsv = FALSE,
-  drop_NA = TRUE,
+  drop_NA_groups = TRUE,
   include_all = TRUE
 ) {
-  #1| DATA PROCESSING
-
-  #data validation and unpack
+  
+  #1. validation
   mv_opening_checks(mapvizieR_obj, studentids, 1)
   assertthat::assert_that(length(subgroup_cols) == length(pretty_names))
   
-  #unpack the mapvizieR object and limit to desired students
-  roster <- mapvizieR_obj[['roster']]
-  growth_df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale)
-
-  #data processing
-  #just desired terms
-  this_growth <- growth_df %>%
+  #2. limit to kids, endpoint
+  df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale) %>%
     dplyr::filter(
       end_map_year_academic == end_academic_year,
       end_fallwinterspring == end_fws
     )
-  
-  
-  #put starting quartile on the roster and rename
-  #if we add other 'out of the box' cuts that look at  
-  roster <- dplyr::left_join(
-    x = roster,
-    y = this_growth[ ,c('studentid', 'start_testquartile')],
-    by = 'studentid'
-  )
-  roster$start_testquartile <- ifelse(
-    !is.na(roster$start_testquartile),
-    paste('Quartile', roster$start_testquartile),
-    NA
-  )
-  
-  names(roster)[names(roster) == 'start_testquartile'] <- 'starting_quartile'
-  
-  #require that all subgroups match names of the roster.
-  roster %>% 
-    ensurer::ensure_that(
-      all(subgroup_cols %in% names(roster)) ~ "subgroup_cols must match column names in your mapvizieR roster."
-    )
-  
-  #complete observations?
-  if (complete_obsv == TRUE) {
-    this_growth <- this_growth %>%
-      dplyr::filter(
-        complete_obsv == TRUE  
-      )
+  if (complete_obsv) {
+    df <- df %>% dplyr::filter(complete_obsv == TRUE)
   }
   
-  #2| INTERNAL FUNCTIONS
-  group_summary <- function(growth_df, subgroup) {
+  #3. put SUBGROUPS values from roster onto df
+  df <- roster_to_growth_df(
+    target_df = df,
+    mapvizieR_obj = mapvizieR_obj,
+    roster_cols = subgroup_cols
+  )
+  #put rownames back on the df
+  df$persistent_names <- rownames(df)
+  
+  #4. for each SUBGROUP permutation
+  all_sub <- subgroup_cols
+  if (include_all) {
+    #add all_students to df
+    df$all_students <- 'All Students'
+    #include in subgroups
+    all_sub <- c('all_students', all_sub)
+  }
+  
+  #df to hold the result
+  window_df <- data.frame(
+    subgroup = character(0), perm = character(0), 
+    start_fws = character(0), start_year = integer(0), 
+    #for global limits/sizes
+    min_x = numeric(0), max_x = numeric(0),
+    n = integer(0), persist_row_names = character(0),
+    stringsAsFactors = FALSE
+  )
+  counter <- 1
+  group_stats <- list()
+  
+  #...find the GROWTH WINDOW
+  #also calc group stats, so we don't have to do it later.
+  for (i in all_sub) {
+    perms <- df[, i] %>% unique()
+    if (drop_NA_groups == TRUE) {perms <- perms[!is.na(perms)]}
     
-    #get uniques
-    growth_df <- growth_df %>% as.data.frame()
-    unq_sub <- unique(growth_df[,subgroup])
-    unq_sub <- unq_sub[!is.na(unq_sub)]
-    
-    #loop over uniques
-    #we have to do this because the determiniation of growth windows
-    #is *per group*
-    target_df <- growth_df[0, ]
-    
-    for (i in unq_sub) {
-      mask <- growth_df[, subgroup] == i
-      this_stu <- growth_df[mask, ]$studentid %>% unique()
-
+    for (j in perms) {
+      #matching sub/perm students
+      mask <- df[, i] == j
+      #get the windows
       if (length(start_fws) > 1) {
+        #from the data
         auto_windows <- auto_growth_window(
           mapvizieR_obj = mapvizieR_obj,
-          studentids = this_stu,
+          studentids = df[mask, 'studentid'],
           measurementscale = measurementscale,
           end_fws = end_fws, 
           end_academic_year = end_academic_year,
@@ -123,32 +118,147 @@ quealy_subgroups <- function(
         inferred_start_academic_year <- end_academic_year + start_year_offset
       }
       
-      #filter using id'd start term
-      filtered_subgroup <- growth_df %>% dplyr::filter(
-        studentid %in% this_stu &
+      #limit by windows
+      this_stu <- df %>% dplyr::filter(
+        studentid %in% df[mask, 'studentid'] &
         start_fallwinterspring == inferred_start_fws &
         start_map_year_academic == inferred_start_academic_year
       )
       
-      #put back together
-      target_df <- rbind(target_df, filtered_subgroup)
+      #calc subgroup stats
+      perm_stats <- quealy_permutation_stats(this_stu, i)
+      perm_stats %>% ensurer::ensure_that(
+        nrow(.) == 1 ~ 'there should only be one group!')
+      
+      #give the group name a consistent variable name
+      names(perm_stats)[names(perm_stats) == i] <- 'facet_me'
+ 
+      #put the stats on the list for use below
+      group_stats[[paste0(i, '@', j)]] <- perm_stats
+      
+      window_df[counter, ]$subgroup <- i
+      window_df[counter, ]$perm <- j
+      window_df[counter, ]$start_fws <- inferred_start_fws
+      window_df[counter, ]$start_year <- inferred_start_academic_year
+      window_df[counter, ]$min_x <- min(perm_stats$start_rit, perm_stats$end_rit)
+      window_df[counter, ]$max_x <- max(perm_stats$start_rit, perm_stats$end_rit)
+      window_df[counter, ]$n <- perm_stats$n
+      window_df[counter, ]$persist_row_names <- paste(this_stu$persistent_names, collapse = ',')
+      
+      counter <- counter + 1
     }
-    
+  }
+  
+  #5. MAKE PLOTS
+  
+  #global limits
+  min_x <- min(window_df$min_x, na.rm = TRUE)
+  max_x <- max(window_df$max_x, na.rm = TRUE)
+  
+  plot_lims <- c(
+    round_to_any(min_x - 1, 5, f = floor), 
+    round_to_any(max_x + 1, 5, f = ceiling)
+  )
+  
+  n_range <- c(
+    min(window_df$n, na.rm = TRUE), 
+    max(window_df$n, na.rm = TRUE)
+  )
+  
+  plot_counter <- 1
+  plot_list <- list()
+  nrow_list <- list()
 
-    #throw a warning if multiple grade levels
-    grades_present <- unique(target_df$start_grade)
-    if (length(grades_present) > 1) {
-      warning(
-        sprintf(paste0("%i distinct grade levels present in your data! NWEA ",
-          "school growth study tables assume cohorts composed of students ",
-          "of the *same grade level*.  quealy_subgroups will use the mean starting grade ",
-          "level to calculate growth scores, but you are advised to check your data and  ",
-          "attempt to use a cohort composed of students from the same grade."), 
-          length(grades_present))
-      )
-    }
-        
-    df <- target_df %>%
+  if (include_all) {
+    ref_line_range <- c(
+      group_stats[['all_students@All Students']]$start_rit,
+      group_stats[['all_students@All Students']]$end_rit
+    )
+
+    #all students
+    p_all <- quealy_facet_one_subgroup(
+      sum_df = group_stats[['all_students@All Students']], 
+      subgroup = 'All Students',
+      xlims = plot_lims,
+      n_range = n_range,
+      ref_lines = ref_line_range
+    )
+    
+    plot_list[[plot_counter]] <- p_all
+    nrow_list[[plot_counter]] <- 1.5
+    
+    plot_counter <- plot_counter + 1
+  } else {
+    ref_line_range <- NA
+  }
+
+  #rest of the subgroups
+  for (i in 1:length(subgroup_cols)) {
+    #the matching permutations
+    this_perms <- window_df[window_df$subgroup == subgroup_cols[i], ]
+    #recover the logic of which rows based on auto growth windows
+    #per perm
+    all_rownames <- this_perms$persist_row_names %>% 
+      paste(collapse = ',') %>% strsplit(split = ',') %>% unlist()
+    mask <- df$persistent_names %in% all_rownames
+    #calc group stats on those stu
+    this_sum <- quealy_permutation_stats(df[mask, ], subgroup_cols[i])
+    names(this_sum)[names(this_sum) == subgroup_cols[i]] <- 'facet_me'
+    
+    plot_list[[plot_counter]] <- quealy_facet_one_subgroup(
+      sum_df = this_sum, 
+      subgroup = pretty_names[i],
+      xlims = plot_lims,
+      n_range = n_range,
+      ref_lines = ref_line_range
+    )
+      
+    nrow_list[[plot_counter]] <- ifelse(
+      nrow(this_sum) == 1, 1.5, nrow(this_sum)
+    )
+    
+    plot_counter <- plot_counter + 1
+  }
+  
+  #add named args to plot list for do call
+  plot_list[['nrow']] <- length(plot_list)
+  plot_list[['heights']] <- unlist(nrow_list)
+  
+  final <- do.call(
+    what = "arrangeGrob",
+    args = plot_list,
+  )
+  
+  if (!is.na(report_title)) {
+    title <- h_var(report_title, 16)
+    
+    final <- gridExtra::arrangeGrob(
+      title, final, nrow = 2, heights = c(1, 19)
+    ) 
+  }
+  
+  return(final)
+}
+
+
+
+#' @title quealy_permutation_stats
+#' 
+#' @description calculates group stats for all the permutations of a subroup.  used 
+#' to be internal to quealy_subgroups, has been extracted.
+#' 
+#' @param df a growth data frame
+#' @param subgroup the subgroup to group and calculate summary stats for
+#' 
+#' @return a data frame
+#' 
+#' @export
+
+quealy_permutation_stats <- function(df, subgroup) {
+  start_fws <- unique(df$start_fallwinterspring)[1]
+  end_fws <- unique(df$end_fallwinterspring)[1]
+
+  results <- df %>%
     dplyr::group_by_(
       subgroup, quote(start_fallwinterspring), quote(end_fallwinterspring)
     ) %>%
@@ -177,311 +287,180 @@ quealy_subgroups <- function(
       )[['results']] 
     ) %>%
     as.data.frame()
-    
-    if (drop_NA == TRUE) {
-      mask <- !is.na(df[, subgroup])
-      df <- df[mask, ]
-    }
+  
+  return(results)
+}
+ 
 
-    names(df)[names(df) == subgroup] <- 'facet_me'
-    
-    df
-  }
-    
-  facet_one_subgroup <- function(df, subgroup, xlims, n_range, ref_lines) {
-    
-    if (nrow(df) == 0) {
-      stop("your feature/facet df is zero rows long.  check your inputs?")
-    }
-    
-    #add newline breaks to the facet text
-    df$facet_format <- unlist(lapply(df$facet_me, force_string_breaks, 15))
-    #add the season
-    df$start_season <- 
-    
-    #get the arrow size on a universal scale
-    min_width <- 0.2
-    max_width <- 0.5
-    pct_of_range <- ((df$n - n_range[1]) / (n_range[2] - n_range[1]))
-    df$size_scaled <- min_width + (pct_of_range * (max_width - min_width))
-        
-    all_na_test <- all(is.na(df$cgp))
-    
-    #cgp labeler
-    
-    cgp_labeler <- function(n, cgp) {
-      if ((unique(df$start_fallwinterspring) == 'Fall' & end_fws == 'Winter') | 
-        (unique(df$start_fallwinterspring) == 'Spring' & end_fws == 'Winter')
-      ) {
-        return(paste(n, 'stu')) 
-      }
-      if (n < 10) {
-        return(paste(n, 'stu')) 
-      } else {
-        return(paste(n, 'stu', '| CGP:', round(cgp, 0)))
-      }
-    }
-    
-    e <- new.env()
-    e$xlims <- xlims
-    
-    df <- df %>%
-      dplyr::rowwise() %>%
-      dplyr::mutate(
-        cgp_label = cgp_labeler(n, cgp)  
-      ) %>%
-      as.data.frame()
+
+#' @title quealy_facet_one_subgroup
+#' 
+#' @description the plot called by quealy subgroups for each subgroup.  used
+#' to be internal to the function, has been extracted.
+#' 
+#' @param sum_df output of quealy_permutation_stats.  needs to have a header
+#' called facet_me.  look at quealy_subgroups to see example use.
+#' @param subgroup the subgroup to plot.  quealy_subgroups calls this plot
+#' once per element in subgroup_cols (and once for all students)
+#' @param xlims the global xlims for the plot.
+#' @param n_range the global range of n values.  used to set the width of 
+#' the lines
+#' @param ref_lines.  if using with all students, the reference lines 
+#' showing change in all_students
+#' 
+#' @return a data frame
+#' 
+#' @export
+
+quealy_facet_one_subgroup <- function(
+  sum_df, subgroup, xlims, n_range, ref_lines = NA
+) {
   
-    #make
-    p <- ggplot(
-      data = df,
-      aes(
-        x = start_rit,
-        xend = end_rit,
-        y = 1,
-        yend = 1
-      ),
-      environment = e
-    )
-    
-    if (include_all == TRUE) {
-      p <- p + annotate(
-        geom = 'rect',
-        xmin = ref_lines[1], xmax = ref_lines[2], ymin = -1, ymax = 3,
-        fill = 'dodgerblue',
-        alpha = 0.15,
-        size = 1.25
-      ) 
-    }
-    
-    #labels
-    p <- p + geom_text(
-      aes(
-        x = start_rit + 0.5 * (end_rit - start_rit),
-        y = 0.75,
-        label = facet_format
-      ),
-      inherit.aes = FALSE,
-      size = 16,
-      alpha = 0.1,
-      color = 'gray20'
-    ) +        
-    geom_segment(
-      aes(
-        size = size_scaled
-      ),
-     arrow = grid::arrow(length = grid::unit(0.2 + (0.075 * df$size_scaled), "cm"))
-    ) +
-    #start rit
-    geom_text(
-      aes(
-        x = start_rit,
-        y = 0.7,
-        label = paste0(round(start_rit, 1), ' (', substr(start_fallwinterspring, 1, 1), ')')
-      ),
-      inherit.aes = FALSE,
-      size = 4
-    ) +
-    #end rit
-    geom_text(
-      aes(
-        x = end_rit,
-        y = 0.7,
-        label = paste0(round(end_rit, 1), ' (', substr(end_fallwinterspring, 1, 1), ')')
-      ),
-      inherit.aes = FALSE,
-      size = 4
-    ) +    
-    #n stu and CGP
-    geom_text(
-      aes(
-        x = start_rit + 0.5 * (end_rit - start_rit),
-        y = 1.35,
-        label = cgp_label
-      ),
-      fontface = 'italic',
-      color = 'gray40',
-      size = 4
-    ) +
-    coord_cartesian(
-      xlim = c(xlims[1] - 0.5, xlims[2] + 0.5),
-      ylim = c(0, 2)
-    ) +
-    facet_grid(
-      facet_format ~ . 
-    ) +
-    theme_bw() +
-    theme(
-      axis.title.y = element_blank(),
-      axis.text.y = element_blank(),
-      axis.ticks.y = element_blank(),
-      panel.grid.major.y = element_blank(),
-      panel.grid.minor.y = element_blank(),
-      panel.border = element_blank(),
-      panel.margin = grid::unit(0, "lines"),
-      plot.margin = grid::unit(c(1,1,1,1), "mm")
-    ) +
-    labs(x = 'RIT') +
-    scale_size_identity()
-  
-    #title
-    p_title <- grob_justifier(
-      grid::textGrob(
-        subgroup, gp = grid::gpar(fontsize = 18, fontface = 'bold')
-      ), 
-      "center", "center"
-    )
-    
-    first_row <- if (nrow(df) <= 2) {1.5} else {1}
-    #arrange and return
-    gridExtra::arrangeGrob(
-      p_title, p,
-      nrow = 2, heights = c(first_row, 9)
-    )    
+  if (nrow(sum_df) == 0) {
+    stop("your feature/facet df is zero rows long.  check your inputs?")
   }
   
-  #3| DATA CUTS
-
-  #calc constants
-  #silly values
-  x_min <- 999
-  x_max <- -1
-  min_n <- 1000000
-  max_n <- -1
+  #add newline breaks to the facet text
+  sum_df$facet_format <- lapply(sum_df$facet_me, force_string_breaks, 30) %>%
+    unlist()
   
-  for (i in subgroup_cols) {
-    
-    if (length(start_fws) > 1) {
-      auto_windows <- auto_growth_window(
-        mapvizieR_obj = mapvizieR_obj,
-        studentids = unique(this_growth$studentid),
-        measurementscale = measurementscale,
-        end_fws = end_fws, 
-        end_academic_year = end_academic_year,
-        candidate_start_fws = start_fws,
-        candidate_year_offsets = start_year_offset,
-        candidate_prefer = 'Spring',
-        window_tolerance = 0.8
-      )
-      inferred_start_fws <- auto_windows[[1]]
-      inferred_start_academic_year <- auto_windows[[2]]
+  #get the arrow size on a universal scale
+  min_width <- 0.2
+  max_width <- 0.5
+  pct_of_range <- ((sum_df$n - n_range[1]) / (n_range[2] - n_range[1]))
+  sum_df$size_scaled <- min_width + (pct_of_range * (max_width - min_width))
+      
+  all_na_test <- all(is.na(sum_df$cgp))
+  
+  #cgp labeler
+  
+  cgp_labeler <- function(n, cgp) {
+    if ((unique(sum_df$start_fallwinterspring) == 'Fall' & end_fws == 'Winter') | 
+      (unique(sum_df$start_fallwinterspring) == 'Spring' & end_fws == 'Winter')
+    ) {
+      return(paste(n, 'stu')) 
+    }
+    if (n < 10) {
+      return(paste(n, 'stu')) 
     } else {
-      inferred_start_fws <- start_fws
-      inferred_start_academic_year <- end_academic_year + start_year_offset
+      return(paste(n, 'stu', '| CGP:', round(cgp, 0)))
     }
-    
-    this_window <- this_growth %>%
-      dplyr::filter(
-        start_fallwinterspring == inferred_start_fws &
-        start_map_year_academic == inferred_start_academic_year
-      )
-
-    minimal_roster <- roster[, c('studentid', i)]
-    #get uniques
-    minimal_roster <- unique(minimal_roster)
-    int_df <- dplyr::inner_join(
-      x = this_window,
-      y = minimal_roster,
-      by = c('studentid' = 'studentid')
-    )
-
-    int_df <- dplyr::group_by_(
-      int_df, i
+  }
+  
+  e <- new.env()
+  e$xlims <- xlims
+  
+  sum_df <- sum_df %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(
+      cgp_label = cgp_labeler(n, cgp)  
     ) %>%
-    dplyr::summarize(
-      start_rit = round_to_any(mean(start_testritscore, na.rm = TRUE), 2, f = floor),
-      end_rit = round_to_any(mean(end_testritscore, na.rm = TRUE), 2, f = ceiling),
-      n = n()
-    ) %>% as.data.frame()
-    
-    if (drop_NA == TRUE) {
-      mask <- !is.na(int_df[, i])
-      int_df <- int_df[mask, ]
-    }
-    
-    if (min(int_df$start_rit, na.rm = TRUE) < x_min) x_min <- min(int_df$start_rit, na.rm = TRUE)
-    if (max(int_df$end_rit, na.rm = TRUE) > x_max) x_max <- max(int_df$end_rit, na.rm = TRUE)
-    if (min(int_df$n, na.rm = TRUE) < min_n) min_n <- min(int_df$n, na.rm = TRUE)
-    if (max(int_df$n, na.rm = TRUE) > max_n) max_n <- max(int_df$n, na.rm = TRUE)
-  }
-  
-  plot_lims <- c(round_to_any(x_min, 5, f = floor), round_to_any(x_max, 5, f = ceiling))
-  n_range <- c(min_n, max_n)
-  
-  counter <- 1
-  plot_list <- list()
-  nrow_list <- list()
+    as.data.frame()
 
-  this_growth$all_students <- 'All Students'
-  total_change <- group_summary(this_growth, 'all_students')
-  
-  if (include_all == TRUE) {
-    #all students
-    p_all <- facet_one_subgroup(
-      df = total_change, 
-      subgroup = 'All Students',
-      xlims = plot_lims,
-      n_range = n_range,
-      ref_lines = c(total_change$start_rit, total_change$end_rit)
-    )
-    
-    plot_list[[counter]] <- p_all
-    nrow_list[[counter]] <- 1.5
-    
-    counter <- counter + 1
-  }
-
-  #iterate over subgroups
-  #values for ALL students
-  
-  
-  for (i in 1:length(subgroup_cols)) {
-    subgroup <- subgroup_cols[i]
-    
-    #join roster and data
-    minimal_roster <- roster[, c('studentid', subgroup)]
-    #get uniques
-    minimal_roster <- unique(minimal_roster)
-    
-    combined_df <- dplyr::inner_join(
-      x = this_growth,
-      y = minimal_roster,
-      by = c('studentid' = 'studentid')
-    )
-    
-    #now pass to group summary
-    this_summary <- group_summary(combined_df, subgroup)
-    
-    plot_list[[counter]] <- facet_one_subgroup(
-      df = this_summary, 
-      subgroup = pretty_names[i],
-      xlims = plot_lims,
-      n_range = n_range,
-      ref_lines = c(total_change$start_rit, total_change$end_rit)
-    )
-    nrow_list[[counter]] <- ifelse(nrow(this_summary) == 1, 1.5, nrow(this_summary))
-    
-    counter <- counter + 1
-  }  
-    
-  #add named args to plot list for do call
-  plot_list[['nrow']] <- length(plot_list)
-  plot_list[['heights']] <- unlist(nrow_list)
-  
-  final <- do.call(
-    what = "arrangeGrob",
-    args = plot_list,
+  #make
+  p <- ggplot(
+    data = sum_df,
+    aes(
+      x = start_rit,
+      xend = end_rit,
+      y = 1,
+      yend = 1
+    ),
+    environment = e
   )
   
-  if (!is.na(report_title)) {
-    title <- h_var(report_title, 16)
-    
-    final <- gridExtra::arrangeGrob(
-      title, final, nrow = 2, heights = c(1, 19)
+  if (class(ref_lines) == "numeric") {
+    p <- p + annotate(
+      geom = 'rect',
+      xmin = ref_lines[1], xmax = ref_lines[2], ymin = -1, ymax = 3,
+      fill = 'dodgerblue',
+      alpha = 0.15,
+      size = 1.25
     ) 
   }
   
-  # return 
-  final
-}
+  #labels
+  p <- p + geom_text(
+    aes(
+      x = start_rit + 0.5 * (end_rit - start_rit),
+      y = 0.75,
+      label = facet_format
+    ),
+    inherit.aes = FALSE,
+    size = 9,
+    alpha = 0.4,
+    color = 'hotpink'
+  ) +        
+  geom_segment(
+    aes(
+      size = size_scaled
+    ),
+   arrow = grid::arrow(length = grid::unit(0.2 + (0.075 * sum_df$size_scaled), "cm"))
+  ) +
+  #start rit
+  geom_text(
+    aes(
+      x = start_rit,
+      y = 0.7,
+      label = paste0(round(start_rit, 1), ' (', substr(start_fallwinterspring, 1, 1), ')')
+    ),
+    inherit.aes = FALSE,
+    size = 4
+  ) +
+  #end rit
+  geom_text(
+    aes(
+      x = end_rit,
+      y = 0.7,
+      label = paste0(round(end_rit, 1), ' (', substr(end_fallwinterspring, 1, 1), ')')
+    ),
+    inherit.aes = FALSE,
+    size = 4
+  ) +    
+  #n stu and CGP
+  geom_text(
+    aes(
+      x = start_rit + 0.5 * (end_rit - start_rit),
+      y = 1.35,
+      label = cgp_label
+    ),
+    fontface = 'italic',
+    color = 'gray40',
+    size = 4
+  ) +
+  coord_cartesian(
+    xlim = c(xlims[1] - 0.5, xlims[2] + 0.5),
+    ylim = c(0, 2)
+  ) +
+  facet_grid(
+    facet_format ~ . 
+  ) +
+  theme_bw() +
+  theme(
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    panel.border = element_blank(),
+    panel.margin = grid::unit(0, "lines"),
+    plot.margin = grid::unit(c(1,1,1,1), "mm")
+  ) +
+  labs(x = 'RIT') +
+  scale_size_identity()
 
+  #title
+  p_title <- grob_justifier(
+    grid::textGrob(
+      subgroup, gp = grid::gpar(fontsize = 18, fontface = 'bold')
+    ), 
+    "center", "center"
+  )
+  
+  first_row <- if (nrow(sum_df) <= 2) {1.5} else {1}
+  #arrange and return
+  gridExtra::arrangeGrob(
+    p_title, p,
+    nrow = 2, heights = c(first_row, 9)
+  )    
+}
