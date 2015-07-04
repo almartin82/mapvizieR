@@ -253,7 +253,7 @@ knj_two_pager <- function(
     )
 
   auto_windows <- auto_growth_window(
-    mapvizieR_obj = mapviz,
+    mapvizieR_obj = mapvizieR_obj,
     studentids = unique(this_growth$studentid),
     measurementscale = measurementscale_in,
     end_fws = end_fws, 
