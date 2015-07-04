@@ -8,7 +8,7 @@ quealy_subgroups(mapvizieR_obj, studentids, measurementscale,
   subgroup_cols = c("starting_quartile"),
   pretty_names = c("Starting Quartile"), start_fws, start_year_offset,
   end_fws, end_academic_year, start_fws_prefer = NA, report_title = NA,
-  complete_obsv = FALSE, drop_NA_groups = TRUE, include_all = TRUE)
+  complete_obsv = TRUE, drop_NA_groups = TRUE, include_all = TRUE)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -35,7 +35,7 @@ is starting_quartile}
 \item{report_title}{text grob to put on the report tile}
 
 \item{complete_obsv}{if TRUE, limit only to students who have BOTH a start
-and end score. default is FALSE.}
+and end score. default is TRUE.}
 
 \item{drop_NA_groups}{should we ignore subgroups with value NA?  default is true}
 

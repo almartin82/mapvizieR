@@ -18,7 +18,7 @@
 #' @param start_fws_prefer which term is preferred? not required if only one start_fws is passed
 #' @param report_title text grob to put on the report tile
 #' @param complete_obsv if TRUE, limit only to students who have BOTH a start
-#' and end score. default is FALSE.
+#' and end score. default is TRUE.
 #' @param drop_NA_groups should we ignore subgroups with value NA?  default is true
 #' @param include_all should the output have plot at the top showing the TOTAL
 #' variation?  not recommended for data spanning multiple grade levels.
@@ -39,7 +39,7 @@ quealy_subgroups <- function(
   end_academic_year,
   start_fws_prefer = NA,
   report_title = NA,
-  complete_obsv = FALSE,
+  complete_obsv = TRUE,
   drop_NA_groups = TRUE,
   include_all = TRUE
 ) {
@@ -94,7 +94,7 @@ quealy_subgroups <- function(
   #...find the GROWTH WINDOW
   #also calc group stats, so we don't have to do it later.
   for (i in all_sub) {
-    perms <- df[, i] %>% unique()
+    perms <- df[, i] %>% unique() %>% sort()
     if (drop_NA_groups == TRUE) {perms <- perms[!is.na(perms)]}
     
     for (j in perms) {
@@ -129,7 +129,7 @@ quealy_subgroups <- function(
       )
       
       #calc subgroup stats
-      perm_stats <- quealy_permutation_stats(this_stu, i, measurementscale)
+      perm_stats <- quealy_permutation_stats(this_stu, i)
       perm_stats %>% ensurer::ensure_that(
         nrow(.) == 1 ~ 'there should only be one group!')
       
@@ -205,7 +205,7 @@ quealy_subgroups <- function(
       paste(collapse = ',') %>% strsplit(split = ',') %>% unlist()
     mask <- df$persistent_names %in% all_rownames
     #calc group stats on those stu
-    this_sum <- quealy_permutation_stats(df[mask, ], subgroup_cols[i], measurementscale)
+    this_sum <- quealy_permutation_stats(df[mask, ], subgroup_cols[i])
     names(this_sum)[names(this_sum) == subgroup_cols[i]] <- 'facet_me'
     
     plot_list[[plot_counter]] <- quealy_facet_one_subgroup(
@@ -257,13 +257,11 @@ quealy_subgroups <- function(
 #' 
 #' @export
 
-quealy_permutation_stats <- function(df, subgroup, measurementscale) {
-  start_fws <- unique(df$start_fallwinterspring)[1]
-  end_fws <- unique(df$end_fallwinterspring)[1]
+quealy_permutation_stats <- function(df, subgroup) {
 
   results <- df %>%
     dplyr::group_by_(
-      subgroup, quote(start_fallwinterspring), quote(end_fallwinterspring)
+      subgroup, quote(measurementscale), quote(start_fallwinterspring), quote(end_fallwinterspring)
     ) %>%
     dplyr::summarize(    
       approximate_grade = round(mean(end_grade, na.rm = TRUE), 0), 
@@ -274,19 +272,16 @@ quealy_permutation_stats <- function(df, subgroup, measurementscale) {
       end_npr = mean(end_consistent_percentile, na.rm = TRUE),
       npr_change = mean(end_consistent_percentile - start_consistent_percentile, na.rm = TRUE),
       n = n()
-    ) %>%       
+    ) %>%
     #add cgp
     dplyr::rowwise() %>%
     dplyr::mutate(
       cgp = calc_cgp(
         measurementscale = measurementscale,
         grade = approximate_grade,
-        growth_window = paste(start_fws, 'to', end_fws),
+        growth_window = paste(start_fallwinterspring, 'to', end_fallwinterspring),
         baseline_avg_rit = start_rit,
-        ending_avg_rit = end_rit,
-        baseline_avg_npr = start_npr,
-        ending_avg_npr = end_npr,
-        tolerance = 99
+        ending_avg_rit = end_rit
       )[['results']] 
     ) %>%
     as.data.frame()

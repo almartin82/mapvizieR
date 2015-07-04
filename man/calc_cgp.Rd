@@ -5,8 +5,7 @@
 \title{calc_cgp}
 \usage{
 calc_cgp(measurementscale, grade, growth_window, baseline_avg_rit = NA,
-  baseline_avg_npr = NA, ending_avg_rit = NA, ending_avg_npr = NA,
-  tolerance = 10, sch_growth_study = sch_growth_norms_2012,
+  ending_avg_rit = NA, sch_growth_study = sch_growth_norms_2012,
   calc_for = c(1:99))
 }
 \arguments{
@@ -18,20 +17,7 @@ calc_cgp(measurementscale, grade, growth_window, baseline_avg_rit = NA,
 
 \item{baseline_avg_rit}{the baseline mean rit for the group of students}
 
-\item{baseline_avg_npr}{the baseleine mean percentile rank for the group of students}
-
 \item{ending_avg_rit}{the baseline mean rit for the group of students}
-
-\item{ending_avg_npr}{the baseline mean percentile rank for the group of students}
-
-\item{tolerance}{NWEA has published empirical lookup tables for growth.  these tables cover
-the middle of the distribution, meaning that data for most cohorts can be found in the table.
-but say that you have a cohort that is 10 rit points below the lowest mean RIT reported in the
-tables?  do you just use the lowest entry?
-mapvizieR has a generalization of the school growth study that translate the RIT changes to
-percentile change, and then fits a general model to express cohort growth percentile
-given a starting percentile and an ending percentile. rather than use lookup tables that we
-know to be poor fits to the students}
 
 \item{sch_growth_study}{a school growth study to use.  default is sch_growth_norms_2012}
 

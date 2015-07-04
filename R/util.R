@@ -490,8 +490,8 @@ mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale_in) {
   #only these kids
   growth_df %>%
     dplyr::filter(
-      studentid %in% studentids,
-      measurementscale %in% measurementscale_in
+      studentid %in% studentids &
+      measurementscale == measurementscale_in
     )  
 }
 
