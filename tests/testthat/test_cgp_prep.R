@@ -13,7 +13,7 @@ ex_target_rit <- calc_cgp(
 
 test_that("calc_cgp tests", {
 
-  expect_equal(sum(ex_target_rit$growth_target),  1645.38)
+  expect_equal(sum(ex_target_rit$growth_target),  1509.75)
 
   expect_equal(nrow(ex_target_rit), 99)
 
@@ -26,14 +26,14 @@ test_that("calc_cgp tests", {
   )[['targets']]
       
   #addl params
-  expect_equal(sum(diff_params$growth_target), 186.2828, tolerance = .01)
+  expect_equal(sum(diff_params$growth_target), 171.3971, tolerance = .01)
     
   low_npr_ex <- calc_cgp(measurementscale = 'Reading', grade = 2, 
     growth_window = 'Fall to Spring', baseline_avg_rit = 133
   )[['targets']]
   
   expect_equal(as.character(low_npr_ex$measured_in), c(rep("RIT", 99)))
-  expect_equal(sum(low_npr_ex$growth_target),  2064.15)
+  expect_equal(sum(low_npr_ex$growth_target),  1800.81)
   
 })
 
@@ -59,7 +59,7 @@ test_that("calc_cgp results", {
     ending_avg_rit = 233
   )[['results']]
 
-  expect_equal(rit_ex,  99.96545, tolerance = 0.01)
+  expect_equal(rit_ex,  57.4245, tolerance = 0.01)
 })
 
 
@@ -95,6 +95,40 @@ test_that("mapviz_cgp calculates cgp for sample data", {
   expect_equal(ex_cgp$avg_end_npr, 44.53763, tolerance = 0.01)
   expect_equal(ex_cgp$avg_npr_change, 5.913978, tolerance = 0.01)
   expect_equal(ex_cgp$n, 93)
-  expect_equal(ex_cgp$cgp, 65.89149, tolerance = 0.01)
+  expect_equal(ex_cgp$cgp, 60.95068, tolerance = 0.01)
   
 })
+
+
+test_that("calc_cgp is correct from NWEA lookups", {
+
+  m5ss_results_199 <- c()
+  for (i in c(4:16)) {
+    m5ss <- calc_cgp(
+      measurementscale = 'Mathematics', grade = 5, 
+      growth_window = 'Spring to Spring', 
+      baseline_avg_rit = 199, ending_avg_rit = 199 + i
+    )[['results']] 
+    
+    m5ss_results_199 <- c(m5ss_results_199, m5ss)
+  }
+
+  diffs <- m5ss_results_199 - c(1, 3, 7, 13, 23, 37, 52, 67, 80, 89, 95, 98, 99)
+  expect_true(all(diffs < 3))
+  
+  m5ss_results_205 <- c()
+  for (i in c(3:15)) {
+    m5ss <- calc_cgp(
+      measurementscale = 'Mathematics', grade = 5, 
+      growth_window = 'Spring to Spring', 
+      baseline_avg_rit = 205, ending_avg_rit = 205 + i
+    )[['results']] 
+    
+    m5ss_results_205 <- c(m5ss_results_205, m5ss)
+  }
+
+  diffs <- m5ss_results_205 - c(1, 2, 4, 10, 19, 31, 47, 63, 77, 87, 94, 97, 99)
+  expect_true(all(diffs < 1))
+
+})
+

@@ -49,9 +49,10 @@ calc_cgp <- function(
   #RESULTS
   #lookup expectation
   grw_expect <- sch_growth_lookup(
-    measurementscale = measurementscale,
-    growth_window = growth_window,
-    baseline_avg_rit = baseline_avg_rit
+    measurementscale,
+    grade,
+    growth_window,
+    baseline_avg_rit
   )
 
   #actual - typical over sd
@@ -138,30 +139,30 @@ rit_gain_needed <- function(percentile, sd_gain, mean_gain) {
 #' 
 #' @description get cohort growth expectations via lookup from growth study
 #' 
-#' @param measurementscale MAP subject
-#' @param grade baseline/starting grade for the group of students
-#' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
+#' @param measurementscale_in MAP subject
+#' @param grade_in baseline/starting grade for the group of students
+#' @param growth_window_in desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students
 #' @param sch_growth_study NWEA school growth study to use for lookup; defaults to 2012.
 
 sch_growth_lookup <- function(  
-  measurementscale,
-  grade,
-  growth_window,
+  measurementscale_in,
+  grade_in,
+  growth_window_in,
   baseline_avg_rit,
   sch_growth_study = sch_growth_norms_2012
-) {    
+) {
+
   norm_match <- sch_growth_study %>%
     dplyr::filter(
-      measurementscale == measurementscale, 
-      growth_window == growth_window, 
-      grade == grade
-    ) %>%
-    dplyr::mutate(
-      diff = abs(rit - baseline_avg_rit)
-    )
+      measurementscale == measurementscale_in, 
+      growth_window == growth_window_in, 
+      grade == grade_in
+    ) 
   
-  best_match <- rank(norm_match$diff, ties.method = c("first"))
+  norm_match$diff <- norm_match$rit - baseline_avg_rit
+  
+  best_match <- rank(abs(norm_match$diff), ties.method = c("first"))
   
   as.list(norm_match[best_match == 1, ])
 }
