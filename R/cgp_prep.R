@@ -32,6 +32,17 @@ calc_cgp <- function(
       }
     )
   
+  #valid terms
+  vt <- sch_growth_study[, c('measurementscale', 'grade', 'growth_window')]
+  in_study <- paste(measurementscale, grade, growth_window, sep = '@') %in% paste(
+    vt$measurementscale, vt$grade, vt$growth_window, sep = '@'
+  )
+  if (!in_study) {
+    warning("measurementscale/grade/growth window combination isn't in school growth study.")
+    return(list("targets" = NA, "results" = NA))
+    
+  }
+  
   #start of growth window
   start_season <- stringr::str_sub(
     growth_window, 1, stringr::str_locate(growth_window, ' ')[1]-1

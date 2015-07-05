@@ -50,7 +50,7 @@ quealy_subgroups <- function(
   
   #2. limit to kids, endpoint
   #nse problems?
-  measurementscale <- measurementscale
+  #measurementscale <- measurementscale
   
   df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale) %>%
     dplyr::filter(
@@ -273,18 +273,20 @@ quealy_permutation_stats <- function(df, subgroup) {
       npr_change = mean(end_consistent_percentile - start_consistent_percentile, na.rm = TRUE),
       n = n()
     ) %>%
-    #add cgp
-    dplyr::rowwise() %>%
-    dplyr::mutate(
-      cgp = calc_cgp(
-        measurementscale = measurementscale,
-        grade = approximate_grade,
-        growth_window = paste(start_fallwinterspring, 'to', end_fallwinterspring),
-        baseline_avg_rit = start_rit,
-        ending_avg_rit = end_rit
-      )[['results']] 
-    ) %>%
     as.data.frame()
+  
+  #add cgp
+  results$cgp <- NA
+  for (i in 1:nrow(results)) {
+    results[i, ]$cgp <- calc_cgp(
+        measurementscale = results[i, ]$measurementscale,
+        grade = results[i, ]$approximate_grade,
+        growth_window = paste(results[i, ]$start_fallwinterspring, 
+          'to', results[i, ]$end_fallwinterspring),
+        baseline_avg_rit = results[i, ]$start_rit,
+        ending_avg_rit = results[i, ]$end_rit
+      )[['results']]
+  }
   
   return(results)
 }
@@ -333,8 +335,10 @@ quealy_facet_one_subgroup <- function(
   #cgp labeler
   
   cgp_labeler <- function(n, cgp) {
-    if ((unique(sum_df$start_fallwinterspring) == 'Fall' & unique(sum_df$end_fallwinterspring) == 'Winter') | 
-      (unique(sum_df$start_fallwinterspring) == 'Spring' & unique(sum_df$end_fallwinterspring) == 'Winter')
+    if (
+      (unique(sum_df$start_fallwinterspring) == 'Fall' & unique(sum_df$end_fallwinterspring) == 'Winter') | 
+      (unique(sum_df$start_fallwinterspring) == 'Spring' & unique(sum_df$end_fallwinterspring) == 'Winter') |
+      all(is.na(sum_df$cgp))
     ) {
       return(paste(n, 'stu')) 
     }
