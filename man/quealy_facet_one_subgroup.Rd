@@ -18,7 +18,7 @@ once per element in subgroup_cols (and once for all students)}
 \item{n_range}{the global range of n values.  used to set the width of
 the lines}
 
-\item{ref_lines.}{if using with all students, the reference lines
+\item{ref_lines}{if using with all students, the reference lines
 showing change in all_students}
 }
 \value{

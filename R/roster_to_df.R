@@ -17,7 +17,7 @@ roster_to_cdf <- function(
   roster_cols
 ) {
   #opening checks
-  ensurer::ensure_that(
+  target_df %>% ensurer::ensure_that(
     !'end_fallwinterspring' %in% names(.) ~ 
       "you provided a growth df, but this function is designed for the cdf. try roster_to_growth_df()"
   )
@@ -28,7 +28,12 @@ roster_to_cdf <- function(
   #trim to basic ids (studentid, year, term) and roster_cols
   cols <- c('studentid', 'map_year_academic', 'fallwinterspring')
   cols <- c(cols, roster_cols)
-  slim <- roster[, names(roster) %in% roster_cols]
+  #this gets into the weeds, but:
+  #per issue #175, *if the user provides* dupe stu enrollments (for instance,
+  #if the student has dual/concurrent enrollment at two schools) we don't want
+  #mapvizieR to rule that out.  but if we're in that world and NOT looking at 
+  #the school attribute, we don't want to create duplicate rows.  so, unique()
+  slim <- roster[, names(roster) %in% cols] %>% unique()
   
   #join
   target_df <- target_df %>% dplyr::left_join(

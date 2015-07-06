@@ -68,7 +68,7 @@ test_that("quealy_subgroups with complete_obsv and title", {
 
 
 test_that("quealy_subgroups with no CGP", {
-samp_nyt <- quealy_subgroups(
+  samp_nyt <- quealy_subgroups(
     mapvizieR_obj = mapviz,
     studentids = studentids_normal_use,
     measurementscale = 'Reading',
