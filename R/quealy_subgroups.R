@@ -187,9 +187,9 @@ quealy_subgroups <- function(
         )
       
       #iterate over the unique subgroups and calc stats
-      for (i in unique(start_quartile_data$start_testquartile) %>% sort()) {
+      for (i in unique(start_quartile_data$start_testquartile) %>% as.numeric() %>% sort()) {
         this_start_quartile <- start_quartile_data %>%
-          dplyr::filter(start_testquartile == i)
+          dplyr::filter(as.numeric(start_testquartile) == i)
         
         perm_stats <- quealy_permutation_stats(this_start_quartile, 'start_testquartile')
           perm_stats %>% ensurer::ensure_that(
@@ -208,7 +208,7 @@ quealy_subgroups <- function(
         window_df[counter, ]$min_x <- min(perm_stats$start_rit, perm_stats$end_rit)
         window_df[counter, ]$max_x <- max(perm_stats$start_rit, perm_stats$end_rit)
         window_df[counter, ]$n <- perm_stats$n
-        window_df[counter, ]$persist_row_names <- paste(this_stu$persistent_names, collapse = ',')
+        window_df[counter, ]$persist_row_names <- paste(this_start_quartile$persistent_names, collapse = ',')
         
         counter <- counter + 1
       #end perms of starting quartiles
