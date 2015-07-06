@@ -75,7 +75,7 @@ quealy_subgroups <- function(
   
   #4. for each SUBGROUP permutation
   all_sub <- subgroup_cols
-  if (include_all) {
+  if (include_all | !magic_subgroups) {
     #add all_students to df
     df$all_students <- 'All Students'
     #include in subgroups
@@ -159,7 +159,8 @@ quealy_subgroups <- function(
   if (!is.logical(magic_subgroups)) {
     
     if ('starting_quartile' %in% magic_subgroups) {
-      #implement starting quartile here
+      #get start/end from ALL students
+      
     }
   }
 
