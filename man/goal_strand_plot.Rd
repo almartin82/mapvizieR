@@ -4,14 +4,14 @@
 \alias{goal_strand_plot}
 \title{Plot MAP Goal Strand Results}
 \usage{
-goal_strand_plot(mapvizieR_obj, studentids, measurement_scale, fws, year)
+goal_strand_plot(mapvizieR_obj, studentids, measurementscale, fws, year)
 }
 \arguments{
 \item{mapvizieR_obj}{a \code{mapvizieR} object}
 
 \item{studentids}{vector of student id numbers for students to plot}
 
-\item{measurement_scale}{measurementscale to plot}
+\item{measurementscale}{measurementscale to plot}
 
 \item{fws}{season (fall, winter, or spring) to plot}
 
@@ -47,7 +47,7 @@ ids<-ex_CombinedStudentsBySchool \%>\% filter(
 goal_strand_plot(
  map_mv,
  studentids = c(ids[1:49, "StudentID"]),
- measurement_scale="Mathematics",
+ measurementscale="Mathematics",
  fws="Spring",
  year=2013
  )

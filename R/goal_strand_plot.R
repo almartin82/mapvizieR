@@ -11,7 +11,7 @@
 #' 
 #' @param mapvizieR_obj a \code{mapvizieR} object 
 #' @param studentids vector of student id numbers for students to plot
-#' @param measurement_scale measurementscale to plot
+#' @param measurementscale measurementscale to plot
 #' @param fws season (fall, winter, or spring) to plot
 #' @param year academic year to plot
 #' 
@@ -34,20 +34,22 @@
 #' goal_strand_plot(
 #'  map_mv, 
 #'  studentids = c(ids[1:49, "StudentID"]), 
-#'  measurement_scale="Mathematics", 
+#'  measurementscale="Mathematics", 
 #'  fws="Spring", 
 #'  year=2013
 #'  )
 #'}
 #'@export
 
-goal_strand_plot <- function(mapvizieR_obj,
-                         studentids,
-                         measurement_scale,
-                         fws,
-                         year) {
-  
-     
+goal_strand_plot <- function(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  fws,
+  year
+) {
+  #NSE problems
+  measurementscale_in <- measurementscale
   # validation
   #data validation and unpack
   mv_opening_checks(mapvizieR_obj, studentids, 1)
@@ -58,7 +60,7 @@ goal_strand_plot <- function(mapvizieR_obj,
     dplyr::filter(
       fallwinterspring == fws,
       map_year_academic == year,
-      measurementscale == measurement_scale,
+      measurementscale == measurementscale_in,
       studentid %in% studentids
     ) %>%
     dplyr::inner_join(mapvizieR_obj$roster %>%

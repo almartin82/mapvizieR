@@ -2,7 +2,7 @@
 #'
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
-#' @param measurementscale_in target subject
+#' @param measurementscale target subject
 #' @param start_fws starting season
 #' @param start_academic_year starting academic year
 #' @param end_fws ending season
@@ -15,12 +15,14 @@
 growth_status_scatter <- function(
   mapvizieR_obj,
   studentids,
-  measurementscale_in,
+  measurementscale,
   start_fws,
   start_academic_year,
   end_fws,
   end_academic_year
 ) {
+  #NSE problems
+  measurementscale_in <- measurementscale
 
   #data
   goal_df <- mapvizieR_obj[['growth_df']] %>%
