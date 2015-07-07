@@ -85,7 +85,7 @@ strand_boxes <- function(
    ),
    fun.y = mean,
    geom = 'text',
-   size = 7
+   size = 5
   ) +
   facet_grid(.~goal_name_formatted)  +
   labs(
@@ -102,7 +102,7 @@ strand_boxes <- function(
     panel.margin = grid::unit(0, "null"),
     plot.margin = rep(grid::unit(0, "null"), 4),
     axis.ticks = element_blank(),
-    strip.text = element_text(size = 14)
+    strip.text = element_text(size = 10)
   ) +
   theme(legend.position = "none")
 
