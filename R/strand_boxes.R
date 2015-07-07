@@ -84,35 +84,14 @@ strand_boxes <- function(
   p <- ggplot(
     data = stage_3,
     aes(
-      x = factor(goal_name),
-      y = value,
-      fill = factor(goal_name)
+      x = 0,
+      y = value
     ),
     environment = e
   ) +
-  #empty
-  geom_jitter(
-    alpha = 0
-  ) + 
-  annotate(
-    "text",
-    x = seq(1, length(e$goal_names_format)),
-    y = rep(e$y_center, length(e$goal_names_format)),
-    label = e$goal_names_format,
-    angle = 90,
-    size = 7,
-    color = 'gray60',
-    alpha = .9
-  ) +
   geom_boxplot(
-    alpha = 0.6
-  ) +
-  geom_jitter(
-    position = position_jitter(width = .15),
-    color = 'gray85',
-    alpha = 0.6,
-    shape = 1
-  ) + 
+    notch = TRUE
+  ) +  
   stat_summary(
    aes(
      label = round(..y..,1)
@@ -121,9 +100,11 @@ strand_boxes <- function(
    geom = 'text',
    size = 7
   ) +
+  facet_grid(.~goal_name)  +
   labs(
     x = 'Goal Name', y = 'RIT Score'
   ) +
+  theme_minimal() +  
   theme(
     panel.background = element_blank(),
     plot.background = element_blank(),
