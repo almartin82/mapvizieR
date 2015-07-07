@@ -65,7 +65,9 @@ strand_boxes <- function(
   stage_3 <- stage_3 %>%
     dplyr::filter(
       !is.na(goal_name)
-    )
+    ) %>%
+    dplyr::mutate(goal_name_formatted = stringr::str_wrap(goal_name,
+                                                          width = 15))
   
   p <- ggplot(
     data = stage_3,
@@ -85,9 +87,9 @@ strand_boxes <- function(
    geom = 'text',
    size = 7
   ) +
-  facet_grid(.~goal_name)  +
+  facet_grid(.~goal_name_formatted)  +
   labs(
-    x = 'Goal Name', y = 'RIT Score'
+    x = ' ', y = 'RIT Score'
   ) +
   theme_minimal() +  
   theme(
@@ -99,7 +101,8 @@ strand_boxes <- function(
     axis.text.x = element_blank(),
     panel.margin = grid::unit(0, "null"),
     plot.margin = rep(grid::unit(0, "null"), 4),
-    axis.ticks.margin = grid::unit(0, "null")
+    axis.ticks = element_blank(),
+    strip.text = element_text(size = 14)
   ) +
   theme(legend.position = "none")
 
