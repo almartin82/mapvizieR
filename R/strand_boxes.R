@@ -67,27 +67,12 @@ strand_boxes <- function(
       !is.na(goal_name)
     )
   
-  #plot variables
-  e <- new.env()
-  e$y_center <- min(stage_3$value, na.rm = TRUE) + 0.5 * (max(stage_3$value, na.rm = TRUE) - min(stage_3$value, na.rm = TRUE)) 
-  e$goal_names <- attributes(factor(stage_3$goal_name))$levels
-  
-  n <- 25
-  more_n <- nchar(e$goal_names) > n
-  smart_breaks <- ifelse(more_n, '-\n', '')
-  
-  e$goal_names_format <- paste(
-    substr(e$goal_names, start = 1, stop = n), smart_breaks,
-    substr(e$goal_names, start = n + 1, stop = 100), sep = ''
-  )
-  
   p <- ggplot(
     data = stage_3,
     aes(
       x = 0,
       y = value
-    ),
-    environment = e
+    )
   ) +
   geom_boxplot(
     notch = TRUE
