@@ -23,7 +23,7 @@ mapvizieR <- function(cdf, roster, verbose = FALSE, ...) UseMethod("mapvizieR")
 mapvizieR.default <- function(cdf, roster, verbose = FALSE, ...) {
 
   cdf_status <- try(check_processed_cdf(cdf)$boolean, silent = TRUE)
-  cdf_status <- all(!class(cdf_status)=="try-error" & cdf_status == TRUE)
+  cdf_status <- all(!class(cdf_status) == "try-error" & cdf_status == TRUE)
   
   #prep the cdf, if necessary.
   if (cdf_status) {
@@ -57,9 +57,9 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, ...) {
   
   #make a list and return it
   mapviz <-  list(
-    'cdf'=processed_cdf,
-    'roster'=roster,
-    'growth_df'=growth_df
+    'cdf' = processed_cdf,
+    'roster' = roster,
+    'growth_df' = growth_df
     #todo: also return a goal/strand df
     #todo: add some analytics about matched/unmatched kids
   )
@@ -75,7 +75,7 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, ...) {
   mapviz <- mapviz %>% 
     add_accelerated_growth(
       goal_function = goal_kipp_tiered,  
-      goal_function_args = list(iterations=1),
+      goal_function_args = list(iterations = 1),
       update_growth_df = TRUE
   )
   
@@ -193,7 +193,7 @@ grade_levelify_cdf <- function(prepped_cdf, roster) {
     
     secondary_match <- dplyr::left_join(
       prepped_cdf, 
-      slim_roster, by=c('studentid', 'map_year_academic') 
+      slim_roster, by = c('studentid', 'map_year_academic') 
     )
     
     matched_cdf$grade <- ifelse(
@@ -205,56 +205,3 @@ grade_levelify_cdf <- function(prepped_cdf, roster) {
 }
 
 
-
-
-
-
-#' @title match assessment results with students by school roster. 
-#'
-#' @description
-#' \code{cdf_roster_match} performs an inner join on a prepped, long cdf (Assesment Results)
-#' a prepped long roster (i.e. StudentsBySchool).  
-#'
-#' @param assessment_results a cdf file that passes the checks in \code{\link{check_cdf_long}}
-#' @param roster a roster that passes the checks in \code{\link{check_roster}}
-#'
-#' @return a merged data frame with \code{nrow(prepped_cdf)}
-#' 
-#' @export
-
-cdf_roster_match <- function(assessment_results, roster) {
-  # Validation
-  assertthat::assert_that(
-    check_cdf_long(assessment_results)$boolean, 
-    check_roster(roster)
-  )
-  
-  # inner join of roster and assessment results by id, subject, and term name
-  matched_df <-  dplyr::inner_join(
-    roster, 
-    assessment_results %>% dplyr::filter(growthmeasureyn == TRUE),
-    by = c("studentid", "termname", "schoolname")
-  ) %>%
-    # drop repeated columns
-    dplyr::select(-ends_with(".y")) %>% 
-    as.data.frame
-  
-  # drop .x join artifact from colun names (we dropped .y in select above )
-  names(matched_df) <- gsub("(.+)(\\.x)", "\\1", names(matched_df))
-  
-  #check that number of rows of assessment_results = nrow of matched_df
-  input_rows <- nrow(assessment_results)
-  output_rows <- nrow(matched_df)
-  
-  if (input_rows != output_rows) {
-    cdf_name <- substitute(assessment_results)
-    msg <- paste0("The number of rows in ", cdf_name, " is ", input_rows, 
-                  ", while the number of rows in the matched data frame\n",
-                  "returned by this function is ", output_rows, ".\n\n",
-                  "You might want to check your data.")
-    warning(msg)
-  }
-  
-  #return 
-  matched_df
-}

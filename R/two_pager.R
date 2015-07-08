@@ -86,7 +86,7 @@ two_pager <- function(
   strand_boxes <- strand_boxes(
     mapvizieR_obj = mapvizieR_obj,
     studentids = studentids,
-    measurementscale_in = measurementscale,
+    measurementscale = measurementscale,
     fws = end_fws,
     academic_year = end_academic_year
   )
@@ -131,7 +131,7 @@ two_pager <- function(
   growth_status <- growth_status_scatter(
     mapvizieR_obj = mapvizieR_obj,
     studentids = studentids,
-    measurementscale_in = measurementscale,
+    measurementscale = measurementscale,
     start_fws = start_fws,
     start_academic_year = start_academic_year,
     end_fws = end_fws,
