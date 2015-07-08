@@ -24,10 +24,10 @@ test_that("strand boxes produces proper plot with a grade level of kids", {
       
   p_build <- ggplot_build(p)
   expect_true(is.ggplot(p))
-  expect_equal(nrow(p_build$data[[1]]), 372)
-  expect_equal(sum(p_build$data[[1]][, 3]), 83183.3, tolerance = .001)  
-  expect_equal(ncol(p_build$data[[2]]), 4)
-  expect_equal(sum(p_build$data[[2]][, 2]), 916, tolerance = .001)
+  expect_equal(nrow(p_build$data[[1]]), 4)
+  expect_equal(sum(p_build$data[[1]][, 3]), 894, tolerance = .001)  
+  expect_equal(ncol(p_build$data[[2]]), 5)
+  expect_equal(sum(p_build$data[[2]][, 2]), 0, tolerance = .001)
   
 })
 
