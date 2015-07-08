@@ -460,6 +460,8 @@ valid_grade_seasons <- function(
 #' @param studentids vector of studentids
 #' @param measurementscale a MAP subject
 #' 
+#' @return the cdf
+#' 
 #' @export
 
 mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale) {

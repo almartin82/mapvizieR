@@ -8,7 +8,7 @@
 #'
 #' @param mapvizieR_obj a \code{\link{mapvizieR}} object
 #' @param studentids a set of student ids to subset too.
-#' @param subject the subject of interest
+#' @param measurementscale a MAP measurementscale
 #' @param title_text title as a character vector
 #'
 #' @return a ggplot2 object
@@ -35,15 +35,15 @@
 #' student_npr_history_plot(
 #'   map_mv,
 #'   studentids = ids[1:80, "StudentID"],
-#'   subject = "Reading")
+#'   measurementscale = "Reading")
 #'}
 
-student_npr_history_plot <- function(mapvizieR_obj,
-                                     studentids,
-                                     subject,
-                                     title_text = ""){
-
-
+student_npr_history_plot <- function(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  title_text = ""
+){
   # data validation
   mv_opening_checks(mapvizieR_obj, studentids, 1)
 
@@ -51,18 +51,10 @@ student_npr_history_plot <- function(mapvizieR_obj,
   roster <- mapvizieR_obj$roster %>%
     dplyr::filter(studentid %in% studentids)
 
-  cdf <- mapvizieR_obj$cdf %>%
-    dplyr::filter(
-      studentid %in% studentids,
-      measurementscale == subject
-      )
+  cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
 
   # combine roster and cdf form mapvizier_object
-  map_df <- dplyr::inner_join(roster,
-                              cdf,
-                              by= c("studentid",
-                                    "termname")
-                              )
+  map_df <- roster_to_cdf(cdf, mapvizieR_obj, c('studentfirstlast'))
 
   min_grade <- min(map_df$grade_level_season)
   max_grade <- max(map_df$grade_level_season)
@@ -71,7 +63,10 @@ student_npr_history_plot <- function(mapvizieR_obj,
 
   assessment_order2 <- unique(map_df$grade_season_label)
 
-  p_indv <- ggplot(map_df, aes(x = grade_level_season, y = testpercentile)) +
+  p_indv <- ggplot(
+      data = map_df, 
+      aes(x = grade_level_season, y = testpercentile)
+    ) +
     geom_line(aes(group = studentid)) +
     geom_point(size = 2) +
     annotate(
@@ -82,7 +77,7 @@ student_npr_history_plot <- function(mapvizieR_obj,
       xmax = max_grade,
       fill = "red",
       alpha = .1
-      ) +
+    ) +
     annotate(
       "rect",
       ymin = 25,
@@ -90,8 +85,8 @@ student_npr_history_plot <- function(mapvizieR_obj,
       xmin = min_grade,
       xmax = max_grade,
       fill = "gold",
-      alpha=.1
-      ) +
+      alpha = .1
+    ) +
     annotate(
       "rect",
       ymin = 50,
@@ -100,7 +95,7 @@ student_npr_history_plot <- function(mapvizieR_obj,
       xmax = max_grade,
       fill = "blue",
       alpha = .1
-      ) +
+    ) +
     annotate(
       "rect",
       ymin = 75,
@@ -109,16 +104,16 @@ student_npr_history_plot <- function(mapvizieR_obj,
       xmax = max_grade,
       fill = "green",
       alpha = .1
-      ) +
+    ) +
     stat_smooth(method = "lm", se = FALSE) +
-    facet_wrap(~ studentfirstlast, ncol = 10) +
+    facet_wrap(~studentfirstlast, ncol = 10) +
     scale_x_continuous("Assessments",
                        breaks = assessments_breaks,
                        labels = assessment_order2) +
     theme_minimal() +
-    theme(strip.text = element_text(size=8),
-          axis.text.y = element_text(size=6),
-          axis.text.x = element_text(size=4)
+    theme(strip.text = element_text(size = 8),
+          axis.text.y = element_text(size = 6),
+          axis.text.x = element_text(size = 4)
     ) +
     ylab("National Percentile Rank") + 
     ggtitle(title_text)

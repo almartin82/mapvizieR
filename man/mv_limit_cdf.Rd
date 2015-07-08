@@ -13,6 +13,9 @@ mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
 
 \item{measurementscale}{a MAP subject}
 }
+\value{
+the cdf
+}
 \description{
 extract the cdf and limit it to target students
 }
