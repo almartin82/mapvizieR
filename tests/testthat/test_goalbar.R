@@ -92,3 +92,17 @@ test_that("fuzz test goalbar plot", {
   )
   expect_true(all(unlist(results)))
 })
+
+
+test_that("min subgroup filter test", {
+  
+  silly_ex <- min_subgroup_filter(roster, 'studentgender', 0.5)
+  expect_equal(nrow(roster), nrow(silly_ex))
+  
+  ethnic_ex <- min_subgroup_filter(roster, 'studentethnicgroup', 0.1)
+  expect_equal(
+    ethnic_ex$studentethnicgroup %>% unique(), 
+    c("Hispanic or Latino", "White", "Black or African American")
+  )
+  expect_equal(nrow(ethnic_ex), 2543)
+})

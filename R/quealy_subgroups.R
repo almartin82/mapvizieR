@@ -24,7 +24,9 @@
 #' @param drop_NA_groups should we ignore subgroups with value NA?  default is true
 #' @param include_all should the output have plot at the top showing the TOTAL
 #' variation?  not recommended for data spanning multiple grade levels.
-#' 
+#' @param small_n_cutoff drop a subgroup if less than x% (as decimal) of the total pop? 
+#' (useful for cutting off the long tail of a group).  applies to all subgroups in
+#' subgroup_cols.  does not apply to magic subgroups.
 #' @return a grob composed of multiple ggplots
 #' 
 #' @export
@@ -44,7 +46,8 @@ quealy_subgroups <- function(
   report_title = NA,
   complete_obsv = TRUE,
   drop_NA_groups = TRUE,
-  include_all = TRUE
+  include_all = TRUE,
+  small_n_cutoff = -1
 ) {
   
   #1. validation
@@ -99,18 +102,21 @@ quealy_subgroups <- function(
   #...find the GROWTH WINDOW
   #also calc group stats, so we don't have to do it later.
   for (i in all_sub) {
-    perms <- df[, i] %>% unique() %>% sort()
+    #first apply small n filter
+    df_filtered <- min_subgroup_filter(df, i, small_n_cutoff)
+    #find permutations for this group
+    perms <- df_filtered[, i] %>% unique() %>% sort()
     if (drop_NA_groups == TRUE) {perms <- perms[!is.na(perms)]}
     
     for (j in perms) {
       #matching sub/perm students
-      mask <- df[, i] == j
+      mask <- df_filtered[, i] == j
       #get the windows
       if (length(start_fws) > 1) {
         #from the data
         auto_windows <- auto_growth_window(
           mapvizieR_obj = mapvizieR_obj,
-          studentids = df[mask, 'studentid'],
+          studentids = df_filtered[mask, 'studentid'],
           measurementscale = measurementscale,
           end_fws = end_fws, 
           end_academic_year = end_academic_year,
@@ -127,8 +133,8 @@ quealy_subgroups <- function(
       }
       
       #limit by windows
-      this_stu <- df %>% dplyr::filter(
-        studentid %in% df[mask, 'studentid'] &
+      this_stu <- df_filtered %>% dplyr::filter(
+        studentid %in% df_filtered[mask, 'studentid'] &
         start_fallwinterspring == inferred_start_fws &
         start_map_year_academic == inferred_start_academic_year
       )

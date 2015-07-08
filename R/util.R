@@ -505,10 +505,10 @@ mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale) {
 #' least N% of the total
 #' 
 #' @param cdf conforming cdf
-#' @param small_n_cutoff anything below this percent will get filtered out.  default is -1, eg
-#' off
+#' @param small_n_cutoff anything below this percent will get filtered out.  
+#' default is -1, eg off
 
-min_term_filter <- function(cdf, small_n_cutoff=-1) {
+min_term_filter <- function(cdf, small_n_cutoff = -1) {
    
   grade_seasons_to_keep <- cdf %>%
     dplyr::group_by(grade_level_season) %>%
@@ -530,6 +530,61 @@ min_term_filter <- function(cdf, small_n_cutoff=-1) {
     dplyr::filter(
       grade_level_season %in% as.numeric(grade_seasons_to_keep$grade_level_season)
     )  
+}
+
+
+#' @title min_subgroup_filter 
+#' 
+#' @description given a data frame and some arbitrary subgroup, 
+#' return only the rows that are members of subgroups that make up
+#' at least n % of the total data frame
+#' 
+#' @param df some data frame
+#' @param subgroup name of a column of the data frame
+#' @param small_n_cutoff anything below this percent will get filtered out.  
+#' default is -1, eg off
+
+min_subgroup_filter <- function(df, subgroup_name, small_n_cutoff = -1) {
+  
+  #defensive against dplyr output
+  df <- as.data.frame(df)
+  
+  #more assumptions
+  df %>% 
+    ensurer::ensure_that(
+      subgroup_name %in% names(.) ~ 
+      "the subgroup you specified isn't in the data frame you provided"
+    )
+
+  #counts and percentages
+  to_keep <- df %>%
+    dplyr::select_(
+      quote(studentid),
+      subgroup_name
+    ) %>%
+    dplyr::group_by_(
+      subgroup_name
+    ) %>%
+    #how many
+    dplyr::summarize(
+      n = n()
+    ) %>%
+    #is it bigger than the cutoff
+    dplyr::mutate(
+      include = n >= max(n) * small_n_cutoff
+    ) %>%
+    #filter to get only the groups that match
+    dplyr::filter(
+      include == TRUE
+    ) %>%
+    #only the name of the subgroup
+    dplyr::select_(
+      subgroup_name
+    ) %>% unlist() %>% unname()
+  
+  #filter the df and return
+  mask <- df[, subgroup_name] %in% to_keep
+  df[mask, ] %>% as.data.frame()
 }
 
 

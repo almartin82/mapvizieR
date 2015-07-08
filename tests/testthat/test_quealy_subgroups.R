@@ -203,3 +203,33 @@ test_that("quealy_subgroups with zero-length student df", {
     "no matching students for the specified subject/terms."
   )
 })
+
+
+test_that("quealy_subgroups with small_n filter", {
+  
+  small_n <- quealy_subgroups(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Reading',
+    subgroup_cols = c('studentethnicgroup'),
+    pretty_names = c('Ethnicity'),
+    start_fws = 'Fall',
+    start_year_offset = 0,
+    end_fws = 'Spring',
+    end_academic_year = 2013,
+    complete_obsv = TRUE,
+    small_n_cutoff = 0.2
+  )
+  
+  expect_is(small_n, 'arrange')
+  expect_is(small_n, 'ggplot')
+  expect_is(small_n, 'gTree')
+  expect_is(small_n, 'grob')
+  expect_is(small_n, 'gDesc')
+  expect_equal(length(small_n), 5)
+  expect_equal(names(small_n), c("name", "gp", "vp", "children", "childrenOrder"))
+  
+  expect_equal(dimnames(summary(small_n[[4]]))[[2]], c("Length", "Class", "Mode"))
+  expect_equal(unname(summary(small_n[[4]])[1, ]), c("6", "frame", "list"))
+  
+})
