@@ -110,3 +110,18 @@ test_that("report dispatcher with two pager", {
   expect_is(samp_rd[[1]][[1]], "gTree")
 
 })
+
+
+test_that("report dispatcher throws an error if bad cut/call list provided", {  
+  expect_error(
+    report_dispatcher(
+      mapvizieR_obj = mapviz,
+      cut_list = list('schoolname', 'grade'),
+      call_list = list(TRUE),
+      func_to_call = "galloping_elephants",
+      arg_list = list('measurementscale'='Mathematics')
+    ),
+    "cut list and call list should be same length."
+  )
+})  
+

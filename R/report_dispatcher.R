@@ -35,6 +35,11 @@ report_dispatcher <- function(
     verbose = TRUE,
     ...
   ) {
+  #cut list and call list should be the same length
+  if (!length(cut_list) == length(call_list)) {
+    stop("cut list and call list should be same length.")
+  }
+
   #use ensureR to check if this is a mapvizieR object
   mapvizieR_obj %>% ensure_is_mapvizieR()
   roster <- mapvizieR_obj[['roster']]
