@@ -81,15 +81,15 @@ extract_academic_year <- function(x) {
 #' abbrev(x, exceptions=altnames)
 
 abbrev <- function(x, exceptions = NULL){
-  x.out<- gsub(pattern="(\\w)\\w*\\W*", 
-               replacement="\\1",
-               x=x)
+  x.out <- gsub(pattern = "(\\w)\\w*\\W*", 
+               replacement = "\\1",
+               x = x)
   
   # pass list of exceptions to the abbrev function
-  if(!is.null(exceptions)){
-    x.changed<-with(exceptions, new[match(x.out, old)]) # create changes vector (non changes = NA)
-    x.changed[is.na(x.changed)]<-x.out[is.na(x.changed)] # replace NAs with non-changed values
-    x.out<-x.changed # replace original vector with changed vector               
+  if (!is.null(exceptions)) {
+    x.changed <- with(exceptions, new[match(x.out, old)]) # create changes vector (non changes = NA)
+    x.changed[is.na(x.changed)] <- x.out[is.na(x.changed)] # replace NAs with non-changed values
+    x.out <- x.changed # replace original vector with changed vector               
   }
   
   x.out
@@ -125,18 +125,18 @@ abbrev <- function(x, exceptions = NULL){
 kipp_quartile <- function(x, return_factor = TRUE, proper_quartile = FALSE){
   
   #defactor factors
-  if(is.factor(x)) x<-as.numeric(as.character(x))
+  if (is.factor(x)) x <- as.numeric(as.character(x))
   
   # Error handling 
-  stopifnot(x>0 | is.na(x), x<100 | is.na(x))
+  stopifnot(x > 0 | is.na(x), x < 100 | is.na(x))
   
   # if proper.quartile is false adjust x's to return Foundation quartile 
-  if(!proper_quartile) x <- x+1
+  if (!proper_quartile) x <- x + 1
   #calculate quartile
   y <- ceiling(x/25)
   
   #transform to factor
-  if(return_factor) y <- factor(y, levels=c(1:4))
+  if (return_factor) y <- factor(y, levels = c(1:4))
   
   #return
   y
@@ -165,13 +165,13 @@ kipp_quartile <- function(x, return_factor = TRUE, proper_quartile = FALSE){
 tiered_growth_factors <- function(quartile, grade){
   
   #Error handling 
-  stopifnot(length(quartile)==length(grade))
+  stopifnot(length(quartile) == length(grade))
   
   # Create data.frame lookup of KIPP Foundation Growth Targts
   tgrowth <- data.frame(
-    grade.type=c(rep(0,4),rep(1,4)), 
+    grade.type = c(rep(0,4),rep(1,4)), 
     quartile = as.factor(rep(1:4, 2)), 
-    KIPPTieredGrowth=c(1.5,1.5,1.25,1.25,2,1.75,1.5,1.25)
+    KIPPTieredGrowth = c(1.5,1.5,1.25,1.25,2,1.75,1.5,1.25)
   )
   
   grade.type <- rep(NA, times = length(quartile))
@@ -181,7 +181,7 @@ tiered_growth_factors <- function(quartile, grade){
   
   df <- data.frame(grade, grade.type, quartile = as.factor(quartile))
   
-  df2 <- dplyr::left_join(df, tgrowth, by=c("quartile", "grade.type"))
+  df2 <- dplyr::left_join(df, tgrowth, by = c("quartile", "grade.type"))
   
   #return
   df2$KIPPTieredGrowth 
@@ -217,18 +217,18 @@ tiered_growth_factors <- function(quartile, grade){
 #' x3 <- ifelse(x=="K", "Kinder", x)
 #' standardize_kinder(x2, other_codes="Kinder")
 
-standardize_kinder<- function(x, other_codes = NULL){
+standardize_kinder <- function(x, other_codes = NULL){
   
   # use other codes first
-  if(!is.null(other_codes)){
-    x<-ifelse(x %in% other_codes, 0, x)
+  if (!is.null(other_codes)) {
+    x <- ifelse(x %in% other_codes, 0, x)
   }
   
   # change "K" to 0
-  x <- ifelse(x=="K", 0, x)
+  x <- ifelse(x == "K", 0, x)
   
   # change 13 to 0
-  x <- ifelse(x==13, 0, x)
+  x <- ifelse(x == 13, 0, x)
   
   # cast as integer.vector
   x <- as.integer(x)
@@ -257,7 +257,7 @@ fall_spring_me <- function(x) {
     gr_spr <- c(0:12)
     gr_fall <- gr_spr - 0.8
     gr_wint <- gr_spr - 0.5
-    
+
     with_k <- c('K', gr_spr[2:13])
     #just the labels
     labels_spr <- paste0(with_k, 'S')
@@ -314,9 +314,9 @@ round_to_any <- function(x, accuracy, f = round) {
 #' @param ... additional arguments
 
 df_sorter <- function(x, by = 1, decreasing = FALSE, ... ) {
-  f <- function(...) order(...,decreasing=decreasing)
+  f <- function(...) order(..., decreasing = decreasing)
   i <- do.call(f, x[by])
-  x[i,,drop = FALSE]
+  x[i, , drop = FALSE]
 }
 
 
@@ -368,8 +368,8 @@ rand_stu <- function(mapvizieR_obj, low = 20, high = 500) {
 
 clean_measurementscale <- function(x) {
   
-  x <- ifelse(x=='Science - General Science', 'General Science', x) 
-  x <- ifelse(x=='Science - Concepts and Processes', 'Concepts and Processes', x) 
+  x <- ifelse(x == 'Science - General Science', 'General Science', x) 
+  x <- ifelse(x == 'Science - Concepts and Processes', 'Concepts and Processes', x) 
 
   return(x)
 }
@@ -397,6 +397,8 @@ munge_startdate <- function(x) {
 #' @param mapvizieR_obj a valid mapvizieR object.
 #' @param studentids vector of studentids to run for this plot
 #' @param min_stu minimum number of students for this plot.  default is 1.
+#' 
+#' @export
 
 mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu=1) {
   #has to be a mapvizieR obj
@@ -427,19 +429,24 @@ mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu=1) {
 #' @param detail_academic_year what is the 'current' year?  never drop data for
 #' this year.
 
-valid_grade_seasons <- function(cdf, first_and_spring_only=TRUE,
-  entry_grade_seasons=c(-0.8, 4.2), detail_academic_year=2014) {
+valid_grade_seasons <- function(
+  cdf, 
+  first_and_spring_only = TRUE,
+  entry_grade_seasons = c(-0.8, 4.2), 
+  detail_academic_year = 2014
+) {
   #only these seasons
   if (first_and_spring_only) {
-    valid_grade_seasons <- c(entry_grade_seasons, seq(0:13))
+    valid_grade_seasons <- c(entry_grade_seasons, 0, seq(0:11))
   } else {
     valid_grade_seasons <- unique(cdf$grade_level_season)
   }
   
   #only valid grade level seasons or detail year
   cdf %>%
-    filter(
-      grade_level_season %in% valid_grade_seasons | map_year_academic==detail_academic_year
+    dplyr::filter(
+      round(grade_level_season, 1) %in% round(valid_grade_seasons, 1) | 
+        map_year_academic == detail_academic_year
     ) 
 }
 
@@ -451,9 +458,13 @@ valid_grade_seasons <- function(cdf, first_and_spring_only=TRUE,
 #' 
 #' @param mapvizieR_obj a conforming mapvizieR object
 #' @param studentids vector of studentids
-#' @param measurementscale_in a MAP subject
+#' @param measurementscale a MAP subject
+#' 
+#' @export
 
-mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale_in) {
+mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale) {
+  #nse
+  measurementscale_in <- measurementscale
   
   #extract the object
   cdf_long <- mapvizieR_obj[['cdf']] 
@@ -471,15 +482,18 @@ mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale_in) {
 #' 
 #' @description extract the growth df and limit it to target students
 #' @inheritParams mv_limit_cdf
+#' 
+#' @export
 
-mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale_in) {
+mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale) {
+  measurementscale_in <- measurementscale
   
   #extract the object
   growth_df <- mapvizieR_obj[['growth_df']]
   #only these kids
   growth_df %>%
     dplyr::filter(
-      studentid %in% studentids,
+      studentid %in% studentids &
       measurementscale %in% measurementscale_in
     )  
 }
@@ -499,13 +513,13 @@ min_term_filter <- function(cdf, small_n_cutoff=-1) {
   grade_seasons_to_keep <- cdf %>%
     dplyr::group_by(grade_level_season) %>%
     dplyr::summarize(
-      n=n()
+      n = n()
     ) %>%
     dplyr::mutate(
-      include=n >= max(n) * small_n_cutoff
+      include = n >= max(n) * small_n_cutoff
     ) %>%
     dplyr::filter(
-      include==TRUE
+      include == TRUE
     ) %>%
     dplyr::select(
       grade_level_season  
@@ -514,7 +528,7 @@ min_term_filter <- function(cdf, small_n_cutoff=-1) {
  
   cdf %>%
     dplyr::filter(
-      grade_level_season %in% as.vector(grade_seasons_to_keep$grade_level_season)
+      grade_level_season %in% as.numeric(grade_seasons_to_keep$grade_level_season)
     )  
 }
 
@@ -527,8 +541,8 @@ min_term_filter <- function(cdf, small_n_cutoff=-1) {
 #' @param x a quartile (1-4)
 
 quartile_order <- function(x) { 
-  ifelse(x==2, 1,
-    ifelse(x==1, 2, x)       
+  ifelse(x == 2, 1,
+    ifelse(x == 1, 2, x)       
   )
 }
 
@@ -544,14 +558,14 @@ quartile_order <- function(x) {
 #' to do.call
 #' @export
 
-time_execution <- function (n, test_function, test_args) {
+time_execution <- function(n, test_function, test_args) {
   timings <- rep(NA, n)
  
   for (itr in 1:n) {
     start <- Sys.time()
     do.call(
-      what=test_function, 
-      args=test_args
+      what = test_function, 
+      args = test_args
     )
     end <- Sys.time()
     timings[itr] <- end - start
@@ -616,7 +630,7 @@ ensure_fields <- function(fields_vector, df) {
 force_string_breaks <- function(string, n_char) {
   breaks <- gsub(paste0('(.{1,', n_char, '})(\\s|$)'), '\\1\n', string)  
   #remove trailing and return
-  str_sub(breaks, 1, -2)
+  stringr::str_sub(breaks, 1, -2)
 }
 
 
@@ -646,4 +660,33 @@ ensure_nonzero_students_with_norms <- ensurer::ensures_that(
     " typical growth norms (possibly because they are too old or young and outside",
     " the NWEA norm study)")
 )
+
+
+
+#' @title numeric_nwea_seasons
+#'
+#' @description
+#' tranforms fall, winter, spring into a numeric offset so things sort the right way
+#'
+#' @param x a vector of seasons
+#' 
+#' @return a vector of numeric offsets
+#' @export
+
+
+numeric_nwea_seasons <- function(x) {
+  #make the df
+  offsets <- data.frame(
+    'fallwinterspring' = c('Fall', 'Winter', 'Spring'),
+    'season_offset' = c(0.01, 0.02, 0.03),
+    stringsAsFactors = FALSE
+  )
   
+  x_joined <- dplyr::left_join(
+    x = data.frame('fallwinterspring' = x, stringsAsFactors = FALSE),
+    y = offsets,
+    by = 'fallwinterspring'
+  ) %>% as.data.frame()
+  
+  return(x_joined[, 'season_offset', drop = TRUE])
+}

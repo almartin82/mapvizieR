@@ -4,14 +4,14 @@
 \alias{mv_limit_growth}
 \title{mv_limit_growth_df}
 \usage{
-mv_limit_growth(mapvizieR_obj, studentids, measurementscale_in)
+mv_limit_growth(mapvizieR_obj, studentids, measurementscale)
 }
 \arguments{
 \item{mapvizieR_obj}{a conforming mapvizieR object}
 
 \item{studentids}{vector of studentids}
 
-\item{measurementscale_in}{a MAP subject}
+\item{measurementscale}{a MAP subject}
 }
 \description{
 extract the growth df and limit it to target students

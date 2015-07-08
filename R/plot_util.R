@@ -6,8 +6,8 @@
 #' @param size font size
 #' @param gp graphics paramaters.
 
-h_var <- function(text, size, gp=gpar(fontsize=size, fontface = 'bold')) {
-  textGrob(
+h_var <- function(text, size, gp=grid::gpar(fontsize=size, fontface = 'bold')) {
+  grid::textGrob(
     label=text
    ,just=c('left', 'center')
    ,x=0
@@ -26,16 +26,18 @@ h_var <- function(text, size, gp=gpar(fontsize=size, fontface = 'bold')) {
 #' @param vjust top, center, or bottom 
 
 grob_justifier <- function(x, hjust="center", vjust="center"){
-  w <- grobWidth(x)
-  h <- grobHeight(x)
+  w <- grid::grobWidth(x)
+  h <- grid::grobHeight(x)
   xj <- switch(hjust,
                center = 0.5,
                left = 0.5*w,
-               right=unit(1,"npc") - 0.5*w)
+               right=grid::unit(1,"npc") - 0.5*w)
   yj <- switch(vjust,
                center = 0.5,
                bottom = 0.5*h,
-               top=unit(1,"npc") - 0.5*h)
-  x$vp <- viewport(x=xj, y=yj)
-  arrangeGrob(x)
+               top=grid::unit(1,"npc") - 0.5*h)
+  x$vp <- grid::viewport(x=xj, y=yj)
+  
+  #return
+  gridExtra::arrangeGrob(x)
 }

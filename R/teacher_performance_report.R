@@ -21,7 +21,7 @@ teacher_performance_update <- function(
   ...
 ) {
 
-  minimal = rectGrob(gp=gpar(col="white"))
+  minimal = grid::rectGrob(gp = grid::gpar(col = "white"))
 
   title_bar <- h_var(paste0('Teacher Performance Update: ', title_text), 24)
 
@@ -29,7 +29,7 @@ teacher_performance_update <- function(
   ele <- galloping_elephants(mapvizieR_obj, studentids, measurementscale)
 
   #histogram
-  sgp <- sgp_histogram(
+  growth_hist <- growth_histogram(
     mapvizieR_obj = mapvizieR_obj,
     studentids = studentids,
     measurementscale = measurementscale,
@@ -40,7 +40,7 @@ teacher_performance_update <- function(
   )
 
   arrangeGrob(
-    title_bar, ele, sgp,
+    title_bar, ele, growth_hist,
     nrow = 3, heights = c(1,4,4)
   )
 }

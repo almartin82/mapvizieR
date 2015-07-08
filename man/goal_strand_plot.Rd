@@ -4,14 +4,14 @@
 \alias{goal_strand_plot}
 \title{Plot MAP Goal Strand Results}
 \usage{
-goal_strand_plot(mapvizieR_obj, studentids, measurement_scale, fws, year)
+goal_strand_plot(mapvizieR_obj, studentids, measurementscale, fws, year)
 }
 \arguments{
 \item{mapvizieR_obj}{a \code{mapvizieR} object}
 
 \item{studentids}{vector of student id numbers for students to plot}
 
-\item{measurement_scale}{measurementscale to plot}
+\item{measurementscale}{measurementscale to plot}
 
 \item{fws}{season (fall, winter, or spring) to plot}
 
@@ -31,23 +31,28 @@ Creates and prints a ggplot2 object showing both overall and goal strand RIT
 scores for each student in a subets.
 }
 \examples{
+\dontrun{
+require(dplyr)
+
 data("ex_CombinedStudentsBySchool")
 data("ex_CombinedAssessmentResults")
 
-map_mv<-mapvizieR(ex_CombinedAssessmentResults, ex_CombinedStudentsBySchool)
+map_mv <- mapvizieR(ex_CombinedAssessmentResults, ex_CombinedStudentsBySchool)
 
-ids<-ex_CombinedStudentsBySchool \%>\% filter(
-   Grade==8,
-   SchoolName=="Mt. Bachelor Middle School",
-   TermName=="Spring 2013-2014") \%>\% select(StudentID) \%>\%
-   unique()
+ids <- ex_CombinedStudentsBySchool \%>\%
+  dplyr::filter(
+    Grade == 8,
+    SchoolName == "Mt. Bachelor Middle School",
+    TermName == "Spring 2013-2014") \%>\% select(StudentID) \%>\%
+    unique()
 
 goal_strand_plot(
- map_mv,
- studentids = c(ids[1:49, "StudentID"]),
- measurement_scale="Mathematics",
- fws="Spring",
- year=2013
- )
+  map_mv,
+  studentids = c(ids[1:49, "StudentID"]),
+  measurementscale = "Mathematics",
+  fws = "Spring",
+  year = 2013
+)
+}
 }
 

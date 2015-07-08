@@ -8,33 +8,40 @@
 #'
 #' @param mapvizieR_obj a \code{\link{mapvizieR}} object
 #' @param studentids a set of student ids to subset too.
-#' @param measurementscale the subject of interest
+#' @param subject the subject of interest
+#' @param title_text title as a character vector
 #'
 #' @return a ggplot2 object
 #'
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' require(dplyr)
 #'
 #' data("ex_CombinedStudentsBySchool")
 #' data("ex_CombinedAssessmentResults")
 #'
-#' map_mv<-mapvizieR(ex_CombinedAssessmentResults, ex_CombinedStudentsBySchool)
+#' map_mv <- mapvizieR(ex_CombinedAssessmentResults, ex_CombinedStudentsBySchool)
 #'
-#' ids<-ex_CombinedStudentsBySchool %>% filter(
-#'    Grade==8,
-#'    SchoolName=="Mt. Bachelor Middle School",
-#'    TermName=="Spring 2013-2014") %>% select(StudentID) %>%
+#' ids <- ex_CombinedStudentsBySchool %>% 
+#'    dplyr::filter(
+#'      Grade == 8,
+#'      SchoolName == "Mt. Bachelor Middle School",
+#'      TermName == "Spring 2013-2014") %>% 
+#'    dplyr::select(StudentID) %>%
 #'    unique()
 #'
 #' student_npr_history_plot(
-#'     map_mv,
-#'     studentids = ids[1:80, "StudentID"],
-#'     measurementscale = "Reading")
+#'   map_mv,
+#'   studentids = ids[1:80, "StudentID"],
+#'   subject = "Reading")
+#'}
 
 student_npr_history_plot <- function(mapvizieR_obj,
                                      studentids,
-                                     measurementscale){
+                                     subject,
+                                     title_text = ""){
 
 
   # data validation
@@ -42,12 +49,12 @@ student_npr_history_plot <- function(mapvizieR_obj,
 
   # filter roster and df to only use those that exists in studentids
   roster <- mapvizieR_obj$roster %>%
-    dplyr::filter(studentid  %in% studentids)
+    dplyr::filter(studentid %in% studentids)
 
   cdf <- mapvizieR_obj$cdf %>%
     dplyr::filter(
       studentid %in% studentids,
-      measurementscale %in% measurementscale
+      measurementscale == subject
       )
 
   # combine roster and cdf form mapvizier_object
@@ -113,7 +120,8 @@ student_npr_history_plot <- function(mapvizieR_obj,
           axis.text.y = element_text(size=6),
           axis.text.x = element_text(size=4)
     ) +
-    ylab("National Percentile Rank")
+    ylab("National Percentile Rank") + 
+    ggtitle(title_text)
 
   #return
   p_indv

@@ -62,20 +62,17 @@ haid_plot <- function(
 
   #get student name onto growth df
   minimal_roster <- mapvizieR_obj[['roster']]
-  minimal_roster <- minimal_roster[,
-    c('studentid', 'map_year_academic', 'fallwinterspring', 'studentfirstlast',
-      'studentlastfirst')]
+  minimal_roster <- unique(
+    minimal_roster[,c('studentid', 'studentfirstlast', 'studentlastfirst')]
+  )
 
   df <- dplyr::inner_join(
     x = df,
     y = minimal_roster,
-    by = c('studentid' = 'studentid',
-      'start_map_year_academic' = 'map_year_academic',
-      'start_fallwinterspring' = 'fallwinterspring')
+    by = 'studentid'
   )
 
   #if a student doesn't have a base rit, plot will break
-  ommitted_count <- sum(is.na(df$start_testritscore))
   df <- df[!is.na(df$start_testritscore), ]
   num_stu <- nrow(df)
   stopifnot(
@@ -91,17 +88,23 @@ haid_plot <- function(
 
   #thematic stuff
   pointsize <- 3
-  segsize <- 1
   annotate_size <- 5
-  x_min <- round_to_any(min(c(df$start_testritscore, df$end_testritscore)) - 2, 5, floor)
-  x_max <- round_to_any(max(c(df$start_testritscore, df$end_testritscore)) + 2, 5, f = ceiling)
+  x_min <- round_to_any(
+    min(c(df$start_testritscore, df$end_testritscore), na.rm = TRUE) - 2, 5, floor
+  )
+  x_max <- round_to_any(
+    max(c(df$start_testritscore, df$end_testritscore, 
+          df$start_testritscore + df$accel_growth), na.rm = TRUE) + 1, 5, f = ceiling
+  )
   name_offset <- p_name_offset * (x_max - x_min)
 
   #make a psuedo-axis by ordering based on one variable
+  #need to allow for holdovers
+  #make a fake ranking value that is quartile in thousands value, plus rit
+  df$for_ranking <- (as.numeric(df[,'start_testquartile']) * 1000) + df[ , sort_column]
+  
   df$y_order <- rank(
-    x = df[ , sort_column]
-    ,ties.method = "first"
-    ,na.last = FALSE
+    x = df[ , 'for_ranking'], ties.method = "first", na.last = FALSE
   )
 
   #make growth status an ordered factor
@@ -116,6 +119,8 @@ haid_plot <- function(
     df$neg_flag <- 0
   } else {
     df$neg_flag <- ifelse(df$end_testritscore <= df$start_testritscore, 1, 0)
+    #untested END kids should be set to 0
+    df$neg_flag <- ifelse(is.na(df$end_testritscore), 0, df$neg_flag)
   }
 
   #tag names
@@ -138,16 +143,17 @@ haid_plot <- function(
 
   #colors for identity!
   growth_colors <- data.frame(
-    status = p_growth_tiers,
-    color = p_growth_colors,
+    #NA is the status for students with a baseline but no end score.
+    status = c(p_growth_tiers, NA),
+    color = c(p_growth_colors, 'gray50'),
     stringsAsFactors = FALSE
   )
-
-  df$growth_color_identity <- 'black'
 
   if (!single_season_flag) {
     #cribbing off of 'subscripting' http://rwiki.sciviews.org/doku.php?id=tips:data-frames:merge
     df$growth_color_identity <- growth_colors$color[match(df$growth_status, growth_colors$status)]
+  } else {
+    df$growth_color_identity <- 'black'
   }
 
   #start/end quartile colors
@@ -210,8 +216,8 @@ haid_plot <- function(
 
   #base ggplot object
   p <- ggplot(
-    data = df
-    ,aes(
+    data = df,
+    aes(
       x = start_testritscore,
       y = y_order
     ),
@@ -238,10 +244,10 @@ haid_plot <- function(
   #typical and college ready goal labels
   p <- p +
   geom_text(
-    data = df[df$student_name_format != ' ', ]
-   ,aes(
-      x = start_testritscore + reported_growth
-     ,label = start_testritscore + reported_growth
+    data = df[df$student_name_format != ' ', ],
+    aes(
+      x = start_testritscore + reported_growth,
+      label = start_testritscore + reported_growth
     ),
     color = "#CFCCC1",
     size = pointsize - 0.5,
@@ -250,10 +256,10 @@ haid_plot <- function(
     alpha = p_alpha
   ) +
   geom_text(
-    data = df[df$student_name_format != ' ', ]
-   ,aes(
-      x = start_testritscore + accel_growth
-     ,label = start_testritscore + accel_growth
+    data = df[df$student_name_format != ' ', ],
+    aes(
+      x = start_testritscore + accel_growth,
+      label = start_testritscore + accel_growth
     ),
     color = "#FEBC11",
     size = pointsize - 0.5,
@@ -273,7 +279,7 @@ haid_plot <- function(
         group = growth_color_identity,
         color = growth_color_identity
       ),
-      arrow = arrow(length = unit(0.1,"cm"))
+      arrow = grid::arrow(length = grid::unit(0.1,"cm"))
     )
 
     #add RIT text
@@ -315,7 +321,8 @@ haid_plot <- function(
         group = baseline_color,
         color = baseline_color
       ),
-      size = p_name_size
+      size = p_name_size,
+      hjust = 0
     )
   }
 

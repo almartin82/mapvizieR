@@ -6,23 +6,26 @@ Date: 2015-01-14
 Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email =
     "almartin@gmail.com"), person("Chris", "Haid", role = "aut", email =
     "chaid@kippchicago.org"))
-Description: Visualizations for NWEA MAP Data
+Description: mapzivieR is a suite of analytic, visualization, and reporting
+    tools for NWEA MAP Data.
 License: file LICENSE
 Depends:
-    assertthat,
-    lubridate,
-    stringr,
-    dplyr,
-    ensurer,
-    ggplot2,
     grid,
     gridExtra,
-    magrittr,
-    toOrdinal,
+    ggplot2,
     R(>= 2.10.0)
-Suggests: 
+Suggests:
     testthat,
     knitr
 LazyData: true
 VignetteBuilder: knitr
-Imports: reshape2
+Imports:
+    dplyr,
+    reshape2,
+    assertthat,
+    lubridate,
+    stringr,
+    ensurer,
+    grid,
+    gridExtra,
+    toOrdinal

@@ -3,9 +3,11 @@
 #' @description filter a mapvizieR object by academic year, or any variable in the roster.
 #' 
 #' @param mapvizieR_obj mapvizieR object
-#' @param 
+#' @param cdf_filter a filter, or filters to apply on fields in the cdf.  wrap it in \code{quote()}
+#' @param roster_filter a filter, or filters to apply on fields in the roster.  will also filter
+#' the cdf to only return those students.  wrap it in `quote()`
 #'
-#' @return 
+#' @return a filtered mapvizieR object
 #' 
 #' @export
 
@@ -38,7 +40,12 @@ mv_filter <- function(mapvizieR_obj, cdf_filter=NA, roster_filter=NA) {
     
     #then use those studentids to filter the cdf
     mapviz[['cdf']] <-  mapviz[['cdf']] %>% 
-      dplyr::filter(studentid %in% target_stu) 
+      dplyr::filter(studentid %in% target_stu)
+    
+    #and the growth_df
+    mapviz[['growth_df']] <-  mapviz[['growth_df']] %>% 
+      dplyr::filter(studentid %in% target_stu)
+    
   }
   
   return(mapviz)

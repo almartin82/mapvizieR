@@ -15,7 +15,7 @@
 #'
 #' @export
 
-galloping_elephants <- function (mapvizieR_obj,
+galloping_elephants <- function(mapvizieR_obj,
                                  studentids,
                                  measurementscale,
                                  first_and_spring_only = TRUE,
@@ -71,8 +71,8 @@ galloping_elephants <- function (mapvizieR_obj,
   #ensure only one point is returned by grouping and calling max.
   full_max <- full_max %>%
     dplyr::group_by(group, label) %>%
-    summarize(
-      x = max(x, na.rm=TRUE),
+    dplyr::summarize(
+      x = max(x, na.rm = TRUE),
       y = max(y, na.rm = TRUE)
     )
   
@@ -101,13 +101,14 @@ galloping_elephants <- function (mapvizieR_obj,
     theme(
       #zero out formats
       panel.background = element_blank(),
+      panel.border = element_blank(),
       plot.background = element_blank(),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
       legend.position = 'none',
       axis.text.y = element_blank(),
       axis.ticks.y = element_blank(),
-      plot.margin = rep(unit(0,"null"), 4),
+      plot.margin = rep(grid::unit(0,"null"), 4),
       axis.title.x = element_blank(),
       axis.title.y = element_blank()
     )

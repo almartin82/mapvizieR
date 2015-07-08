@@ -4,14 +4,14 @@
 \alias{mv_limit_cdf}
 \title{mv_limit_cdf}
 \usage{
-mv_limit_cdf(mapvizieR_obj, studentids, measurementscale_in)
+mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
 }
 \arguments{
 \item{mapvizieR_obj}{a conforming mapvizieR object}
 
 \item{studentids}{vector of studentids}
 
-\item{measurementscale_in}{a MAP subject}
+\item{measurementscale}{a MAP subject}
 }
 \description{
 extract the cdf and limit it to target students

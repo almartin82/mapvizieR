@@ -16,10 +16,10 @@ test_that("quealy_subgroups produces proper plot with a grade level of kids", {
     mapvizieR_obj = mapviz,
     studentids = studentids_normal_use,
     measurementscale = 'Reading',
-    subgroup_cols = c('starting_quartile', 'studentgender'),
-    pretty_names = c('Starting Quartile', 'Gender'),
+    subgroup_cols = c('studentgender'),
+    pretty_names = c('Gender'),
     start_fws = 'Fall',
-    start_academic_year = 2013,
+    start_year_offset = 0,
     end_fws = 'Spring',
     end_academic_year = 2013
   )
@@ -38,15 +38,44 @@ test_that("quealy_subgroups produces proper plot with a grade level of kids", {
 })
 
 
-test_that("quealy_subgroups with complete_obsv", {
+test_that("quealy_subgroups with complete_obsv and title", {
   samp_nyt <- quealy_subgroups(
     mapvizieR_obj = mapviz,
     studentids = studentids_normal_use,
     measurementscale = 'Reading',
-    subgroup_cols = c('starting_quartile', 'studentgender'),
-    pretty_names = c('Starting Quartile', 'Gender'),
+    subgroup_cols = c('studentethnicgroup', 'studentgender'),
+    pretty_names = c('Ethnicity', 'Gender'),
     start_fws = 'Fall',
-    start_academic_year = 2013,
+    start_year_offset = 0,
+    end_fws = 'Spring',
+    end_academic_year = 2013,
+    complete_obsv = TRUE,
+    report_title = "Reading Fall=Spring 2013"
+  )
+  
+  expect_is(samp_nyt, 'arrange')
+  expect_is(samp_nyt, 'ggplot')
+  expect_is(samp_nyt, 'gTree')
+  expect_is(samp_nyt, 'grob')
+  expect_is(samp_nyt, 'gDesc')
+  
+  expect_equal(length(samp_nyt), 5)
+  expect_equal(names(samp_nyt), c("name", "gp", "vp", "children", "childrenOrder"))
+  
+  expect_equal(dimnames(summary(samp_nyt[[4]]))[[2]], c("Length", "Class", "Mode"))
+  expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
+})
+
+
+test_that("quealy_subgroups with no CGP", {
+  samp_nyt <- quealy_subgroups(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Reading',
+    subgroup_cols = c('studentethnicgroup', 'studentgender'),
+    pretty_names = c('Ethnic Group', 'Gender'),
+    start_fws = 'Winter',
+    start_year_offset = 0,
     end_fws = 'Spring',
     end_academic_year = 2013,
     complete_obsv = TRUE
@@ -66,22 +95,89 @@ test_that("quealy_subgroups with complete_obsv", {
 })
 
 
-test_that("quealy_subgroups generates a warning when multiple grade levels passed", {
-  
-  expect_warning(
-    quealy_subgroups(
-      mapvizieR_obj = mapviz,
-      studentids = roster$studentid,
-      measurementscale = 'Reading',
-      subgroup_cols = c('starting_quartile', 'studentgender'),
-      pretty_names = c('Starting Quartile', 'Gender'),
-      start_fws = 'Fall',
-      start_academic_year = 2013,
-      end_fws = 'Spring',
-      end_academic_year = 2013,
-      complete_obsv = TRUE
-    ),
-    "11 distinct grade levels present in your data!"
+test_that("quealy_subgroups with no school growth study", {
+  samp_nyt <- quealy_subgroups(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Reading',
+    subgroup_cols = c('studentethnicgroup', 'studentgender'),
+    pretty_names = c('Ethnic Group', 'Gender'),
+    start_fws = 'Fall',
+    start_year_offset = 0,
+    end_fws = 'Winter',
+    end_academic_year = 2013,
+    complete_obsv = TRUE
   )
-    
+  
+  expect_is(samp_nyt, 'arrange')
+  expect_is(samp_nyt, 'ggplot')
+  expect_is(samp_nyt, 'gTree')
+  expect_is(samp_nyt, 'grob')
+  expect_is(samp_nyt, 'gDesc')
+  
+  expect_equal(length(samp_nyt), 5)
+  expect_equal(names(samp_nyt), c("name", "gp", "vp", "children", "childrenOrder"))
+  
+  expect_equal(dimnames(summary(samp_nyt[[4]]))[[2]], c("Length", "Class", "Mode"))
+  expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
+})
+
+
+test_that("quealy_subgroups with multiple growth windows", {
+  
+  auto_growth <- quealy_subgroups(
+    mapvizieR_obj = mapviz,
+    studentids = roster$studentid,
+    measurementscale = 'Reading',
+    subgroup_cols = c('grade', 'studentgender'),
+    pretty_names = c('Grade', 'Gender'),
+    start_fws = 'Fall',
+    start_year_offset = 0,
+    end_fws = 'Spring',
+    end_academic_year = 2013,
+    complete_obsv = TRUE
+  )
+
+  expect_is(auto_growth, 'arrange')
+  expect_is(auto_growth, 'ggplot')
+  expect_is(auto_growth, 'gTree')
+  expect_is(auto_growth, 'grob')
+  expect_is(auto_growth, 'gDesc')
+  
+  expect_equal(length(auto_growth), 5)
+  expect_equal(names(auto_growth), c("name", "gp", "vp", "children", "childrenOrder"))
+  
+  expect_equal(dimnames(summary(auto_growth[[4]]))[[2]], c("Length", "Class", "Mode"))
+  expect_equal(unname(summary(auto_growth[[4]])[1, ]), c("6", "frame", "list"))
+})
+
+
+test_that("quealy_subgroups with starting_quartile magic subgroup", {
+  
+  magic_quartiles <- quealy_subgroups(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Reading',
+    subgroup_cols = c('studentgender'),
+    pretty_names = c('Gender'),
+    magic_subgroups = c('starting_quartile'),
+    start_fws = 'Fall',
+    start_year_offset = 0,
+    end_fws = 'Spring',
+    end_academic_year = 2013,
+    complete_obsv = TRUE
+  )
+  
+  expect_is(magic_quartiles, 'arrange')
+  expect_is(magic_quartiles, 'ggplot')
+  expect_is(magic_quartiles, 'gTree')
+  expect_is(magic_quartiles, 'grob')
+  expect_is(magic_quartiles, 'gDesc')
+  
+  expect_equal(length(magic_quartiles), 5)
+  expect_equal(names(magic_quartiles), c("name", "gp", "vp", "children", "childrenOrder"))
+  
+  expect_equal(dimnames(summary(magic_quartiles[[4]]))[[2]], c("Length", "Class", "Mode"))
+  expect_equal(unname(summary(magic_quartiles[[4]])[1, ]), c("6", "frame", "list"))
+  
 })
