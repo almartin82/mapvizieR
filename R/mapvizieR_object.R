@@ -17,13 +17,13 @@
 #' }
 #' @export
 
-mapvizieR <- function(cdf, roster, verbose=FALSE, ...) UseMethod("mapvizieR")
+mapvizieR <- function(cdf, roster, verbose = FALSE, ...) UseMethod("mapvizieR")
 
 #' @export
-mapvizieR.default <- function(cdf, roster, verbose=FALSE, ...) {
+mapvizieR.default <- function(cdf, roster, verbose = FALSE, ...) {
 
-  cdf_status <- try(check_processed_cdf(cdf)$boolean, silent=TRUE)
-  cdf_status <- all(!class(cdf_status)=="try-error" & cdf_status==TRUE)
+  cdf_status <- try(check_processed_cdf(cdf)$boolean, silent = TRUE)
+  cdf_status <- all(!class(cdf_status)=="try-error" & cdf_status == TRUE)
   
   #prep the cdf, if necessary.
   if (cdf_status) {
@@ -232,22 +232,22 @@ cdf_roster_match <- function(assessment_results, roster) {
   # inner join of roster and assessment results by id, subject, and term name
   matched_df <-  dplyr::inner_join(
     roster, 
-    assessment_results %>% 
-      dplyr::filter(growthmeasureyn=TRUE),
-    by=c("studentid", "termname", "schoolname")
+    assessment_results %>% dplyr::filter(growthmeasureyn == TRUE),
+    by = c("studentid", "termname", "schoolname")
   ) %>%
     # drop repeated columns
     dplyr::select(-ends_with(".y")) %>% 
     as.data.frame
   
   # drop .x join artifact from colun names (we dropped .y in select above )
-  names(matched_df)<-gsub("(.+)(\\.x)", "\\1", names(matched_df))
+  names(matched_df) <- gsub("(.+)(\\.x)", "\\1", names(matched_df))
   
   #check that number of rows of assessment_results = nrow of matched_df
   input_rows <- nrow(assessment_results)
   output_rows <- nrow(matched_df)
-  if(input_rows!=output_rows){
-    cdf_name<-substitute(assessment_results)
+  
+  if (input_rows != output_rows) {
+    cdf_name <- substitute(assessment_results)
     msg <- paste0("The number of rows in ", cdf_name, " is ", input_rows, 
                   ", while the number of rows in the matched data frame\n",
                   "returned by this function is ", output_rows, ".\n\n",

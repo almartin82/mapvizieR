@@ -2,7 +2,7 @@
 #'
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
-#' @param measurementscale_in target subject
+#' @param measurementscale target subject
 #' @param fws season
 #' @param academic_year academic year
 #' 
@@ -13,10 +13,13 @@
 strand_boxes <- function(
   mapvizieR_obj,
   studentids,
-  measurementscale_in,
+  measurementscale,
   fws,
   academic_year
 ) {
+  #nse problems
+  measurementscale_in <- measurementscale
+  
   #data validation and unpack
   mv_opening_checks(mapvizieR_obj, studentids, 1)
 

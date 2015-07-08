@@ -157,8 +157,8 @@ rit_gain_needed <- function(percentile, sd_gain, mean_gain) {
 #' @param sch_growth_study NWEA school growth study to use for lookup; defaults to 2012.
 
 sch_growth_lookup <- function(  
-  measurementscale_in,
-  grade_in,
+  measurementscale,
+  grade,
   growth_window_in,
   baseline_avg_rit,
   sch_growth_study = sch_growth_norms_2012

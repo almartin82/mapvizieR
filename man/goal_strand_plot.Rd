@@ -31,26 +31,28 @@ Creates and prints a ggplot2 object showing both overall and goal strand RIT
 scores for each student in a subets.
 }
 \examples{
-\dontrun{require(dplyr)
+\dontrun{
+require(dplyr)
 
 data("ex_CombinedStudentsBySchool")
 data("ex_CombinedAssessmentResults")
 
-map_mv<-mapvizieR(ex_CombinedAssessmentResults, ex_CombinedStudentsBySchool)
+map_mv <- mapvizieR(ex_CombinedAssessmentResults, ex_CombinedStudentsBySchool)
 
-ids<-ex_CombinedStudentsBySchool \%>\% filter(
-   Grade==8,
-   SchoolName=="Mt. Bachelor Middle School",
-   TermName=="Spring 2013-2014") \%>\% select(StudentID) \%>\%
-   unique()
+ids <- ex_CombinedStudentsBySchool \%>\%
+  dplyr::filter(
+    Grade == 8,
+    SchoolName == "Mt. Bachelor Middle School",
+    TermName == "Spring 2013-2014") \%>\% select(StudentID) \%>\%
+    unique()
 
 goal_strand_plot(
- map_mv,
- studentids = c(ids[1:49, "StudentID"]),
- measurementscale="Mathematics",
- fws="Spring",
- year=2013
- )
+  map_mv,
+  studentids = c(ids[1:49, "StudentID"]),
+  measurementscale = "Mathematics",
+  fws = "Spring",
+  year = 2013
+)
 }
 }
 

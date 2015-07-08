@@ -22,18 +22,20 @@
 #' data("ex_CombinedStudentsBySchool")
 #' data("ex_CombinedAssessmentResults")
 #'
-#' map_mv<-mapvizieR(ex_CombinedAssessmentResults, ex_CombinedStudentsBySchool)
+#' map_mv <- mapvizieR(ex_CombinedAssessmentResults, ex_CombinedStudentsBySchool)
 #'
-#' ids<-ex_CombinedStudentsBySchool %>% filter(
-#'    Grade==8,
-#'    SchoolName=="Mt. Bachelor Middle School",
-#'    TermName=="Spring 2013-2014") %>% select(StudentID) %>%
+#' ids <- ex_CombinedStudentsBySchool %>% 
+#'    dplyr::filter(
+#'      Grade == 8,
+#'      SchoolName == "Mt. Bachelor Middle School",
+#'      TermName == "Spring 2013-2014") %>% 
+#'    dplyr::select(StudentID) %>%
 #'    unique()
 #'
 #' student_npr_history_plot(
-#'     map_mv,
-#'     studentids = ids[1:80, "StudentID"],
-#'     subject = "Reading")
+#'   map_mv,
+#'   studentids = ids[1:80, "StudentID"],
+#'   subject = "Reading")
 #'}
 
 student_npr_history_plot <- function(mapvizieR_obj,
@@ -47,7 +49,7 @@ student_npr_history_plot <- function(mapvizieR_obj,
 
   # filter roster and df to only use those that exists in studentids
   roster <- mapvizieR_obj$roster %>%
-    dplyr::filter(studentid  %in% studentids)
+    dplyr::filter(studentid %in% studentids)
 
   cdf <- mapvizieR_obj$cdf %>%
     dplyr::filter(

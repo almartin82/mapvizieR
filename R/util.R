@@ -458,11 +458,13 @@ valid_grade_seasons <- function(
 #' 
 #' @param mapvizieR_obj a conforming mapvizieR object
 #' @param studentids vector of studentids
-#' @param measurementscale_in a MAP subject
+#' @param measurementscale a MAP subject
 #' 
 #' @export
 
-mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale_in) {
+mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale) {
+  #nse
+  measurementscale_in <- measurementscale
   
   #extract the object
   cdf_long <- mapvizieR_obj[['cdf']] 
@@ -483,7 +485,8 @@ mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale_in) {
 #' 
 #' @export
 
-mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale_in) {
+mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale) {
+  measurementscale_in <- measurementscale
   
   #extract the object
   growth_df <- mapvizieR_obj[['growth_df']]
@@ -525,7 +528,7 @@ min_term_filter <- function(cdf, small_n_cutoff=-1) {
  
   cdf %>%
     dplyr::filter(
-      grade_level_season %in% as.vector(grade_seasons_to_keep$grade_level_season)
+      grade_level_season %in% as.numeric(grade_seasons_to_keep$grade_level_season)
     )  
 }
 

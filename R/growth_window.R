@@ -26,22 +26,22 @@ auto_growth_window <- function(
   candidate_prefer = 'Spring',
   window_tolerance = 0.5
 ) {
+  #NSE problems... :(
+  measurementscale_in <- measurementscale
+
   #data validation
   mv_opening_checks(mapvizieR_obj, studentids, 1)
    
   assertthat::assert_that(length(candidate_start_fws) == 2)
-
-  #NSE problems... :(
-  measurementscale_in <- measurementscale
   
   this_growth <- mapvizieR_obj[['growth_df']] %>%
     dplyr::filter(
       studentid %in% studentids & 
-        end_map_year_academic == end_academic_year &
-        end_fallwinterspring == end_fws &
-        start_fallwinterspring %in% candidate_start_fws &
-        measurementscale == measurementscale_in &
-        complete_obsv == TRUE
+      end_map_year_academic == end_academic_year &
+      end_fallwinterspring == end_fws &
+      start_fallwinterspring %in% candidate_start_fws &
+      measurementscale == measurementscale_in &
+      complete_obsv == TRUE
     )
 
   exists_test <- candidate_prefer %in% unique(this_growth$start_fallwinterspring)
