@@ -60,7 +60,12 @@ quealy_subgroups <- function(
   if (complete_obsv) {
     df <- df %>% dplyr::filter(complete_obsv == TRUE)
   }
-  
+  #if there's no students, raise an informative error
+  df %>% 
+    ensurer::ensure_that(
+      nrow(.) > 0 ~ "no matching students for the specified subject/terms."
+    )
+
   #3. put SUBGROUPS values from roster onto df
   df <- roster_to_growth_df(
     target_df = df,

@@ -400,7 +400,7 @@ munge_startdate <- function(x) {
 #' 
 #' @export
 
-mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu=1) {
+mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu = 1) {
   #has to be a mapvizieR obj
   mapvizieR_obj %>% ensure_is_mapvizieR()
   

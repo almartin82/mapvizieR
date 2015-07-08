@@ -181,3 +181,25 @@ test_that("quealy_subgroups with starting_quartile magic subgroup", {
   expect_equal(unname(summary(magic_quartiles[[4]])[1, ]), c("6", "frame", "list"))
   
 })
+
+
+test_that("quealy_subgroups with zero-length student df", {
+  
+  expect_error(
+    quealy_subgroups(
+      mapvizieR_obj = mapviz,
+      studentids = mapviz$roster %>% 
+        dplyr::filter(map_year_academic == 2013 & grade == 0) %>% 
+        dplyr::select(studentid) %>% unlist() %>% unname(),
+      measurementscale = 'General Science',
+      subgroup_cols = c('studentgender'),
+      pretty_names = c('Gender'),
+      start_fws = 'Fall',
+      start_year_offset = 0,
+      end_fws = 'Spring',
+      end_academic_year = 2013,
+      complete_obsv = TRUE
+    ),
+    "no matching students for the specified subject/terms."
+  )
+})
