@@ -9,10 +9,10 @@ min_subgroup_filter(df, subgroup_name, small_n_cutoff = -1)
 \arguments{
 \item{df}{some data frame}
 
+\item{subgroup_name}{of a column of the data frame}
+
 \item{small_n_cutoff}{anything below this percent will get filtered out.
 default is -1, eg off}
-
-\item{subgroup}{name of a column of the data frame}
 }
 \description{
 given a data frame and some arbitrary subgroup,

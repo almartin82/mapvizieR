@@ -542,7 +542,7 @@ min_term_filter <- function(cdf, small_n_cutoff = -1) {
 #' at least n % of the total data frame
 #' 
 #' @param df some data frame
-#' @param subgroup name of a column of the data frame
+#' @param subgroup_name of a column of the data frame
 #' @param small_n_cutoff anything below this percent will get filtered out.  
 #' default is -1, eg off
 
