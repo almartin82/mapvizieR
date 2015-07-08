@@ -10,13 +10,13 @@ sch_growth_lookup(measurementscale, grade, growth_window, baseline_avg_rit,
 \arguments{
 \item{measurementscale}{MAP subject}
 
+\item{grade}{baseline/starting grade for the group of students}
+
 \item{growth_window}{desired growth window for targets (fall/spring, spring/spring, fall/fall)}
 
 \item{baseline_avg_rit}{the baseline mean rit for the group of students}
 
 \item{sch_growth_study}{NWEA school growth study to use for lookup; defaults to 2012.}
-
-\item{grade_in}{baseline/starting grade for the group of students}
 }
 \description{
 get cohort growth expectations via lookup from growth study

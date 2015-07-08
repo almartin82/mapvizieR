@@ -151,7 +151,7 @@ rit_gain_needed <- function(percentile, sd_gain, mean_gain) {
 #' @description get cohort growth expectations via lookup from growth study
 #' 
 #' @param measurementscale MAP subject
-#' @param grade_in baseline/starting grade for the group of students
+#' @param grade baseline/starting grade for the group of students
 #' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students
 #' @param sch_growth_study NWEA school growth study to use for lookup; defaults to 2012.
