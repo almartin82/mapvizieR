@@ -170,6 +170,7 @@ utils::globalVariables(
     "studentfirstlast",
     "studentfirstlastrit",
     "studentid",
+    "StudentID",
     "studentids_gr11",
     "studentids_hs",
     "studentids_normal_use",

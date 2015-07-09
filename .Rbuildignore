@@ -1,5 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
-^\data-raw\*
 ^.*\.lintr$
+readme.md
+wercker.yml$
+data-raw\*
