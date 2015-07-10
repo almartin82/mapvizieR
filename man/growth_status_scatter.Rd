@@ -4,7 +4,7 @@
 \alias{growth_status_scatter}
 \title{growth status scatter}
 \usage{
-growth_status_scatter(mapvizieR_obj, studentids, measurementscale_in, start_fws,
+growth_status_scatter(mapvizieR_obj, studentids, measurementscale, start_fws,
   start_academic_year, end_fws, end_academic_year)
 }
 \arguments{
@@ -12,7 +12,7 @@ growth_status_scatter(mapvizieR_obj, studentids, measurementscale_in, start_fws,
 
 \item{studentids}{target students}
 
-\item{measurementscale_in}{target subject}
+\item{measurementscale}{target subject}
 
 \item{start_fws}{starting season}
 

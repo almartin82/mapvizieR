@@ -24,7 +24,9 @@
 #' @param drop_NA_groups should we ignore subgroups with value NA?  default is true
 #' @param include_all should the output have plot at the top showing the TOTAL
 #' variation?  not recommended for data spanning multiple grade levels.
-#' 
+#' @param small_n_cutoff drop a subgroup if less than x% (as decimal) of the total pop? 
+#' (useful for cutting off the long tail of a group).  applies to all subgroups in
+#' subgroup_cols.  does not apply to magic subgroups.
 #' @return a grob composed of multiple ggplots
 #' 
 #' @export
@@ -44,7 +46,8 @@ quealy_subgroups <- function(
   report_title = NA,
   complete_obsv = TRUE,
   drop_NA_groups = TRUE,
-  include_all = TRUE
+  include_all = TRUE,
+  small_n_cutoff = -1
 ) {
   
   #1. validation
@@ -52,9 +55,6 @@ quealy_subgroups <- function(
   assertthat::assert_that(length(subgroup_cols) == length(pretty_names))
   
   #2. limit to kids, endpoint
-  #nse problems?
-  #measurementscale <- measurementscale
-  
   df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale) %>%
     dplyr::filter(
       end_map_year_academic == end_academic_year,
@@ -63,7 +63,12 @@ quealy_subgroups <- function(
   if (complete_obsv) {
     df <- df %>% dplyr::filter(complete_obsv == TRUE)
   }
-  
+  #if there's no students, raise an informative error
+  df %>% 
+    ensurer::ensure_that(
+      nrow(.) > 0 ~ "no matching students for the specified subject/terms."
+    )
+
   #3. put SUBGROUPS values from roster onto df
   df <- roster_to_growth_df(
     target_df = df,
@@ -75,7 +80,7 @@ quealy_subgroups <- function(
   
   #4. for each SUBGROUP permutation
   all_sub <- subgroup_cols
-  if (include_all | !magic_subgroups) {
+  if (include_all | !is.logical(magic_subgroups)) {
     #add all_students to df
     df$all_students <- 'All Students'
     #include in subgroups
@@ -97,18 +102,21 @@ quealy_subgroups <- function(
   #...find the GROWTH WINDOW
   #also calc group stats, so we don't have to do it later.
   for (i in all_sub) {
-    perms <- df[, i] %>% unique() %>% sort()
+    #first apply small n filter
+    df_filtered <- min_subgroup_filter(df, i, small_n_cutoff)
+    #find permutations for this group
+    perms <- df_filtered[, i] %>% unique() %>% sort()
     if (drop_NA_groups == TRUE) {perms <- perms[!is.na(perms)]}
     
     for (j in perms) {
       #matching sub/perm students
-      mask <- df[, i] == j
+      mask <- df_filtered[, i] == j
       #get the windows
       if (length(start_fws) > 1) {
         #from the data
         auto_windows <- auto_growth_window(
           mapvizieR_obj = mapvizieR_obj,
-          studentids = df[mask, 'studentid'],
+          studentids = df_filtered[mask, 'studentid'],
           measurementscale = measurementscale,
           end_fws = end_fws, 
           end_academic_year = end_academic_year,
@@ -125,8 +133,8 @@ quealy_subgroups <- function(
       }
       
       #limit by windows
-      this_stu <- df %>% dplyr::filter(
-        studentid %in% df[mask, 'studentid'] &
+      this_stu <- df_filtered %>% dplyr::filter(
+        studentid %in% df_filtered[mask, 'studentid'] &
         start_fallwinterspring == inferred_start_fws &
         start_map_year_academic == inferred_start_academic_year
       )
@@ -159,9 +167,66 @@ quealy_subgroups <- function(
   if (!is.logical(magic_subgroups)) {
     
     if ('starting_quartile' %in% magic_subgroups) {
-      #get start/end from ALL students
+      #add to list of subgroups
+      subgroup_cols <- c(subgroup_cols, 'starting_quartile')
+      #and pretty names
+      pretty_names <- c(pretty_names, 'Starting Quartile')
       
+      #pull the all_students row
+      #we'll use this for the start/ends
+      all_stu <- window_df[window_df$subgroup == 'all_students', ]
+      quart_fws <- all_stu[1, ]$start_fws
+      quart_year <- all_stu[1, ]$start_year
+      
+      #get start/end from ALL students
+      start_quartile_data <- df %>%
+        dplyr::filter(
+          start_fallwinterspring == quart_fws &
+          start_map_year_academic == quart_year
+        ) 
+      #limit for join
+      start_quartile_join <- start_quartile_data %>%
+        dplyr::select(
+          studentid, start_testquartile
+        )
+      names(start_quartile_join) <- c('studentid', 'starting_quartile')
+      
+      #put back on the df as a demographic variable
+      df <- df %>%
+        dplyr::left_join(
+          start_quartile_join, by = 'studentid'
+        )
+      
+      #iterate over the unique subgroups and calc stats
+      for (i in unique(start_quartile_data$start_testquartile) %>% as.numeric() %>% sort()) {
+        this_start_quartile <- start_quartile_data %>%
+          dplyr::filter(as.numeric(start_testquartile) == i)
+        
+        perm_stats <- quealy_permutation_stats(this_start_quartile, 'start_testquartile')
+          perm_stats %>% ensurer::ensure_that(
+            nrow(.) == 1 ~ 'there should only be one group!')
+        
+        #give the group name a consistent variable name
+        names(perm_stats)[names(perm_stats) == i] <- 'facet_me'
+   
+        #put the stats on the list for use below
+        group_stats[[paste0('starting_quartile', '@', i)]] <- perm_stats
+
+        window_df[counter, ]$subgroup <- 'starting_quartile'
+        window_df[counter, ]$perm <- i
+        window_df[counter, ]$start_fws <- all_stu[1, ]$start_fws
+        window_df[counter, ]$start_year <- all_stu[1, ]$start_year
+        window_df[counter, ]$min_x <- min(perm_stats$start_rit, perm_stats$end_rit)
+        window_df[counter, ]$max_x <- max(perm_stats$start_rit, perm_stats$end_rit)
+        window_df[counter, ]$n <- perm_stats$n
+        window_df[counter, ]$persist_row_names <- paste(this_start_quartile$persistent_names, collapse = ',')
+        
+        counter <- counter + 1
+      #end perms of starting quartiles
+      }
+    #end starting quartile magic subgroup
     }
+  #end magic subgroups
   }
 
   #6. MAKE PLOTS

@@ -42,19 +42,6 @@ test_that("grade_level_ify correctly processes CDF", {
 })
 
 
-test_that("cdf_roster_match properly joins assessment results and rosters", {
-  ex_roster <- prep_roster(ex_CombinedStudentsBySchool)
-  ex_roster_small <- ex_roster[-c(20:100),]
-  ex_cdf <- prep_cdf_long(ex_CombinedAssessmentResults)
-  ex_matched <- cdf_roster_match(ex_cdf, ex_roster)
-  
-  expect_equal(nrow(ex_matched), nrow(ex_cdf))
-  expect_equal(ncol(ex_matched), ncol(ex_roster) + ncol(ex_cdf) - 5) #-5 = -3 match columns and -2 duplicate columns
-  
-  expect_warning(cdf_roster_match(ex_cdf, ex_roster_small), "8848")
-  
-})
-
 
 test_that("grade_season_factors return correct order", {
   

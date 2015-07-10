@@ -4,14 +4,15 @@
 \alias{student_npr_history_plot}
 \title{A small multiples plot of a set of students' national percentile rank histories.}
 \usage{
-student_npr_history_plot(mapvizieR_obj, studentids, subject, title_text = "")
+student_npr_history_plot(mapvizieR_obj, studentids, measurementscale,
+  title_text = "")
 }
 \arguments{
 \item{mapvizieR_obj}{a \code{\link{mapvizieR}} object}
 
 \item{studentids}{a set of student ids to subset too.}
 
-\item{subject}{the subject of interest}
+\item{measurementscale}{a MAP measurementscale}
 
 \item{title_text}{title as a character vector}
 }
@@ -32,18 +33,20 @@ require(dplyr)
 data("ex_CombinedStudentsBySchool")
 data("ex_CombinedAssessmentResults")
 
-map_mv<-mapvizieR(ex_CombinedAssessmentResults, ex_CombinedStudentsBySchool)
+map_mv <- mapvizieR(ex_CombinedAssessmentResults, ex_CombinedStudentsBySchool)
 
-ids<-ex_CombinedStudentsBySchool \%>\% filter(
-   Grade==8,
-   SchoolName=="Mt. Bachelor Middle School",
-   TermName=="Spring 2013-2014") \%>\% select(StudentID) \%>\%
+ids <- ex_CombinedStudentsBySchool \%>\%
+   dplyr::filter(
+     Grade == 8,
+     SchoolName == "Mt. Bachelor Middle School",
+     TermName == "Spring 2013-2014") \%>\%
+   dplyr::select(StudentID) \%>\%
    unique()
 
 student_npr_history_plot(
-    map_mv,
-    studentids = ids[1:80, "StudentID"],
-    subject = "Reading")
+  map_mv,
+  studentids = ids[1:80, "StudentID"],
+  measurementscale = "Reading")
 }
 }
 

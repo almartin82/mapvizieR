@@ -17,7 +17,7 @@ test_that("strand boxes produces proper plot with a grade level of kids", {
   p <- strand_boxes(
     mapvizieR_obj = mapviz,
     studentids = studentids_normal_use,
-    measurementscale_in = 'Mathematics',
+    measurementscale = 'Mathematics',
     fws = 'Spring',
     academic_year = 2013 
   )

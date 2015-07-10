@@ -11,43 +11,47 @@
 #' 
 #' @param mapvizieR_obj a \code{mapvizieR} object 
 #' @param studentids vector of student id numbers for students to plot
-#' @param measurement_scale measurementscale to plot
+#' @param measurementscale measurementscale to plot
 #' @param fws season (fall, winter, or spring) to plot
 #' @param year academic year to plot
 #' 
 #' @return a ggplot2 object
 #' 
 #' @examples 
-#' \dontrun{require(dplyr)
+#' \dontrun{
+#' require(dplyr)
 #' 
 #' data("ex_CombinedStudentsBySchool")
 #' data("ex_CombinedAssessmentResults")
 #'
-#' map_mv<-mapvizieR(ex_CombinedAssessmentResults, ex_CombinedStudentsBySchool)
+#' map_mv <- mapvizieR(ex_CombinedAssessmentResults, ex_CombinedStudentsBySchool)
 #'
-#' ids<-ex_CombinedStudentsBySchool %>% filter(
-#'    Grade==8,
-#'    SchoolName=="Mt. Bachelor Middle School",
-#'    TermName=="Spring 2013-2014") %>% select(StudentID) %>%
-#'    unique()
+#' ids <- ex_CombinedStudentsBySchool %>% 
+#'   dplyr::filter(
+#'     Grade == 8,
+#'     SchoolName == "Mt. Bachelor Middle School",
+#'     TermName == "Spring 2013-2014") %>% select(StudentID) %>%
+#'     unique()
 #'
 #' goal_strand_plot(
-#'  map_mv, 
-#'  studentids = c(ids[1:49, "StudentID"]), 
-#'  measurement_scale="Mathematics", 
-#'  fws="Spring", 
-#'  year=2013
-#'  )
+#'   map_mv, 
+#'   studentids = c(ids[1:49, "StudentID"]), 
+#'   measurementscale = "Mathematics", 
+#'   fws = "Spring", 
+#'   year = 2013
+#' )
 #'}
 #'@export
 
-goal_strand_plot <- function(mapvizieR_obj,
-                         studentids,
-                         measurement_scale,
-                         fws,
-                         year) {
-  
-     
+goal_strand_plot <- function(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  fws,
+  year
+) {
+  #NSE problems
+  measurementscale_in <- measurementscale
   # validation
   #data validation and unpack
   mv_opening_checks(mapvizieR_obj, studentids, 1)
@@ -58,7 +62,7 @@ goal_strand_plot <- function(mapvizieR_obj,
     dplyr::filter(
       fallwinterspring == fws,
       map_year_academic == year,
-      measurementscale == measurement_scale,
+      measurementscale == measurementscale_in,
       studentid %in% studentids
     ) %>%
     dplyr::inner_join(mapvizieR_obj$roster %>%

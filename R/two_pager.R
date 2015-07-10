@@ -30,7 +30,7 @@ two_pager <- function(
   entry_grade_seasons = c(-0.8, 4.2),
   ...
 ) {
- 
+
   minimal = grid::rectGrob(gp = grid::gpar(col = "white"))
   
   #P1 CHARTS -----------------------------------
@@ -86,7 +86,7 @@ two_pager <- function(
   strand_boxes <- strand_boxes(
     mapvizieR_obj = mapvizieR_obj,
     studentids = studentids,
-    measurementscale_in = measurementscale,
+    measurementscale = measurementscale,
     fws = end_fws,
     academic_year = end_academic_year
   )
@@ -131,7 +131,7 @@ two_pager <- function(
   growth_status <- growth_status_scatter(
     mapvizieR_obj = mapvizieR_obj,
     studentids = studentids,
-    measurementscale_in = measurementscale,
+    measurementscale = measurementscale,
     start_fws = start_fws,
     start_academic_year = start_academic_year,
     end_fws = end_fws,
@@ -245,11 +245,11 @@ knj_two_pager <- function(
   this_growth <- mapvizieR_obj[['growth_df']] %>%
     dplyr::filter(
       studentid %in% studentids & 
-        end_map_year_academic == end_academic_year &
-        end_fallwinterspring == end_fws &
-        start_fallwinterspring %in% candidate_start_fws &
-        measurementscale == measurementscale_in &
-        complete_obsv == TRUE
+      end_map_year_academic == end_academic_year &
+      end_fallwinterspring == end_fws &
+      start_fallwinterspring %in% candidate_start_fws &
+      measurementscale == measurementscale_in &
+      complete_obsv == TRUE
     )
 
   auto_windows <- auto_growth_window(

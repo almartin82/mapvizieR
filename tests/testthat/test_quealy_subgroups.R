@@ -137,4 +137,99 @@ test_that("quealy_subgroups with multiple growth windows", {
     end_academic_year = 2013,
     complete_obsv = TRUE
   )
+
+  expect_is(auto_growth, 'arrange')
+  expect_is(auto_growth, 'ggplot')
+  expect_is(auto_growth, 'gTree')
+  expect_is(auto_growth, 'grob')
+  expect_is(auto_growth, 'gDesc')
+  
+  expect_equal(length(auto_growth), 5)
+  expect_equal(names(auto_growth), c("name", "gp", "vp", "children", "childrenOrder"))
+  
+  expect_equal(dimnames(summary(auto_growth[[4]]))[[2]], c("Length", "Class", "Mode"))
+  expect_equal(unname(summary(auto_growth[[4]])[1, ]), c("6", "frame", "list"))
+})
+
+
+test_that("quealy_subgroups with starting_quartile magic subgroup", {
+  
+  magic_quartiles <- quealy_subgroups(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Reading',
+    subgroup_cols = c('studentgender'),
+    pretty_names = c('Gender'),
+    magic_subgroups = c('starting_quartile'),
+    start_fws = 'Fall',
+    start_year_offset = 0,
+    end_fws = 'Spring',
+    end_academic_year = 2013,
+    complete_obsv = TRUE
+  )
+  
+  expect_is(magic_quartiles, 'arrange')
+  expect_is(magic_quartiles, 'ggplot')
+  expect_is(magic_quartiles, 'gTree')
+  expect_is(magic_quartiles, 'grob')
+  expect_is(magic_quartiles, 'gDesc')
+  
+  expect_equal(length(magic_quartiles), 5)
+  expect_equal(names(magic_quartiles), c("name", "gp", "vp", "children", "childrenOrder"))
+  
+  expect_equal(dimnames(summary(magic_quartiles[[4]]))[[2]], c("Length", "Class", "Mode"))
+  expect_equal(unname(summary(magic_quartiles[[4]])[1, ]), c("6", "frame", "list"))
+  
+})
+
+
+test_that("quealy_subgroups with zero-length student df", {
+  
+  expect_error(
+    quealy_subgroups(
+      mapvizieR_obj = mapviz,
+      studentids = mapviz$roster %>% 
+        dplyr::filter(map_year_academic == 2013 & grade == 0) %>% 
+        dplyr::select(studentid) %>% unlist() %>% unname(),
+      measurementscale = 'General Science',
+      subgroup_cols = c('studentgender'),
+      pretty_names = c('Gender'),
+      start_fws = 'Fall',
+      start_year_offset = 0,
+      end_fws = 'Spring',
+      end_academic_year = 2013,
+      complete_obsv = TRUE
+    ),
+    "no matching students for the specified subject/terms."
+  )
+})
+
+
+test_that("quealy_subgroups with small_n filter", {
+  
+  small_n <- quealy_subgroups(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Reading',
+    subgroup_cols = c('studentethnicgroup'),
+    pretty_names = c('Ethnicity'),
+    start_fws = 'Fall',
+    start_year_offset = 0,
+    end_fws = 'Spring',
+    end_academic_year = 2013,
+    complete_obsv = TRUE,
+    small_n_cutoff = 0.2
+  )
+  
+  expect_is(small_n, 'arrange')
+  expect_is(small_n, 'ggplot')
+  expect_is(small_n, 'gTree')
+  expect_is(small_n, 'grob')
+  expect_is(small_n, 'gDesc')
+  expect_equal(length(small_n), 5)
+  expect_equal(names(small_n), c("name", "gp", "vp", "children", "childrenOrder"))
+  
+  expect_equal(dimnames(summary(small_n[[4]]))[[2]], c("Length", "Class", "Mode"))
+  expect_equal(unname(summary(small_n[[4]])[1, ]), c("6", "frame", "list"))
+  
 })

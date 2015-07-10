@@ -35,6 +35,11 @@ report_dispatcher <- function(
     verbose = TRUE,
     ...
   ) {
+  #cut list and call list should be the same length
+  if (!length(cut_list) == length(call_list)) {
+    stop("cut list and call list should be same length.")
+  }
+
   #use ensureR to check if this is a mapvizieR object
   mapvizieR_obj %>% ensure_is_mapvizieR()
   roster <- mapvizieR_obj[['roster']]
@@ -54,13 +59,13 @@ report_dispatcher <- function(
   unq_ele <- df_sorter(unq_ele, by = names(unq_ele))   
   
   perm_list <- list()
+  perm_disp <- list()
   counter <- 1
   
   #set names of each cut to 'All' so that sbugroups can be referenced before 
   for (cut in cut_list) {
     assign(cut, 'All')
   }
-    
   
   #now get the permutations at each depth
   for (i in 1:length(cols)) {
@@ -74,6 +79,18 @@ report_dispatcher <- function(
       
       #grab the unique permutations at this depth level as data frame
       perm_list[[counter]] <- as.data.frame(unique(unq_ele[, mask, drop = FALSE]))
+      
+      #for display (includes N students)
+      if (verbose) {
+        perm_disp[[counter]] <- roster[, names(roster) %in% this_headers, drop = FALSE] %>%
+          #syntax is kinda bonkers: http://stackoverflow.com/a/28182288/561698
+          dplyr::group_by_(
+            .dots = lapply(this_headers, as.symbol)
+          ) %>%
+          dplyr::summarize(
+            n = n()
+          )
+      }
       counter <- counter + 1
       
     #end call test conditional
@@ -81,7 +98,7 @@ report_dispatcher <- function(
   #end make perm list loop  
   }
   
-  if (verbose) {writeLines('permutations on selected cuts are:'); print(perm_list)}
+  if (verbose) {writeLines('permutations on selected cuts are:'); print(perm_disp)}
 
   #iterate over the perm list
   #these are the reports we need to generate

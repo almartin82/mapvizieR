@@ -31,7 +31,7 @@ test_that("report dispatcher on elephants using test data", {
    ,cut_list = cut_by
    ,call_list = call_these
    ,func_to_call = "galloping_elephants"
-   ,arg_list = list('measurementscale'='Mathematics')
+   ,arg_list = list('measurementscale' = 'Mathematics')
   )
 
   expect_equal(length(ele_test), 4)
@@ -110,3 +110,34 @@ test_that("report dispatcher with two pager", {
   expect_is(samp_rd[[1]][[1]], "gTree")
 
 })
+
+
+test_that("report dispatcher throws an error if bad cut/call list provided", {  
+  expect_error(
+    report_dispatcher(
+      mapvizieR_obj = mapviz,
+      cut_list = list('schoolname', 'grade'),
+      call_list = list(TRUE),
+      func_to_call = "galloping_elephants",
+      arg_list = list('measurementscale' = 'Mathematics')
+    ),
+    "cut list and call list should be same length."
+  )
+})  
+
+
+test_that("report dispatcher shows n per group if verbose", {  
+  diaz_ex <- utils::capture.output(report_dispatcher(
+    mapvizieR_obj = mapviz,
+    cut_list = list('schoolname', 'grade'),
+    call_list = list(TRUE, TRUE),
+    func_to_call = "galloping_elephants",
+    arg_list = list('measurementscale' = 'Mathematics'),
+    verbose = TRUE
+  ))
+  
+  expect_equal(diaz_ex[[16]], "1       Mt. Bachelor Middle School     6 395")
+  expect_equal(diaz_ex[[17]], "2       Mt. Bachelor Middle School     7 480")
+})  
+
+
