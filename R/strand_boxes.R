@@ -68,65 +68,33 @@ strand_boxes <- function(
   stage_3 <- stage_3 %>%
     dplyr::filter(
       !is.na(goal_name)
-    )
-  
-  #plot variables
-  e <- new.env()
-  e$y_center <- min(stage_3$value, na.rm = TRUE) + 0.5 * (max(stage_3$value, na.rm = TRUE) - min(stage_3$value, na.rm = TRUE)) 
-  e$goal_names <- attributes(factor(stage_3$goal_name))$levels
-  
-  n <- 25
-  more_n <- nchar(e$goal_names) > n
-  smart_breaks <- ifelse(more_n, '-\n', '')
-  
-  e$goal_names_format <- paste(
-    substr(e$goal_names, start = 1, stop = n), smart_breaks,
-    substr(e$goal_names, start = n + 1, stop = 100), sep = ''
-  )
+    ) %>%
+    dplyr::mutate(goal_name_formatted = stringr::str_wrap(goal_name,
+                                                          width = 15))
   
   p <- ggplot(
     data = stage_3,
     aes(
-      x = factor(goal_name),
-      y = value,
-      fill = factor(goal_name)
-    ),
-    environment = e
-  ) +
-  #empty
-  geom_jitter(
-    alpha = 0
-  ) + 
-  annotate(
-    "text",
-    x = seq(1, length(e$goal_names_format)),
-    y = rep(e$y_center, length(e$goal_names_format)),
-    label = e$goal_names_format,
-    angle = 90,
-    size = 7,
-    color = 'gray60',
-    alpha = .9
+      x = 0,
+      y = value
+    )
   ) +
   geom_boxplot(
-    alpha = 0.6
-  ) +
-  geom_jitter(
-    position = position_jitter(width = .15),
-    color = 'gray85',
-    alpha = 0.6,
-    shape = 1
-  ) + 
+    notch = TRUE
+  ) +  
   stat_summary(
    aes(
      label = round(..y..,1)
    ),
    fun.y = mean,
    geom = 'text',
-   size = 7
+   size = 5
   ) +
+  facet_grid(.~goal_name_formatted)  +
   labs(
-    x = 'Goal Name', y = 'RIT Score'
+    x = ' ', y = 'RIT Score'
   ) +
+  theme_minimal() +  
   theme(
     panel.background = element_blank(),
     plot.background = element_blank(),
@@ -136,7 +104,8 @@ strand_boxes <- function(
     axis.text.x = element_blank(),
     panel.margin = grid::unit(0, "null"),
     plot.margin = rep(grid::unit(0, "null"), 4),
-    axis.ticks.margin = grid::unit(0, "null")
+    axis.ticks = element_blank(),
+    strip.text = element_text(size = 10)
   ) +
   theme(legend.position = "none")
 
