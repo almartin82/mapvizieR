@@ -37,41 +37,40 @@ empty_norm_grade_space <- function(
     )
   this_norms <- rbind(below_50, above_50)
   
-  p <- ggplot(
-    data = this_norms
-  ) +
-  geom_line(
-    aes(
-      x = grade_level_season,
-      y = RIT,
-      group = percentile
-    ),
-    alpha = 0.15,
-    color = 'gray60'
-  ) +
-  geom_text(
-    data = this_norms %>% dplyr::filter(grade_level_season %% 1 == 0),
-    aes(
-      x = grade_level_season,
-      y = RIT,
-      label = percentile
-    ),
-    color = 'gray60',
-    alpha = 0.15,
-    fontface = 'italic'
-  ) +
-  theme_bw() +
-  labs(
-    x = 'Grade Level',
-    y = 'RIT Score'
-  ) +
-  scale_x_continuous(
-    breaks = c(0:12),
-    labels = c(0:12)
-  ) + 
-  theme(
-    panel.grid = element_blank()
-  )
+  p <- ggplot() +
+    geom_line(
+      data = this_norms,
+      aes(
+        x = grade_level_season,
+        y = RIT,
+        group = percentile
+      ),
+      alpha = 0.15,
+      color = 'gray60'
+    ) +
+    geom_text(
+      data = this_norms %>% dplyr::filter(grade_level_season %% 1 == 0),
+      aes(
+        x = grade_level_season,
+        y = RIT,
+        label = percentile
+      ),
+      color = 'gray60',
+      alpha = 0.15,
+      fontface = 'italic'
+    ) +
+    theme_bw() +
+    labs(
+      x = 'Grade Level',
+      y = 'RIT Score'
+    ) +
+    scale_x_continuous(
+      breaks = c(0:12),
+      labels = c(0:12)
+    ) + 
+    theme(
+      panel.grid = element_blank()
+    )
   
   p
 }
