@@ -25,6 +25,14 @@ roster_to_cdf <- function(
   #get the roster
   roster <- mapvizieR_obj$roster
   
+  #collisions
+  mask <- roster_cols %in% names(target_df)
+  if (any(mask)) {
+    target_df <- target_df %>% as.data.frame()
+    inner_mask <- ! names(target_df) %in% roster_cols
+    target_df <- target_df[, inner_mask]
+  }
+  
   #trim to basic ids (studentid, year, term) and roster_cols
   cols <- c('studentid', 'map_year_academic', 'fallwinterspring')
   cols <- c(cols, roster_cols)
