@@ -46,8 +46,8 @@ empty_norm_grade_space <- function(
       y = RIT,
       group = percentile
     ),
-    alpha = 0.3,
-    color = 'gray30'
+    alpha = 0.15,
+    color = 'gray60'
   ) +
   geom_text(
     data = this_norms %>% dplyr::filter(grade_level_season %% 1 == 0),
@@ -56,8 +56,8 @@ empty_norm_grade_space <- function(
       y = RIT,
       label = percentile
     ),
-    color = 'gray30',
-    alpha = 0.3,
+    color = 'gray60',
+    alpha = 0.15,
     fontface = 'italic'
   ) +
   theme_bw() +
