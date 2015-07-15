@@ -132,3 +132,16 @@ test_that("calc_cgp is correct from NWEA lookups", {
 
 })
 
+
+test_that("one_cgp_step accurate", {
+  ex <- one_cgp_step(
+    'Reading', 200, 5, 59, 'Fall to Spring'
+  )
+  expect_equal(ex, 8.02, tolerance = .01)
+
+  ex <- one_cgp_step(
+    'Reading', 203, 4, 84, 'Spring to Spring'
+  )
+  expect_equal(ex, 9.02, tolerance = .01)
+  
+})

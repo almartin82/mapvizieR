@@ -43,13 +43,8 @@ calc_cgp <- function(
     
   }
   
-  #start of growth window
-  start_season <- stringr::str_sub(
-    growth_window, 1, stringr::str_locate(growth_window, ' ')[1]-1
-  )
-  
   #TARGETS
-  targets <- cohort_expectation_via_lookup(
+  targets <- cohort_expectation(
     measurementscale,
     grade,
     growth_window,
@@ -81,7 +76,7 @@ calc_cgp <- function(
 
 
 
-#' @title cohort_expectation_via_lookup
+#' @title cohort_expectation
 #' 
 #' @description wrapper function to get cohort growth expectations for the lookup method
 #' 
@@ -94,8 +89,10 @@ calc_cgp <- function(
 #' @param calc_for what CGPs to calculate for?
 #' @param sch_growth_study which school growth study to use.  currently only have the 2012 data
 #' files in the package
+#' 
+#' @export
 
-cohort_expectation_via_lookup <- function(
+cohort_expectation <- function(
   measurementscale,
   grade,
   growth_window,
@@ -138,6 +135,9 @@ cohort_expectation_via_lookup <- function(
 #' @param percentile growth percentile, between 0-100
 #' @param sd_gain sd for population growth
 #' @param mean_gain typical growth for population
+#' 
+#' @export
+
 
 rit_gain_needed <- function(percentile, sd_gain, mean_gain) {
   z <- qnorm((percentile/100))
@@ -155,6 +155,8 @@ rit_gain_needed <- function(percentile, sd_gain, mean_gain) {
 #' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students
 #' @param sch_growth_study NWEA school growth study to use for lookup; defaults to 2012.
+#' 
+#' @export
 
 sch_growth_lookup <- function(  
   measurementscale,
@@ -192,6 +194,8 @@ sch_growth_lookup <- function(
 #' @param grade grade level
 #' @param season fall winter spring
 #' @param RIT rit score
+#' 
+#' @export
 
 rit_to_npr <- function(measurementscale, grade, season, RIT) {
   
@@ -218,6 +222,8 @@ rit_to_npr <- function(measurementscale, grade, season, RIT) {
 #' @param grade grade level
 #' @param season fall winter spring
 #' @param npr a percentile rank, between 1-99
+#' 
+#' @export
 
 npr_to_rit <- function(measurementscale, grade, season, npr) {
   
@@ -245,6 +251,8 @@ npr_to_rit <- function(measurementscale, grade, season, npr) {
 #' @param start_academic_year starting academic year
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
+#' 
+#' @export
 
 mapviz_cgp <- function(
   mapvizieR_obj, 
@@ -310,3 +318,30 @@ mapviz_cgp <- function(
   
   return(df)
 }
+
+
+
+#' @title wrapper to simplify CGP simulations interface to simplify CGP calculations
+#'
+#' @param measurementscale target subject
+#' @param start_rit mean starting rit
+#' @param start_grade starting grade (not grade level season, just grade)
+#' @param cgp target cgp.  can be single target or vector
+#' @param growth_window what growth window to step
+#' 
+#' @export
+
+one_cgp_step <- function(
+  measurementscale, start_rit, start_grade, cgp, growth_window = 'Spring to Spring'
+) {
+  
+  calc_cgp(
+    measurementscale, 
+    start_grade,
+    growth_window, 
+    start_rit,
+    calc_for = cgp
+  )[['targets']]$growth_target
+}
+
+
