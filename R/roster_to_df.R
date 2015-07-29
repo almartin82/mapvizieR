@@ -116,6 +116,7 @@ roster_to_growth_df <- function(
   #disambiguation - add rn tags by last, first
   slim <- slim %>%
     dplyr::group_by(studentid) %>%
+    unique() %>%
     dplyr::mutate(
       last_rn = rank(year_sort),
       first_rn = rank(-year_sort)
