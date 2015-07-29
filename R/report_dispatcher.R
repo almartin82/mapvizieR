@@ -109,7 +109,7 @@ report_dispatcher <- function(
     this_depth <- as.data.frame(perm_list[[i]], drop = FALSE)
     
     for (j in 1:nrow(this_depth)) {
-      this_perm <- this_depth[j, ,drop = FALSE]
+      this_perm <- this_depth[j, ,drop = FALSE] 
 
       rd_env <- new.env()
       
@@ -153,7 +153,7 @@ report_dispatcher <- function(
       )
       
       output_list[[counter]] <- this_output
-      names(output_list)[[counter]] <- rd_env$depth_string
+      names(output_list)[[counter]] <- paste0(rd_env$depth_string)
       counter <- counter + 1
     #end call elements of perm list loop
     }
