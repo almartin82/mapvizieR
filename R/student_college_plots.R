@@ -1,0 +1,744 @@
+rit_height_weight_npr <- function(
+  desired_subj,
+  color_list = rainbow_colors(),
+  ribbon_alpha = .35,
+  annotation_style = 'points',
+  line_style = 'none'
+) {
+  require(ggplot2)
+  e <- new.env()
+  
+  npr_query <- ("
+    SELECT measurementscale
+          ,CASE 
+             WHEN fallwinterspring = 'Fall' THEN grade - 0.8
+             ELSE grade
+           END AS grade
+          ,rit
+          ,percentile
+    FROM map$norms_2011_dense_by_npr
+    WHERE (fallwinterspring = 'Spring' OR (grade = 0 AND fallwinterspring = 'Fall'))
+      AND (percentile IN (1,5,95,99) OR
+      mod(percentile, 10) = 0)
+      AND measurementscale = 'REPLACEME'
+    ORDER BY measurementscale
+            ,grade
+            ,rit")
+   
+  npr_query <- sub('REPLACEME', desired_subj, npr_query)
+  npr_query <- strwrap(npr_query, width=100000, simplify=TRUE)
+  
+  #get data from XE
+  norms_dense <- oracle_pull(npr_query)
+  
+  #add y axis margins
+  placeholder1 <- norms_dense[norms_dense$GRADE == 11,]
+  #arbitrary, just needs to be bigger than 11
+  placeholder1$GRADE <- 14
+  norms_dense <- rbind(norms_dense, placeholder1)
+  
+  placeholder2 <- norms_dense[norms_dense$GRADE == -0.8,]
+  #arbitrary, just needs to be smaller than -0.8
+  placeholder2$GRADE <- -3
+  norms_dense <- rbind(norms_dense, placeholder2)
+  e$norms_dense <- norms_dense[with(norms_dense, order(MEASUREMENTSCALE, GRADE)), ]
+
+  #had a lot of trouble here. 
+    #cutting into ribbon bins
+    e$npr_grades <- c(-3,-0.8,0,1,2,3,4,5,6,7,8,9,10,11,14)
+    e$nprs <- c(1,5,10,20,30,40,50,60,70,80,90,95,99)
+    
+    e$npr_band01 <-  subset(e$norms_dense, PERCENTILE == e$nprs[1])
+    e$npr_band05 <-  subset(e$norms_dense, PERCENTILE == e$nprs[2])
+    e$npr_band10 <- subset(e$norms_dense, PERCENTILE == e$nprs[3])
+    e$npr_band20 <- subset(e$norms_dense, PERCENTILE == e$nprs[4])
+    e$npr_band30 <- subset(e$norms_dense, PERCENTILE == e$nprs[5])
+    e$npr_band40 <- subset(e$norms_dense, PERCENTILE == e$nprs[6])
+    e$npr_band50 <- subset(e$norms_dense, PERCENTILE == e$nprs[7])
+    e$npr_band60 <- subset(e$norms_dense, PERCENTILE == e$nprs[8])
+    e$npr_band70 <- subset(e$norms_dense, PERCENTILE == e$nprs[9])
+    e$npr_band80 <- subset(e$norms_dense, PERCENTILE == e$nprs[10])
+    e$npr_band90 <- subset(e$norms_dense, PERCENTILE == e$nprs[11])
+    e$npr_band95 <- subset(e$norms_dense, PERCENTILE == e$nprs[12])
+    e$npr_band99 <- subset(e$norms_dense, PERCENTILE == e$nprs[13])
+
+    #what is needed is a data frame with ribbon, x, ymin, and ymax
+    #make them per band, then rbind  
+      #first make the top and bottom - custom
+      e$df_npr1 <- data.frame(
+        rib = rep('below_1', 15)
+       ,x = e$npr_band01$GRADE
+        #dummy value - just needs to be small
+       ,ymin = rep(100, 15)
+       ,ymax = e$npr_band01$RIT
+      )
+      e$df_npr99 <- data.frame(
+        rib = rep('above_99', 15)
+       ,x = e$npr_band99$GRADE
+        #dummy value - just needs to be big
+       ,ymin = e$npr_band99$RIT
+       ,ymax = rep(300, 15)
+      )
+     e$df <- rbind(e$df_npr1, e$df_npr99)
+   
+     #then generate the others in a loop
+     bands <- ls(pattern="npr_band*", envir=e)
+     
+     #list to hold ribbon names
+     e$ribbons <- rep(NA, 12)
+     
+     for (i in 1:(length(bands)-1)) {
+       new_df_name <- paste(bands[i], bands[i+1], sep='_')
+       #remove 'band'
+       new_df_name <- gsub('band', '', new_df_name)
+       
+       #lower and upper df
+       lower <- get(bands[i], envir=e)
+       upper <- get(bands[i+1], envir=e)
+       
+       #make a new df for this ribbon
+       inner_df <- data.frame(
+         rib = rep(new_df_name, 15)
+        ,x = e$npr_grades
+        ,ymin = lower$RIT
+        ,ymax = upper$RIT
+       )
+       
+       #rbind to existing df
+       e$df <- rbind(e$df, inner_df)
+       #update list of ribbons
+       e$ribbons[i] <- new_df_name
+     }
+          
+    #now make the geom_ribbons
+      #first make top & bottom
+      e$rib_under_1 <- geom_ribbon(
+        data = e$df[e$df$rib == 'below_1', ]
+       ,aes(
+          x = x
+         ,ymin = ymin
+         ,ymax = ymax
+        )
+       ,fill = color_list[1]
+       ,alpha = ribbon_alpha
+       ,environment = e
+      )
+      e$rib_above_99 <- geom_ribbon(
+        data = e$df[e$df$rib == 'above_99', ]
+       ,aes(
+          x = x
+         ,ymin = ymin
+         ,ymax = ymax
+        )
+       ,fill = color_list[14]
+       ,alpha = ribbon_alpha
+       ,environment = e
+      )
+ 
+   for (i in 1:length(e$ribbons)) {
+     new_rib_name <- paste('rib', e$ribbons[i], sep='_')
+     #make ribbon
+     inner_ribbon <- geom_ribbon(
+       data = e$df[e$df$rib == e$ribbons[i], ]
+      ,aes(
+          x = x
+         ,ymin = ymin
+         ,ymax = ymax
+        )
+       ,fill = color_list[i+1]
+       ,alpha = ribbon_alpha
+       ,environment = e       
+     )
+     
+     #appropriate df
+     assign(new_rib_name, inner_ribbon, envir=e)
+   }
+ 
+  #base ggplot 
+  p <- ggplot(
+    data = norms_dense
+   ,environment = e
+  )
+  
+  #annotation style options
+  if (grepl('points', annotation_style)) {
+    npr_annotation <- geom_point(
+      aes(
+        x = GRADE
+       ,y = RIT
+      )
+    )
+  } else if (grepl('big numbers', annotation_style)) {
+    npr_annotation <- geom_text(
+      aes(
+        x = GRADE
+       ,y = RIT
+       ,label = PERCENTILE
+      )
+    )
+  } else if (grepl('small numbers', annotation_style)) {
+    npr_annotation <- geom_text(
+      aes(
+        x = GRADE
+       ,y = RIT
+       ,label = PERCENTILE
+      )
+     ,size = 3  
+     ,fontface="italic"
+     ,color = 'gray40'
+     ,alpha = 0.8
+    ) 
+  } else {
+    npr_annotation <- NULL
+  } 
+  
+  #lines
+  if (grepl('gray lines', line_style)) {
+    npr_lines <- geom_line(
+        aes(
+          x = GRADE
+         ,y = RIT
+         ,group = PERCENTILE        
+        )
+       ,size = 0.5
+       ,color = 'gray80'
+      )
+  } else if (grepl('gray dashed', line_style)) {
+     npr_lines <- geom_line(
+        aes(
+          x = GRADE
+         ,y = RIT
+         ,group = PERCENTILE        
+        )
+       ,size = 0.5
+       ,color = 'gray80'
+       ,lty = 'dashed'
+      ) 
+  }
+  else {
+    npr_lines <- NULL
+  }
+  
+  #put it all together
+  p <- p + 
+  e$rib_under_1 + 
+  e$rib_npr_01_npr_05 +
+  e$rib_npr_05_npr_10 +
+  e$rib_npr_10_npr_20 +
+  e$rib_npr_20_npr_30 +
+  e$rib_npr_30_npr_40 +
+  e$rib_npr_40_npr_50 +
+  e$rib_npr_50_npr_60 +
+  e$rib_npr_60_npr_70 +
+  e$rib_npr_70_npr_80 +
+  e$rib_npr_80_npr_90 +
+  e$rib_npr_90_npr_95 +
+  e$rib_npr_95_npr_99 +
+  e$rib_above_99 +   
+  npr_annotation +
+  npr_lines
+  
+  return(p)
+}
+
+
+
+rit_height_weight_ACT <- function(
+  desired_subj
+ ,color_list = rainbow_colors()
+ ,annotation_style = 'points'
+ ,line_style = 'none'
+ ,school_type = 'MS'
+ ,localization = localize('Newark')
+) {
+  require(ggplot2)
+  require(scales)
+  e <- new.env()
+  
+  #subset  
+  act_df <- act_df[act_df$subject==desired_subj, ]
+
+  chart_settings <- list(
+    'MS'=list(
+      'y_disp_min' = 180
+     ,'y_disp_max' = 290
+     ,'ribbon_alpha' = .3
+     ,'college_text_color' = (alpha("gray50", 0.4))
+     ,'college_name_size' = 4.5
+     ,'chart_angle' = 27
+     ,'act_lines_alpha' = .3
+     ,'act_x' = 10.8
+     ,'act_grade_for_y' = 11
+     ,'act_color' = (alpha("gray50",0.6))
+     ,'act_size' = 3
+     ,'act_angle' = 6
+     ,'act_vjust' = 0.5
+     ,'act_hjust' = 0.65
+    )
+   ,'ES'=list(
+      'y_disp_min' = 130
+     ,'y_disp_max' = 220
+     ,'ribbon_alpha' = .3
+     ,'college_text_color' = (alpha("gray50", 0.4))
+     ,'college_name_size' = 4.5
+     ,'chart_angle' = 30
+     ,'act_lines_alpha' = .3
+     ,'act_x' = -0.7
+     ,'act_grade_for_y' = -0.7
+     ,'act_color' = (alpha("gray50",0.6))
+     ,'act_size' = 3
+     ,'act_angle' = 15
+     ,'act_vjust' = 0.5
+     ,'act_hjust' = 0.2   
+    )
+  )
+  
+  #what flavor of chart are we making?
+  active_settings = chart_settings[[school_type]]
+  
+  #we have to add some 'margin' above and below the maximum of our plot
+  #values are basically arbitrary but needed so that charts don't truncate in a weird way.
+    #y axis margin big
+    placeholder1 <- act_df[act_df$grade == 11, ]
+    #arbitrary, just needs to be bigger than 11
+    placeholder1$grade <- 14
+    act_df <- rbind(act_df, placeholder1)
+
+    #y axis margin small
+    placeholder2 <- act_df[act_df$grade == -0.8, ]
+    #arbitrary, just needs to be smaller than -1
+    placeholder2$grade <- -3
+    act_df <- rbind(act_df, placeholder2)
+
+    e$act_df <- act_df[with(act_df, order(grade)), ]
+
+  #make ribbons and labels here
+  #add 1 and 36 to personalized cuts
+  act_bands <- c(min(act_df$act), localization$act_cuts, 36)
+  
+  #store names of everything that gets made
+  ribbon_names = c()
+    
+  #iterate over the list of bands and make stuff
+  for (i in 1:(length(act_bands)-1)) {
+    #which cuts
+    low_cut <- act_bands[i]
+    high_cut <- act_bands[i+1]
+    
+    #subset the main act df
+    lower <- act_df[act_df$act==low_cut, ]
+    higher <- act_df[act_df$act==high_cut, ]
+    
+    #as df
+    inner_df <- data.frame(
+      x=lower$grade
+     ,ymin=lower$rit
+     ,ymax=higher$rit
+    )
+    
+    #now make a ribbon
+      #first give it a name
+      new_rib_name <- paste0('rib', '_', low_cut, '_', high_cut)
+    
+      #make it
+      inner_ribbon <- geom_ribbon(
+        data = inner_df
+       ,aes(
+          x = x
+         ,ymin = ymin
+         ,ymax = ymax
+        )
+       ,fill = color_list[i+1]
+       ,alpha = active_settings$ribbon_alpha
+       ,environment = e      
+      )
+    
+      #assign variable name
+      assign(new_rib_name, inner_ribbon, envir=e)
+      
+      #add to list of ribbons
+      ribbon_names = c(ribbon_names, new_rib_name)
+  }
+      
+  #base ggplot 
+  p <- ggplot(
+    data = act_df[act_df$act %in% localization$act_cuts, ]
+   ,environment = e
+  ) +
+  theme_bw()
+  
+  #put all the ribbons on it
+  for (i in ribbon_names) {
+    p <- p + get(i, env=e)
+  }
+    
+  #annotation style options
+  if (grepl('points', annotation_style)) {
+    act_annotation <- geom_point(
+      aes(
+        x = grade
+       ,y = rit
+      )
+    )
+  } else if (grepl('big numbers', annotation_style)) {
+    act_annotation <- geom_text(
+      data = act_df[act_df$act %in% localization$act_trace_lines, ]
+     ,aes(
+        x = grade
+       ,y = rit
+       ,label = act
+      )
+    )
+  } else if (grepl('small numbers', annotation_style)) {
+    act_annotation <- geom_text(
+      data=act_df[act_df$act %in% localization$act_trace_lines, ]
+     ,aes(
+        x = grade
+       ,y = rit
+       ,label = act
+      )
+     ,size = 3  
+     ,fontface="italic"
+     ,color = 'gray40'
+     ,alpha = 0.8
+    ) 
+  } else {
+    act_annotation <- NULL
+  }
+  
+  #lines
+  if (grepl('gray lines', line_style)) {
+    act_lines <- geom_line(
+      data = act_df[act_df$act %in% localization$act_trace_lines, ]
+     ,aes(
+        x = grade
+       ,y = rit
+       ,group = act        
+      )
+     ,size = 0.5
+     ,color = 'gray80'
+    )
+  } else {
+    act_lines <- NULL
+  }
+  
+  #put it together
+  p <- p + act_annotation + act_lines 
+  
+  #make x axis intelligent
+  grade_xs <- act_df[act_df$act %in% localization$act_trace_lines, 'grade']
+  
+  x_breaks <- sort(unique(grade_xs))
+  x_labels <- unlist(lapply(x_breaks, fall_spring_me))
+  
+  p <- p + scale_x_continuous(breaks = x_breaks, labels = x_labels)
+    
+  #don't want the grid lines
+  p <- p + theme(panel.grid = element_blank()) 
+  
+  #labels etc
+  p <- p + labs(x = 'Grade/Season', y = 'RIT')
+  
+  return(p)
+}
+
+
+rainbow_colors <- function() {
+  require(grDevices)
+  
+  rainbow_all <- rainbow(20)
+  rainbow_subset <- c(rainbow_all[2:6], rainbow_all[9:17])
+  my_colors <- rainbow_subset   
+  
+  return(my_colors)
+}
+
+
+stu_RIT_hist_plot_elements <- function(stu_rit_history) {
+  #calculate min/max x and y
+  min_y <- round_to_any(
+    x = min(stu_rit_history$testritscore), accuracy = 10, f = floor
+  )
+  max_y <- round_to_any(
+    x = max(stu_rit_history$testritscore), accuracy = 10, f = ceiling
+  )
+  min_x <- round_to_any(
+    x = min(stu_rit_history$grade_level_season), accuracy = 1, f = floor
+  )
+  max_x <- round_to_any(
+    x = max(stu_rit_history$grade_level_season), accuracy = 1, f = ceiling
+  )  
+  
+  #add a line showing previous scores
+  rit_hist_line <- geom_line(
+    aes(
+      x = grade_level_season,
+      y = testritscore
+    ),
+    data = stu_rit_history,
+    size = 1.5
+  )
+  
+  #line that drops non-entry fall
+  stu_rit_history_nofall <- stu_rit_history %>% dplyr::filter(
+    fallwinterspring %in% c('Spring', 'Winter') | 
+    (fallwinterspring == 'Fall' & grade == min(grade))
+  )
+
+  rit_hist_line_nofall <- geom_line(
+    aes(
+      x = grade_level_season,
+      y = testritscore
+    ),
+    data = stu_rit_history_nofall,
+    size = 1.5
+  )  
+  
+  #line that drops non-entry fall AND winter
+  stu_rit_history_nofall_nowinter <- stu_rit_history %>% dplyr::filter(
+    fallwinterspring == 'Spring' | (fallwinterspring == 'Fall' & grade == min(grade))
+  )
+  
+  rit_hist_line_nofall_nowinter <- geom_line(
+    aes(
+      x = grade_level_season,
+      y = testritscore
+    ),
+    data = stu_rit_history_nofall_nowinter,
+    size = 1.5
+  )  
+
+  #show test events
+  rit_hist_points <- geom_point(
+    data = stu_rit_history,
+    aes(
+      x = grade_level_season
+     ,y = testritscore
+    ),
+    shape = 21,
+    color = 'white',
+    size = 4,
+    fill = 'white',
+    alpha = 0.9
+  )
+  
+  #label
+  rit_hist_text <- geom_text(
+    data = stu_rit_history,
+    aes(
+      x = grade_level_season,
+      y = testritscore,
+      label = paste0(
+       grade, ' ' , gsub('ing|ter', '', stu_rit_history$fallwinterspring), ': ',
+       testritscore)
+    ),
+    size = 3,
+    color = 'gray30',
+    vjust = 1.5
+  )
+  
+  low_grade <- min(stu_rit_history$grade, na.rm = TRUE)
+  high_grade <- max(stu_rit_history$grade, na.rm=TRUE)
+      
+  low_grade_ord <- toOrdinal::toOrdinal(low_grade)
+  high_grade_ord <- toOrdinal::toOrdinal(high_grade)
+
+  out <- list(
+    'plot_elements' = list(
+      'line' = rit_hist_line,
+      'line_nofall' = rit_hist_line_nofall,
+      'line_nofall_nowinter' = rit_hist_line_nofall_nowinter,
+      'points' = rit_hist_points,
+      'text' = rit_hist_text
+    ),
+    'plot_limits_round' = list(
+      'min_x' = min_x, 'max_x' = max_x,
+      'min_y' = min_y, 'max_y' = max_y
+    ),
+    'plot_limits_exact' = list(
+      'min_x' = min_x - 0.1, 'max_x' = max_x + 0.1,
+      'min_y' = min_y - 1, 'max_y' = max_y + 1
+    ),
+    'labels' = list(
+      'low_grade' = low_grade, 'high_grade' = high_grade,
+      'low_grade_ord' = low_grade_ord, 'high_grade_ord' = high_grade_ord
+    )
+  )
+  
+  return(out)
+}
+
+
+
+#in the interest of DRY, abstract out writing college labels
+#this is non-trivial.
+college_label_element <- function(
+  xy_lim_list,
+  desired_subj,
+  labels_at_grade = 6,
+  localization = localize('Newark'),
+  aspect_ratio = 1,
+  label_size = 5
+) {
+
+  act_bands <- c(localization$act_cuts, max(act_df$act))
+  
+  labels_df <- act_df[act_df$subject == desired_subj & 
+                        act_df$act %in% act_bands &
+                        act_df$grade == labels_at_grade, ]  
+  
+  valid_ys <- na.omit(labels_df$rit + 0.5 * (dplyr::lead(labels_df$rit, 1) - labels_df$rit))
+  
+  #calculus, bitches, to find the angle of the label.
+  #angle is the slope of the tangent line to the curve.
+  #all the ACT curves have the same form, so we just need to get the slope once.
+  
+  #slope of tangent line to y=ax^2 + bx +c is 2ap + b where p is the x value in question.
+  #(read about it: http://www.math.dartmouth.edu/opencalc2/cole/lecture3.pdf)
+  #x value in question = labels_at_grade parameter
+  #so... we just need the coefficients for the act slopes
+  
+  #coefficients for ACT 23 because why not
+  coefs <- list(
+    'Mathematics'=list('a'=-0.5961, 'b'=13.8734, 'c'='irrelevant (174.347)'),
+    'Reading'=list('a'=-0.3161, 'b'=8.2295, 'c'='irrelevant (185.6195)')  
+  )
+  
+  #get the active coefs
+  active_coefs = coefs[[desired_subj]]
+  
+  #calculate slope of tangent line
+  tan_slope = 2 * active_coefs[['a']] * labels_at_grade + 0.5 + active_coefs[['b']]
+    
+  #need to account for viewport..
+  plot_xrange <- xy_lim_list[['max_x']] - xy_lim_list[['min_x']]
+  plot_yrange <- xy_lim_list[['max_y']] - xy_lim_list[['min_y']]
+  
+  asp <- plot_xrange / plot_yrange 
+  
+  college_text <- geom_text(
+    data = data.frame(
+      x_pos = rep(labels_at_grade, length(valid_ys)),
+      y_val = valid_ys,
+      label = localization$canonical_colleges
+    ),
+    aes(
+      x = x_pos,
+      y = y_val,
+      label = label
+    ),
+    angle = 180/pi*atan(tan_slope * asp * aspect_ratio),
+    hjust = 1,
+    vjust = 0.5,
+    size = label_size
+  )
+  
+  return(college_text)
+}
+
+
+
+build_student_college_plot <- function(
+  base_plot,
+  mapvizieR_obj,
+  studentid,
+  #long style 
+  #needs to have
+  measurementscale,
+  labels_at_grade = 6,
+  localization = localize('Newark'),
+  aspect_ratio = 1
+) {
+  #1. get stu_RIT_hist_plot_elements
+  stu_map_df <- mv_limit_cdf(mapvizieR_obj, studentid, measurementscale)
+  stu_elements <- stu_RIT_hist_plot_elements(stu_map_df)
+  
+  #2. with data from step 1, put the college labels at the right spot
+  college_labels <- college_label_element(
+    xy_lim_list = stu_elements[['plot_limits_exact']],
+    desired_subj = measurementscale,
+    labels_at_grade = labels_at_grade,
+    localization = localization
+  ) 
+  
+  min_y <- stu_elements[['plot_limits_round']][['min_y']]
+  max_y <- stu_elements[['plot_limits_round']][['max_y']]
+  min_x <- stu_elements[['plot_limits_round']][['min_x']]
+  max_x <- stu_elements[['plot_limits_round']][['max_x']]
+  
+  #3. put everything together
+  p <- base_plot + 
+    college_labels + 
+    stu_elements[['plot_elements']][['line']] + 
+    stu_elements[['plot_elements']][['points']] +
+    stu_elements[['plot_elements']][['text']]
+    
+  #axis limits
+  p <- p + 
+  coord_cartesian(
+    ylim = c(min_y - 1, max_y + 1),
+    xlim = c(min_x - 0.1, max_x + 0.1)
+  ) +
+  #format x
+  scale_x_continuous(
+    breaks = seq(min_x, max_x, by = 1) 
+  ) +
+  scale_y_continuous(
+    breaks = seq(
+      min_y, max_y, by = ifelse(max_y-min_y < 13, 2, round_to_any((max_y-min_y)/5, 5)))
+  ) + 
+  labs(
+    x='Grade', y='RIT Score'
+  )
+
+  return(p)
+}
+
+
+
+
+cohort_historic_college_plot <- function(
+  mapvizieR_obj, 
+  studentids, 
+  measurementscale, 
+  localization, 
+  labels_at_grade,
+  annotation_style = 'small numbers',
+  line_style = 'gray lines',
+  title_text = paste('1. Where have I been? ', measurementscale, '\n')
+) {
+
+  blank_template <- rit_height_weight_ACT(
+    desired_subj = measurementscale,
+    localization = localize(localization),
+    annotation_style = annotation_style,
+    line_style = line_style
+  )
+    
+  plot_list <- list()
+  
+  roster <- mapvizieR_obj$roster
+  
+  for (i in studentids) {
+    stu_name <- roster %>% dplyr::filter(studentid == i) %>% 
+      dplyr::select(studentfirstlast) %>%
+      unique() %>% extract(1) %>% unlist() %>% unname()
+    
+    p <- build_student_college_plot(
+      base_plot = blank_template,
+      mapvizieR_obj = mapvizieR_obj,
+      studentid = i,
+      measurementscale = measurementscale,
+      labels_at_grade = labels_at_grade
+    ) + labs(
+      title = paste(title_text, stu_name)
+    ) +
+    theme(plot.title = element_text(hjust = 0))
+    
+    
+    plot_list[[i]] <- p
+  }
+  
+  return(plot_list)
+}
+
