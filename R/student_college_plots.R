@@ -454,7 +454,23 @@ rainbow_colors <- function() {
 }
 
 
-stu_RIT_hist_plot_elements <- function(stu_rit_history) {
+stu_RIT_hist_plot_elements <- function(stu_rit_history, decode_ho = TRUE) {
+  
+  if (decode_ho) {
+    stu_rit_history$grade_year <- paste0(
+      stu_rit_history$grade, stu_rit_history$map_year_academic) %>% 
+        as.integer()
+    
+
+    
+    stu_rit_history <- stu_rit_history %>%
+      dplyr::group_by(measurementscale, grade) %>%
+      dplyr::mutate(
+        rn_ho = rank(-grade_year, ties.method = 'min')
+      ) %>% 
+      dplyr::filter(rn_ho == 1)
+  }
+  
   #calculate min/max x and y
   min_y <- round_to_any(
     x = min(stu_rit_history$testritscore), accuracy = 10, f = floor
@@ -656,7 +672,8 @@ build_student_college_plot <- function(
     xy_lim_list = stu_elements[['plot_limits_exact']],
     desired_subj = measurementscale,
     labels_at_grade = labels_at_grade,
-    localization = localization
+    localization = localization,
+    aspect_ratio = aspect_ratio
   ) 
   
   min_y <- stu_elements[['plot_limits_round']][['min_y']]
@@ -769,6 +786,7 @@ build_student_1year_goal_plot <- function(
   studentid_in <- studentid
   measurementscale_in <- measurementscale
   start_grade_in <- start_grade
+  end_grade_in <- end_grade
   growth_window_in <- growth_window
   
   #get the growth df data
@@ -816,7 +834,7 @@ build_student_1year_goal_plot <- function(
   sgp_alpha = 0.4
   tri_alpha = 0.8
   tri_color = 'gray70'
-  tri_lty = 'longdash'
+  tri_lty = 'dashed'
   big_text = 4
   small_text = 3
   big_point = 4
@@ -843,7 +861,6 @@ build_student_1year_goal_plot <- function(
   
   p <- base_plot + college_labels
   
-  
   p <- p + 
     geom_polygon(
       data = whole_triangle,
@@ -855,7 +872,7 @@ build_student_1year_goal_plot <- function(
     geom_line(
       data = data.frame(x = c(x1, x2), y = c(y1, y2)), 
       aes(x, y), 
-      size = 0,
+      size = 0.5,
       lty = tri_lty,
       color = tri_color,
       alpha = tri_alpha
@@ -863,7 +880,7 @@ build_student_1year_goal_plot <- function(
     geom_line(
       data = data.frame(x = c(x1, x3), y = c(y1, y3)), 
       aes(x, y),
-      size = 0,
+      size = 0.5,
       lty = tri_lty,
       color = tri_color,
       alpha = tri_alpha
@@ -871,7 +888,7 @@ build_student_1year_goal_plot <- function(
     geom_line(
       data = data.frame(x = c(x1, x4), y = c(y1, y4)), 
       aes(x, y), 
-      size = 0,
+      size = 0.5,
       lty = tri_lty,
       color = tri_color,
       alpha = tri_alpha
@@ -879,7 +896,7 @@ build_student_1year_goal_plot <- function(
     geom_line(
       data = data.frame(x = c(x1, x5), y = c(y1, y5)), 
       aes(x, y), 
-      size = 0,
+      size = 0.5,
       lty = tri_lty,
       color = tri_color,
       alpha = tri_alpha
@@ -887,7 +904,7 @@ build_student_1year_goal_plot <- function(
     geom_line(
       data = data.frame(x = c(x1, x6), y = c(y1, y6)), 
       aes(x, y), 
-      size = 0,
+      size = 0.5,
       lty = tri_lty,
       color = tri_color,
       alpha = tri_alpha
@@ -917,36 +934,48 @@ build_student_1year_goal_plot <- function(
       color = 'black', size = big_text, vjust = .5
     )        
 
+  point_df <- data.frame(
+    x = c(start_grade, end_grade, end_grade),
+    y = c(stu_baseline, stu_baseline + rep_growth, stu_baseline + accel_growth),
+    label = c('Baseline', paste0(stu_baseline + rep_growth, ' (Keep Up)'),
+      paste0(stu_baseline + accel_growth, ' (Rutgers Ready)')),
+    point_type = c('Baseline', 'Keep Up', 'Rutgers Ready'),
+    stringsAsFactors = FALSE
+  )
   p <- p + geom_point(
+    data = point_df[point_df$point_type == 'Baseline', ],
     aes(
-      x = start_grade,
-      y = stu_baseline
+      x = x,
+      y = y
     ),
     size = 3
   ) +
   geom_text(
+    data = point_df[point_df$point_type == 'Baseline', ],
     aes(
-      x = start_grade, 
-      y = stu_baseline,
-      label = 'Baseline'
+      x = x, 
+      y = y,
+      label = label
     ),
     vjust = 1
   )
   
   p <- p + geom_point(
+    data = point_df[point_df$point_type == 'Keep Up', ],
     aes(
-      x = end_grade,
-      y = stu_baseline + rep_growth
+      x = x,
+      y = y
     ),
     shape = 3,
     color = 'red',
     size = 5,
     alpha = 0.9
   ) + geom_text(
+    data = point_df[point_df$point_type == 'Keep Up', ],
     aes(
-      x = end_grade,
-      y = stu_baseline + rep_growth,
-      label = paste0(stu_baseline + rep_growth, ' (Keep Up)')
+      x = x,
+      y = y,
+      label = label
     ),
     shape = 3,
     color = 'red',
@@ -956,19 +985,21 @@ build_student_1year_goal_plot <- function(
   )
   
   p <- p + geom_point(
+    data = point_df[point_df$point_type == 'Rutgers Ready', ],
     aes(
-      x = end_grade,
-      y = stu_baseline + accel_growth
+      x = x,
+      y = y
     ),
     shape = 3,
     color = 'red',
     size = 5,
     alpha = 0.9
   ) + geom_text(
+    data = point_df[point_df$point_type == 'Rutgers Ready', ],
     aes(
-      x = end_grade,
-      y = stu_baseline + accel_growth,
-      label = paste0(stu_baseline + accel_growth, ' (Rutgers Ready)')
+      x = x,
+      y = y,
+      label = label
     ),
     shape = 3,
     color = 'red',
