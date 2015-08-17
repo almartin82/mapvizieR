@@ -529,7 +529,7 @@ stu_RIT_hist_plot_elements <- function(stu_rit_history) {
       x = grade_level_season,
       y = testritscore,
       label = paste0(
-       grade, ' ' , gsub('ing|ter', '', stu_rit_history$fallwinterspring), ': ',
+       grade, ' ' , gsub('ing|ter', '', fallwinterspring), ': ',
        testritscore)
     ),
     size = 3,
@@ -642,10 +642,8 @@ build_student_college_plot <- function(
   base_plot,
   mapvizieR_obj,
   studentid,
-  #long style 
-  #needs to have
   measurementscale,
-  labels_at_grade = 6,
+  labels_at_grade,
   localization = localize('Newark'),
   aspect_ratio = 1
 ) {
@@ -688,7 +686,7 @@ build_student_college_plot <- function(
       min_y, max_y, by = ifelse(max_y-min_y < 13, 2, round_to_any((max_y-min_y)/5, 5)))
   ) + 
   labs(
-    x='Grade', y='RIT Score'
+    x = 'Grade', y = 'RIT Score'
   )
 
   return(p)
@@ -703,6 +701,7 @@ cohort_historic_college_plot <- function(
   measurementscale, 
   localization, 
   labels_at_grade,
+  aspect_ratio = 1,
   annotation_style = 'small numbers',
   line_style = 'gray lines',
   title_text = paste('1. Where have I been? ', measurementscale, '\n')
@@ -720,16 +719,20 @@ cohort_historic_college_plot <- function(
   roster <- mapvizieR_obj$roster
   
   for (i in studentids) {
+    data_test <- i %in% mapvizieR_obj$cdf$studentid
+    if (!data_test) next
+    
     stu_name <- roster %>% dplyr::filter(studentid == i) %>% 
       dplyr::select(studentfirstlast) %>%
-      unique() %>% extract(1) %>% unlist() %>% unname()
+      unique() %>% magrittr::extract(1) %>% unlist() %>% unname()
     
     p <- build_student_college_plot(
       base_plot = blank_template,
       mapvizieR_obj = mapvizieR_obj,
       studentid = i,
       measurementscale = measurementscale,
-      labels_at_grade = labels_at_grade
+      labels_at_grade = labels_at_grade,
+      aspect_ratio = aspect_ratio
     ) + labs(
       title = paste(title_text, stu_name)
     ) +
@@ -742,3 +745,303 @@ cohort_historic_college_plot <- function(
   return(plot_list)
 }
 
+
+
+centroid <- function(x1, x2, x3, y1, y2, y3) {
+  cx <- (x1 + x2 + x3) / 3
+  cy <- (y1 + y2 + y3) / 3
+  
+  return(c(cx,cy))
+}
+
+build_student_1year_goal_plot <- function(
+  base_plot,
+  mapvizieR_obj,
+  studentid,
+  measurementscale,
+  start_grade,
+  end_grade,
+  labels_at_grade,
+  growth_window = 'Spring to Spring',
+  localization = localize('Newark'),
+  aspect_ratio = 1
+) {
+  studentid_in <- studentid
+  measurementscale_in <- measurementscale
+  start_grade_in <- start_grade
+  growth_window_in <- growth_window
+  
+  #get the growth df data
+  stu_growth <- mapvizieR_obj$growth_df %>% dplyr::filter(
+    studentid == studentid_in & 
+    measurementscale == measurementscale_in &
+    start_grade == start_grade_in &
+    growth_window == growth_window_in
+  ) %>%
+  dplyr::arrange(desc(start_teststartdate))
+
+  stu_baseline <- stu_growth[1, 'start_testritscore', drop = TRUE]
+  typ_growth <- stu_growth[1, 'typical_growth', drop = TRUE]
+  rep_growth <- stu_growth[1, 'reported_growth', drop = TRUE]  
+  sd_growth <- stu_growth[1, 'std_dev_of_expectation', drop = TRUE]
+  accel_growth <- stu_growth[1, 'accel_growth', drop = TRUE]  
+  
+  #CHART - GOALS
+  cgps <- data.frame(
+    cgp = seq(1, 99, 1),
+    rit_change = qnorm(seq(0.01, 0.99, 0.01), typ_growth, sd_growth)
+  )
+  cgps$end_rit <- stu_baseline + cgps$rit_change
+  
+  #df for triangle
+  x1 <- start_grade
+  y1 <- stu_baseline
+  
+  x2 <- end_grade
+  y2 <- cgps[cgps$cgp == 10, 'end_rit', drop = TRUE]
+  
+  x3 <- end_grade
+  y3 <- cgps[cgps$cgp == 30, 'end_rit', drop = TRUE]
+  
+  x4 <- end_grade
+  y4 <- cgps[cgps$cgp == 50, 'end_rit', drop = TRUE]
+
+  x5 <- end_grade
+  y5 <- cgps[cgps$cgp == 70, 'end_rit', drop = TRUE]
+
+  x6 <- end_grade
+  y6 <- cgps[cgps$cgp == 90, 'end_rit', drop = TRUE]
+    
+  whole_triangle <- data.frame(x = c(x1, x2, x6), y = c(y1, y2, y6))
+  sgp_alpha = 0.4
+  tri_alpha = 0.8
+  tri_color = 'gray70'
+  tri_lty = 'longdash'
+  big_text = 4
+  small_text = 3
+  big_point = 4
+  small_point = 3
+  
+  #college labels
+  ys <- c(y1, y2, y3, y4, y5, y6, stu_baseline + accel_growth)
+  min_x <- start_grade - 0.1 
+  max_x <- end_grade + 0.1
+  min_y <- round_to_any(min(ys) - 1, 5, floor)
+  max_y <- round_to_any(max(ys) + 1, 5, ceiling)
+  
+  college_labels <- college_label_element(
+    xy_lim_list = list(
+      'min_x' = min_x,
+      'max_x' = max_x,
+      'min_y' = min_y,
+      'max_y' = max_y
+    ),
+    desired_subj = measurementscale,
+    labels_at_grade = labels_at_grade,
+    localization = localization
+  ) 
+  
+  p <- base_plot + college_labels
+  
+  
+  p <- p + 
+    geom_polygon(
+      data = whole_triangle,
+      aes(x, y),
+      fill = 'white',
+      color = NA,
+      alpha = sgp_alpha
+    ) +
+    geom_line(
+      data = data.frame(x = c(x1, x2), y = c(y1, y2)), 
+      aes(x, y), 
+      size = 0,
+      lty = tri_lty,
+      color = tri_color,
+      alpha = tri_alpha
+    ) +
+    geom_line(
+      data = data.frame(x = c(x1, x3), y = c(y1, y3)), 
+      aes(x, y),
+      size = 0,
+      lty = tri_lty,
+      color = tri_color,
+      alpha = tri_alpha
+    ) +
+    geom_line(
+      data = data.frame(x = c(x1, x4), y = c(y1, y4)), 
+      aes(x, y), 
+      size = 0,
+      lty = tri_lty,
+      color = tri_color,
+      alpha = tri_alpha
+    ) +
+    geom_line(
+      data = data.frame(x = c(x1, x5), y = c(y1, y5)), 
+      aes(x, y), 
+      size = 0,
+      lty = tri_lty,
+      color = tri_color,
+      alpha = tri_alpha
+    ) +
+    geom_line(
+      data = data.frame(x = c(x1, x6), y = c(y1, y6)), 
+      aes(x, y), 
+      size = 0,
+      lty = tri_lty,
+      color = tri_color,
+      alpha = tri_alpha
+    ) 
+  
+  #draw triangles        
+  c_q1 <- centroid(x1, x2, x3, y1, y2, y3)
+  c_q2 <- centroid(x1, x3, x4, y1, y3, y4)
+  c_q3 <- centroid(x1, x4, x5, y1, y4, y5)
+  c_q4 <- centroid(x1, x5, x6, y1, y5, y6)
+    
+  p <- p + 
+    annotate(
+      "text", label = "Low Growth", x = c_q1[1], y = c_q1[2], 
+      color = 'black', size = big_text, vjust = .5
+    ) +
+    annotate(
+      "text", label = "Low/Average Growth", x = c_q2[1], 
+      y = c_q2[2], color = 'black', size = big_text, vjust = .5
+    ) +
+    annotate(
+      "text", label = "High Growth", x = c_q3[1], y = c_q3[2], 
+      color = 'black', size = big_text, vjust = .5
+    ) +
+    annotate(
+      "text", label = "Very High Growth!", x = c_q4[1], y = c_q4[2], 
+      color = 'black', size = big_text, vjust = .5
+    )        
+
+  p <- p + geom_point(
+    aes(
+      x = start_grade,
+      y = stu_baseline
+    ),
+    size = 3
+  ) +
+  geom_text(
+    aes(
+      x = start_grade, 
+      y = stu_baseline,
+      label = 'Baseline'
+    ),
+    vjust = 1
+  )
+  
+  p <- p + geom_point(
+    aes(
+      x = end_grade,
+      y = stu_baseline + rep_growth
+    ),
+    shape = 3,
+    color = 'red',
+    size = 5,
+    alpha = 0.9
+  ) + geom_text(
+    aes(
+      x = end_grade,
+      y = stu_baseline + rep_growth,
+      label = paste0(stu_baseline + rep_growth, ' (Keep Up)')
+    ),
+    shape = 3,
+    color = 'red',
+    size = 5,
+    alpha = 0.9,
+    vjust = 1
+  )
+  
+  p <- p + geom_point(
+    aes(
+      x = end_grade,
+      y = stu_baseline + accel_growth
+    ),
+    shape = 3,
+    color = 'red',
+    size = 5,
+    alpha = 0.9
+  ) + geom_text(
+    aes(
+      x = end_grade,
+      y = stu_baseline + accel_growth,
+      label = paste0(stu_baseline + accel_growth, ' (Rutgers Ready)')
+    ),
+    shape = 3,
+    color = 'red',
+    size = 5,
+    alpha = 0.9,
+    vjust = 1
+  )
+  
+
+  p <- p + coord_cartesian(
+    ylim = c(min_y, max_y),
+    xlim = c(min_x, max_x)
+  )
+  
+  return(p)
+
+}
+
+
+
+
+cohort_1yar_goal_plot <- function(
+  mapvizieR_obj, 
+  studentids, 
+  measurementscale, 
+  localization, 
+  labels_at_grade,
+  start_grade,
+  end_grade,
+  growth_window,
+  aspect_ratio = 1,
+  annotation_style = 'small numbers',
+  line_style = 'gray lines',
+  title_text = paste('2. What are my 2015-16 goals?', measurementscale, '\n')
+) {
+
+  blank_template <- rit_height_weight_ACT(
+    desired_subj = measurementscale,
+    localization = localize(localization),
+    annotation_style = annotation_style,
+    line_style = line_style
+  )
+    
+  plot_list <- list()
+  
+  roster <- mapvizieR_obj$roster
+  
+  for (i in studentids) {
+    data_test <- i %in% mapvizieR_obj$cdf$studentid
+    if (!data_test) next
+    
+    stu_name <- roster %>% dplyr::filter(studentid == i) %>% 
+      dplyr::select(studentfirstlast) %>%
+      unique() %>% magrittr::extract(1) %>% unlist() %>% unname()
+
+    p <- build_student_1year_goal_plot(
+      base_plot = blank_template,
+      mapvizieR_obj = mapvizieR_obj,
+      studentid = i,
+      measurementscale = measurementscale,
+      start_grade = start_grade,
+      end_grade = end_grade,
+      labels_at_grade = labels_at_grade,
+      growth_window = growth_window,
+      aspect_ratio = aspect_ratio
+    ) + labs(
+      title = paste(title_text, stu_name)
+    ) +
+    theme(plot.title = element_text(hjust = 0))
+    
+    
+    plot_list[[i]] <- p
+  }
+  
+  return(plot_list)
+}
