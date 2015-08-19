@@ -30,7 +30,7 @@ localizations <- list(
   )
 )
 
-localize <- function(region) {
+localize <- function(region, verbose = FALSE) {
   final_list <- list()
   #number of items
   loc_var <- names(localizations[['default']])
@@ -50,20 +50,24 @@ localize <- function(region) {
       final_list[i] <- custom
     }
   }
-  if (counter == loc_var_count) {
-    cat('Your localization choice did not match any known options!
-To store a localization, add a list to localizations.
-For example:
-  localizations[[\'Ridgemont High\']] <- list(
-    \'act_cuts\' = c(12, 17, 19, 22, 24, 27, 32)
-  )
-'
-    )
-  }
   
-  if (loc_var_count - counter >= loc_var_count) {
-    writeLines(sprintf('Localized %s variables', loc_var_count - counter))
+  if (verbose == TRUE) {
+    if (counter == loc_var_count) {
+      cat('Your localization choice did not match any known options!
+  To store a localization, add a list to localizations.
+  For example:
+    localizations[[\'Ridgemont High\']] <- list(
+      \'act_cuts\' = c(12, 17, 19, 22, 24, 27, 32)
+    )
+  ')
+    }
+    
+    if (loc_var_count - counter >= loc_var_count) {
+      writeLines(sprintf('Localized %s variables', loc_var_count - counter))
+    }
+    
   }
+    
   
   return(final_list)
 }
