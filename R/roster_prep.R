@@ -23,7 +23,7 @@ prep_roster <- function(students_by_school, kinder_codes=NULL) {
   roster <- extract_academic_year(roster)
   
   #stu year in district
-  roste <- build_year_in_district(roster)
+  roster <- build_year_in_district(roster)
   
   # translate kindergarten ("K", 13, etc) to grade 0
   roster$grade <- standardize_kinder(roster$grade, other_codes = kinder_codes)
