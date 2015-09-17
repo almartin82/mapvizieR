@@ -15,21 +15,13 @@ norms data (2015 study)}
 }}
 \source{
 http://support.nwea.org/support/article/rit-scale-norms-study-data-files
-
-http://support.nwea.org/support/article/rit-scale-norms-study-data-files
 }
 \usage{
-status_norms_2015
-
 status_norms_2015
 }
 \description{
 Norm data published by NWEA:
 Given a subject, grade level, season and RIT, gives a percentile rank
-
-Norm data published by NWEA:
-Given a subject, grade level, pre-test and post-test seasons and start RIT, expected growth
-and variance statistics.
 }
 \keyword{datasets}
 

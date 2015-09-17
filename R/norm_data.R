@@ -74,7 +74,7 @@
 #' \item{MeasurementScale}{Measurement scale in plain English.}
 #' }
 #' @source http://support.nwea.org/support/article/rit-scale-norms-study-data-files
-"status_norms_2015"
+"student_growth_norms_2015"
 
 
 
