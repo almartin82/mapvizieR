@@ -220,8 +220,16 @@ make_npr_consistent <- function(
     cdf
   )
       
-  names(norm_df)[names(norm_df)=='percentile'] <- 'consistent_percentile'
-  norm_df$percentile_source <- norm_study
+  
+  if (norm_study == 'student_status_norms_2011') {
+    names(norm_df)[names(norm_df)=='percentile'] <- 'consistent_percentile'
+    norm_df$percentile_source <- norm_study
+  }
+  
+  if (norm_study == 'status_norms_2015') {
+    names(norm_df)[names(norm_df)=='student_percentile'] <- 'consistent_percentile'
+    norm_df$percentile_source <- norm_study
+  }
 
   dplyr::left_join(
     x = cdf,

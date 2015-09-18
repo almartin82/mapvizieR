@@ -52,7 +52,7 @@ test_that("scores_by_testid correctly looks up test events", {
       "start_teststandarderror", "start_testpercentile", "start_consistent_percentile", 
       "start_testquartile", "start_rittoreadingscore", "start_rittoreadingmin", 
       "start_rittoreadingmax", "start_teststarttime", "start_percentcorrect", 
-      "start_projectedproficiency"),
+      "start_projectedproficiencylevel1"),
     names(ex_lookup)
   )
   expect_equal(sum(ex_lookup$start_percentcorrect), 435341)
