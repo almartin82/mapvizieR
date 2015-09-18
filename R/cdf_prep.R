@@ -245,3 +245,28 @@ make_npr_consistent <- function(
 psuedo_testids <- function(x) {
   
 }
+
+
+id_cdf_type <- function(cdf){
+  
+  # determine if CDF is client serve or WBM
+  names(cdf) <- tolower(names(cdf))
+  if (any(grepl("^(fall|winter|spring) \\d{4}$", tolower(cdf$termname)))) {
+    cdf_type <- "Client-Server"
+  } else {
+    # deterime if WBM CDF is pre or post 2015
+    cdf_col_names <- tolower(names(cdf))
+    if ("typicalfalltospringgrowth" %in% cdf_col_names) {
+      cdf_type <- "WBM pre-2015"
+    } else {
+      if ("falltofallprojectedgrowth" %in% cdf_col_names) {
+        cdf_type <- "WBM post-2015"
+        } else { 
+          cdf_type <- "unknown"
+        }
+      }
+    }
+    
+  # return type
+ cdf_type 
+}
