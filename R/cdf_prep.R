@@ -247,6 +247,20 @@ psuedo_testids <- function(x) {
 }
 
 
+#' identify type of cdf from AssessmentResults file.
+#'
+#' @param cdf an Assessment Results data frame.
+#'
+#' @return one of "Client-Server", "WBM pre-2015", "WBM post-2015"
+#' @export
+#'
+#' @examples
+#' data(ex_CombinedAssessmentResults)
+#' id_cdf_type(ex_CombinedAssessmentResults)
+#' 
+#' data(ex_CombinedAssessmentResults_pre_2015)
+#' id_cdf_type(ex_CombinedAssessmentResults_pre_2015)
+
 id_cdf_type <- function(cdf){
   
   # determine if CDF is client serve or WBM
