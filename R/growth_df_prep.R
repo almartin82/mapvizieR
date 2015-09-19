@@ -33,7 +33,7 @@ utils::globalVariables(
 
 generate_growth_dfs <- function(
   processed_cdf,
-  norm_df_long = norms_students_wide_to_long(norms_students_2011),
+  norm_df_long = norms_students_wide_to_long(student_growth_norms_2015),
   include_unsanctioned_windows = FALSE
 ){
   #input validation
