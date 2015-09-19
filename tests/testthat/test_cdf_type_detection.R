@@ -24,7 +24,7 @@ test_that("id_cdf_type detects post-2015 WBM", {
 
 
 test_that("id_cdf_type detects unknown CDF type", {
-  expect_equal(id_cdf_type(ex_CombinedAssessmentResults %>% select(1:5)), 
+  expect_equal(id_cdf_type(ex_CombinedAssessmentResults[,1:5]), 
                "unknown")
 })
 

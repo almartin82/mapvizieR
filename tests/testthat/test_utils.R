@@ -253,9 +253,9 @@ test_that("mv_limit_growth tests",{
 
   growth_df_limit <- mv_limit_growth(mapviz, studentids_normal_use, 'Mathematics')
   expect_equal(nrow(growth_df_limit), 576)
-  expect_equal(sum(growth_df_limit$cgi, na.rm=TRUE), 60.967, tolerance = 0.01)
-  expect_equal(sum(growth_df_limit$typical_growth, na.rm=TRUE), 1841.18, tolerance = 0.01)
-  expect_equal(sum(growth_df_limit$accel_growth, na.rm=TRUE), 3018, tolerance = 0.01)
+  expect_equal(sum(growth_df_limit$cgi, na.rm=TRUE), -10.72333, tolerance = 0.01)
+  expect_equal(sum(growth_df_limit$typical_growth, na.rm=TRUE), 2159, tolerance = 0.01)
+  expect_equal(sum(growth_df_limit$accel_growth, na.rm=TRUE), 3636, tolerance = 0.01)
 })
 
 
