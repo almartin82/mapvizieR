@@ -18,7 +18,7 @@ utils::globalVariables(
 #' eg 'Fall to Spring'.
 #'
 #' @param processed_cdf a conforming processed_cdf data frame
-#' @param norm_df_long defaults to norms_students_2011.  if you have a conforming norms object,
+#' @param norm_df_long defaults to student_growth_norms_2015  if you have a conforming norms object,
 #' you can use generate_growth_df to produce a growth data frame for those norms.
 #' example usage: calculate college ready growth norms, and use generate_growth_df to see
 #' if students met them.
