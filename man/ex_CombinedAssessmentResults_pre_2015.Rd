@@ -77,7 +77,7 @@ NWEA MAP partner support team (thanks!)
 ex_CombinedAssessmentResults_pre_2015
 }
 \description{
-MAP assessment results (\textbf{pre-2015!}), in the format provided by web-based MAP.
+MAP assessment results (**pre-2015**), in the format provided by web-based MAP.
 Data provided from NWEA, by request.
 (Note that this is training data, and these students/student records *are not real*!)
 }

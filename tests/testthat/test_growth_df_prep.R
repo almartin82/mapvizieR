@@ -4,7 +4,7 @@ context("growth data frame prep")
 testing_constants()
 
 #additional constants
-norms_long <- norms_students_wide_to_long(norms_students_2011)
+norms_long <- norms_students_wide_to_long(student_growth_norms_2015)
   
 f2s_scaffold <- student_scaffold(
   processed_cdf = processed_cdf
@@ -113,9 +113,9 @@ test_that("growth_norm_lookup find norm data", {
   expect_equal(ncol(norm_matched), 52)
   expect_equal(
     as.character(summary(norm_matched)[, 'typical_growth'][3]), 
-    "Median : 2.340  " 
+    "Median : 2.499  " 
   )
-  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 37379)
+  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 35617)
 })
 
 
@@ -132,9 +132,10 @@ test_that("calc_rit_growth_metrics properly calculates growth metrics", {
   expect_equal(ncol(with_rit_metrics), 57)
   expect_equal(median(with_rit_metrics$rit_growth,na.rm = T),3)
   expect_equal(median(with_rit_metrics$change_testpercentile,na.rm = T),1)
-  expect_equal(median(with_rit_metrics$cgi,na.rm = T),0)
+  expect_equal(median(with_rit_metrics$cgi,na.rm = T), 0.1155872,  
+               tolerance = 1e-3)
    
-  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 37379)  
+  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 35617)  
 })
 
 
@@ -148,9 +149,9 @@ test_that("growth_norm_lookup with unsanctioned windows", {
   expect_equal(ncol(norm_matched), 52)
   expect_equal(
     as.character(summary(norm_matched)[, 'typical_growth'][3]), 
-    "Median : 2.150  " 
+    "Median : 2.086  " 
   )
-  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 46086.5)
+  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 43232.5)
   
 })
 

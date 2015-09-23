@@ -1,6 +1,6 @@
 #' example ex_CombinedAssessmentResults_pre_2015 file (formerly Comprehensive Data File)
 #'
-#' MAP assessment results (\textbf{pre-2015!}), in the format provided by web-based MAP.
+#' MAP assessment results (**pre-2015**), in the format provided by web-based MAP.
 #' Data provided from NWEA, by request.  
 #' (Note that this is training data, and these students/student records *are not real*!)
 #'
@@ -77,7 +77,7 @@
 
 #' example ex_CombinedAssessmentResults file (formerly Comprehensive Data File)
 #'
-#' MAP assessment results (\textbf{post-2015!}), in the format provided by web-based MAP.
+#' MAP assessment results (**post-2015**), in the format provided by web-based MAP.
 #' Data provided from NWEA, by request.  
 #' (Note that this is training data, and these students/student records *are not real*!)
 #'

@@ -119,7 +119,7 @@ NWEA MAP partner support team (thanks!)
 ex_CombinedAssessmentResults
 }
 \description{
-MAP assessment results (\textbf{post-2015!}), in the format provided by web-based MAP.
+MAP assessment results (**post-2015**), in the format provided by web-based MAP.
 Data provided from NWEA, by request.
 (Note that this is training data, and these students/student records *are not real*!)
 }
