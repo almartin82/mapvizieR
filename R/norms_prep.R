@@ -11,7 +11,7 @@ norms_students_wide_to_long <- function(norms=student_growth_norms_2015) {
   #1,2,3,4 
   #1=winter, 2=spring, 3=summer, 4=fall
   #check if norms are 2011 by looking for "startgrade" colum (hacky, I know)
-  if ("startgrade" %in% names(norms)){
+  if (all(norms$norms_year==2011)){
     f2w <- norms[ , c('measurementscale', 'startgrade', 'startrit', 't41', 'r41', 's41')]
     f2s <- norms[ , c('measurementscale', 'startgrade', 'startrit', 't42', 'r42', 's42')]
     f2f <- norms[ , c('measurementscale', 'startgrade', 'startrit', 't44', 'r44', 's44')]
@@ -40,13 +40,13 @@ norms_students_wide_to_long <- function(norms=student_growth_norms_2015) {
     norms_long <- norms_long[ , c(1:3,7,4:6)]
   }
   
-  if ("grade" %in% names(norms)){
-    f2w <- norms[ , c('measurementscale', 'grade', 'startrit', 't41', 'r41', 's41')]
-    f2s <- norms[ , c('measurementscale', 'grade', 'startrit', 't42', 'r42', 's42')]
-    f2f <- norms[ , c('measurementscale', 'grade', 'startrit', 't44', 'r44', 's44')]
-    s2s <- norms[ , c('measurementscale', 'grade', 'startrit', 't22', 'r22', 's22')]
-    w2s <- norms[ , c('measurementscale', 'grade', 'startrit', 't12', 'r12', 's12')]
-    w2w <- norms[ , c('measurementscale', 'grade', 'startrit', 't11', 'r11', 's11')]
+  if (all(norms$norms_year==2015)){
+    f2w <- norms[ , c('measurementscale', 'startgrade', 'startrit', 't41', 'r41', 's41')]
+    f2s <- norms[ , c('measurementscale', 'startgrade', 'startrit', 't42', 'r42', 's42')]
+    f2f <- norms[ , c('measurementscale', 'startgrade', 'startrit', 't44', 'r44', 's44')]
+    s2s <- norms[ , c('measurementscale', 'startgrade', 'startrit', 't22', 'r22', 's22')]
+    w2s <- norms[ , c('measurementscale', 'startgrade', 'startrit', 't12', 'r12', 's12')]
+    w2w <- norms[ , c('measurementscale', 'startgrade', 'startrit', 't11', 'r11', 's11')]
     
     f2w$growth_window <- 'Fall to Winter'
     f2s$growth_window <- 'Fall to Spring'
