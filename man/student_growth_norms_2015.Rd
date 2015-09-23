@@ -8,8 +8,7 @@ norms data (2015 study)}
 \format{\describe{
 \item{Subject}{Measurement Scale, Possible Values: 1=Mathematics, 2=Reading,
 3=Language Usage, 4=General science}
-\item{StartGrade}{The RIT score of the first test in the a given period.
-Scores are now represented with as many as 14‐decimal places, which is clearly overboard.}
+\item{StartGrade}{The RIT score of the first test in the a given period. Scores are now represented with as many as 14decimal places, which is clearly overboard.}
 \item{T41}{Growth projection for comparison period fall of this grade to winter of this grade.
 #' Negative numbers likely due to extrapolation.}
 \item{T42}{Growth projection for comparison period fall of this grade to spring of this grade.
