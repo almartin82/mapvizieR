@@ -18,7 +18,7 @@ utils::globalVariables(
 #' eg 'Fall to Spring'.
 #'
 #' @param processed_cdf a conforming processed_cdf data frame
-#' @param norm_df_long defaults to norms_students_2011.  if you have a conforming norms object,
+#' @param norm_df_long defaults to student_growth_norms_2015  if you have a conforming norms object,
 #' you can use generate_growth_df to produce a growth data frame for those norms.
 #' example usage: calculate college ready growth norms, and use generate_growth_df to see
 #' if students met them.
@@ -33,7 +33,7 @@ utils::globalVariables(
 
 generate_growth_dfs <- function(
   processed_cdf,
-  norm_df_long = norms_students_wide_to_long(norms_students_2011),
+  norm_df_long = norms_students_wide_to_long(student_growth_norms_2015),
   include_unsanctioned_windows = FALSE
 ){
   #input validation
@@ -231,7 +231,7 @@ scores_by_testid <- function(testid, processed_cdf, start_or_end) {
   target_cols <- c("growthmeasureyn", "testtype", "testname", "teststartdate",
     "testdurationminutes", "testritscore", "teststandarderror", "testpercentile",
     "consistent_percentile", "testquartile", "rittoreadingscore", "rittoreadingmin",
-    "rittoreadingmax", "teststarttime", "percentcorrect", "projectedproficiency")
+    "rittoreadingmax", "teststarttime", "percentcorrect", "projectedproficiencylevel1")
 
   matching_slim <- matched[ , target_cols]
   #prefix it

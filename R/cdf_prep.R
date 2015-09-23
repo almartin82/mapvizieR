@@ -220,8 +220,16 @@ make_npr_consistent <- function(
     cdf
   )
       
-  names(norm_df)[names(norm_df)=='percentile'] <- 'consistent_percentile'
-  norm_df$percentile_source <- norm_study
+  
+  if (norm_study == 'student_status_norms_2011') {
+    names(norm_df)[names(norm_df)=='percentile'] <- 'consistent_percentile'
+    norm_df$percentile_source <- norm_study
+  }
+  
+  if (norm_study == 'status_norms_2015') {
+    names(norm_df)[names(norm_df)=='student_percentile'] <- 'consistent_percentile'
+    norm_df$percentile_source <- norm_study
+  }
 
   dplyr::left_join(
     x = cdf,
@@ -244,4 +252,153 @@ make_npr_consistent <- function(
 
 psuedo_testids <- function(x) {
   
+}
+
+
+#' identify type of cdf from AssessmentResults file.
+#'
+#' @param cdf an Assessment Results data frame.
+#'
+#' @return one of "Client-Server", "WBM pre-2015", "WBM post-2015"
+#' @export
+#'
+#' @examples
+#' data(ex_CombinedAssessmentResults)
+#' id_cdf_type(ex_CombinedAssessmentResults)
+#' 
+#' data(ex_CombinedAssessmentResults_pre_2015)
+#' id_cdf_type(ex_CombinedAssessmentResults_pre_2015)
+id_cdf_type <- function(cdf){
+  
+  # determine if CDF is client serve or WBM
+  names(cdf) <- tolower(names(cdf))
+  if (any(grepl("^(fall|winter|spring) \\d{4}$", tolower(cdf$termname)))) {
+    cdf_type <- "Client-Server"
+  } else {
+    # deterime if WBM CDF is pre or post 2015
+    cdf_col_names <- tolower(names(cdf))
+    if ("typicalfalltospringgrowth" %in% cdf_col_names) {
+      cdf_type <- "WBM pre-2015"
+    } else {
+      if ("falltofallprojectedgrowth" %in% cdf_col_names) {
+        cdf_type <- "WBM post-2015"
+        } else { 
+          cdf_type <- "unknown"
+        }
+      }
+    }
+    
+  # return type
+ cdf_type 
+}
+
+#' Migrate pre-2015 CDFs  (both client-server nad WBM) to post-2015 specification,
+#'
+#' @param cdf the Assessment Results table from a Comprehensive Data file as a data.frame
+#'
+#' @return a data.frame of the Assessment Results table in the post-2015 CDF format
+#' @export
+migrate_cdf_to_2015_std <- function(cdf){
+
+  
+
+  
+  cdf_type <- id_cdf_type(cdf)
+  if (cdf_type == "unknown") stop("Unknown cdf type, so I can't migrate it.")
+  
+  # Change termname if client-server type
+  if (cdf_type == "Client-Server") {
+    original_names <- names(cdf)
+    names(cdf) <- tolower(names(cdf))
+    message("Migrating client-server CDF to pre-2015 WBM CDF . . .")    
+    cdf  <- cdf %>%
+      dplyr::mutate(season = stringr::str_extract(termname, "\\w+"),
+                    yr = as.numeric(stringr::str_extract(termname, "\\d{4}")),
+                    termname = ifelse(tolower(season) == "fall",
+                                      paste0(season, " ", yr, "-", yr+1),
+                                      paste0(season, " ", yr-1, "-", yr))
+                    ) %>%
+    dplyr::select(-season, -yr)
+  
+    names(cdf) <- original_names
+    
+  
+    cdf_type <- id_cdf_type(cdf)
+    if (cdf_type == "unknown") stop("Unknown cdf type, so I can't migrate it.")
+    
+    }
+  
+  # Migrate pre-2015 WBM cdf to post-2015
+  if (cdf_type == "WBM pre-2015"){
+    message("Migrating pre-2015 WBM CDF to post-2015 WBM CDF . . .")
+    cdf <- cdf %>%
+     dplyr::mutate(NormsReferenceData= NA,
+             WISelectedAYFall = NA,
+             WISelectedAYWinter = NA,	
+             WISelectedAYSpring	= NA,
+             WIPreviousAYFall	= NA,
+             WIPreviousAYWinter = NA,	
+             WIPreviousAYSpring = NA,
+        
+             FallToFallProjectedGrowth = TypicalFallToFallGrowth,	
+             FallToFallObservedGrowth = NA,
+             FallToFallObservedGrowthSE = NA,
+             FallToFallMetProjectedGrowth = NA,
+             FallToFallConditionalGrowthIndex = NA,
+             FallToFallConditionalGrowthPercentile = NA,
+             
+             FallToWinterProjectedGrowth = TypicalFallToWinterGrowth,	
+             FallToWinterObservedGrowth = NA,
+             FallToWinterObservedGrowthSE = NA,
+             FallToWinterMetProjectedGrowth = NA,
+             FallToWinterConditionalGrowthIndex = NA,
+             FallToWinterConditionalGrowthPercentile = NA,
+             
+             FallToSpringProjectedGrowth = TypicalFallToSpringGrowth,	
+             FallToSpringObservedGrowth = NA,
+             FallToSpringObservedGrowthSE = NA,
+             FallToSpringMetProjectedGrowth = NA,
+             FallToSpringConditionalGrowthIndex = NA,
+             FallToSpringConditionalGrowthPercentile = NA,
+             
+             WinterToWinterProjectedGrowth = NA,	
+             WinterToWinterObservedGrowth = NA,
+             WinterToWinterObservedGrowthSE = NA,
+             WinterToWinterMetProjectedGrowth = NA,
+             WinterToWinterConditionalGrowthIndex = NA,
+             WinterToWinterConditionalGrowthPercentile = NA,
+             
+             WinterToSpringProjectedGrowth = NA,	
+             WinterToSpringObservedGrowth = NA,
+             WinterToSpringObservedGrowthSE = NA,
+             WinterToSpringMetProjectedGrowth = NA,
+             WinterToSpringConditionalGrowthIndex = NA,
+             WinterToSpringConditionalGrowthPercentile = NA,
+             
+             SpringToSpringProjectedGrowth = TypicalSpringToSpringGrowth,	
+             SpringToSpringObservedGrowth = NA,
+             SpringToSpringObservedGrowthSE = NA,
+             SpringToSpringMetProjectedGrowth = NA,
+             SpringToSpringConditionalGrowthIndex = NA,
+             SpringToSpringConditionalGrowthPercentile = NA,
+             
+             ProjectedProficiencyStudy1 = NA,
+             ProjectedProficiencyLevel1 = ProjectedProficiency,
+             ProjectedProficiencyStudy2 = NA,
+             ProjectedProficiencyLevel2 = NA,
+             ProjectedProficiencyStudy3 = NA,
+             ProjectedProficiencyLevel3 = NA
+      ) %>%
+      dplyr::select(TermName:GrowthMeasureYN,
+             WISelectedAYFall:WIPreviousAYSpring,
+             TestType:TestPercentile,
+             FallToFallProjectedGrowth:SpringToSpringConditionalGrowthPercentile,
+             RITtoReadingScore:PercentCorrect,
+             ProjectedProficiencyStudy1:ProjectedProficiencyLevel3
+      )
+  }
+  
+  # return
+  as.data.frame(cdf)
+
 }

@@ -171,7 +171,7 @@ tiered_growth_factors <- function(quartile, grade){
   tgrowth <- data.frame(
     grade.type = c(rep(0,4),rep(1,4)), 
     quartile = as.factor(rep(1:4, 2)), 
-    KIPPTieredGrowth = c(1.5,1.5,1.25,1.25,2,1.75,1.5,1.25)
+    KIPPTieredGrowth = c(1.5,1.5,1.25,1,2,1.75,1.5,1)
   )
   
   grade.type <- rep(NA, times = length(quartile))

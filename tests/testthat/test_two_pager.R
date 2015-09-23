@@ -30,9 +30,9 @@ test_that("two-pager report should return ggplot object", {
   )  
   expect_equal(length(tp_test), 2)
   expect_true("list" %in% class(tp_test))
-  expect_true("ggplot" %in% class(tp_test[[1]]))
+  expect_true("gtable" %in% class(tp_test[[1]]))
   expect_true("grob" %in% class(tp_test[[1]]))
-  expect_true("gTree" %in% class(tp_test[[1]]))
+  expect_true("gDesc" %in% class(tp_test[[1]]))
 })  
 
 
@@ -52,9 +52,9 @@ test_that("two-pager with KIPP report", {
   )  
   expect_equal(length(tp_test), 2)
   expect_true("list" %in% class(tp_test))
-  expect_true("ggplot" %in% class(tp_test[[1]]))
+  expect_true("gtable" %in% class(tp_test[[1]]))
   expect_true("grob" %in% class(tp_test[[1]]))
-  expect_true("gTree" %in% class(tp_test[[1]]))
+  expect_true("gDesc" %in% class(tp_test[[1]]))
 })  
 
 
@@ -70,7 +70,7 @@ test_that("KNJ style two-pager", {
   )  
   expect_equal(length(knj_test), 2)
   expect_true("list" %in% class(knj_test))
-  expect_true("ggplot" %in% class(knj_test[[1]]))
+  expect_true("gtable" %in% class(knj_test[[1]]))
   expect_true("grob" %in% class(knj_test[[1]]))
-  expect_true("gTree" %in% class(knj_test[[1]]))
+  expect_true("gDesc" %in% class(knj_test[[1]]))
 })  

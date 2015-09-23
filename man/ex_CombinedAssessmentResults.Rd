@@ -3,7 +3,7 @@
 \docType{data}
 \name{ex_CombinedAssessmentResults}
 \alias{ex_CombinedAssessmentResults}
-\title{example CombinedAssessmentResults file (formerly Comprehensive Data File)}
+\title{example ex_CombinedAssessmentResults file (formerly Comprehensive Data File)}
 \format{\describe{
 \item{TermName}{TermName}
 \item{StudentID}{StudentID}
@@ -11,6 +11,12 @@
 \item{MeasurementScale}{MeasurementScale}
 \item{Discipline}{Discipline}
 \item{GrowthMeasureYN}{GrowthMeasureYN}
+\item{WISelectedAYFall}{WISelectedAYFall}
+\item{WISelectedAYWinter}{WISelectedAYWinter}
+\item{WISelectedAYSpring}{WISelectedAYSpring}
+\item{WIPreviousAYFall}{WIPreviousAYFall}
+\item{WIPreviousAYWinter}{WIPreviousAYWinter}
+\item{WIPreviousAYSpring}{WIPreviousAYSpring}
 \item{TestType}{TestType}
 \item{TestName}{TestName}
 \item{TestID}{TestID}
@@ -19,11 +25,42 @@
 \item{TestRITScore}{TestRITScore}
 \item{TestStandardError}{TestStandardError}
 \item{TestPercentile}{TestPercentile}
-\item{TypicalFallToFallGrowth}{TypicalFallToFallGrowth}
-\item{TypicalSpringToSpringGrowth}{TypicalSpringToSpringGrowth}
-\item{TypicalFallToSpringGrowth}{TypicalFallToSpringGrowth}
-\item{TypicalFallToWinterGrowth}{TypicalFallToWinterGrowth}
-\item{RITtoReadingScore}{RITtoReadingScore}
+\item{FallToFallProjectedGrowth}{FallToFallProjectedGrowth}
+\item{FallToFallObservedGrowth}{FallToFallObservedGrowth}
+\item{FallToFallObservedGrowthSE}{FallToFallObservedGrowthSE}
+\item{FallToFallMetProjectedGrowth}{FallToFallMetProjectedGrowth}
+\item{FallToFallConditionalGrowthIndex}{FallToFallConditionalGrowthIndex}
+\item{FallToFallConditionalGrowthPercentile}{FallToFallConditionalGrowthPercentile}
+\item{FallToWinterProjectedGrowth}{FallToWinterProjectedGrowth}
+\item{FallToWinterObservedGrowth}{FallToWinterObservedGrowth}
+\item{FallToWinterObservedGrowthSE}{FallToWinterObservedGrowthSE}
+\item{FallToWinterMetProjectedGrowth}{FallToWinterMetProjectedGrowth}
+\item{FallToWinterConditionalGrowthIndex}{FallToWinterConditionalGrowthIndex}
+\item{FallToWinterConditionalGrowthPercentile}{FallToWinterConditionalGrowthPercentile}
+\item{FallToSpringProjectedGrowth}{FallToSpringProjectedGrowth}
+\item{FallToSpringObservedGrowth}{FallToSpringObservedGrowth}
+\item{FallToSpringObservedGrowthSE}{FallToSpringObservedGrowthSE}
+\item{FallToSpringMetProjectedGrowth}{FallToSpringMetProjectedGrowth}
+\item{FallToSpringConditionalGrowthIndex}{FallToSpringConditionalGrowthIndex}
+\item{FallToSpringConditionalGrowthPercentile}{FallToSpringConditionalGrowthPercentile}
+\item{WinterToWinterProjectedGrowth}{WinterToWinterProjectedGrowth}
+\item{WinterToWinterObservedGrowth}{WinterToWinterObservedGrowth}
+\item{WinterToWinterObservedGrowthSE}{WinterToWinterObservedGrowthSE}
+\item{WinterToWinterMetProjectedGrowth}{WinterToWinterMetProjectedGrowth}
+\item{WinterToWinterConditionalGrowthIndex}{WinterToWinterConditionalGrowthIndex}
+\item{WinterToWinterConditionalGrowthPercentile}{WinterToWinterConditionalGrowthPercentile}
+\item{WinterToSpringProjectedGrowth}{WinterToSpringProjectedGrowth}
+\item{WinterToSpringObservedGrowth}{WinterToSpringObservedGrowth}
+\item{WinterToSpringObservedGrowthSE}{WinterToSpringObservedGrowthSE}
+\item{WinterToSpringMetProjectedGrowth}{WinterToSpringMetProjectedGrowth}
+\item{WinterToSpringConditionalGrowthIndex}{WinterToSpringConditionalGrowthIndex}
+\item{WinterToSpringConditionalGrowthPercentile}{WinterToSpringConditionalGrowthPercentile}
+\item{SpringToSpringProjectedGrowth}{SpringToSpringProjectedGrowth}
+\item{SpringToSpringObservedGrowth}{SpringToSpringObservedGrowth}
+\item{SpringToSpringObservedGrowthSE}{SpringToSpringObservedGrowthSE}
+\item{SpringToSpringMetProjectedGrowth}{SpringToSpringMetProjectedGrowth}
+\item{SpringToSpringConditionalGrowthIndex}{SpringToSpringConditionalGrowthIndex}
+\item{SpringToSpringConditionalGrowthPercentile}{SpringToSpringConditionalGrowthPercentile}
 \item{RITtoReadingMin}{RITtoReadingMin}
 \item{RITtoReadingMax}{RITtoReadingMax}
 \item{Goal1Name}{Goal1Name}
@@ -68,7 +105,12 @@
 \item{Goal8Adjective}{Goal8Adjective}
 \item{TestStartTime}{TestStartTime}
 \item{PercentCorrect}{PercentCorrect}
-\item{ProjectedProficiency}{ProjectedProficiency}
+\item{ProjectedProficiencyStudy1}{ProjectedProficiencyStudy1}
+\item{ProjectedProficiencyLevel1}{ProjectedProficiencyLevel1}
+\item{ProjectedProficiencyStudy2}{ProjectedProficiencyStudy2}
+\item{ProjectedProficiencyLevel2}{ProjectedProficiencyLevel2}
+\item{ProjectedProficiencyStudy3}{ProjectedProficiencyStudy3}
+\item{ProjectedProficiencyLevel3}{ProjectedProficiencyLevel3}
 }}
 \source{
 NWEA MAP partner support team (thanks!)
@@ -77,7 +119,7 @@ NWEA MAP partner support team (thanks!)
 ex_CombinedAssessmentResults
 }
 \description{
-MAP assessment results, in the format provided by web-based MAP.
+MAP assessment results (**post-2015**), in the format provided by web-based MAP.
 Data provided from NWEA, by request.
 (Note that this is training data, and these students/student records *are not real*!)
 }

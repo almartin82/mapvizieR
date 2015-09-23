@@ -17,6 +17,6 @@ test_that("teacher performance report should return ggplot object", {
     end_academic_year = 2013
   )
 
-  expect_equal(length(tpu_test), 5)
-  expect_true("ggplot" %in% class(tpu_test))  
+  expect_equal(length(tpu_test), 3)
+  expect_true("gtable" %in% class(tpu_test))  
 })  
