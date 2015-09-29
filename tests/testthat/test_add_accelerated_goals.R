@@ -42,8 +42,8 @@ test_that("calc_normed_student_growth does exactly that!", {
                calc_normed_student_growth(75,5,1)
                )
   
-  expect_equal(round(sum(new_growth_df$accel_growth, na.rm = TRUE),3),
-               1047.753)
+  expect_equal(round(sum(new_growth_df$accel_growth, na.rm = TRUE),0),
+               722)
 
   
 })
