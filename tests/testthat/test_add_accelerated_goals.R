@@ -33,7 +33,7 @@ test_that("add_accelerated_growth creates proper object", {
 test_that("calc_normed_student_growth does exactly that!", {
   new_growth_df <-  mapviz$growth_df %>% 
     head(100) %>% 
-    mutate(accel_growth = calc_normed_student_growth(.75, 
+    dplyr::mutate(accel_growth = calc_normed_student_growth(.75, 
                                                      reported_growth, 
                                                      std_dev_of_expectation)
     )
