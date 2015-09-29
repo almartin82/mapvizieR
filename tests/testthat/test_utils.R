@@ -252,10 +252,10 @@ test_that("mv_limit_cdf tests",{
 test_that("mv_limit_growth tests",{
 
   growth_df_limit <- mv_limit_growth(mapviz, studentids_normal_use, 'Mathematics')
-  expect_equal(nrow(growth_df_limit), 576)
+  expect_equal(nrow(growth_df_limit), 948)
   expect_equal(sum(growth_df_limit$cgi, na.rm=TRUE),  6.72, tolerance = 0.01)
-  expect_equal(sum(growth_df_limit$typical_growth, na.rm=TRUE), 2077, tolerance = 0.01)
-  expect_equal(sum(growth_df_limit$accel_growth, na.rm=TRUE), 3511, tolerance = 0.01)
+  expect_equal(sum(growth_df_limit$typical_growth, na.rm=TRUE), 3202, tolerance = 0.01)
+  expect_equal(sum(growth_df_limit$accel_growth, na.rm=TRUE), 5464, tolerance = 0.01)
 })
 
 
