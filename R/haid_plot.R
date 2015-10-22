@@ -290,7 +290,7 @@ haid_plot <- function(
           x = end_testritscore + rit_xoffset,
           group = endpoint_color,
           color = endpoint_color,
-          label = paste0(end_testritscore, " (", end_testpercentile, ")"),
+          label = paste0(end_testritscore, " (", end_consistent_percentile, ")"),
           hjust = rit_hjust
         ),
         size = p_name_size
