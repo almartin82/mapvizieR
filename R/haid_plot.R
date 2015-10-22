@@ -127,7 +127,7 @@ haid_plot <- function(
   df$student_name_format <- ifelse(
     df$neg_flag == 1,
     df$studentfirstlast,
-    paste0(df$studentfirstlast, " ", df$start_testritscore, " ", "(", df$start_testpercentile, ") ")
+    paste0(df$studentfirstlast, " ", df$start_testritscore, " ", "(", df$start_consistent_perce, ") ")
   )
 
   #NAs

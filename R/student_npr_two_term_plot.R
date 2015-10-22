@@ -47,7 +47,9 @@ student_npr_two_term_plot <- function(mapvizieR_obj,
                                       n_col=9, 
                                       min_n=10) {
   
-  stopifnot(is.mapvizieR(mapvizieR_obj))
+  if (! is.mapvizieR(mapvizieR_obj)){
+    stop("The object you passed is not a conforming mapvizieR object")
+  } 
   
   .data <- mapvizieR_obj$cdf
 
