@@ -223,7 +223,7 @@ test_that("make_npr_consistent returns expected values", {
   samp_table <- table(nprs$consistent_percentile)
 
   expect_equal(nrow(samp_table), 95)
-  expect_equal(sum(samp_table), 9091)
+  expect_equal(sum(samp_table), 8779)
 
 })
 
@@ -245,7 +245,7 @@ test_that("mv_limit_cdf tests",{
   cdf_limit <- mv_limit_cdf(mapviz, studentids_normal_use, 'Reading')
   expect_equal(nrow(cdf_limit), 316)
   expect_equal(sum(cdf_limit$grade_level_season), 1738.1, tolerance = 0.01)
-  expect_equal(sum(cdf_limit$consistent_percentile), 13270)
+  expect_equal(sum(cdf_limit$consistent_percentile), 13745)
 })
 
 

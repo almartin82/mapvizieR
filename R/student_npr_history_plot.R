@@ -7,7 +7,7 @@
 #' The background colors indicate the quartile the assessment earned.
 #'
 #' @param mapvizieR_obj a \code{\link{mapvizieR}} object
-#' @param studentids a set of student ids to subset too.
+#' @param studentids a set of student ids to subset to
 #' @param measurementscale a MAP measurementscale
 #' @param title_text title as a character vector
 #'

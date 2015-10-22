@@ -209,7 +209,7 @@ grade_season_factors <- function(x) {
 
 make_npr_consistent <- function(
   cdf,
-  norm_study = 'student_status_norms_2011'
+  norm_study = 'status_norms_2015'
 ) {
   #read norm df from text
   norm_df <- eval(as.name(norm_study))
@@ -234,13 +234,13 @@ make_npr_consistent <- function(
   dplyr::left_join(
     x = cdf,
     y = norm_df,
-    by = c(
-      "measurementscale" = "measurementscale",
-      "fallwinterspring" = "fallwinterspring",
-      "grade" = "grade",
-      "testritscore" = "RIT"
-    )
-  )
+    by = c("measurementscale" = "measurementscale",
+           "fallwinterspring" = "fallwinterspring",
+           "grade" = "grade",
+            "testritscore" = "RIT"
+           )
+    ) %>% 
+    dplyr::select(-school_percentile)
 }
 
 

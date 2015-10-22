@@ -10,7 +10,7 @@ student_npr_history_plot(mapvizieR_obj, studentids, measurementscale,
 \arguments{
 \item{mapvizieR_obj}{a \code{\link{mapvizieR}} object}
 
-\item{studentids}{a set of student ids to subset too.}
+\item{studentids}{a set of student ids to subset to}
 
 \item{measurementscale}{a MAP measurementscale}
 
