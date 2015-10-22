@@ -4,7 +4,7 @@
 \alias{make_npr_consistent}
 \title{make_npr_consistent}
 \usage{
-make_npr_consistent(cdf, norm_study = "student_status_norms_2011")
+make_npr_consistent(cdf, norm_study = "status_norms_2015")
 }
 \arguments{
 \item{cdf}{a mostly-processed cdf object (this is the last step)
