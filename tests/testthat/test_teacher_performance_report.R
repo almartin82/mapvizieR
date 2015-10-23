@@ -3,8 +3,6 @@ context("teacher performance report tests")
 #make sure that constants used below exist
 testing_constants()
 
-
-
 test_that("teacher performance report should return ggplot object", {  
   
   tpu_test <- teacher_performance_update(
