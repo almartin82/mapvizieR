@@ -747,22 +747,3 @@ numeric_nwea_seasons <- function(x) {
   
   return(x_joined[, 'season_offset', drop = TRUE])
 }
-
-
-#' Adds a simple footer to a report page at 1/20th the height of the existing
-#' content
-#'
-#' @param page probably the output of gridExtra::arrangeGrob
-#' @param footer_content what you want the footer to say
-#'
-#' @return a grob with the footer content
-#' @export
-
-report_footer <- function(page, footer_content) {
-  
-  footer <- h_var(footer_content, 10)
-  
-  out <- arrangeGrob(page, footer, nrow = 2, heights = c(19, 1))
-  
-  return(out)
-}
