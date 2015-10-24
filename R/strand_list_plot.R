@@ -97,18 +97,18 @@ strands_list_plot <- function(mapvizier_obj,
   
 
   
-  m.long.2<-m.long %>% filter(!is.na(goal_name))
-  m.long.2<-m.long.2 %>% filter(!is.na(value))
+  m.long.2<-m.long %>% dplyr::filter(!is.na(goal_name))
+  m.long.2<-m.long.2 %>% dplyr::filter(!is.na(value))
   
   
   m.plot<-m.long.2 %>% 
     dplyr::mutate(Rank = rank(testritscore, ties.method = "random")) %>% 
     dplyr::group_by(grade, measurementscale, goal_name) %>%
-    mutate(Rank2 = rank(value, ties.method = "random")) %>%
-    mutate(studentfullname = paste(studentfirstname, 
+    dplyr::mutate(Rank2 = rank(value, ties.method = "random")) %>%
+    dplyr::mutate(studentfullname = paste(studentfirstname, 
                                    studentlastname)
            ) %>%
-    filter(!is.na(goal_name)|is.na(value))
+    dplyr::filter(!is.na(goal_name)|is.na(value))
   
   x_max<-max(m.plot$value)+50
   x_min<-min(m.plot$value)
