@@ -4,7 +4,7 @@ context("growth data frame prep")
 testing_constants()
 
 #additional constants
-norms_long <- norms_students_wide_to_long(norms_students_2011)
+norms_long <- norms_students_wide_to_long(student_growth_norms_2015)
   
 f2s_scaffold <- student_scaffold(
   processed_cdf = processed_cdf
@@ -52,7 +52,7 @@ test_that("scores_by_testid correctly looks up test events", {
       "start_teststandarderror", "start_testpercentile", "start_consistent_percentile", 
       "start_testquartile", "start_rittoreadingscore", "start_rittoreadingmin", 
       "start_rittoreadingmax", "start_teststarttime", "start_percentcorrect", 
-      "start_projectedproficiency"),
+      "start_projectedproficiencylevel1"),
     names(ex_lookup)
   )
   expect_equal(sum(ex_lookup$start_percentcorrect), 435341)
@@ -64,9 +64,9 @@ test_that("scores_by_testid correctly looks up test events", {
 test_that("generate_growth_df builds scaffold and finds growth scores", {
   
   growth_df <- generate_growth_dfs(processed_cdf)$headline
-  expect_equal(nrow(growth_df), 17010)
-  expect_equal(sum(as.numeric(growth_df$start_testritscore), na.rm=TRUE), 2344192)
-  expect_equal(sum(as.numeric(growth_df$end_testritscore), na.rm=TRUE), 3239190)
+  expect_equal(nrow(growth_df), 25754)
+  expect_equal(sum(as.numeric(growth_df$start_testritscore), na.rm=TRUE), 3295979)
+  expect_equal(sum(as.numeric(growth_df$end_testritscore), na.rm=TRUE), 4190977)
   
 })
 
@@ -74,10 +74,10 @@ test_that("generate_growth_df builds scaffold and finds growth scores", {
 
 test_that("build_growth_scaffolds returns expected output on sample data", {
   scaffold <- build_growth_scaffolds(processed_cdf)
-  expect_equal(nrow(scaffold), 17010)
+  expect_equal(nrow(scaffold), 25754)
   expect_equal(
     round(sum(as.numeric(scaffold$start_grade_level_season), na.rm=T),1), 
-    69667.4
+    97731.6
   )
   expect_equal(
     sum(as.numeric(scaffold$end_testid), na.rm=T) - 
@@ -92,12 +92,12 @@ test_that("growth_testid_lookup behaves as expected", {
     scaffold <- build_growth_scaffolds(processed_cdf)
     score_matched <- growth_testid_lookup(scaffold, processed_cdf)
   
-    expect_equal(nrow(score_matched), 17010)
+    expect_equal(nrow(score_matched), 25754)
     expect_equal(ncol(score_matched), 49)
     expect_equal(sum(as.numeric(score_matched$start_testritscore), na.rm=T), 
-      2344192)
+                 3295979)
     expect_equal(sum(as.numeric(score_matched$end_testritscore), na.rm=T),
-      3239190)
+                 4190977)
 })
 
 
@@ -109,13 +109,13 @@ test_that("growth_norm_lookup find norm data", {
     score_matched, processed_cdf, norms_long, FALSE
   )
   
-  expect_equal(nrow(norm_matched), 17010)
+  expect_equal(nrow(norm_matched), 25754)
   expect_equal(ncol(norm_matched), 52)
   expect_equal(
     as.character(summary(norm_matched)[, 'typical_growth'][3]), 
-    "Median : 2.340  " 
+    "Median : 2.762  " 
   )
-  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 37379)
+  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 53164)
 })
 
 
@@ -128,13 +128,14 @@ test_that("calc_rit_growth_metrics properly calculates growth metrics", {
   
   with_rit_metrics <- calc_rit_growth_metrics(norm_matched)
   
-  expect_equal(nrow(with_rit_metrics), 17010)
+  expect_equal(nrow(with_rit_metrics), 25754)
   expect_equal(ncol(with_rit_metrics), 57)
   expect_equal(median(with_rit_metrics$rit_growth,na.rm = T),3)
   expect_equal(median(with_rit_metrics$change_testpercentile,na.rm = T),1)
-  expect_equal(median(with_rit_metrics$cgi,na.rm = T),0)
+  expect_equal(median(with_rit_metrics$cgi,na.rm = T), 0.1155872,  
+               tolerance = 1e-3)
    
-  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 37379)  
+  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 53164)  
 })
 
 
@@ -144,22 +145,27 @@ test_that("growth_norm_lookup with unsanctioned windows", {
   norm_matched <- growth_norm_lookup(
     score_matched, processed_cdf, norms_long, TRUE
   )
-  expect_equal(nrow(norm_matched), 21483)
+  expect_equal(nrow(norm_matched), 30227)
   expect_equal(ncol(norm_matched), 52)
   expect_equal(
     as.character(summary(norm_matched)[, 'typical_growth'][3]), 
-    "Median : 2.150  " 
+    "Median : 2.356  " 
   )
-  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 46086.5)
+  expect_equal(sum(norm_matched$reported_growth, na.rm=T), 60779.5)
   
 })
 
 
-test_that("scaffold with no matching data returns empty", {
-  empty_scaffold <- student_scaffold(
+test_that("scaffold with no one season returns projections, but not performance", {
+  single_season_scaffold <- student_scaffold(
     processed_cdf = processed_cdf %>% dplyr::filter(fallwinterspring == 'Fall') 
    ,start_season = 'Fall'
    ,end_season = 'Spring'
    ,year_offset = 0
   )
+  
+  expect_equal(nrow(single_season_scaffold), 2186)
+  expect_equal(ncol(single_season_scaffold), 17)
+  expect_equal(sum(single_season_scaffold$start_grade_level_season), 13704.2)
+  expect_true(all(is.na(single_season_scaffold$end_grade_level_season)))
 })

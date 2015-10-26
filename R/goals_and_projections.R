@@ -201,6 +201,41 @@ add_accelerated_growth <- function(
   }
   
     
+# Normed student growth ####
+
+#' Calculate accelerated growth from norms using a target percentile
+#'
+#' @param percentile the target percentile must be between 0 and 1 or 0 and 100
+#' @param typical_growth the student's expected growth
+#' @param sd_growth the standard deviation of expected growth
+#'
+#' @return a numeric vector of accelerated growth
+#' @export
+#'
+#' @examples
+#' calc_normed_student_growth(.75, 5, 2)
+#' calc_normed_student_growth(75, 5, 2) 
+#' 
+calc_normed_student_growth <- function(percentile,
+                                       typical_growth,
+                                       sd_growth) {
+  
+  # check percentile is in range 0 to 1
+  if(percentile <= 0 | percentile>=100) stop("percentile must be between 0 and 1 (or 0 nad 100)!")
+  if(percentile >=1 & percentile<100) percentile <- percentile/100
+  
+  # get z-score (i.e., quantile) form N(0,1) distriubtion
+  sigma<-qnorm(percentile)
+  
+  #add simga*SD to mean and round to integer
+  growth<-typical_growth + sigma*sd_growth
+  
+  # return
+  growth
+  
+}
+
+
 
 # ensures ####
 #' @title ensure_goals_names
@@ -231,3 +266,4 @@ ensure_goals_obj <- ensurer::ensures_that(+ensure_goals_names,
               paste0("Your goals function's goals data frame ", "
                      must have accel_growth and met_accel_growth fields.")
     )
+

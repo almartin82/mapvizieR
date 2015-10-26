@@ -27,8 +27,8 @@ test_that("roster_to_growth_df tests", {
   )
   expect_equal(nrow(ex), nrow(mapviz$growth_df))
   expect_true('studentgender' %in% names(ex))
-  expect_equal(table(ex$studentgender)[1] %>% unname(), 8546)
-  expect_equal(table(ex$studentgender)[2] %>% unname(), 8464)
+  expect_equal(table(ex$studentgender)[1] %>% unname(), 12906)
+  expect_equal(table(ex$studentgender)[2] %>% unname(), 12848)
   
 })
 

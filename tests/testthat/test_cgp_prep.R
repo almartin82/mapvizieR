@@ -91,9 +91,9 @@ test_that("mapviz_cgp calculates cgp for sample data", {
   expect_equal(ex_cgp$avg_start_rit, 207.3226, tolerance = 0.01)
   expect_equal(ex_cgp$avg_end_rit, 213.8065, tolerance = 0.01)
   expect_equal(ex_cgp$avg_rit_change, 6.483871, tolerance = 0.01)
-  expect_equal(ex_cgp$avg_start_npr, 38.62366, tolerance = 0.01)
-  expect_equal(ex_cgp$avg_end_npr, 44.53763, tolerance = 0.01)
-  expect_equal(ex_cgp$avg_npr_change, 5.913978, tolerance = 0.01)
+  expect_equal(ex_cgp$avg_start_npr, 41.63441, tolerance = 0.01)
+  expect_equal(ex_cgp$avg_end_npr, 45.93548, tolerance = 0.01)
+  expect_equal(ex_cgp$avg_npr_change, 4.301075, tolerance = 0.01)
   expect_equal(ex_cgp$n, 93)
   expect_equal(ex_cgp$cgp, 60.95068, tolerance = 0.01)
   

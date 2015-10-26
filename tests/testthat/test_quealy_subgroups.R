@@ -24,17 +24,19 @@ test_that("quealy_subgroups produces proper plot with a grade level of kids", {
     end_academic_year = 2013
   )
   
-  expect_is(samp_nyt, 'arrange')
-  expect_is(samp_nyt, 'ggplot')
-  expect_is(samp_nyt, 'gTree')
+  expect_is(samp_nyt, 'gtable')
   expect_is(samp_nyt, 'grob')
   expect_is(samp_nyt, 'gDesc')
   
-  expect_equal(length(samp_nyt), 5)
-  expect_equal(names(samp_nyt), c("name", "gp", "vp", "children", "childrenOrder"))
+  expect_equal(length(samp_nyt), 2)
+  expect_equal(names(samp_nyt), c("grobs", "layout",
+                                  "widths", "heights", "respect",
+                                  "rownames", 
+                                  "colnames", "name",
+                                  "gp", "vp"))
   
-  expect_equal(dimnames(summary(samp_nyt[[4]]))[[2]], c("Length", "Class", "Mode"))
-  expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
+  #expect_equal(dimnames(summary(samp_nyt[[4]]))[[2]], c("Length", "Class", "Mode"))
+  #expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
 })
 
 
@@ -53,17 +55,19 @@ test_that("quealy_subgroups with complete_obsv and title", {
     report_title = "Reading Fall=Spring 2013"
   )
   
-  expect_is(samp_nyt, 'arrange')
-  expect_is(samp_nyt, 'ggplot')
-  expect_is(samp_nyt, 'gTree')
+  expect_is(samp_nyt, 'gtable')
   expect_is(samp_nyt, 'grob')
   expect_is(samp_nyt, 'gDesc')
   
-  expect_equal(length(samp_nyt), 5)
-  expect_equal(names(samp_nyt), c("name", "gp", "vp", "children", "childrenOrder"))
+  expect_equal(length(samp_nyt), 2)
+  expect_equal(names(samp_nyt), c("grobs", "layout",
+                                  "widths", "heights", "respect",
+                                  "rownames", 
+                                  "colnames", "name",
+                                  "gp", "vp"))
   
-  expect_equal(dimnames(summary(samp_nyt[[4]]))[[2]], c("Length", "Class", "Mode"))
-  expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
+  #expect_equal(dimnames(summary(samp_nyt[[4]]))[[2]], c("Length", "Class", "Mode"))
+  #expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
 })
 
 
@@ -81,17 +85,19 @@ test_that("quealy_subgroups with no CGP", {
     complete_obsv = TRUE
   )
   
-  expect_is(samp_nyt, 'arrange')
-  expect_is(samp_nyt, 'ggplot')
-  expect_is(samp_nyt, 'gTree')
+  expect_is(samp_nyt, 'gtable')
   expect_is(samp_nyt, 'grob')
   expect_is(samp_nyt, 'gDesc')
   
-  expect_equal(length(samp_nyt), 5)
-  expect_equal(names(samp_nyt), c("name", "gp", "vp", "children", "childrenOrder"))
+  expect_equal(length(samp_nyt), 3)
+  expect_equal(names(samp_nyt), c("grobs", "layout",
+                                  "widths", "heights", "respect",
+                                  "rownames", 
+                                  "colnames", "name",
+                                  "gp", "vp"))
   
-  expect_equal(dimnames(summary(samp_nyt[[4]]))[[2]], c("Length", "Class", "Mode"))
-  expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
+  #expect_equal(dimnames(summary(samp_nyt[[4]]))[[2]], c("Length", "Class", "Mode"))
+  #expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
 })
 
 
@@ -109,17 +115,19 @@ test_that("quealy_subgroups with no school growth study", {
     complete_obsv = TRUE
   )
   
-  expect_is(samp_nyt, 'arrange')
-  expect_is(samp_nyt, 'ggplot')
-  expect_is(samp_nyt, 'gTree')
+  expect_is(samp_nyt, 'gtable')
   expect_is(samp_nyt, 'grob')
   expect_is(samp_nyt, 'gDesc')
   
-  expect_equal(length(samp_nyt), 5)
-  expect_equal(names(samp_nyt), c("name", "gp", "vp", "children", "childrenOrder"))
+  expect_equal(length(samp_nyt), 3)
+  expect_equal(names(samp_nyt), c("grobs", "layout",
+                                  "widths", "heights", "respect",
+                                  "rownames", 
+                                  "colnames", "name",
+                                  "gp", "vp"))
   
-  expect_equal(dimnames(summary(samp_nyt[[4]]))[[2]], c("Length", "Class", "Mode"))
-  expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
+  #expect_equal(dimnames(summary(samp_nyt[[4]]))[[2]], c("Length", "Class", "Mode"))
+  #expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
 })
 
 
@@ -138,17 +146,19 @@ test_that("quealy_subgroups with multiple growth windows", {
     complete_obsv = TRUE
   )
 
-  expect_is(auto_growth, 'arrange')
-  expect_is(auto_growth, 'ggplot')
-  expect_is(auto_growth, 'gTree')
+  expect_is(auto_growth, 'gtable')
   expect_is(auto_growth, 'grob')
   expect_is(auto_growth, 'gDesc')
   
-  expect_equal(length(auto_growth), 5)
-  expect_equal(names(auto_growth), c("name", "gp", "vp", "children", "childrenOrder"))
+  expect_equal(length(auto_growth), 3)
+  expect_equal(names(auto_growth), c("grobs", "layout",
+                                  "widths", "heights", "respect",
+                                  "rownames", 
+                                  "colnames", "name",
+                                  "gp", "vp"))
   
-  expect_equal(dimnames(summary(auto_growth[[4]]))[[2]], c("Length", "Class", "Mode"))
-  expect_equal(unname(summary(auto_growth[[4]])[1, ]), c("6", "frame", "list"))
+  #expect_equal(dimnames(summary(auto_growth[[4]]))[[2]], c("Length", "Class", "Mode"))
+  #expect_equal(unname(summary(auto_growth[[4]])[1, ]), c("6", "frame", "list"))
 })
 
 
@@ -168,17 +178,19 @@ test_that("quealy_subgroups with starting_quartile magic subgroup", {
     complete_obsv = TRUE
   )
   
-  expect_is(magic_quartiles, 'arrange')
-  expect_is(magic_quartiles, 'ggplot')
-  expect_is(magic_quartiles, 'gTree')
+  expect_is(magic_quartiles, 'gtable')
   expect_is(magic_quartiles, 'grob')
   expect_is(magic_quartiles, 'gDesc')
   
-  expect_equal(length(magic_quartiles), 5)
-  expect_equal(names(magic_quartiles), c("name", "gp", "vp", "children", "childrenOrder"))
+  expect_equal(length(magic_quartiles), 3)
+  expect_equal(names(magic_quartiles), c("grobs", "layout",
+                                  "widths", "heights", "respect",
+                                  "rownames", 
+                                  "colnames", "name",
+                                  "gp", "vp"))
   
-  expect_equal(dimnames(summary(magic_quartiles[[4]]))[[2]], c("Length", "Class", "Mode"))
-  expect_equal(unname(summary(magic_quartiles[[4]])[1, ]), c("6", "frame", "list"))
+  #expect_equal(dimnames(summary(magic_quartiles[[4]]))[[2]], c("Length", "Class", "Mode"))
+  #expect_equal(unname(summary(magic_quartiles[[4]])[1, ]), c("6", "frame", "list"))
   
 })
 
@@ -221,15 +233,14 @@ test_that("quealy_subgroups with small_n filter", {
     small_n_cutoff = 0.2
   )
   
-  expect_is(small_n, 'arrange')
-  expect_is(small_n, 'ggplot')
-  expect_is(small_n, 'gTree')
+  expect_is(small_n, 'gtable')
   expect_is(small_n, 'grob')
   expect_is(small_n, 'gDesc')
-  expect_equal(length(small_n), 5)
-  expect_equal(names(small_n), c("name", "gp", "vp", "children", "childrenOrder"))
   
-  expect_equal(dimnames(summary(small_n[[4]]))[[2]], c("Length", "Class", "Mode"))
-  expect_equal(unname(summary(small_n[[4]])[1, ]), c("6", "frame", "list"))
-  
+  expect_equal(length(small_n), 2)
+  expect_equal(names(small_n), c("grobs", "layout",
+                                  "widths", "heights", "respect",
+                                  "rownames", 
+                                  "colnames", "name",
+                                  "gp", "vp"))
 })

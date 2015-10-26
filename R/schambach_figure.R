@@ -63,25 +63,27 @@ schambach_figure <- function(
       df <- schambach_dflist[[i]]
       df <- formatter(df)
       
-      col <- c(paste(pretty_names[[i]]), 'Avg. Ending\n RIT', 'Percent Started\n in Top 75%',
+      col_names <- c(paste(pretty_names[[i]]), 'Avg. Ending\n RIT', 'Percent Started\n in Top 75%',
                'Percent Ended\n in Top 75%', 'Avg. Percentile\n Growth', 'Percent Met\n Typical Growth',
                'Percent Met\n Accel Growth', 'Number of\n Students')
       t <- gridExtra::tableGrob(df,
-                                gpar.corefill = grid::gpar(fill = 'lightgreen', alpha = 0.5, col = NA),
-                                h.even.alpha = 1,
-                                h.odd.alpha = 0.5,
-                                v.even.alpha = 1,
-                                v.odd.alpha = 1,
-                                core.just = 'center',
-                                rows = c(),
-                                cols = col,
-                                col.just = 'center',
-                                gpar.coretext = grid::gpar(fontsize = 10),
-                                gpar.coltext = grid::gpar(fontsize = 12, fontface = 'bold', separator = 'black'),
-                                gpar.rowtext = grid::gpar(fontsize = 12, fontface = 'bold', separator = 'black'),
-                                show.box = TRUE
-      )
-     tables[[i]] <- gridExtra::arrangeGrob(grob_justifier(title, 'center', 'bottom'),
+                                #rows = c(),
+                                cols = col_names,
+                                theme = ttheme_default(
+                                  core = list(fg_params = list(
+                                                               fontsize = 10,
+                                                               just="center"),
+                                              bg_params = list(alpha=c(.5,1),
+                                                              fill='lightgreen')),
+                                  colhead = list(fg_params = list(fontsize = 12,
+                                                                  fontface = "bold",
+                                                                  col="black"
+                                                                  )
+                                                 )
+                                  )
+                                )
+                                
+     tables[[i]] <- gridExtra::grid.arrange(grob_justifier(title, 'center', 'bottom'),
                                            grob_justifier(t, 'center', 'top'),
                                            nrow = 2,
                                            heights = c(1, 4)

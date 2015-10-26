@@ -5,13 +5,13 @@
 \title{generate_growth_df}
 \usage{
 generate_growth_dfs(processed_cdf,
-  norm_df_long = norms_students_wide_to_long(norms_students_2011),
+  norm_df_long = norms_students_wide_to_long(student_growth_norms_2015),
   include_unsanctioned_windows = FALSE)
 }
 \arguments{
 \item{processed_cdf}{a conforming processed_cdf data frame}
 
-\item{norm_df_long}{defaults to norms_students_2011.  if you have a conforming norms object,
+\item{norm_df_long}{defaults to student_growth_norms_2015  if you have a conforming norms object,
 you can use generate_growth_df to produce a growth data frame for those norms.
 example usage: calculate college ready growth norms, and use generate_growth_df to see
 if students met them.}

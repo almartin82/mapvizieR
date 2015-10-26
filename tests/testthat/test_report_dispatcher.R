@@ -106,8 +106,8 @@ test_that("report dispatcher with two pager", {
   )
   expect_equal(length(samp_rd), 6)
   expect_is(samp_rd[[1]][[1]], "grob")
-  expect_is(samp_rd[[1]][[1]], "ggplot")
-  expect_is(samp_rd[[1]][[1]], "gTree")
+  expect_is(samp_rd[[1]][[1]], "gtable")
+  expect_is(samp_rd[[1]][[1]], "gDesc")
 
 })
 
@@ -136,8 +136,8 @@ test_that("report dispatcher shows n per group if verbose", {
     verbose = TRUE
   ))
   
-  expect_equal(diaz_ex[[16]], "1       Mt. Bachelor Middle School     6 395")
-  expect_equal(diaz_ex[[17]], "2       Mt. Bachelor Middle School     7 480")
+  expect_equal(diaz_ex[[18]], "1       Mt. Bachelor Middle School     6   395")
+  expect_equal(diaz_ex[[19]], "2       Mt. Bachelor Middle School     7   480")
 })  
 
 

@@ -4,7 +4,7 @@
 \alias{norms_students_wide_to_long}
 \title{norms_students_wide_to_long}
 \usage{
-norms_students_wide_to_long(norms = norms_students_2011)
+norms_students_wide_to_long(norms = student_growth_norms_2015)
 }
 \arguments{
 \item{norms}{a norms_student object.  defaults to norms_students_2011}

@@ -18,7 +18,7 @@ utils::globalVariables(
 #' eg 'Fall to Spring'.
 #'
 #' @param processed_cdf a conforming processed_cdf data frame
-#' @param norm_df_long defaults to norms_students_2011.  if you have a conforming norms object,
+#' @param norm_df_long defaults to student_growth_norms_2015  if you have a conforming norms object,
 #' you can use generate_growth_df to produce a growth data frame for those norms.
 #' example usage: calculate college ready growth norms, and use generate_growth_df to see
 #' if students met them.
@@ -33,7 +33,7 @@ utils::globalVariables(
 
 generate_growth_dfs <- function(
   processed_cdf,
-  norm_df_long = norms_students_wide_to_long(norms_students_2011),
+  norm_df_long = norms_students_wide_to_long(student_growth_norms_2015),
   include_unsanctioned_windows = FALSE
 ){
   #input validation
@@ -109,20 +109,35 @@ student_scaffold <- function(
   end <- simple[simple$fallwinterspring==end_season, ]
 
   #define target columns now, in case we need to step out
-  target_cols <- c("studentid", "measurementscale", "end_schoolname", "end_grade_level_season",
-    "end_grade", "growth_window", "complete_obsv", "match_status",
-    "start_testid", "start_map_year_academic", "start_fallwinterspring",
-    "start_grade", "start_grade_level_season", "start_schoolname",
-    "end_testid", "end_map_year_academic", "end_fallwinterspring"
+  
+  target_cols_list = list(
+    studentid = character(), 
+    measurementscale = character(), 
+    end_schoolname = character(), 
+    end_grade_level_season = double(),
+    end_grade = integer(), 
+    growth_window = character(), 
+    complete_obsv = logical(), 
+    match_status = character(),
+    start_testid = integer(), 
+    start_map_year_academic=integer(), 
+    start_fallwinterspring = character(),
+    start_grade = integer(), 
+    start_grade_level_season = double(), 
+    start_schoolname = character(),
+    end_testid = integer(), 
+    end_map_year_academic = integer(), 
+    end_fallwinterspring = character()
   )
-
-  empty <- data.frame(
-    matrix(vector(), 0, length(target_cols), dimnames=list(c(), target_cols)),
-    stringsAsFactors=F
-  )
+  
+  # Character vector of target column names
+  target_cols <- names(target_cols_list)
+  
+  # empty data.frame
+  empty <- dplyr::as_data_frame(target_cols_list) 
 
   #if there's no data, don't worry about matching; just return a zero row df
-  if (nrow(start) == 0 | nrow(end) == 0) {
+  if (nrow(start) == 0) {
     return(empty)
   }
 
@@ -231,7 +246,7 @@ scores_by_testid <- function(testid, processed_cdf, start_or_end) {
   target_cols <- c("growthmeasureyn", "testtype", "testname", "teststartdate",
     "testdurationminutes", "testritscore", "teststandarderror", "testpercentile",
     "consistent_percentile", "testquartile", "rittoreadingscore", "rittoreadingmin",
-    "rittoreadingmax", "teststarttime", "percentcorrect", "projectedproficiency")
+    "rittoreadingmax", "teststarttime", "percentcorrect", "projectedproficiencylevel1")
 
   matching_slim <- matched[ , target_cols]
   #prefix it
@@ -250,11 +265,14 @@ scores_by_testid <- function(testid, processed_cdf, start_or_end) {
 #' @param processed_cdf conforming mapvizieR processed cdf
 
 build_growth_scaffolds <- function(processed_cdf){
-  f2s <- student_scaffold(processed_cdf, 'Fall', 'Spring', 0)
   f2w <- student_scaffold(processed_cdf, 'Fall', 'Winter', 0)
-  w2s <- student_scaffold(processed_cdf, 'Winter', 'Spring', 0)
+  f2s <- student_scaffold(processed_cdf, 'Fall', 'Spring', 0)
+  f2f <- student_scaffold(processed_cdf, 'Fall', 'Fall', 1)
   s2s <- student_scaffold(processed_cdf, 'Spring', 'Spring', 1)
-  scaffolds <- rbind(f2s, f2w, w2s, s2s)
+  w2s <- student_scaffold(processed_cdf, 'Winter', 'Spring', 0)
+  w2w <- student_scaffold(processed_cdf, 'Winter', 'Winter', 1)
+  
+  scaffolds <- rbind(f2w, f2s,f2f, s2s, w2s, w2w)
 
   return(scaffolds)
 }
