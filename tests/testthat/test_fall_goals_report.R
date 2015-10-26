@@ -15,7 +15,6 @@ test_that("fall goals report should return list of plots", {
     end_fws = 'Spring',
     end_academic_year = 2013
   )
-  
   expect_equal(length(fg_test), 3)
   expect_true("list" %in% class(fg_test))  
 })  

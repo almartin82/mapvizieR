@@ -48,7 +48,6 @@ two_pager <- function(
     end_academic_year = end_academic_year
   )  
 
-  
   #elephants
   ele <- galloping_elephants(
     mapvizieR_obj = mapvizieR_obj, 
