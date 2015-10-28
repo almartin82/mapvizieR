@@ -28,3 +28,17 @@ test_that("candidate_scaffold", {
   expect_equal(sum(cs$grade_level_season), 56325.5)
   
 })
+
+
+test_that("impute_rit_simple_average repairs cdf with intentionally missing rows", {
+  
+  missing_cdf <- processed_cdf
+  missing_cdf[missing_cdf$testid == 122220176, ]$testritscore <- NA
+  missing_cdf[missing_cdf$testid == 122220145, ]$testritscore <- NA
+  
+  sa <- impute_rit_simple_average(missing_cdf)
+  
+  expect_equal(sa[sa$testid == 122220145 & !is.na(sa$testid), ]$testritscore, 176)
+  expect_equal(sa[sa$testid == 122220176 & !is.na(sa$testid), ]$testritscore, 184)
+  
+})

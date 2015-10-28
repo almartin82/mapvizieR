@@ -101,16 +101,15 @@ run_length_grouper <- function(logicals) {
 }
 
 
-
-
-
-
 foo <- function() {
-  cdf <- processed_cdf
-  cdf[cdf$testid == 122220176, ]$testritscore <- NA
+
 }
 
 impute_rit_simple_average <- function(cdf, interpolate_only = TRUE) {
+  
+  if (!interpolate_only == TRUE) {
+    stop('imputation by simple average currently only supports interpolation')
+  }
   
   #make scaffold
   scaffold <- candidate_scaffold(cdf, interpolate_only)
@@ -130,10 +129,10 @@ impute_rit_simple_average <- function(cdf, interpolate_only = TRUE) {
   scaffold <- scaffold %>%
     dplyr::group_by(studentid, measurementscale) %>%
     dplyr::mutate(
-      group = run_length_grouper(logical)
+      group = run_length_grouper(na_flag)
     )
   
-  #data frame of NAs
+  #data frame with NAs, and the leading/lagging values
   na_extents <- scaffold %>%
     dplyr::filter(na_flag) %>%
     dplyr::group_by(studentid, measurementscale, group) %>%
@@ -145,14 +144,82 @@ impute_rit_simple_average <- function(cdf, interpolate_only = TRUE) {
       count = n()
     )
   
-  scaffold %>%
-    dplyr::filter(studentid == 'SF06000348' & measurementscale == 'Mathematics') %>%
-    #dplyr::filter(is.na(testritscore)) %>%
-    dplyr::select(
-      studentid, grade_level_season, measurementscale, testritscore,
-      row_number, lag, lead, na_flag, group
-    ) %>% as.data.frame()
-
-
+  #add min and max extent RIT
+  #min
+  na_extents <- na_extents %>%
+    dplyr::left_join(
+      scaffold %>% dplyr::ungroup() %>% 
+        dplyr::select(row_number, testritscore) %>% 
+        dplyr::rename(min_extent_rit = testritscore),
+      by = c('min_extent' = 'row_number')
+    )
+  #max
+  na_extents <- na_extents %>%
+    dplyr::left_join(
+      scaffold %>% dplyr::ungroup() %>% 
+        dplyr::select(row_number, testritscore) %>% 
+        dplyr::rename(max_extent_rit = testritscore),
+      by = c('max_extent' = 'row_number')
+    )
   
+  na_extents <- na_extents %>%
+    dplyr::mutate(
+      interpolate_flag = !is.na(min_extent) & !is.na(max_extent) &
+        !is.na(min_extent_rit) & !is.na(max_extent_rit)
+    )
+    
+  #TODO: if we want to extrapolate, handle that here
+  #for rows where interpolate_flag == FALSE
+  if (interpolate_only) {
+    na_extents <- na_extents %>%
+      dplyr::filter(interpolate_flag)
+  }
+  
+  #per term change
+  na_extents <- na_extents %>%
+    dplyr::mutate(
+      increment = (max_extent_rit - min_extent_rit) / (count + 1)
+    )
+  
+  simple_average_helper <- function(
+    studentid_in, measurementscale_in, group_in, testritscore_in, na_flag_in
+  ) {
+    out <- ifelse(is.na(testritscore_in), NA_real_, testritscore_in)
+    
+    if (any(na_flag_in)) {
+      #find the matching na_extent
+      this_extent <- na_extents %>%
+        dplyr::filter(
+          studentid == studentid_in %>% unique() &
+            measurementscale == measurementscale_in %>% unique() &
+            group == group_in %>% unique()
+        )
+      
+      #if it matches
+      if (nrow(this_extent) > 0) {
+        out <- this_extent$min_extent_rit + 
+          (rep(this_extent$increment, this_extent$count) * c(1:this_extent$count))
+        out <- as.integer(out)
+      } else {
+        out <- ifelse(is.na(testritscore_in), NA_integer_, testritscore_in)
+      }
+    }
+    
+    return(out)
+  }
+  
+  #process using new function
+  scaffold <- scaffold %>%
+    dplyr::group_by(studentid, measurementscale, group) %>%
+    dplyr::mutate(
+      testritscore = simple_average_helper(studentid, measurementscale, group, testritscore, na_flag)
+    ) %>%
+    dplyr::ungroup()
+  
+  #only original names
+  name_mask <- names(scaffold) %in% names(cdf)
+  out <- scaffold[, name_mask]
+
+  return(out)
+
 }

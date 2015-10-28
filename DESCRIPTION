@@ -21,6 +21,7 @@ LazyData: true
 VignetteBuilder: knitr
 Imports:
     dplyr,
+    magrittr,
     reshape2,
     assertthat,
     lubridate,
