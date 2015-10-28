@@ -373,31 +373,31 @@ rit_height_weight_ACT <- function(
   if (grepl('points', annotation_style)) {
     act_annotation <- geom_point(
       aes(
-        x = grade
-       ,y = rit
+        x = grade,
+        y = rit
       )
     )
   } else if (grepl('big numbers', annotation_style)) {
     act_annotation <- geom_text(
-      data = act_df[act_df$act %in% localization$act_trace_lines, ]
-     ,aes(
-        x = grade
-       ,y = rit
-       ,label = act
+      data = act_df[act_df$act %in% localization$act_trace_lines, ],
+      aes(
+        x = grade,
+        y = rit,
+        label = act
       )
     )
   } else if (grepl('small numbers', annotation_style)) {
     act_annotation <- geom_text(
-      data=act_df[act_df$act %in% localization$act_trace_lines, ]
-     ,aes(
-        x = grade
-       ,y = rit
-       ,label = act
-      )
-     ,size = 3  
-     ,fontface="italic"
-     ,color = 'gray40'
-     ,alpha = 0.8
+      data=act_df[act_df$act %in% localization$act_trace_lines, ],
+      aes(
+        x = grade,
+        y = rit,
+        label = act
+      ),
+      size = 3,
+      fontface="italic",
+      color = 'gray40',
+      alpha = 0.8
     ) 
   } else {
     act_annotation <- NULL
@@ -1026,7 +1026,7 @@ build_student_1year_goal_plot <- function(
 
 
 
-cohort_1yar_goal_plot <- function(
+cohort_1year_goal_plot <- function(
   mapvizieR_obj, 
   studentids, 
   measurementscale, 
