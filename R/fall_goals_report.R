@@ -15,7 +15,7 @@
 #' @export
 
 fall_goals_report <- function(
-  mapvizieR_object, 
+  mapvizieR_obj, 
   studentids, 
   measurementscale, 
   context,
@@ -38,7 +38,7 @@ fall_goals_report <- function(
     mapvizieR_obj = mapvizieR_obj, 
     studentids = studentids,
     measurementscale = measurementscale,
-    detail_academic_year = detail_academic_year,
+    detail_academic_year = 9999,
     entry_grade_seasons = entry_grade_seasons
   )
 
