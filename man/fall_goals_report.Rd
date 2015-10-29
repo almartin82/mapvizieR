@@ -4,13 +4,14 @@
 \alias{fall_goals_report}
 \title{Title}
 \usage{
-fall_goals_report(mapvizieR_object, studentids, context, start_fws = "Spring",
-  start_year_offset = -1, end_fws = "Spring", end_academic_year = 2015)
+fall_goals_report(mapvizieR_obj, studentids, measurementscale, context,
+  start_fws = "Spring", start_year_offset = -1, end_fws = "Spring",
+  end_academic_year = 2015, entry_grade_seasons = c(-0.8, 4.2))
 }
 \arguments{
-\item{mapvizieR_object}{a valid mapvizieR_object}
-
 \item{studentids}{a vector of studentids to run}
+
+\item{measurementscale}{desired subject}
 
 \item{context}{what school/grade/class/etc grouping is represented?}
 
@@ -21,6 +22,10 @@ fall_goals_report(mapvizieR_object, studentids, context, start_fws = "Spring",
 \item{end_fws}{ending season}
 
 \item{end_academic_year}{ending academic year}
+
+\item{entry_grade_seasons}{for becca plot.  default is c(-0.8, 4.2)}
+
+\item{mapvizieR_object}{a valid mapvizieR_object}
 }
 \value{
 a multipage report, represented as a list of grobs.
