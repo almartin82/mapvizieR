@@ -723,8 +723,8 @@ build_student_college_plot <- function(
 #' adjustment.  default value is 1, 0.5 would be a rectangle 2W for 1H.
 #' @param annotation_style style for the underlying template.  See 
 #' rit_height_weight_ACT and rit_height_weight_npr for details.
-#' @param line_style 
-#' @param title_text 
+#' @param line_style c('gray lines', 'gray dashed')
+#' @param title_text what text to print above the plot?
 #'
 #' @return a list of ggplot objects
 #' @export
@@ -786,12 +786,50 @@ bulk_student_historic_college_plot <- function(
 
 
 
+#' Finds the centroid of a triangle
+#'
+#' @param x1 first x coord 
+#' @param x2 second x coord
+#' @param x3 third x coord
+#' @param y1 first y coord
+#' @param y2 second y coord
+#' @param y3 third y coord
+#'
+#' @return a numeric vector length 2 with the xy coord of the centroid
+#' @export
+
 centroid <- function(x1, x2, x3, y1, y2, y3) {
   cx <- (x1 + x2 + x3) / 3
   cy <- (y1 + y2 + y3) / 3
   
   return(c(cx,cy))
 }
+
+
+#' Generates a one-term goal plot for one student
+#'
+#' @param base_plot either the output of rit_height_weight_ACT,
+#' rit_height_weight_npr, or a wrapper around one of those templates
+#' @param mapvizieR_obj a conforming mapvizieR object
+#' @param studentid one target studentid
+#' @param measurementscale desired subject
+#' @param start_grade show student history starting with this grade level.
+#' We generally go back one year, to show the baseline that the goals derive 
+#' from.
+#' @param end_grade show student history ending with this grade level
+#' @param labels_at_grade what grade level should the college labels 
+#' print at?  Generally the student's most recent test grade_level_season
+#' is desirable.
+#' @param growth_window for looking up the window of SGP outcomes, what 
+#' growth window should we use?
+#' @param localization controls names/breakpoints for college labels and
+#' ACT tiers.  See localization.R for more details
+#' @param aspect_ratio college labels should print at the same
+#' angle as the act ribbons.  if the viz is not square, this requires an
+#' adjustment.  default value is 1, 0.5 would be a rectangle 2W for 1H.
+#'
+#' @return a list of ggplot objects
+#' @export
 
 build_student_1year_goal_plot <- function(
   base_plot,
@@ -1037,21 +1075,45 @@ build_student_1year_goal_plot <- function(
   )
   
   return(p)
-
 }
 
 
+#' Bulk generates student goal plots
+#'
+#' @param mapvizieR_obj a conforming mapvizieR object
+#' @param studentids vector of target studentids
+#' @param measurementscale desired subject
+#' @param labels_at_grade what grade level should the college labels 
+#' print at?  Generally the student's most recent test grade_level_season
+#' is desirable.
+#' @param start_grade show student history starting with this grade level.
+#' We generally go back one year, to show the baseline that the goals derive 
+#' from.
+#' @param end_grade show student history ending with this grade level
+#' @param growth_window for looking up the window of SGP outcomes, what 
+#' growth window should we use?
+#' @param localization controls names/breakpoints for college labels and
+#' ACT tiers.  See localization.R for more details
+#' @param aspect_ratio college labels should print at the same
+#' angle as the act ribbons.  if the viz is not square, this requires an
+#' adjustment.  default value is 1, 0.5 would be a rectangle 2W for 1H.
+#' @param annotation_style style for the underlying template.  See 
+#' rit_height_weight_ACT and rit_height_weight_npr for details.
+#' @param line_style c('gray lines', 'gray dashed')
+#' @param title_text what text to print above the plot?
+#'
+#' @return a list of ggplot objects
+#' @export
 
-
-cohort_1year_goal_plot <- function(
+bulk_student_1year_goal_plot <- function(
   mapvizieR_obj, 
   studentids, 
   measurementscale, 
-  localization, 
   labels_at_grade,
   start_grade,
   end_grade,
   growth_window,
+  localization = localize('Newark'), 
   aspect_ratio = 1,
   annotation_style = 'small numbers',
   line_style = 'gray lines',

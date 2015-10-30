@@ -33,9 +33,9 @@ adjustment.  default value is 1, 0.5 would be a rectangle 2W for 1H.}
 \item{annotation_style}{style for the underlying template.  See
 rit_height_weight_ACT and rit_height_weight_npr for details.}
 
-\item{line_style}{}
+\item{line_style}{c('gray lines', 'gray dashed')}
 
-\item{title_text}{}
+\item{title_text}{what text to print above the plot?}
 }
 \value{
 a list of ggplot objects
