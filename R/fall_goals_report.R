@@ -34,6 +34,12 @@ fall_goals_report <- function(
   
   report_list[[1]] <- p1a
   
+  mapvizieR_obj$cdf <- impute_rit(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids, 
+    measurementscale = measurementscale
+  )
+  
   becca <- becca_plot(
     mapvizieR_obj = mapvizieR_obj, 
     studentids = studentids,

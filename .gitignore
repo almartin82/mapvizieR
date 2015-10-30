@@ -2,3 +2,6 @@
 .Rhistory
 .RData
 inst/doc
+.DS_Store
+tests/.DS_Store
+tests/testthat/.DS_Store

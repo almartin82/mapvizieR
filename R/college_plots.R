@@ -228,7 +228,6 @@ rit_height_weight_npr <- function(
 }
 
 
-
 npr_goal_sheet_style <- function(desired_subj) {
   
   p <- rit_height_weight_npr(
@@ -585,7 +584,6 @@ stu_RIT_hist_plot_elements <- function(stu_rit_history, decode_ho = TRUE) {
 }
 
 
-
 #in the interest of DRY, abstract out writing college labels
 #this is non-trivial.
 college_label_element <- function(
@@ -653,7 +651,6 @@ college_label_element <- function(
 }
 
 
-
 build_student_college_plot <- function(
   base_plot,
   mapvizieR_obj,
@@ -710,13 +707,33 @@ build_student_college_plot <- function(
 }
 
 
+#' Bulk generates student historic college plots
+#'
+#' @param mapvizieR_obj a conforming mapvizieR object
+#' @param studentids a vector of target studentids
+#' @param measurementscale desired subject
+#' @param localization controls names/breakpoints for college labels and
+#' ACT tiers.  See localization.R for more details
+#' @param labels_at_grade what grade level should the college labels 
+#' print at?  Generally the cohort's most recent test grade_level_season
+#' is desirable.
+#' @param template c('npr', 'ACT').  default is npr.
+#' @param aspect_ratio college labels should print at the same
+#' angle as the act ribbons.  if the viz is not square, this requires an
+#' adjustment.  default value is 1, 0.5 would be a rectangle 2W for 1H.
+#' @param annotation_style style for the underlying template.  See 
+#' rit_height_weight_ACT and rit_height_weight_npr for details.
+#' @param line_style 
+#' @param title_text 
+#'
+#' @return a list of ggplot objects
+#' @export
 
-
-cohort_historic_college_plot <- function(
+bulk_student_historic_college_plot <- function(
   mapvizieR_obj, 
   studentids, 
   measurementscale, 
-  localization, 
+  localization = localize('default'), 
   labels_at_grade,
   template = 'npr',  #npr or ACT
   aspect_ratio = 1,
