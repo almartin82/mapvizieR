@@ -204,43 +204,43 @@ grade_season_factors <- function(x) {
 #' 
 #' @param cdf a mostly-processed cdf object (this is the last step)
 #' in process_cdf
-#' @param norm_study name of a norm study.  default is 2011.  look in norm_data.R
+#' @param norm_study c(2011, 2015).  year a norm study.  default is 2015.  look in norm_data.R
 #' for documentation of available norm studies.
 
 make_npr_consistent <- function(
   cdf,
-  norm_study = 'status_norms_2015'
+  norm_study = 2015
 ) {
-  #read norm df from text
-  norm_df <- eval(as.name(norm_study))
-
   #make sure that cdf has required fields
   ensure_fields(
     c('measurementscale', 'fallwinterspring', 'grade', 'testritscore'),
     cdf
   )
       
-  
-  if (norm_study == 'student_status_norms_2011') {
-    names(norm_df)[names(norm_df)=='percentile'] <- 'consistent_percentile'
-    norm_df$percentile_source <- norm_study
+  if (norm_study == 2011) {
+    norm_df <- student_status_norms_2011
+  } else if (norm_study == 2015) {
+    norm_df <- status_norms_2015
   }
   
-  if (norm_study == 'status_norms_2015') {
-    names(norm_df)[names(norm_df)=='student_percentile'] <- 'consistent_percentile'
-    norm_df$percentile_source <- norm_study
-  }
-
+  names(norm_df)[names(norm_df)=='student_percentile'] <- 'consistent_percentile'
+  norm_df$percentile_source <- paste0('status_norms_', norm_study)
+  
+  norm_df <- norm_df %>%
+    dplyr::select(
+      measurementscale, fallwinterspring, grade, RIT, consistent_percentile
+    )
+  
   dplyr::left_join(
     x = cdf,
     y = norm_df,
-    by = c("measurementscale" = "measurementscale",
-           "fallwinterspring" = "fallwinterspring",
-           "grade" = "grade",
-            "testritscore" = "RIT"
-           )
-    ) %>% 
-    dplyr::select(-school_percentile)
+    by = c(
+      "measurementscale" = "measurementscale",
+      "fallwinterspring" = "fallwinterspring",
+      "grade" = "grade",
+      "testritscore" = "RIT"
+    )
+  )
 }
 
 

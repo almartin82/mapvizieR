@@ -9,7 +9,7 @@
 \item{fallwinterspring}{fallwinterspring}
 \item{grade}{grade}
 \item{RIT}{RIT}
-\item{percentile}{percentile}
+\item{student_percentile}{student_percentile}
 }}
 \source{
 http://support.nwea.org/support/article/rit-scale-norms-study-data-files

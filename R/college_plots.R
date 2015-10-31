@@ -1,21 +1,46 @@
+#' Makes the base template that shows the RIT space and corresponding
+#' percentile rank lines.
+#'
+#' @param measurementscale c('Reading', 'Mathematics') - there is no linking
+#' study for Language or Science
+#' @param color_list vector of colors to use to shade the bands.  Default is
+#' the output of rainbow_colors().
+#' @param annotation_style c('points', 'big numbers', or 'small numbers')
+#' @param line_style c('gray lines')
+#' @param spring_only fall norms show a 'summer slump' effect; this can be
+#' visually distracting.  spring_only won't include those points in the reference
+#' lines.
+#' @param norms c(2011, 2015).  which norms study to use?
+#'
+#' @return a ggplot object, to be used as a template for other plots
+#' @export
+
 rit_height_weight_npr <- function(
-  desired_subj,
+  measurementscale,
   color_list = rainbow_colors(),
   ribbon_alpha = .35,
   annotation_style = 'points',
   line_style = 'none',
-  spring_only = TRUE
+  spring_only = TRUE,
+  norms = 2015
 ) {
+  measurementscale_in <- measurementscale
   e <- new.env()
   
-  e$norms_dense <- student_status_norms_2011_dense_extended %>%
-    grade_level_seasonify() %>%
-    dplyr::filter(measurementscale == desired_subj)
+  if (norms == 2011) {
+    e$norms_dense <- student_status_norms_2011_dense_extended %>%
+      grade_level_seasonify() %>%
+      dplyr::filter(measurementscale == measurementscale_in)
+  } else if (norms == 2015) {
+    e$norms_dense <- student_status_norms_2015_dense_extended %>%
+      grade_level_seasonify() %>%
+      dplyr::filter(measurementscale == measurementscale_in)
+  }
 
   #rn up, rn down
   e$norms_dense <- e$norms_dense %>%
     dplyr::group_by(
-      measurementscale, fallwinterspring, grade_level_season, percentile) %>%
+      measurementscale, fallwinterspring, grade_level_season, student_percentile) %>%
     dplyr::mutate(
       rn_up = rank(RIT),
       rn_down = rank(-RIT)
@@ -27,7 +52,8 @@ rit_height_weight_npr <- function(
   )
   #arbitrary, just needs to be bigger than max
   placeholder1$grade_level_season <- max(e$norms_dense$grade_level_season) + 2
-
+  placeholder1$grade <- max(e$norms_dense$grade_level_season) + 2
+  
   #margins - left
   placeholder2 <- e$norms_dense %>%
     dplyr::ungroup() %>%
@@ -35,16 +61,17 @@ rit_height_weight_npr <- function(
   )
   #arbitrary, just needs to be smaller than min
   placeholder2$grade_level_season <- min(e$norms_dense$grade_level_season) - 2
-
+  placeholder2$grade <- min(e$norms_dense$grade_level_season) - 2
+  
   e$norms_dense <- rbind(e$norms_dense, placeholder1, placeholder2)
   
   #only one per percentile
   bottom <- e$norms_dense %>%
     dplyr::ungroup() %>%
-    dplyr::filter(percentile < 50 & rn_down == 1) 
+    dplyr::filter(student_percentile < 50 & rn_down == 1) 
   top <- e$norms_dense %>%
     dplyr::ungroup() %>%
-    dplyr::filter(percentile >= 50 & rn_up == 1) 
+    dplyr::filter(student_percentile >= 50 & rn_up == 1) 
   e$norms_dense <- rbind(bottom, top)
   
   e$norms_dense <- e$norms_dense %>%
@@ -52,10 +79,12 @@ rit_height_weight_npr <- function(
 
   if (spring_only) {
     e$norms_dense <- e$norms_dense %>%
+      dplyr::ungroup() %>%
       dplyr::filter(fallwinterspring == 'Spring' | 
           grade_level_season %in% c(-0.8, min(grade_level_season))
       )
   }
+
   #cutting into ribbon bins
   e$npr_grades <- c(
     min(e$norms_dense$grade_level_season), 
@@ -64,19 +93,19 @@ rit_height_weight_npr <- function(
   )
   e$nprs <- c(1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99)
   
-  e$npr_band01 <-  subset(e$norms_dense, percentile == e$nprs[1])
-  e$npr_band05 <-  subset(e$norms_dense, percentile == e$nprs[2])
-  e$npr_band10 <- subset(e$norms_dense, percentile == e$nprs[3])
-  e$npr_band20 <- subset(e$norms_dense, percentile == e$nprs[4])
-  e$npr_band30 <- subset(e$norms_dense, percentile == e$nprs[5])
-  e$npr_band40 <- subset(e$norms_dense, percentile == e$nprs[6])
-  e$npr_band50 <- subset(e$norms_dense, percentile == e$nprs[7])
-  e$npr_band60 <- subset(e$norms_dense, percentile == e$nprs[8])
-  e$npr_band70 <- subset(e$norms_dense, percentile == e$nprs[9])
-  e$npr_band80 <- subset(e$norms_dense, percentile == e$nprs[10])
-  e$npr_band90 <- subset(e$norms_dense, percentile == e$nprs[11])
-  e$npr_band95 <- subset(e$norms_dense, percentile == e$nprs[12])
-  e$npr_band99 <- subset(e$norms_dense, percentile == e$nprs[13])
+  e$npr_band01 <- subset(e$norms_dense, student_percentile == e$nprs[1])
+  e$npr_band05 <- subset(e$norms_dense, student_percentile == e$nprs[2])
+  e$npr_band10 <- subset(e$norms_dense, student_percentile == e$nprs[3])
+  e$npr_band20 <- subset(e$norms_dense, student_percentile == e$nprs[4])
+  e$npr_band30 <- subset(e$norms_dense, student_percentile == e$nprs[5])
+  e$npr_band40 <- subset(e$norms_dense, student_percentile == e$nprs[6])
+  e$npr_band50 <- subset(e$norms_dense, student_percentile == e$nprs[7])
+  e$npr_band60 <- subset(e$norms_dense, student_percentile == e$nprs[8])
+  e$npr_band70 <- subset(e$norms_dense, student_percentile == e$nprs[9])
+  e$npr_band80 <- subset(e$norms_dense, student_percentile == e$nprs[10])
+  e$npr_band90 <- subset(e$norms_dense, student_percentile == e$nprs[11])
+  e$npr_band95 <- subset(e$norms_dense, student_percentile == e$nprs[12])
+  e$npr_band99 <- subset(e$norms_dense, student_percentile == e$nprs[13])
 
   #what is needed is a data frame with ribbon, x, ymin, and ymax
   #make them per band, then rbind  
@@ -85,7 +114,7 @@ rit_height_weight_npr <- function(
       rib = rep('below_1', nrow(e$npr_band01)),
       x = e$npr_band01$grade_level_season,
       #dummy value - just needs to be small
-      ymin = rep(100, nrow(e$npr_band01)),
+      ymin = rep(90, nrow(e$npr_band01)),
       ymax = e$npr_band01$RIT
     )
     e$df_npr99 <- data.frame(
@@ -161,7 +190,7 @@ rit_height_weight_npr <- function(
  
   #base ggplot 
   p <- ggplot(
-    data = e$norms_dense %>% dplyr::filter(percentile %in% e$nprs), 
+    data = e$norms_dense %>% dplyr::filter(student_percentile %in% e$nprs), 
     environment = e
     )
   
@@ -172,12 +201,12 @@ rit_height_weight_npr <- function(
     )
   } else if (grepl('big numbers', annotation_style)) {
     npr_annotation <- geom_text(
-      aes(x = grade_level_season, y = RIT, label = percentile
+      aes(x = grade_level_season, y = RIT, label = student_percentile
       )
     )
   } else if (grepl('small numbers', annotation_style)) {
     npr_annotation <- geom_text(
-      aes(x = grade_level_season, y = RIT, label = percentile),
+      aes(x = grade_level_season, y = RIT, label = student_percentile),
       size = 3,  
       fontface = "italic",
       color = 'gray40',
@@ -190,13 +219,13 @@ rit_height_weight_npr <- function(
   #lines
   if (grepl('gray lines', line_style)) {
     npr_lines <- geom_line(
-        aes(x = grade_level_season, y = RIT, group = percentile),
+        aes(x = grade_level_season, y = RIT, group = student_percentile),
         size = 0.5,
         color = 'gray80'
       )
   } else if (grepl('gray dashed', line_style)) {
      npr_lines <- geom_line(
-        aes(x = grade_level_season, y = RIT, group = percentile),
+        aes(x = grade_level_season, y = RIT, group = student_percentile),
         size = 0.5,
         color = 'gray80',
         lty = 'dashed'
@@ -228,10 +257,10 @@ rit_height_weight_npr <- function(
 }
 
 
-npr_goal_sheet_style <- function(desired_subj) {
+npr_goal_sheet_style <- function(measurementscale) {
   
   p <- rit_height_weight_npr(
-    desired_subj = desired_subj,
+    measurementscale = measurementscale,
     ribbon_alpha = .4,
     annotation_style = 'small numbers',
     line_style = 'none' 
@@ -245,8 +274,24 @@ npr_goal_sheet_style <- function(desired_subj) {
 }
 
 
+#' Makes the base template that shows the RIT space and corresponding
+#' ACT lines using the original NWEA MAP ACT linking study
+#'
+#' @param measurementscale c('Reading', 'Mathematics') - there is no linking
+#' study for Language or Science
+#' @param color_list vector of colors to use to shade the bands.  Default is
+#' the output of rainbow_colors().
+#' @param annotation_style c('points', 'big numbers', or 'small numbers')
+#' @param line_style c('gray lines', 'gray dashed')
+#' @param school_type c('ES', 'MS')
+#' @param localization controls names/breakpoints for college labels and
+#' ACT tiers.  See localization.R for more details
+#'
+#' @return a ggplot object, to be used as a template for other plots
+#' @export
+
 rit_height_weight_ACT <- function(
-  desired_subj,
+  measurementscale,
   color_list = rainbow_colors(),
   annotation_style = 'points',
   line_style = 'none',
@@ -256,7 +301,7 @@ rit_height_weight_ACT <- function(
   e <- new.env()
   
   #subset  
-  act_df <- act_df[act_df$subject==desired_subj, ]
+  act_df <- act_df[act_df$subject==measurementscale, ]
 
   chart_settings <- list(
     'MS' = list(
@@ -405,14 +450,26 @@ rit_height_weight_ACT <- function(
   #lines
   if (grepl('gray lines', line_style)) {
     act_lines <- geom_line(
-      data = act_df[act_df$act %in% localization$act_trace_lines, ]
-     ,aes(
-        x = grade
-       ,y = rit
-       ,group = act        
-      )
-     ,size = 0.5
-     ,color = 'gray80'
+      data = act_df[act_df$act %in% localization$act_trace_lines, ],
+      aes(
+        x = grade,
+        y = rit,
+        group = act        
+      ),
+      size = 0.5,
+      color = 'gray80'
+    )
+  } else if (grepl('gray dashed', line_style)) {
+    act_lines <- geom_line(
+      data = act_df[act_df$act %in% localization$act_trace_lines, ],
+      aes(
+        x = grade,
+        y = rit,
+        group = act        
+      ),
+      size = 0.5,
+      color = 'gray80',
+      lty = 'dashed'
     )
   } else {
     act_lines <- NULL
@@ -455,8 +512,6 @@ stu_RIT_hist_plot_elements <- function(stu_rit_history, decode_ho = TRUE) {
     stu_rit_history$grade_year <- paste0(
       stu_rit_history$grade, stu_rit_history$map_year_academic) %>% 
         as.integer()
-    
-
     
     stu_rit_history <- stu_rit_history %>%
       dplyr::group_by(measurementscale, grade) %>%
@@ -523,8 +578,8 @@ stu_RIT_hist_plot_elements <- function(stu_rit_history, decode_ho = TRUE) {
   rit_hist_points <- geom_point(
     data = stu_rit_history,
     aes(
-      x = grade_level_season
-     ,y = testritscore
+      x = grade_level_season, 
+      y = testritscore
     ),
     shape = 21,
     color = 'white',
@@ -588,7 +643,7 @@ stu_RIT_hist_plot_elements <- function(stu_rit_history, decode_ho = TRUE) {
 #this is non-trivial.
 college_label_element <- function(
   xy_lim_list,
-  desired_subj,
+  measurementscale,
   labels_at_grade = 6,
   localization = localize('Newark'),
   aspect_ratio = 1,
@@ -597,7 +652,7 @@ college_label_element <- function(
 
   act_bands <- c(localization$act_cuts, max(act_df$act))
   
-  labels_df <- act_df[act_df$subject == desired_subj & 
+  labels_df <- act_df[act_df$subject == measurementscale & 
                         act_df$act %in% act_bands &
                         act_df$grade == labels_at_grade, ]  
   
@@ -619,7 +674,7 @@ college_label_element <- function(
   )
   
   #get the active coefs
-  active_coefs = coefs[[desired_subj]]
+  active_coefs = coefs[[measurementscale]]
   
   #calculate slope of tangent line
   tan_slope = 2 * active_coefs[['a']] * labels_at_grade + 0.5 + active_coefs[['b']]
@@ -667,7 +722,7 @@ build_student_college_plot <- function(
   #2. with data from step 1, put the college labels at the right spot
   college_labels <- college_label_element(
     xy_lim_list = stu_elements[['plot_limits_exact']],
-    desired_subj = measurementscale,
+    measurementscale = measurementscale,
     labels_at_grade = labels_at_grade,
     localization = localization,
     aspect_ratio = aspect_ratio
@@ -744,7 +799,7 @@ bulk_student_historic_college_plot <- function(
 
   if (template == 'ACT') {
     blank_template <- rit_height_weight_ACT(
-      desired_subj = measurementscale,
+      measurementscale = measurementscale,
       localization = localize(localization),
       annotation_style = annotation_style,
       line_style = line_style
@@ -914,7 +969,7 @@ build_student_1year_goal_plot <- function(
       'min_y' = min_y,
       'max_y' = max_y
     ),
-    desired_subj = measurementscale,
+    measurementscale = measurementscale,
     labels_at_grade = labels_at_grade,
     localization = localization
   ) 
@@ -1121,7 +1176,7 @@ bulk_student_1year_goal_plot <- function(
 ) {
 
   blank_template <- rit_height_weight_ACT(
-    desired_subj = measurementscale,
+    measurementscale = measurementscale,
     localization = localize(localization),
     annotation_style = annotation_style,
     line_style = line_style

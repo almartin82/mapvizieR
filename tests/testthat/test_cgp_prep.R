@@ -131,4 +131,3 @@ test_that("calc_cgp is correct from NWEA lookups", {
   expect_true(all(diffs < 1))
 
 })
-
