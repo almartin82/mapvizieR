@@ -308,20 +308,20 @@ rit_height_weight_ACT <- function(
   e <- new.env()
   
   #subset  
-  act_df <- act_df[act_df$subject==measurementscale, ]
+  act_df <- act_df[act_df$subject == measurementscale, ]
 
   chart_settings <- list(
     'MS' = list(
       'y_disp_min' = 180,
       'y_disp_max' = 290,
       'ribbon_alpha' = .3, 
-      'college_text_color' = (alpha("gray50", 0.4)),
+      'college_text_color' = (scales::alpha("gray50", 0.4)),
       'college_name_size' = 4.5,
       'chart_angle' = 27,
       'act_lines_alpha' = .3,
       'act_x' = 10.8,
       'act_grade_for_y' = 11,
-      'act_color' = (alpha("gray50", 0.6)),
+      'act_color' = (scales::alpha("gray50", 0.6)),
       'act_size' = 3,
       'act_angle' = 6,
       'act_vjust' = 0.5,
@@ -331,13 +331,13 @@ rit_height_weight_ACT <- function(
       'y_disp_min' = 130,
       'y_disp_max' = 220,
       'ribbon_alpha' = .3,
-      'college_text_color' = (alpha("gray50", 0.4)),
+      'college_text_color' = (scales::alpha("gray50", 0.4)),
       'college_name_size' = 4.5,
       'chart_angle' = 30,
       'act_lines_alpha' = .3,
       'act_x' = -0.7,
       'act_grade_for_y' = -0.7,
-      'act_color' = (alpha("gray50", 0.6)),
+      'act_color' = (scales::alpha("gray50", 0.6)),
       'act_size' = 3,
       'act_angle' = 15,
       'act_vjust' = 0.5,

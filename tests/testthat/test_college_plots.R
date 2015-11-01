@@ -80,6 +80,14 @@ test_that("npr templates with various options", {
 })
 
 
+test_that("ACT templates generate correctly", {
+  
+  math_act <- rit_height_weight_ACT(measurementscale = 'Mathematics')
+  read_act <- rit_height_weight_ACT(measurementscale = 'Reading')
+  expect_is(math_act, 'ggplot')
+  expect_is(read_act, 'ggplot')
+
+})
 
 
 test_that("cohort longitudinal plot with sample students", {
@@ -99,4 +107,23 @@ test_that("cohort longitudinal plot with sample students", {
   
   expect_equal(length(bulk_hist), 93)
   
+})
+
+
+test_that("goal plot works with a sample student", {
+  
+  goal_ex <- build_student_1year_goal_plot(
+    base_plot = npr_goal_sheet_style("Mathematics"),
+    mapvizieR_obj = mapviz,
+    studentid = 'F08000217',
+    measurementscale = 'Mathematics',
+    start_grade = 6,
+    end_grade = 7,
+    labels_at_grade = 6,
+    growth_window = 'Spring to Spring',
+    localization = localize('Newark'),
+    aspect_ratio = 1
+  )
+  
+  expect_is(goal_ex, 'ggplot')
 })
