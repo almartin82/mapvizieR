@@ -35,6 +35,10 @@ test_that("npr templates generate correctly", {
   expect_equal(math_npr$data[[15]]$y %>% sum(), 42906)
   expect_equal(read_npr$data[[15]]$y %>% sum(), 41356)
   
+  m_goal <- npr_goal_sheet_style("Mathematics")
+  expect_is(m_goal, 'ggplot')
+  m_goal <- ggplot_build(m_goal)
+  expect_equal(m_goal$data[[15]]$y %>% sum(), 42906)
 })
 
 
@@ -51,6 +55,31 @@ test_that("npr template generates correctly with old and new norms", {
   expect_is(m15, 'list')
   expect_equal(m15$data[[15]]$y %>% sum(), 42906)    
 })
+
+
+test_that("npr templates with various options", {
+  m <- rit_height_weight_npr(
+    measurementscale = 'Mathematics', 
+    norms = 2015,
+    annotation_style = 'big numbers',
+    line_style = 'gray lines'
+  )
+  expect_is(m, 'ggplot')
+  m <- ggplot_build(m)
+  expect_equal(m$data[[15]]$label %>% sum(), 10400)
+
+  m <- rit_height_weight_npr(
+    measurementscale = 'Mathematics', 
+    norms = 2015,
+    annotation_style = 'small numbers',
+    line_style = 'gray dashed'
+  )
+  expect_is(m, 'ggplot')
+  m <- ggplot_build(m)
+  expect_equal(m$data[[15]]$label %>% sum(), 10400)    
+})
+
+
 
 
 test_that("cohort longitudinal plot with sample students", {

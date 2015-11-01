@@ -196,14 +196,14 @@ impute_rit_simple_average <- function(cdf, interpolate_only = TRUE) {
       interpolate_flag = !is.na(min_extent) & !is.na(max_extent) &
         !is.na(min_extent_rit) & !is.na(max_extent_rit)
     )
-    
+  
   #TODO: if we want to extrapolate, handle that here
   #for rows where interpolate_flag == FALSE
   if (interpolate_only) {
     na_extents <- na_extents %>%
       dplyr::filter(interpolate_flag)
   }
-  
+      
   #per term change
   na_extents <- na_extents %>%
     dplyr::mutate(
@@ -213,9 +213,11 @@ impute_rit_simple_average <- function(cdf, interpolate_only = TRUE) {
   simple_average_helper <- function(
     studentid_in, measurementscale_in, group_in, testritscore_in, na_flag_in
   ) {
+    #convert NAs to NA_real
     out <- ifelse(is.na(testritscore_in), NA_real_, testritscore_in)
     
     if (any(na_flag_in)) {
+      
       #find the matching na_extent
       this_extent <- na_extents %>%
         dplyr::filter(
@@ -226,11 +228,11 @@ impute_rit_simple_average <- function(cdf, interpolate_only = TRUE) {
       
       #if it matches
       if (nrow(this_extent) > 0) {
+        
         out <- this_extent$min_extent_rit + 
           (rep(this_extent$increment, this_extent$count) * c(1:this_extent$count))
-        out <- as.integer(out)
-      } else {
-        out <- ifelse(is.na(testritscore_in), NA_integer_, testritscore_in)
+        out <- round(out, 0)
+        out <- as.numeric(out)
       }
     }
     
@@ -241,7 +243,9 @@ impute_rit_simple_average <- function(cdf, interpolate_only = TRUE) {
   scaffold <- scaffold %>%
     dplyr::group_by(studentid, measurementscale, group) %>%
     dplyr::mutate(
-      testritscore = simple_average_helper(studentid, measurementscale, group, testritscore, na_flag)
+      testritscore = simple_average_helper(
+        studentid, measurementscale, group, testritscore, na_flag
+      )
     ) %>%
     dplyr::ungroup()
   

@@ -257,6 +257,13 @@ rit_height_weight_npr <- function(
 }
 
 
+#' Wrapper to make student percentile rank goal sheet templates KIPP NJ style
+#'
+#' @param measurementscale target subject
+#'
+#' @return a ggplot template
+#' @export
+
 npr_goal_sheet_style <- function(measurementscale) {
   
   p <- rit_height_weight_npr(
@@ -319,8 +326,8 @@ rit_height_weight_ACT <- function(
       'act_angle' = 6,
       'act_vjust' = 0.5,
       'act_hjust' = 0.65
-    )
-   ,'ES' = list(
+    ),
+    'ES' = list(
       'y_disp_min' = 130,
       'y_disp_max' = 220,
       'ribbon_alpha' = .3,
@@ -330,7 +337,7 @@ rit_height_weight_ACT <- function(
       'act_lines_alpha' = .3,
       'act_x' = -0.7,
       'act_grade_for_y' = -0.7,
-      'act_color' = (alpha("gray50",0.6)),
+      'act_color' = (alpha("gray50", 0.6)),
       'act_size' = 3,
       'act_angle' = 15,
       'act_vjust' = 0.5,
@@ -496,6 +503,10 @@ rit_height_weight_ACT <- function(
 }
 
 
+#' creates vector of rainbow colors for student plots
+#'
+#' @return a vector of colors
+
 rainbow_colors <- function() {
   
   rainbow_all <- rainbow(20)
@@ -505,6 +516,15 @@ rainbow_colors <- function() {
   return(my_colors)
 }
 
+
+#' helper function to calculate plot elements per-student for college plots
+#'
+#' @param stu_rit_history data frame (with cdf headers) with one student
+#' @param decode_ho holdovers create all kinds of funkiness.  decode_ho will
+#' find apparent holdover events, and only return the student's second bite
+#' at that grade/season apple.
+#'
+#' @return a list of calculations
 
 stu_RIT_hist_plot_elements <- function(stu_rit_history, decode_ho = TRUE) {
   
@@ -639,8 +659,23 @@ stu_RIT_hist_plot_elements <- function(stu_rit_history, decode_ho = TRUE) {
 }
 
 
-#in the interest of DRY, abstract out writing college labels
-#this is non-trivial.
+#' abstract out the logic for writing college labels onto a template.
+#' @description this was non-trivial, so it gets its own little function.
+#' 
+#' @param xy_lim_list 
+#' @param measurementscale target subject
+#' @param labels_at_grade what grade level should the college labels 
+#' print at?  Generally the student or cohorts's most recent test 
+#' grade_level_season is desirable.
+#' @param localization controls names/breakpoints for college labels and
+#' ACT tiers.  See localization.R for more details
+#' @param aspect_ratio college labels should print at the same
+#' angle as the act ribbons.  if the viz is not square, this requires an
+#' adjustment.  default value is 1, 0.5 would be a rectangle 2W for 1H.
+#' @param label_size text size for the labels.  default is 5.
+#'
+#' @return a ggplot geom_text object with college labels
+
 college_label_element <- function(
   xy_lim_list,
   measurementscale,
@@ -658,7 +693,7 @@ college_label_element <- function(
   
   valid_ys <- na.omit(labels_df$rit + 0.5 * (dplyr::lead(labels_df$rit, 1) - labels_df$rit))
   
-  #calculus, bitches, to find the angle of the label.
+  #some light calculus to find the angle of the label.
   #angle is the slope of the tangent line to the curve.
   #all the ACT curves have the same form, so we just need to get the slope once.
   
@@ -705,6 +740,25 @@ college_label_element <- function(
   return(college_text)
 }
 
+
+#' Combines a template and a mapvizieR object to create a student goal plot
+#' with college labels
+#'
+#' @param base_plot a height/weight template.
+#' @param mapvizieR_obj conforming mapvizieR object
+#' @param studentid target student
+#' @param measurementscale target subject
+#' @param labels_at_grade what grade level should the college labels 
+#' print at?  Generally the students's most recent test grade_level_season
+#' is desirable.
+#' @param localization controls names/breakpoints for college labels and
+#' ACT tiers.  See localization.R for more details
+#' @param aspect_ratio college labels should print at the same
+#' angle as the act ribbons.  if the viz is not square, this requires an
+#' adjustment.  default value is 1, 0.5 would be a rectangle 2W for 1H.
+#'
+#' @return a ggplot object
+#' @export
 
 build_student_college_plot <- function(
   base_plot,

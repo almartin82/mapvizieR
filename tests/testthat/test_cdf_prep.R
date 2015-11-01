@@ -31,5 +31,5 @@ test_that("make_npr_consistent works", {
   
   expect_equal(nrow(n11), nrow(n15))
   expect_equal(n11$consistent_percentile %>% sum(na.rm = TRUE), 471468)
-  expect_equal(n15$consistent_percentile %>% sum(na.rm = TRUE), 469888)
+  expect_equal(n15$consistent_percentile %>% sum(na.rm = TRUE), 478973)
 })
