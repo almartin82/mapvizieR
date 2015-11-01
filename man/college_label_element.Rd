@@ -8,7 +8,7 @@ college_label_element(xy_lim_list, measurementscale, labels_at_grade = 6,
   localization = localize("Newark"), aspect_ratio = 1, label_size = 5)
 }
 \arguments{
-\item{xy_lim_list}{}
+\item{xy_lim_list}{student max/min x and y, from stu_RIT_hist_plot_elements}
 
 \item{measurementscale}{target subject}
 

@@ -662,7 +662,7 @@ stu_RIT_hist_plot_elements <- function(stu_rit_history, decode_ho = TRUE) {
 #' abstract out the logic for writing college labels onto a template.
 #' @description this was non-trivial, so it gets its own little function.
 #' 
-#' @param xy_lim_list 
+#' @param xy_lim_list student max/min x and y, from stu_RIT_hist_plot_elements
 #' @param measurementscale target subject
 #' @param labels_at_grade what grade level should the college labels 
 #' print at?  Generally the student or cohorts's most recent test 
