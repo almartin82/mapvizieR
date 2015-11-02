@@ -7,9 +7,3 @@ build:
         - jimhester/r-dependencies
         - jimhester/r-check
         - jimhester/r-coverage
-    after-steps:
-        - slack-notifier:
-            url: $SLACK_URL
-            channel: mapvizier_dev
-            username: werkcer
-            branch: master
