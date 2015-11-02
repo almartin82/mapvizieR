@@ -855,7 +855,7 @@ bulk_student_historic_college_plot <- function(
   if (template == 'ACT') {
     blank_template <- rit_height_weight_ACT(
       measurementscale = measurementscale,
-      localization = localize(localization),
+      localization = localization,
       annotation_style = annotation_style,
       line_style = line_style
     ) + theme_bw()
@@ -1232,7 +1232,7 @@ bulk_student_1year_goal_plot <- function(
 
   blank_template <- rit_height_weight_ACT(
     measurementscale = measurementscale,
-    localization = localize(localization),
+    localization = localization,
     annotation_style = annotation_style,
     line_style = line_style
   )

@@ -76,7 +76,17 @@ test_that("npr templates with various options", {
   )
   expect_is(m, 'ggplot')
   m <- ggplot_build(m)
-  expect_equal(m$data[[15]]$label %>% sum(), 10400)    
+  expect_equal(m$data[[15]]$label %>% sum(), 10400)   
+
+  m <- rit_height_weight_npr(
+    measurementscale = 'Mathematics', 
+    norms = 2015,
+    annotation_style = 'none',
+    line_style = 'none'
+  )
+  expect_is(m, 'ggplot')
+  m <- ggplot_build(m)
+  expect_equal(m$data[[14]]$ymin %>% sum(), 3919)   
 })
 
 
@@ -86,15 +96,58 @@ test_that("ACT templates generate correctly", {
   read_act <- rit_height_weight_ACT(measurementscale = 'Reading')
   expect_is(math_act, 'ggplot')
   expect_is(read_act, 'ggplot')
+  math_act <- ggplot_build(math_act)
+  expect_equal(math_act$data[[9]]$y %>% sum(), 21765.1)
+  read_act <- ggplot_build(read_act)
+  expect_equal(read_act$data[[9]]$y %>% sum(), 21103.3)
+  
+  math_act <- rit_height_weight_ACT(
+    measurementscale = 'Mathematics',
+    annotation_style = 'big numbers',
+    line_style = 'gray lines'
+  )
+  read_act <- rit_height_weight_ACT(
+    measurementscale = 'Reading',
+    annotation_style = 'big numbers',
+    line_style = 'gray lines'
+  )
+  expect_is(math_act, 'ggplot')
+  expect_is(read_act, 'ggplot')
 
+  math_act <- rit_height_weight_ACT(
+    measurementscale = 'Mathematics',
+    annotation_style = 'small numbers',
+    line_style = 'gray dashed'
+  )
+  read_act <- rit_height_weight_ACT(
+    measurementscale = 'Reading',
+    annotation_style = 'small numbers',
+    line_style = 'gray dashed'
+  )
+  expect_is(math_act, 'ggplot')
+  expect_is(read_act, 'ggplot')
+
+  math_act <- rit_height_weight_ACT(
+    measurementscale = 'Mathematics',
+    annotation_style = 'none',
+    line_style = 'none'
+  )
+  read_act <- rit_height_weight_ACT(
+    measurementscale = 'Reading',
+    annotation_style = 'none',
+    line_style = 'none'
+  )
+  expect_is(math_act, 'ggplot')
+  expect_is(read_act, 'ggplot')
+  
 })
 
 
-test_that("cohort longitudinal plot with sample students", {
+test_that("bulk student historic plot with sample students", {
   
   bulk_hist <- bulk_student_historic_college_plot(
     mapvizieR_obj = mapviz, 
-    studentids = studentids_normal_use, 
+    studentids = studentids_normal_use[1:20], 
     measurementscale = 'Mathematics', 
     localization = localize('Newark'), 
     labels_at_grade = 6,
@@ -105,7 +158,29 @@ test_that("cohort longitudinal plot with sample students", {
     title_text = ''
   )
   
-  expect_equal(length(bulk_hist), 93)
+  expect_equal(length(bulk_hist), 20)
+  expect_equal(bulk_hist[[1]]$data$RIT %>% sum(), 42906)
+  
+})
+
+
+test_that("bulk student historic plot, ACT template", {
+  
+  bulk_hist <- bulk_student_historic_college_plot(
+    mapvizieR_obj = mapviz, 
+    studentids = studentids_normal_use[1:20], 
+    measurementscale = 'Mathematics', 
+    localization = localize('Newark'), 
+    labels_at_grade = 6,
+    template = 'ACT',  
+    aspect_ratio = 1,
+    annotation_style = 'small numbers',
+    line_style = 'gray lines',
+    title_text = ''
+  )
+  
+  expect_equal(length(bulk_hist), 20)
+  expect_equal(bulk_hist[[1]]$data$rit %>% sum(), 21765.1)
   
 })
 
@@ -126,4 +201,22 @@ test_that("goal plot works with a sample student", {
   )
   
   expect_is(goal_ex, 'ggplot')
+})
+
+
+test_that("bulk goal plot", {
+  
+  goal_ex <- bulk_student_1year_goal_plot(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use[1:20],
+    measurementscale = 'Mathematics',
+    labels_at_grade = 6,
+    start_grade = 6,
+    end_grade = 7,
+    growth_window = 'Spring to Spring'
+  )
+  
+  expect_is(goal_ex, 'list')
+  expect_equal(length(goal_ex), 20)
+  expect_equal(goal_ex[[1]]$data$rit %>% sum(), 21765.1)
 })
