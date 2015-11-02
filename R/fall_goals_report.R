@@ -1,7 +1,7 @@
 
 #' Title
 #'
-#' @param mapvizieR_object a valid mapvizieR_object
+#' @param mapvizieR_obj a valid mapvizieR_object
 #' @param studentids a vector of studentids to run
 #' @param measurementscale desired subject
 #' @param context what school/grade/class/etc grouping is represented?

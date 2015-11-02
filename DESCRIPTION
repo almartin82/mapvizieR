@@ -27,7 +27,5 @@ Imports:
     lubridate,
     stringr,
     ensurer,
-    grid,
-    gridExtra,
-    toOrdinal,
-    scales
+    scales,
+    toOrdinal

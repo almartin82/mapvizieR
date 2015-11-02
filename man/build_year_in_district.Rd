@@ -7,7 +7,7 @@
 build_year_in_district(roster)
 }
 \arguments{
-\item{x}{a roster data frame. must contain studentid, map_year_academic,
+\item{roster}{a roster data frame. must contain studentid, map_year_academic,
 and grade}
 }
 \value{

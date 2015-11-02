@@ -53,7 +53,7 @@ extract_academic_year <- function(x) {
 #'
 #' @description tags the roster with the student's year in the district
 #' 
-#' @param x a roster data frame. must contain studentid, map_year_academic,
+#' @param roster a roster data frame. must contain studentid, map_year_academic,
 #' and grade
 #' 
 #' @return data frame with disambiguated termname and map_year_academic

@@ -5,6 +5,7 @@
 #' study for Language or Science
 #' @param color_list vector of colors to use to shade the bands.  Default is
 #' the output of rainbow_colors().
+#' @param ribbon_alpha transparency value for the background ribbons
 #' @param annotation_style c('points', 'big numbers', or 'small numbers')
 #' @param line_style c('gray lines')
 #' @param spring_only fall norms show a 'summer slump' effect; this can be

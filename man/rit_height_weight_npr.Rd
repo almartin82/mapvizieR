@@ -16,6 +16,8 @@ study for Language or Science}
 \item{color_list}{vector of colors to use to shade the bands.  Default is
 the output of rainbow_colors().}
 
+\item{ribbon_alpha}{transparency value for the background ribbons}
+
 \item{annotation_style}{c('points', 'big numbers', or 'small numbers')}
 
 \item{line_style}{c('gray lines')}
