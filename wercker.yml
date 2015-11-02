@@ -6,11 +6,10 @@ build:
     steps:
         - jimhester/r-dependencies
         - jimhester/r-check
-#        - jimhester/r-coverage
+        - jimhester/r-coverage
     after-steps:
-        - sherzberg/slack-notify:
-            subdomain: knjdata
-            token: $SLACK_TOKEN
-            channel: "#mapvizier_dev"
-            username: wercker
-            icon_emoji: tophat
+        - slack-notifier:
+            url: $SLACK_URL
+            channel: mapvizier_dev
+            username: werkcer
+            branch: master
