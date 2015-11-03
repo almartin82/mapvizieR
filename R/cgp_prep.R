@@ -186,20 +186,29 @@ sch_growth_lookup <- function(
 
 #' @title rit_to_npr
 #' 
-#' @description given a RIT score, return the best match percentile rank
+#' @description given a RIT score, return the best match percentile rank.
+#' (assumes the subject is a student, not a school/cohort.)
 #' 
 #' @param measurementscale MAP subject
 #' @param grade grade level
 #' @param season fall winter spring
 #' @param RIT rit score
+#' @param norms which norm study to use
+#' 
+#' @return a integer vector length one
 
-rit_to_npr <- function(measurementscale, grade, season, RIT) {
+rit_to_npr <- function(measurementscale, grade, season, RIT, norms = 2015) {
   
+  if (norms == 2011) {
+    active_norms <- student_status_norms_2011
+  } else if (norms == 2015) {
+    active_norms <- status_norms_2015
+  }  
   measurementscale_in <- measurementscale
   grade_in <- grade
   rit_in <- RIT
   
-  matches <- student_status_norms_2011 %>%
+  matches <- active_norms %>%
     dplyr::filter(
       measurementscale == measurementscale_in & 
       grade == grade_in & 
@@ -209,9 +218,9 @@ rit_to_npr <- function(measurementscale, grade, season, RIT) {
     dplyr::select(student_percentile)
   
   if (nrow(matches) == 0) {
-    out <- NA
+    out <- NA_integer_
   } else{
-    out <-matches %>% unlist() %>% unname()
+    out <- matches %>% unlist() %>% unname()
   }
   
   return(out)
@@ -222,18 +231,29 @@ rit_to_npr <- function(measurementscale, grade, season, RIT) {
 #' @title npr_to_rit
 #' 
 #' @description given a percentile rank, return the best match RIT
+#' (assumes the subject is a student, not a school/cohort.)
 #' 
 #' @param measurementscale MAP subject
 #' @param grade grade level
 #' @param season fall winter spring
 #' @param npr a percentile rank, between 1-99
+#' @param norms which norm study to use
+#' 
+#' @return a integer vector length one
 
-npr_to_rit <- function(measurementscale, grade, season, npr) {
+
+npr_to_rit <- function(measurementscale, grade, season, npr, norms = 2015) {
   
   measurementscale_in <- measurementscale
   grade_in <- grade
 
-  matches <- student_status_norms_2011_dense_extended %>%
+  if (norms == 2011) {
+    active_norms <- student_status_norms_2011_dense_extended
+  } else if (norms == 2015) {
+    active_norms <- student_status_norms_2015_dense_extended
+  }  
+  
+  matches <- active_norms %>%
     dplyr::filter(
       measurementscale == measurementscale_in & 
         grade == grade_in & 
@@ -243,7 +263,7 @@ npr_to_rit <- function(measurementscale, grade, season, npr) {
     dplyr::select(RIT)
   
   if (nrow(matches) == 0) {
-    out <- NA
+    out <- NA_integer_
   } else{
     out <- matches %>% unlist() %>% unname() %>% magrittr::extract(1)
   }

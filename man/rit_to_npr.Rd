@@ -4,7 +4,7 @@
 \alias{rit_to_npr}
 \title{rit_to_npr}
 \usage{
-rit_to_npr(measurementscale, grade, season, RIT)
+rit_to_npr(measurementscale, grade, season, RIT, norms = 2015)
 }
 \arguments{
 \item{measurementscale}{MAP subject}
@@ -14,8 +14,14 @@ rit_to_npr(measurementscale, grade, season, RIT)
 \item{season}{fall winter spring}
 
 \item{RIT}{rit score}
+
+\item{norms}{which norm study to use}
+}
+\value{
+a integer vector length one
 }
 \description{
-given a RIT score, return the best match percentile rank
+given a RIT score, return the best match percentile rank.
+(assumes the subject is a student, not a school/cohort.)
 }
 

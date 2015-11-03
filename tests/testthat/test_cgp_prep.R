@@ -135,10 +135,18 @@ test_that("calc_cgp is correct from NWEA lookups", {
 
 test_that("RIT_to_npr and npr_to_RIT", {
 
-  expect_equal(rit_to_npr("Mathematics", 5, 'Fall', 219), 67)
-  expect_equal(rit_to_npr("Mathematics", 5, 'Fall', 240), 97)
+  #2015 norms
+  expect_equal(rit_to_npr("Mathematics", 5, 'Fall', 219), 70)
+  expect_equal(rit_to_npr("Mathematics", 5, 'Fall', 230), 90)
   
-  expect_equal(npr_to_rit("Mathematics", 5, 'Fall', 67), 219)
-  expect_equal(npr_to_rit("Mathematics", 5, 'Fall', 97), 240)
+  expect_equal(npr_to_rit("Mathematics", 5, 'Fall', 70), 219)
+  expect_equal(npr_to_rit("Mathematics", 5, 'Fall', 90), 230)
   
+  #2011 norms
+  expect_equal(rit_to_npr("Mathematics", 5, 'Fall', 219, norms = 2011), 67)
+  expect_equal(rit_to_npr("Mathematics", 5, 'Fall', 240, norms = 2011), 97)
+  
+  expect_equal(npr_to_rit("Mathematics", 5, 'Fall', 67, norms = 2011), 219)
+  expect_equal(npr_to_rit("Mathematics", 5, 'Fall', 97, norms = 2011), 240)
+
 })
