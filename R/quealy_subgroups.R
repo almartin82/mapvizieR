@@ -27,6 +27,9 @@
 #' @param small_n_cutoff drop a subgroup if less than x% (as decimal) of the total pop? 
 #' (useful for cutting off the long tail of a group).  applies to all subgroups in
 #' subgroup_cols.  does not apply to magic subgroups.
+#' @param join_by_measurementscale.  boolean, passed to roster_to_growth_df.  TRUE if
+#' the subgroup col is per-subject.
+#' 
 #' @return a grob composed of multiple ggplots
 #' 
 #' @export
@@ -47,7 +50,8 @@ quealy_subgroups <- function(
   complete_obsv = TRUE,
   drop_NA_groups = TRUE,
   include_all = TRUE,
-  small_n_cutoff = -1
+  small_n_cutoff = -1,
+  join_by_measurementscale = FALSE
 ) {
   
   #1. validation
@@ -73,7 +77,8 @@ quealy_subgroups <- function(
   df <- roster_to_growth_df(
     target_df = df,
     mapvizieR_obj = mapvizieR_obj,
-    roster_cols = subgroup_cols
+    roster_cols = subgroup_cols,
+    by_measurementscale = join_by_measurementscale
   )
   #put rownames back on the df
   df$persistent_names <- rownames(df)
@@ -406,11 +411,12 @@ quealy_facet_one_subgroup <- function(
   max_width <- 0.5
   pct_of_range <- ((sum_df$n - n_range[1]) / (n_range[2] - n_range[1]))
   sum_df$size_scaled <- min_width + (pct_of_range * (max_width - min_width))
-      
+  #if identical, NaN
+  sum_df$size_scaled <- ifelse(is.nan(sum_df$size_scaled), 1, sum_df$size_scaled)
+     
   all_na_test <- all(is.na(sum_df$cgp))
   
   #cgp labeler
-  
   cgp_labeler <- function(n, cgp) {
     if (
       (unique(sum_df$start_fallwinterspring) == 'Fall' & unique(sum_df$end_fallwinterspring) == 'Winter') | 

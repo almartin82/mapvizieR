@@ -6,6 +6,10 @@
 #' @param target_df the df you want to put stuff on
 #' @param mapvizieR_obj a conforming mapvizieR object
 #' @param roster_cols roster column names you want to move over.
+#' @param by_measurementscale boolean, when you have student demographics that are specific to a 
+#' particular assessment - eg course enrollment, but the match is specific to student AND
+#' measurementscale, not just student.  if TRUE your roster object must contain a field
+#' called measurementscale.
 #' 
 #' @export
 #' 
@@ -14,7 +18,8 @@
 roster_to_cdf <- function(
   target_df,
   mapvizieR_obj,
-  roster_cols
+  roster_cols,
+  by_measurementscale = FALSE
 ) {
   #opening checks
   target_df %>% ensurer::ensure_that(
@@ -25,20 +30,29 @@ roster_to_cdf <- function(
   #get the roster
   roster <- mapvizieR_obj$roster
   
-  #trim to basic ids (studentid, year, term) and roster_cols
-  cols <- c('studentid', 'map_year_academic', 'fallwinterspring')
-  cols <- c(cols, roster_cols)
+  #collisions
+  mask <- roster_cols %in% names(target_df)
+  if (any(mask)) {
+    target_df <- target_df %>% as.data.frame()
+    inner_mask <- ! names(target_df) %in% roster_cols
+    target_df <- target_df[, inner_mask]
+  }
+  
+  #trim to basic cols (studentid, year, term, possibly measurementscale)
+  basic_cols <- c('studentid', 'map_year_academic', 'fallwinterspring')
+  if (by_measurementscale) basic_cols <- c(basic_cols, 'measurementscale')
+  all_cols <- c(basic_cols, roster_cols)
   #this gets into the weeds, but:
   #per issue #175, *if the user provides* dupe stu enrollments (for instance,
   #if the student has dual/concurrent enrollment at two schools) we don't want
   #mapvizieR to rule that out.  but if we're in that world and NOT looking at 
   #the school attribute, we don't want to create duplicate rows.  so, unique()
-  slim <- roster[, names(roster) %in% cols] %>% unique()
+  slim <- roster[, names(roster) %in% all_cols] %>% unique()
   
   #join
   target_df <- target_df %>% dplyr::left_join(
     slim,
-    by = c('studentid', 'map_year_academic', 'fallwinterspring')
+    by = basic_cols
   )
   
   return(target_df)
@@ -59,6 +73,10 @@ roster_to_cdf <- function(
 #' @param mapvizieR_obj a conforming mapvizieR object
 #' @param roster_cols roster column names you want to move over.
 #' @param disambiguation_method how to disambiguate?  default is 'last'.
+#' @param by_measurementscale boolean, when you have student demographics that are specific to a 
+#' particular assessment - eg course enrollment, but the match is specific to student AND
+#' measurementscale, not just student.  if TRUE your roster object must contain a field
+#' called measurementscale.
 #' 
 #' @export
 #' 
@@ -68,7 +86,8 @@ roster_to_growth_df <- function(
   target_df,
   mapvizieR_obj,
   roster_cols,
-  disambiguation_method = 'last'
+  disambiguation_method = 'last',
+  by_measurementscale = FALSE
 ) {
   #opening checks
   target_df %>% ensurer::ensure_that(
@@ -103,11 +122,21 @@ roster_to_growth_df <- function(
   #PREP FOR JOIN
   #now trim our roster to basic ids and roster_cols
   cols <- c('studentid', 'year_sort', roster_cols)
+  if (by_measurementscale) cols <- c(cols, 'measurementscale')
   slim <- roster[, names(roster) %in% cols]
   
   #disambiguation - add rn tags by last, first
+  
+  if (by_measurementscale) {
+    slim <- slim %>%
+      dplyr::group_by(studentid, measurementscale)
+  } else {
+    slim <- slim %>%
+      dplyr::group_by(studentid)
+  }
+    
   slim <- slim %>%
-    dplyr::group_by(studentid) %>%
+    unique() %>%
     dplyr::mutate(
       last_rn = rank(year_sort),
       first_rn = rank(-year_sort)
@@ -124,10 +153,20 @@ roster_to_growth_df <- function(
   slim <- slim %>% dplyr::select(one_of(cols)) %>%
     dplyr::select(-year_sort)
   
-  return(target_df %>%
-    dplyr::left_join(
-      slim,
-      by = 'studentid'
-    )
-  )
+  if (by_measurementscale) {
+    out <- target_df %>%
+      dplyr::left_join(
+        slim,
+        by = c('measurementscale', 'studentid')
+      )
+  } else {
+    out <- target_df %>%
+      dplyr::left_join(
+        slim,
+        by = c('studentid')
+      )
+  }
+  
+  return(out)
+  
 }
