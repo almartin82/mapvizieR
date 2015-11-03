@@ -223,7 +223,7 @@ make_npr_consistent <- function(
     norm_df <- status_norms_2015
   }
   
-  names(norm_df)[names(norm_df)=='student_percentile'] <- 'consistent_percentile'
+  names(norm_df)[names(norm_df) == 'student_percentile'] <- 'consistent_percentile'
   norm_df$percentile_source <- paste0('status_norms_', norm_study)
   
   norm_df <- norm_df %>%
@@ -241,17 +241,6 @@ make_npr_consistent <- function(
       "testritscore" = "RIT"
     )
   )
-}
-
-
-#' @title psuedo_testids
-#' 
-#' @description if testids are NA, generate a unique identifier
-#' 
-#' @param x a cdf of testids
-
-psuedo_testids <- function(x) {
-  
 }
 
 

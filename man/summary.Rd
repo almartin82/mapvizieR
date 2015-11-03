@@ -4,14 +4,12 @@
 \alias{summary.mapvizieR}
 \title{summary method for \code{mapvizieR} class}
 \usage{
-\method{summary}{mapvizieR}(mapvizieR_object, ..., digits = 2)
+\method{summary}{mapvizieR}(mapvizieR_object, ...)
 }
 \arguments{
 \item{mapvizieR_object}{a \code{mapvizieR} object}
 
 \item{...}{other arguments to be passed to other functions (not currently supported)}
-
-\item{digits}{the numbber of digits to round percentatges to.}
 }
 \value{
 summary stats as a \code{mapvizier_summary} object.
