@@ -31,15 +31,14 @@
 #' @export
 
 summary.mapvizieR <- function(mapvizieR_object, ...){
-  
+
   #fix for s3 consistency cmd check (http://stackoverflow.com/a/9877719/561698)
-  args <- list(...)
-  if (!"digits" %in% names(args)) {
+  if (!hasArg(digits)) {
     digits <- 2
   } else {
-    digits <- args$digits
+    digits <- list(...)$digits
   }
-  
+
   df <- as.data.frame(mapvizieR_object$growth_df) %>%
     dplyr::mutate(cohort_year = end_map_year_academic + 1 + 12 - end_grade) %>%
     dplyr::group_by(
