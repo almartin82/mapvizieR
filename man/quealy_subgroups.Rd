@@ -9,7 +9,8 @@ quealy_subgroups(mapvizieR_obj, studentids, measurementscale,
   pretty_names = c("Starting Quartile"), magic_subgroups = FALSE, start_fws,
   start_year_offset, end_fws, end_academic_year, start_fws_prefer = NA,
   report_title = NA, complete_obsv = TRUE, drop_NA_groups = TRUE,
-  include_all = TRUE, small_n_cutoff = -1)
+  include_all = TRUE, small_n_cutoff = -1,
+  join_by_measurementscale = FALSE)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -49,6 +50,9 @@ variation?  not recommended for data spanning multiple grade levels.}
 \item{small_n_cutoff}{drop a subgroup if less than x% (as decimal) of the total pop?
 (useful for cutting off the long tail of a group).  applies to all subgroups in
 subgroup_cols.  does not apply to magic subgroups.}
+
+\item{join_by_measurementscale.}{boolean, passed to roster_to_growth_df.  TRUE if
+the subgroup col is per-subject.}
 }
 \value{
 a grob composed of multiple ggplots

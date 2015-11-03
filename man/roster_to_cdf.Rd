@@ -4,7 +4,8 @@
 \alias{roster_to_cdf}
 \title{roster_to_cdf}
 \usage{
-roster_to_cdf(target_df, mapvizieR_obj, roster_cols)
+roster_to_cdf(target_df, mapvizieR_obj, roster_cols,
+  by_measurementscale = FALSE)
 }
 \arguments{
 \item{target_df}{the df you want to put stuff on}
@@ -12,6 +13,11 @@ roster_to_cdf(target_df, mapvizieR_obj, roster_cols)
 \item{mapvizieR_obj}{a conforming mapvizieR object}
 
 \item{roster_cols}{roster column names you want to move over.}
+
+\item{by_measurementscale}{boolean, when you have student demographics that are specific to a
+particular assessment - eg course enrollment, but the match is specific to student AND
+measurementscale, not just student.  if TRUE your roster object must contain a field
+called measurementscale.}
 }
 \value{
 a cdf data frame with the roster objects
