@@ -44,7 +44,14 @@ test_that("impute_rit_simple_average repairs cdf with intentionally missing rows
       dplyr::select(testritscore) %>% unlist() %>% unname(),
     c(176, 184)
   )
+})
+
+
+test_that("impute_rit_simple_average warns if interpolate isn't true", {
   
+  expect_error(
+    impute_rit_simple_average(processed_cdf, interpolate_only = FALSE)
+  )
 })
 
 
