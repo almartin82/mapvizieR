@@ -195,17 +195,26 @@ sch_growth_lookup <- function(
 
 rit_to_npr <- function(measurementscale, grade, season, RIT) {
   
-  matches <- student_status_norms_2011_dense_extended[with(
-    student_status_norms_2011_dense_extended,
-      measurementscale == measurementscale & 
-      grade == grade & fallwinterspring == season &
-      round(RIT, 0) == RIT),]
+  measurementscale_in <- measurementscale
+  grade_in <- grade
+  rit_in <- RIT
+  
+  matches <- student_status_norms_2011 %>%
+    dplyr::filter(
+      measurementscale == measurementscale_in & 
+      grade == grade_in & 
+      fallwinterspring == season &
+      round(RIT, 0) == rit_in     
+    ) %>%
+    dplyr::select(student_percentile)
   
   if (nrow(matches) == 0) {
-    NA
+    out <- NA
   } else{
-    matches[1, 'percentile']    
+    out <-matches %>% unlist() %>% unname()
   }
+  
+  return(out)
 }
 
 
@@ -221,17 +230,25 @@ rit_to_npr <- function(measurementscale, grade, season, RIT) {
 
 npr_to_rit <- function(measurementscale, grade, season, npr) {
   
-  matches <- student_status_norms_2011_dense_extended[with(
-    student_status_norms_2011_dense_extended,
-      measurementscale == measurementscale & 
-      grade == grade & fallwinterspring == season &
-      round(npr, 0) == percentile),]
+  measurementscale_in <- measurementscale
+  grade_in <- grade
+
+  matches <- student_status_norms_2011_dense_extended %>%
+    dplyr::filter(
+      measurementscale == measurementscale_in & 
+        grade == grade_in & 
+        fallwinterspring == season &
+        student_percentile == npr     
+    ) %>%
+    dplyr::select(RIT)
   
   if (nrow(matches) == 0) {
-    NA
+    out <- NA
   } else{
-    matches[1, 'RIT']    
+    out <- matches %>% unlist() %>% unname() %>% magrittr::extract(1)
   }
+  
+  return(out)
 }
 
 

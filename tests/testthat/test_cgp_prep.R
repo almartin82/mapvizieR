@@ -131,3 +131,14 @@ test_that("calc_cgp is correct from NWEA lookups", {
   expect_true(all(diffs < 1))
 
 })
+
+
+test_that("RIT_to_npr and npr_to_RIT", {
+
+  expect_equal(rit_to_npr("Mathematics", 5, 'Fall', 219), 67)
+  expect_equal(rit_to_npr("Mathematics", 5, 'Fall', 240), 97)
+  
+  expect_equal(npr_to_rit("Mathematics", 5, 'Fall', 67), 219)
+  expect_equal(npr_to_rit("Mathematics", 5, 'Fall', 97), 240)
+  
+})
