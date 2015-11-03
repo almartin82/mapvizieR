@@ -21,7 +21,7 @@ foo_variables <- function() {
 #' @param school_norms c(2012, 2015).  what school norms to use?  default
 #' is 2012.
 #'
-#' @return
+#' @return a ggplot object
 #' @export
 
 cohort_cgp_hist_plot <- function(

@@ -133,7 +133,6 @@ test_that("calc_cgp is correct from NWEA lookups", {
 })
 
 
-<<<<<<< HEAD
 test_that("RIT_to_npr and npr_to_RIT", {
 
   #2015 norms
@@ -150,7 +149,8 @@ test_that("RIT_to_npr and npr_to_RIT", {
   expect_equal(npr_to_rit("Mathematics", 5, 'Fall', 67, norms = 2011), 219)
   expect_equal(npr_to_rit("Mathematics", 5, 'Fall', 97, norms = 2011), 240)
 
-=======
+})
+
 test_that("one_cgp_step accurate", {
   ex <- one_cgp_step(
     'Reading', 200, 5, 59, 'Fall to Spring'
@@ -162,5 +162,4 @@ test_that("one_cgp_step accurate", {
   )
   expect_equal(ex, 9.02, tolerance = .01)
   
->>>>>>> norm_plots
 })

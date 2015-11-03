@@ -191,7 +191,7 @@ sch_growth_lookup <- function(
 
 
 
-#' @title rit_to_npr
+##' @title rit_to_npr
 #' 
 #' @description given a RIT score, return the best match percentile rank.
 #' (assumes the subject is a student, not a school/cohort.)
@@ -218,9 +218,9 @@ rit_to_npr <- function(measurementscale, grade, season, RIT, norms = 2015) {
   matches <- active_norms %>%
     dplyr::filter(
       measurementscale == measurementscale_in & 
-      grade == grade_in & 
-      fallwinterspring == season &
-      round(RIT, 0) == rit_in     
+        grade == grade_in & 
+        fallwinterspring == season &
+        round(RIT, 0) == rit_in     
     ) %>%
     dplyr::select(student_percentile)
   
@@ -253,7 +253,7 @@ npr_to_rit <- function(measurementscale, grade, season, npr, norms = 2015) {
   
   measurementscale_in <- measurementscale
   grade_in <- grade
-
+  
   if (norms == 2011) {
     active_norms <- student_status_norms_2011_dense_extended
   } else if (norms == 2015) {
@@ -277,7 +277,6 @@ npr_to_rit <- function(measurementscale, grade, season, npr, norms = 2015) {
   
   return(out)
 }
-
 
 
 #' @title mapvizieR interface to simplify CGP calculations
