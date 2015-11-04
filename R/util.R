@@ -502,11 +502,14 @@ mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale) {
   #extract the object
   cdf_long <- mapvizieR_obj[['cdf']] 
   #only these kids
-  cdf_long %>%
+  out <- cdf_long %>%
     dplyr::filter(
       studentid %in% studentids,
       measurementscale == measurementscale_in
-    ) 
+    ) %>%
+    dplyr::tbl_df()
+  
+  return(out)
 }
 
 

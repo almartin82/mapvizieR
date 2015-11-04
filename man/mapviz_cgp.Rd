@@ -2,7 +2,7 @@
 % Please edit documentation in R/cgp_prep.R
 \name{mapviz_cgp}
 \alias{mapviz_cgp}
-\title{mapvizieR interface to simplify CGP calculations}
+\title{mapvizieR interface to simplify CGP calculations, for one target term}
 \usage{
 mapviz_cgp(mapvizieR_obj, studentids, measurementscale, start_fws,
   start_academic_year, end_fws, end_academic_year)
@@ -23,6 +23,6 @@ mapviz_cgp(mapvizieR_obj, studentids, measurementscale, start_fws,
 \item{end_academic_year}{ending academic year}
 }
 \description{
-mapvizieR interface to simplify CGP calculations
+mapvizieR interface to simplify CGP calculations, for one target term
 }
 

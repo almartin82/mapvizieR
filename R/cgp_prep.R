@@ -9,6 +9,7 @@
 #' @param ending_avg_rit the baseline mean rit for the group of students
 #' @param sch_growth_study a school growth study to use.  default is sch_growth_norms_2012
 #' @param calc_for vector of cgp targets to calculate for.
+#' @param verbose should warnings about invalid seasons be raised?
 #' 
 #' @return a named list - targets, and results
 #' 
@@ -21,7 +22,8 @@ calc_cgp <- function(
   baseline_avg_rit = NA,
   ending_avg_rit = NA,
   sch_growth_study = sch_growth_norms_2012,
-  calc_for = c(1:99)
+  calc_for = c(1:99),
+  verbose = TRUE
 ) {
   #cant have a calc_for value 0 or below, or above 100 - those aren't valid growth %iles.
   calc_for %>%
@@ -38,8 +40,8 @@ calc_cgp <- function(
     vt$measurementscale, vt$grade, vt$growth_window, sep = '@'
   )
   if (!in_study) {
-    warning("measurementscale/grade/growth window combination isn't in school growth study.")
-    return(list("targets" = NA, "results" = NA))
+    if (verbose) warning("measurementscale/grade/growth window combination isn't in school growth study.")
+    return(list("targets" = NA_real_, "results" = NA_real_))
     
   }
   
@@ -279,7 +281,7 @@ npr_to_rit <- function(measurementscale, grade, season, npr, norms = 2015) {
 }
 
 
-#' @title mapvizieR interface to simplify CGP calculations
+#' @title mapvizieR interface to simplify CGP calculations, for one target term
 #'
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
@@ -357,7 +359,6 @@ mapviz_cgp <- function(
 }
 
 
-
 #' @title wrapper to simplify CGP simulations interface to simplify CGP calculations
 #'
 #' @param measurementscale target subject
@@ -382,3 +383,76 @@ one_cgp_step <- function(
 }
 
 
+#' CDF to CGP summary
+#'
+#' @param cdf conforming cdf file
+#' @param grouping what column to group on.  default is implicit_cohort
+#'
+#' @return a data frame with summary start/end rit, and cgps
+#' @export
+
+cdf_to_cgp <- function(cdf, grouping = 'implicit_cohort') {
+  
+  grouped <- cdf %>%
+    dplyr::group_by_(
+      grouping, quote(measurementscale), 
+      quote(fallwinterspring),
+      quote(grade_level_season),
+      quote(grade)
+    ) %>%
+    dplyr::summarize(
+      mean_rit = mean(testritscore, na.rm = TRUE),
+      mean_npr = mean(consistent_percentile, na.rm = TRUE),
+      n = n()
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::arrange(
+      measurementscale, grade_level_season
+    )
+  
+  #add a psuedoid for joining
+  grouped$id <- row.names(grouped) %>% as.numeric()
+  
+  #limited df for joining
+  for_join <- grouped %>%
+    dplyr::select(
+      id,
+      fallwinterspring,
+      grade,
+      mean_rit
+    ) %>%
+    dplyr::rename(
+      end_fallwinterspring = fallwinterspring,
+      end_grade = grade,
+      end_mean_rit = mean_rit
+    ) %>%
+    dplyr::mutate(
+      id = id - 1
+    )
+  
+  grouped <- grouped %>%
+    dplyr::rename(
+      start_fallwinterspring = fallwinterspring,
+      start_grade = grade,
+      start_grade_level_season = grade_level_season,
+      start_mean_rit = mean_rit
+    )
+  
+  grouped <- grouped %>%
+    dplyr::left_join(for_join, by = 'id')
+  
+  grouped <- grouped %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(
+      cgp = calc_cgp(
+        measurementscale = measurementscale,
+        grade = end_grade,
+        growth_window = paste(start_fallwinterspring, 'to', end_fallwinterspring),
+        baseline_avg_rit = start_mean_rit,
+        ending_avg_rit = end_mean_rit,
+        verbose = FALSE
+      )[['results']] 
+    )
+  
+  return(grouped)
+}
