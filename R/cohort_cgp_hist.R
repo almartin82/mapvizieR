@@ -81,21 +81,57 @@ cohort_cgp_hist_plot <- function(
   
   as_cgp <- cdf_to_cgp(cdf = munge, grouping = 'implicit_cohort')
   
-  print(as_cgp %>% as.data.frame())
+  as_cgp <- as_cgp %>%
+    dplyr::mutate(
+      x_cgp = c(start_grade_level_season, end_grade_level_season) %>% mean(),
+      y_cgp = c(start_mean_npr, end_mean_npr) %>% mean()
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(
+      cgp_label = cgp %>% round(0),
+      cgp_helper = cumsum(!is.na(cgp)),
+      cgp_label = ifelse(
+        !is.na(cgp_label) & cgp_helper == 1, paste0('CGP: ', cgp_label), cgp_label
+      )
+    )
   
   out <- ggplot(
     data = as_cgp,
     aes(
       x = start_grade_level_season,
-      y = mean_npr,
-      label = mean_npr %>% round(0)
+      y = start_mean_npr,
+      label = start_mean_rit %>% round(1)
     )
   ) +
   geom_point() +
-  geom_text() +
+  geom_text(
+    aes(y = start_mean_npr - 2),
+    vjust = 1
+  ) +
+  geom_line() +
+  geom_text(
+    aes(
+      x = x_cgp, 
+      y = y_cgp,
+      label = cgp_label
+    ),
+    color = 'hotpink'
+  ) +
   theme_bw() +
   theme(
     panel.grid = element_blank()
+  ) +
+  scale_y_continuous(
+    limits = c(0, 100),
+    breaks = seq(0, 100, 10)
+  ) +
+  scale_x_continuous(
+    breaks = as_cgp$start_grade_level_season %>% unique(),
+    labels = as_cgp$start_grade_level_season %>% lapply(fall_spring_me) %>% unlist()
+  ) +
+  labs(
+    x = 'Grade & Season',
+    y = 'Average Percentile Rank'
   )
 
   return(out)

@@ -419,12 +419,16 @@ cdf_to_cgp <- function(cdf, grouping = 'implicit_cohort') {
       id,
       fallwinterspring,
       grade,
-      mean_rit
+      grade_level_season,
+      mean_rit,
+      mean_npr
     ) %>%
     dplyr::rename(
       end_fallwinterspring = fallwinterspring,
       end_grade = grade,
-      end_mean_rit = mean_rit
+      end_grade_level_season = grade_level_season,
+      end_mean_rit = mean_rit,
+      end_mean_npr = mean_npr
     ) %>%
     dplyr::mutate(
       id = id - 1
@@ -435,7 +439,8 @@ cdf_to_cgp <- function(cdf, grouping = 'implicit_cohort') {
       start_fallwinterspring = fallwinterspring,
       start_grade = grade,
       start_grade_level_season = grade_level_season,
-      start_mean_rit = mean_rit
+      start_mean_rit = mean_rit,
+      start_mean_npr = mean_npr
     )
   
   grouped <- grouped %>%
