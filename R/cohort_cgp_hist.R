@@ -1,26 +1,4 @@
-
-foo_variables <- function() {
-  
-  testing_constants()
-  mapvizieR_obj <- mapviz
-  studentids <- studentids_normal_use
-  measurementscale <- 'Mathematics'
-  first_and_spring_only <- TRUE
-  school_norms <- 2012
-  primary_cohort_only <- TRUE
-  entry_grade_seasons <- c(-0.8, 5.2)
-  grouping <- 'implicit_cohort'
-  
-  cohort_cgp_hist_plot(
-    mapvizieR_obj = mapviz,
-    studentids = studentids_normal_use,
-    measurementscale = 'Mathematics',
-    entry_grade_seasons = c(-0.8, 5.2)
-  ) 
-}
-  
-  
-#' Show's a cohort's progress over time, in percentile space.
+#' Shows a cohort's progress over time, in percentile space.
 #'
 #' @param mapvizieR_obj conforming mapvizieR obj
 #' @param studentids vector of studentids
@@ -127,7 +105,8 @@ cohort_cgp_hist_plot <- function(
   ) +
   scale_x_continuous(
     breaks = as_cgp$start_grade_level_season %>% unique(),
-    labels = as_cgp$start_grade_level_season %>% lapply(fall_spring_me) %>% unlist()
+    labels = as_cgp$start_grade_level_season %>% 
+      lapply(fall_spring_me) %>% unlist()
   ) +
   labs(
     x = 'Grade & Season',

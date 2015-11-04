@@ -26,6 +26,9 @@ fall_goals_report <- function(
   entry_grade_seasons = c(-0.8, 4.2)
 ) {
   
+  #placeholder
+  minimal = rectGrob(gp = gpar(col = "white"))
+  
   report_list <- list()
   
   #1. Where have my students been?
@@ -47,6 +50,19 @@ fall_goals_report <- function(
     detail_academic_year = 9999,
     entry_grade_seasons = entry_grade_seasons
   )
+  
+  cgp_hist <- cohort_cgp_hist_plot(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale = measurementscale,
+    entry_grade_seasons = entry_grade_seasons
+  ) 
+  
+  left_stack <- arrangeGrob(becca, cgp_hist, nrow = 2)
+  p1b <- arrangeGrob(left_stack, minimal, ncol = 2, widths = c(1, 2))
+  p1b <- report_footer(p1b, context)
+  
+  report_list[[2]] <- p1b
 
   #2. Where do they need to go?
   p2a <- h_var('2. Where do they need to go?', 36)

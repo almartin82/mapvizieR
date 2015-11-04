@@ -2,7 +2,7 @@
 % Please edit documentation in R/cohort_cgp_hist.R
 \name{cohort_cgp_hist_plot}
 \alias{cohort_cgp_hist_plot}
-\title{Show's a cohort's progress over time, in percentile space.}
+\title{Shows a cohort's progress over time, in percentile space.}
 \usage{
 cohort_cgp_hist_plot(mapvizieR_obj, studentids, measurementscale,
   match_method = "no matching", first_and_spring_only = TRUE,
@@ -37,6 +37,6 @@ pattern caused by previous holdovers.  default is TRUE.}
 a ggplot object
 }
 \description{
-Show's a cohort's progress over time, in percentile space.
+Shows a cohort's progress over time, in percentile space.
 }
 

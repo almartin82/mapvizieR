@@ -10,10 +10,10 @@
 
 h_var <- function(text, size, gp=grid::gpar(fontsize=size, fontface = 'bold')) {
   grid::textGrob(
-    label=text
-   ,just=c('left', 'center')
-   ,x=0
-   ,gp=gp
+    label = text,
+    just = c('left', 'center'),
+    x = 0,
+    gp = gp
   )
 }
 
