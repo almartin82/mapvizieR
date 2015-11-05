@@ -6,7 +6,7 @@
 \usage{
 cohort_cgp_hist_plot(mapvizieR_obj, studentids, measurementscale,
   match_method = "no matching", first_and_spring_only = TRUE,
-  entry_grade_seasons = c(-0.8, 4.2), school_norms = 2015,
+  entry_grade_seasons = c(-0.8, 4.2), school_norms = 2012,
   primary_cohort_only = TRUE)
 }
 \arguments{

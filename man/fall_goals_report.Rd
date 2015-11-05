@@ -6,7 +6,8 @@
 \usage{
 fall_goals_report(mapvizieR_obj, studentids, measurementscale, context,
   start_fws = "Spring", start_year_offset = -1, end_fws = "Spring",
-  end_academic_year = 2015, entry_grade_seasons = c(-0.8, 4.2))
+  end_academic_year = 2015, entry_grade_seasons = c(-0.8, 4.2),
+  detail_academic_year = 9999)
 }
 \arguments{
 \item{mapvizieR_obj}{a valid mapvizieR_object}
