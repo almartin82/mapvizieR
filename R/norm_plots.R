@@ -15,22 +15,23 @@ empty_norm_grade_space <- function(
   this_norms <- student_status_norms_2011_dense_extended %>%
     dplyr::filter(
       measurementscale == get("measurementscale") &
-      percentile %in% trace_lines
+      student_percentile %in% trace_lines
     )
   this_norms <- grade_level_seasonify(this_norms)
   #low and high
-  below_50 <- this_norms %>% dplyr::filter(percentile < 50)
-  above_50 <- this_norms %>% dplyr::filter(percentile >= 50)
+  below_50 <- this_norms %>% dplyr::filter(student_percentile < 50)
+  above_50 <- this_norms %>% dplyr::filter(student_percentile >= 50)
   below_50 <- below_50 %>% 
     dplyr::group_by(
-      measurementscale, fallwinterspring, grade, grade_level_season,percentile
+      measurementscale, fallwinterspring, grade, 
+      grade_level_season, student_percentile
     ) %>%
     dplyr::summarize(
       RIT = max(RIT) 
     )
   above_50 <- above_50 %>% 
     dplyr::group_by(
-      measurementscale, fallwinterspring, grade, grade_level_season, percentile
+      measurementscale, fallwinterspring, grade, grade_level_season, student_percentile
     ) %>%
     dplyr::summarize(
       RIT = min(RIT) 
@@ -44,7 +45,7 @@ empty_norm_grade_space <- function(
     aes(
       x = grade_level_season,
       y = RIT,
-      group = percentile
+      group = student_percentile
     ),
     alpha = 0.3,
     color = 'gray30'
@@ -54,7 +55,7 @@ empty_norm_grade_space <- function(
     aes(
       x = grade_level_season,
       y = RIT,
-      label = percentile
+      label = student_percentile
     ),
     color = 'gray30',
     alpha = 0.3,

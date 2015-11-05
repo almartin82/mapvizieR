@@ -22,11 +22,17 @@ prep_roster <- function(students_by_school, kinder_codes=NULL) {
   #year prep stuff
   roster <- extract_academic_year(roster)
   
+  #stu year in district
+  roster <- build_year_in_district(roster)
+  
   # translate kindergarten ("K", 13, etc) to grade 0
   roster$grade <- standardize_kinder(roster$grade, other_codes = kinder_codes)
   
   roster$studentlastfirst <- paste0(roster$studentlastname, ', ', roster$studentfirstname)
   roster$studentfirstlast <- paste0(roster$studentfirstname, ' ', roster$studentlastname)
+  
+  #implicit cohort
+  roster$implicit_cohort <- roster$map_year_academic + 13 - roster$grade
   
   #check that roster conforms to our expectations
   assertthat::assert_that(check_roster(roster))

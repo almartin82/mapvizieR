@@ -14,7 +14,24 @@ test_that("roster_to_cdf tests", {
   expect_true('studentgender' %in% names(ex))
   expect_equal(table(ex$studentgender)[1] %>% unname(), 4283)
   expect_equal(table(ex$studentgender)[2] %>% unname(), 4268)
-  
+})
+
+
+
+test_that("roster_to_cdf tests with matching roster col", {
+
+  ex <- roster_to_cdf(
+    target_df = mapviz$cdf,
+    mapvizieR_obj = mapviz,
+    roster_cols = 'schoolname'
+  )
+  #in this case we get back MORE rows on our cdf, because one student
+  #has multiple school listings in the same term
+  #see https://github.com/almartin82/mapvizieR/issues/195
+  expect_equal(nrow(ex), 8553)
+  expect_true('schoolname' %in% names(ex))
+  expect_equal(table(ex$schoolname)[1] %>% unname(), 4217)
+  expect_equal(table(ex$schoolname)[2] %>% unname(), 2265)
 })
 
 

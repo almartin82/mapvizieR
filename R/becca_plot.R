@@ -42,7 +42,7 @@ becca_plot <- function(
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
     
   #detect entry grade seasons
-  if (entry_grade_seasons == 'detect') {
+  if (entry_grade_seasons[1] == 'detect') {
     entry_grade_seasons <- min_term_filter(this_cdf, small_n_cutoff) %>% 
       dplyr::select(grade_level_season) %>%
       min()

@@ -1,7 +1,7 @@
 Package: mapvizieR
 Type: Package
 Title: Visualization and Data Analysis tools for NWEA MAP student data
-Version: 0.2
+Version: 0.2.1
 Date: 2015-01-14
 Authors@R: c(person("Andrew", "Martin", role = c("aut","cre"), email =
     "almartin@gmail.com"), person("Chris", "Haid", role = "aut", email =
@@ -11,8 +11,9 @@ Description: mapzivieR is a suite of analytic, visualization, and reporting
 License: file LICENSE
 Depends:
     grid,
-    gridExtra,
+    gridExtra (>= 0.9.1),
     ggplot2,
+    magrittr,
     R(>= 2.10.0)
 Suggests:
     testthat,
@@ -26,6 +27,6 @@ Imports:
     lubridate,
     stringr,
     ensurer,
-    grid,
-    gridExtra,
+    scales,
     toOrdinal
+RoxygenNote: 5.0.0

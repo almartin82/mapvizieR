@@ -9,6 +9,7 @@
 #' @param ending_avg_rit the baseline mean rit for the group of students
 #' @param sch_growth_study a school growth study to use.  default is sch_growth_norms_2012
 #' @param calc_for vector of cgp targets to calculate for.
+#' @param verbose should warnings about invalid seasons be raised?
 #' 
 #' @return a named list - targets, and results
 #' 
@@ -21,7 +22,8 @@ calc_cgp <- function(
   baseline_avg_rit = NA,
   ending_avg_rit = NA,
   sch_growth_study = sch_growth_norms_2012,
-  calc_for = c(1:99)
+  calc_for = c(1:99),
+  verbose = TRUE
 ) {
   #cant have a calc_for value 0 or below, or above 100 - those aren't valid growth %iles.
   calc_for %>%
@@ -38,8 +40,8 @@ calc_cgp <- function(
     vt$measurementscale, vt$grade, vt$growth_window, sep = '@'
   )
   if (!in_study) {
-    warning("measurementscale/grade/growth window combination isn't in school growth study.")
-    return(list("targets" = NA, "results" = NA))
+    if (verbose) warning("measurementscale/grade/growth window combination isn't in school growth study.")
+    return(list("targets" = NA_real_, "results" = NA_real_))
     
   }
   
@@ -49,7 +51,7 @@ calc_cgp <- function(
   )
   
   #TARGETS
-  targets <- cohort_expectation_via_lookup(
+  targets <- cohort_expectation(
     measurementscale,
     grade,
     growth_window,
@@ -81,7 +83,7 @@ calc_cgp <- function(
 
 
 
-#' @title cohort_expectation_via_lookup
+#' @title cohort_expectation
 #' 
 #' @description wrapper function to get cohort growth expectations for the lookup method
 #' 
@@ -94,8 +96,10 @@ calc_cgp <- function(
 #' @param calc_for what CGPs to calculate for?
 #' @param sch_growth_study which school growth study to use.  currently only have the 2012 data
 #' files in the package
+#' 
+#' @export
 
-cohort_expectation_via_lookup <- function(
+cohort_expectation <- function(
   measurementscale,
   grade,
   growth_window,
@@ -138,6 +142,9 @@ cohort_expectation_via_lookup <- function(
 #' @param percentile growth percentile, between 0-100
 #' @param sd_gain sd for population growth
 #' @param mean_gain typical growth for population
+#' 
+#' @export
+
 
 rit_gain_needed <- function(percentile, sd_gain, mean_gain) {
   z <- qnorm((percentile/100))
@@ -155,6 +162,8 @@ rit_gain_needed <- function(percentile, sd_gain, mean_gain) {
 #' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students
 #' @param sch_growth_study NWEA school growth study to use for lookup; defaults to 2012.
+#' 
+#' @export
 
 sch_growth_lookup <- function(  
   measurementscale,
@@ -184,28 +193,46 @@ sch_growth_lookup <- function(
 
 
 
-#' @title rit_to_npr
+##' @title rit_to_npr
 #' 
-#' @description given a RIT score, return the best match percentile rank
+#' @description given a RIT score, return the best match percentile rank.
+#' (assumes the subject is a student, not a school/cohort.)
 #' 
 #' @param measurementscale MAP subject
 #' @param grade grade level
 #' @param season fall winter spring
 #' @param RIT rit score
+#' @param norms which norm study to use
+#' 
+#' @return a integer vector length one
 
-rit_to_npr <- function(measurementscale, grade, season, RIT) {
+rit_to_npr <- function(measurementscale, grade, season, RIT, norms = 2015) {
   
-  matches <- student_status_norms_2011_dense_extended[with(
-    student_status_norms_2011_dense_extended,
-      measurementscale == measurementscale & 
-      grade == grade & fallwinterspring == season &
-      round(RIT, 0) == RIT),]
+  if (norms == 2011) {
+    active_norms <- student_status_norms_2011
+  } else if (norms == 2015) {
+    active_norms <- status_norms_2015
+  }  
+  measurementscale_in <- measurementscale
+  grade_in <- grade
+  rit_in <- RIT
+  
+  matches <- active_norms %>%
+    dplyr::filter(
+      measurementscale == measurementscale_in & 
+        grade == grade_in & 
+        fallwinterspring == season &
+        round(RIT, 0) == rit_in     
+    ) %>%
+    dplyr::select(student_percentile)
   
   if (nrow(matches) == 0) {
-    NA
+    out <- NA_integer_
   } else{
-    matches[1, 'percentile']    
+    out <- matches %>% unlist() %>% unname()
   }
+  
+  return(out)
 }
 
 
@@ -213,31 +240,51 @@ rit_to_npr <- function(measurementscale, grade, season, RIT) {
 #' @title npr_to_rit
 #' 
 #' @description given a percentile rank, return the best match RIT
+#' (assumes the subject is a student, not a school/cohort.)
 #' 
 #' @param measurementscale MAP subject
 #' @param grade grade level
 #' @param season fall winter spring
 #' @param npr a percentile rank, between 1-99
+#' @param norms which norm study to use
+#' 
+#' @return a integer vector length one
 
-npr_to_rit <- function(measurementscale, grade, season, npr) {
+
+npr_to_rit <- function(measurementscale, grade, season, npr, norms = 2015) {
   
-  matches <- student_status_norms_2011_dense_extended[with(
-    student_status_norms_2011_dense_extended,
-      measurementscale == measurementscale & 
-      grade == grade & fallwinterspring == season &
-      round(npr, 0) == percentile),]
+  measurementscale_in <- measurementscale
+  grade_in <- grade
+  
+  if (norms == 2011) {
+    active_norms <- student_status_norms_2011_dense_extended
+  } else if (norms == 2015) {
+    active_norms <- student_status_norms_2015_dense_extended
+  }  
+  
+  matches <- active_norms %>%
+    dplyr::filter(
+      measurementscale == measurementscale_in & 
+        grade == grade_in & 
+        fallwinterspring == season &
+        student_percentile == npr     
+    ) %>%
+    dplyr::select(RIT)
   
   if (nrow(matches) == 0) {
-    NA
+    out <- NA_integer_
   } else{
-    matches[1, 'RIT']    
+    out <- matches %>% unlist() %>% unname() %>% magrittr::extract(1)
   }
+  
+  return(out)
 }
 
 
-
-#' @title mapvizieR interface to simplify CGP calculations
-#'
+#' @title mapvizieR interface to simplify CGP calculations, for one target term
+#' 
+#' @description given an explicit growth term (start/end), will calculate CGP
+#' 
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
 #' @param measurementscale target subject
@@ -245,6 +292,8 @@ npr_to_rit <- function(measurementscale, grade, season, npr) {
 #' @param start_academic_year starting academic year
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
+#' 
+#' @export
 
 mapviz_cgp <- function(
   mapvizieR_obj, 
@@ -309,4 +358,114 @@ mapviz_cgp <- function(
   as.data.frame
   
   return(df)
+}
+
+
+#' @title wrapper to simplify CGP simulations interface to simplify CGP calculations
+#'
+#' @description helps simulate what happens if a cohort grows at a constant CGP.
+#'
+#' @param measurementscale target subject
+#' @param start_rit mean starting rit
+#' @param start_grade starting grade (not grade level season, just grade)
+#' @param cgp target cgp.  can be single target or vector
+#' @param growth_window what growth window to step
+#' 
+#' @export
+
+one_cgp_step <- function(
+  measurementscale, 
+  start_rit, 
+  start_grade, 
+  cgp, 
+  growth_window = 'Spring to Spring'
+) {
+  
+  calc_cgp(
+    measurementscale, 
+    start_grade,
+    growth_window, 
+    start_rit,
+    calc_for = cgp
+  )[['targets']]$growth_target
+}
+
+
+#' CDF to CGP summary
+#'
+#' @param cdf conforming cdf file
+#' @param grouping what column to group on.  default is implicit_cohort
+#'
+#' @return a data frame with summary start/end rit, and cgps
+#' @export
+
+cdf_to_cgp <- function(cdf, grouping = 'implicit_cohort') {
+  
+  grouped <- cdf %>%
+    dplyr::group_by_(
+      grouping, quote(measurementscale), 
+      quote(fallwinterspring),
+      quote(grade_level_season),
+      quote(grade)
+    ) %>%
+    dplyr::summarize(
+      mean_rit = mean(testritscore, na.rm = TRUE),
+      mean_npr = mean(consistent_percentile, na.rm = TRUE),
+      n = n()
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::arrange(
+      measurementscale, grade_level_season
+    )
+  
+  #add a psuedoid for joining
+  grouped$id <- row.names(grouped) %>% as.numeric()
+  
+  #limited df for joining
+  for_join <- grouped %>%
+    dplyr::select(
+      id,
+      fallwinterspring,
+      grade,
+      grade_level_season,
+      mean_rit,
+      mean_npr
+    ) %>%
+    dplyr::rename(
+      end_fallwinterspring = fallwinterspring,
+      end_grade = grade,
+      end_grade_level_season = grade_level_season,
+      end_mean_rit = mean_rit,
+      end_mean_npr = mean_npr
+    ) %>%
+    dplyr::mutate(
+      id = id - 1
+    )
+  
+  grouped <- grouped %>%
+    dplyr::rename(
+      start_fallwinterspring = fallwinterspring,
+      start_grade = grade,
+      start_grade_level_season = grade_level_season,
+      start_mean_rit = mean_rit,
+      start_mean_npr = mean_npr
+    )
+  
+  grouped <- grouped %>%
+    dplyr::left_join(for_join, by = 'id')
+  
+  grouped <- grouped %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(
+      cgp = calc_cgp(
+        measurementscale = measurementscale,
+        grade = end_grade,
+        growth_window = paste(start_fallwinterspring, 'to', end_fallwinterspring),
+        baseline_avg_rit = start_mean_rit,
+        ending_avg_rit = end_mean_rit,
+        verbose = FALSE
+      )[['results']] 
+    )
+  
+  return(grouped)
 }

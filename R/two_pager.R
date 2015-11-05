@@ -1,5 +1,8 @@
 #' @title MAP two-pager 
 #'
+#' @description KNJ style 'two pager' report that shows the progress of a grade 
+#' or cohort
+#'
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
 #' @param measurementscale target subject
@@ -48,7 +51,6 @@ two_pager <- function(
     end_academic_year = end_academic_year
   )  
 
-  
   #elephants
   ele <- galloping_elephants(
     mapvizieR_obj = mapvizieR_obj, 

@@ -2,3 +2,7 @@
 .Rhistory
 .RData
 inst/doc
+
+#ephemeral file created by testing, sometimes
+tests/testthat/Rplots.pdf
+*.DS_Store

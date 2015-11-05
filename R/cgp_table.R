@@ -1,5 +1,7 @@
 #' @title display table for school/cohort growth percentile (CGP)
 #'
+#' @description a printable table that shows CGP data
+#'
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
 #' @param measurementscale target subject

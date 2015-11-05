@@ -211,7 +211,6 @@ add_accelerated_growth <- function(
 #'
 #' @return a numeric vector of accelerated growth
 #' @export
-#'
 #' @examples
 #' calc_normed_student_growth(.75, 5, 2)
 #' calc_normed_student_growth(75, 5, 2) 

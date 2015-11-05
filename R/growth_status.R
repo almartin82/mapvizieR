@@ -1,5 +1,8 @@
 #' @title growth status scatter
 #'
+#' @description a scatterplot comparing student growth percentile, and attainment
+#' (or status) percentile
+#' 
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
 #' @param measurementscale target subject
