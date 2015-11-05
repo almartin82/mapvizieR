@@ -218,3 +218,24 @@
 #' }
 #' @source NWEA 2012 school growth study (PDF)
 "sch_growth_norms_2012"
+
+##
+## ACT LINKING
+##
+
+#' ACT linking data frame
+#'
+#' RIT/ACT equivalencies derived from NWEA ACT linking study
+#' 
+#' @format
+#' \describe{
+#' \item{school}{I think this was put into the data to allow for rbinding
+#' with a different data set.  Can be ignored.}
+#' \item{cohort}{similar to school, can be ignored.}
+#' \item{grade}{grade level season for the observation}
+#' \item{rit}{RIT equivalency}
+#' \item{act}{ACT sub-test equivalency}
+#' \item{subject}{Mathematics or Reading}
+#' }
+#' @source NWEA linking study
+"act_df"

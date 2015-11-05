@@ -23,14 +23,14 @@
 #'  \item Percent students with NPR >= 75 percentile in the second assessment season
 #' } 
 
-#' @param mapvizieR_object a \code{mapvizieR} object
+#' @param object a \code{mapvizieR} object
 #' @param ... other arguments to be passed to other functions (not currently supported)
 
 #' @return summary stats as a \code{mapvizier_summary} object.
 #' @rdname summary
 #' @export
 
-summary.mapvizieR <- function(mapvizieR_object, ...){
+summary.mapvizieR <- function(object, ...){
 
   #fix for s3 consistency cmd check (http://stackoverflow.com/a/9877719/561698)
   if (!hasArg(digits)) {
@@ -39,7 +39,7 @@ summary.mapvizieR <- function(mapvizieR_object, ...){
     digits <- list(...)$digits
   }
 
-  df <- as.data.frame(mapvizieR_object$growth_df) %>%
+  df <- as.data.frame(object$growth_df) %>%
     dplyr::mutate(cohort_year = end_map_year_academic + 1 + 12 - end_grade) %>%
     dplyr::group_by(
       end_map_year_academic, 

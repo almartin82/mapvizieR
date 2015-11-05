@@ -418,7 +418,7 @@ rit_height_weight_ACT <- function(
   
   #put all the ribbons on it
   for (i in ribbon_names) {
-    p <- p + get(i, env = e)
+    p <- p + get(i, envir = e)
   }
     
   #annotation style options

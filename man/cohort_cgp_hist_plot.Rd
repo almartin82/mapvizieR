@@ -26,6 +26,8 @@ back one = look back one test term, and only include kids who can be matched}
 \item{first_and_spring_only}{show all terms, or only entry & spring?
 default is TRUE.}
 
+\item{entry_grade_seasons}{which grade_level_seasons are entry grades?}
+
 \item{school_norms}{c(2012, 2015).  what school norms to use?  default
 is 2012.}
 

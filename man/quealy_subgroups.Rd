@@ -51,7 +51,7 @@ variation?  not recommended for data spanning multiple grade levels.}
 (useful for cutting off the long tail of a group).  applies to all subgroups in
 subgroup_cols.  does not apply to magic subgroups.}
 
-\item{join_by_measurementscale.}{boolean, passed to roster_to_growth_df.  TRUE if
+\item{join_by_measurementscale}{boolean, passed to roster_to_growth_df.  TRUE if
 the subgroup col is per-subject.}
 }
 \value{

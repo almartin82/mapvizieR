@@ -4,10 +4,10 @@
 \alias{summary.mapvizieR}
 \title{summary method for \code{mapvizieR} class}
 \usage{
-\method{summary}{mapvizieR}(mapvizieR_object, ...)
+\method{summary}{mapvizieR}(object, ...)
 }
 \arguments{
-\item{mapvizieR_object}{a \code{mapvizieR} object}
+\item{object}{a \code{mapvizieR} object}
 
 \item{...}{other arguments to be passed to other functions (not currently supported)}
 }

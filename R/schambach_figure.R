@@ -66,28 +66,27 @@ schambach_figure <- function(
       col_names <- c(paste(pretty_names[[i]]), 'Avg. Ending\n RIT', 'Percent Started\n in Top 75%',
                'Percent Ended\n in Top 75%', 'Avg. Percentile\n Growth', 'Percent Met\n Typical Growth',
                'Percent Met\n Accel Growth', 'Number of\n Students')
-      t <- gridExtra::tableGrob(df,
-                                #rows = c(),
-                                cols = col_names,
-                                theme = ttheme_default(
-                                  core = list(fg_params = list(
-                                                               fontsize = 10,
-                                                               just="center"),
-                                              bg_params = list(alpha=c(.5,1),
-                                                              fill='lightgreen')),
-                                  colhead = list(fg_params = list(fontsize = 12,
-                                                                  fontface = "bold",
-                                                                  col="black"
-                                                                  )
-                                                 )
-                                  )
-                                )
+      t <- gridExtra::tableGrob(
+        df,
+        #rows = c(),
+        cols = col_names,
+        theme = theme_default(
+          core = list(
+            fg_params = list(fontsize = 10, just = "center"),
+            bg_params = list(alpha = c(.5,1), fill = 'lightgreen')),
+            colhead = list(
+              fg_params = list(fontsize = 12, fontface = "bold", col = "black")
+            )
+        )
+      )
                                 
-     tables[[i]] <- gridExtra::grid.arrange(grob_justifier(title, 'center', 'bottom'),
-                                           grob_justifier(t, 'center', 'top'),
-                                           nrow = 2,
-                                           heights = c(1, 4)
-                                           )
+     tables[[i]] <- gridExtra::grid.arrange(
+       grob_justifier(title, 'center', 'bottom'),
+       grob_justifier(t, 'center', 'top'),
+       nrow = 2,
+       heights = c(1, 4)
+     )
     }
-    return(tables)
+  
+  return(tables)
 }
