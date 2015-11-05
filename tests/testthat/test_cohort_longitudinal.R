@@ -15,4 +15,7 @@ test_that("cohort_longitudinal_npr_plot should return valid plot", {
   )
   
   expect_is(p, 'ggplot')
+  p <- ggplot_build(p)
+  expect_equal(p$data[[4]]$y %>% sum(), 49643.13, tolerance = 0.1)
+  
 })

@@ -23,7 +23,8 @@ fall_goals_report <- function(
   start_year_offset = -1,
   end_fws = 'Spring',
   end_academic_year = 2015,
-  entry_grade_seasons = c(-0.8, 4.2)
+  entry_grade_seasons = c(-0.8, 4.2),
+  detail_academic_year = 9999
 ) {
   
   #placeholder
@@ -47,7 +48,7 @@ fall_goals_report <- function(
     mapvizieR_obj = mapvizieR_obj, 
     studentids = studentids,
     measurementscale = measurementscale,
-    detail_academic_year = 9999,
+    detail_academic_year = detail_academic_year,
     entry_grade_seasons = entry_grade_seasons
   )
   
@@ -58,8 +59,18 @@ fall_goals_report <- function(
     entry_grade_seasons = entry_grade_seasons
   ) 
   
+  cohort_longitudinal <- cohort_longitudinal_npr_plot(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale = measurementscale,
+    student_alpha = 0.075
+  ) 
+  
   left_stack <- arrangeGrob(becca, cgp_hist, nrow = 2)
-  p1b <- arrangeGrob(left_stack, minimal, ncol = 2, widths = c(1, 2))
+  p1b <- arrangeGrob(
+    left_stack, cohort_longitudinal, minimal, 
+    ncol = 3, widths = c(1, 2, 1)
+  )
   p1b <- report_footer(p1b, context)
   
   report_list[[2]] <- p1b
