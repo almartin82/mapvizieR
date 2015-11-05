@@ -28,7 +28,8 @@ cohort_cgp_hist_plot <- function(
   match_method = 'no matching',
   first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2), 
-  school_norms = 2015,
+  #TODO: implement norms as paramenter in cgp calcs (#221)
+  school_norms = 2012,
   primary_cohort_only = TRUE
 ) {
 

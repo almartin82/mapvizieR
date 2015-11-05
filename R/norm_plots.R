@@ -4,15 +4,22 @@
 #' shows the norm space across grade levels or a given subject
 #' @param measurementscale a NWEA map measurementscale
 #' @param trace_lines vector of percentiles to show.  must be between 1 and 99.
+#' @param norms which norm study to use
 #' 
 #' @export
 
 empty_norm_grade_space <- function(
   measurementscale, 
-  trace_lines = c(5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95)
+  trace_lines = c(5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95),
+  norms = 2015
 )  {
 
-  this_norms <- student_status_norms_2011_dense_extended %>%
+  if (norms == 2011) {
+    active_norms <- student_status_norms_2011_dense_extended
+  } else if (norms == 2015) {
+    active_norms <- student_status_norms_2015_dense_extended
+  }  
+  this_norms <- active_norms %>%
     dplyr::filter(
       measurementscale == get("measurementscale") &
       student_percentile %in% trace_lines
