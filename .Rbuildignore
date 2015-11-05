@@ -1,7 +1,10 @@
-^.*\.Rproj$
-^\.Rproj\.user$
-^\.travis\.yml$
-^.*\.lintr$
+^.*/.Rproj$
+^/.Rproj/.user$
+^/.travis/.yml$
+^.*/.lintr$
 readme.md
 wercker.yml$
-data-raw\*
+data-raw/*
+^.*\.Rproj$
+^\.Rproj\.user$
+.lintr

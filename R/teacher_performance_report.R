@@ -1,5 +1,8 @@
 #' @title Teacher Performance Update
 #'
+#' @description a wrapper around several plots that helps show key teacher 
+#' performance statistics
+#'
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
 #' @param measurementscale target subject
@@ -39,8 +42,8 @@ teacher_performance_update <- function(
     end_academic_year = end_academic_year
   )
 
-  arrangeGrob(
+  gridExtra::arrangeGrob(
     title_bar, ele, growth_hist,
-    nrow = 3, heights = c(1,4,4)
+    nrow = 3, heights = c(1, 4, 4)
   )
 }

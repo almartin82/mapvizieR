@@ -21,7 +21,6 @@
 #' to take mapvizieR object.
 #' 
 #' @export
-#' 
 #' @return a list of output from the function you called
 
 report_dispatcher <- function(

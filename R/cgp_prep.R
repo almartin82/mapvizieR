@@ -282,7 +282,9 @@ npr_to_rit <- function(measurementscale, grade, season, npr, norms = 2015) {
 
 
 #' @title mapvizieR interface to simplify CGP calculations, for one target term
-#'
+#' 
+#' @description given an explicit growth term (start/end), will calculate CGP
+#' 
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
 #' @param measurementscale target subject
@@ -361,6 +363,8 @@ mapviz_cgp <- function(
 
 #' @title wrapper to simplify CGP simulations interface to simplify CGP calculations
 #'
+#' @description helps simulate what happens if a cohort grows at a constant CGP.
+#'
 #' @param measurementscale target subject
 #' @param start_rit mean starting rit
 #' @param start_grade starting grade (not grade level season, just grade)
@@ -370,7 +374,11 @@ mapviz_cgp <- function(
 #' @export
 
 one_cgp_step <- function(
-  measurementscale, start_rit, start_grade, cgp, growth_window = 'Spring to Spring'
+  measurementscale, 
+  start_rit, 
+  start_grade, 
+  cgp, 
+  growth_window = 'Spring to Spring'
 ) {
   
   calc_cgp(

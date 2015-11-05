@@ -250,7 +250,6 @@ make_npr_consistent <- function(
 #'
 #' @return one of "Client-Server", "WBM pre-2015", "WBM post-2015"
 #' @export
-#'
 #' @examples
 #' data(ex_CombinedAssessmentResults)
 #' id_cdf_type(ex_CombinedAssessmentResults)

@@ -1,5 +1,7 @@
 #' @title Reads CDF csv files from a director
 #'
+#' @description utility function to read in multiple NWEA files, if dir is known.
+#'
 #' @param path the path to the CSV files as character vector
 #' @param verbose defaults is TRUE
 #' @param bad_students StudentIDs to ignore
@@ -10,10 +12,9 @@
 #' `accommodation_assignments`, and `program_assignments`.
 #' 
 #' @export
-#'
 #' @examples
 #' \dontrun{
-#' cdf<-read_cdf("data/")
+#' cdf <- read_cdf("data/")
 #' 
 #' str(cdf)
 #' }
@@ -138,7 +139,6 @@ read_cdf <- function(
 #' @param verbose default is TRUE
 #' 
 #' @export
-#' 
 #' @return same output as read_cdf, a list of NWEA MAP data files
  
 clean_cdf <- function(

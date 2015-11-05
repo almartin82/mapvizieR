@@ -14,7 +14,6 @@
 #' @return a ggplot2 object
 #'
 #' @export
-#'
 #' @examples
 #' \dontrun{
 #' require(dplyr)

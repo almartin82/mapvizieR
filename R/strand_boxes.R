@@ -1,5 +1,7 @@
 #' @title goal strand boxes
-#'
+#' 
+#' @description a plot that shows multiple goal scores as boxplots
+#' 
 #' @param mapvizieR_obj mapvizieR object
 #' @param studentids target students
 #' @param measurementscale target subject

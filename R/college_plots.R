@@ -158,7 +158,7 @@ rit_height_weight_npr <- function(
         
   #now make the geom_ribbons
     #first make top & bottom
-    e$rib_under_1 <- geom_ribbon(
+    e$rib_under_1 <- ggplot2::geom_ribbon(
       data = e$df[e$df$rib == 'below_1', ],
       aes(x = x, ymin = ymin, ymax = ymax),
       fill = color_list[1],
@@ -166,7 +166,7 @@ rit_height_weight_npr <- function(
       environment = e
     )
     
-    e$rib_above_99 <- geom_ribbon(
+    e$rib_above_99 <- ggplot2::geom_ribbon(
       data = e$df[e$df$rib == 'above_99', ],
       aes(x = x, ymin = ymin, ymax = ymax),
       fill = color_list[14],
@@ -177,7 +177,7 @@ rit_height_weight_npr <- function(
    for (i in 1:length(e$ribbons)) {
      new_rib_name <- paste('rib', e$ribbons[i], sep = '_')
      #make ribbon
-     inner_ribbon <- geom_ribbon(
+     inner_ribbon <- ggplot2::geom_ribbon(
        data = e$df[e$df$rib == e$ribbons[i], ],
        aes(x = x, ymin = ymin, ymax = ymax),
        fill = color_list[i + 1],
@@ -394,7 +394,7 @@ rit_height_weight_ACT <- function(
       new_rib_name <- paste0('rib', '_', low_cut, '_', high_cut)
     
       #make it
-      inner_ribbon <- geom_ribbon(
+      inner_ribbon <- ggplot2::geom_ribbon(
         data = inner_df,
         aes(x = x, ymin = ymin, ymax = ymax),
         fill = color_list[i + 1],

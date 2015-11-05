@@ -45,12 +45,12 @@ fuzz_test_plot <- function(
       silent = TRUE
     )
 
-    known_error <- try(stringr::str_detect(p, 
-                                           stringr::fixed("Sorry, can't plot that")
-                                           ), 
-                       silent = TRUE)
+    known_error <- try(
+      stringr::str_detect(p, stringr::fixed("Sorry, can't plot that")), 
+      silent = TRUE
+    )
 
-    if(known_error == TRUE) {
+    if(known_error %>% any() == TRUE) {
       #known errors are passed tests
       results[[i]] <- known_error
       studentids[[i]] <- stu_random
@@ -60,10 +60,8 @@ fuzz_test_plot <- function(
     build_p <- try(ggplot_build(p))
 
     tests <- all(
-      is.list(build_p)
-     ,all(
-        c("data", "panel", "plot") %in% names(build_p)
-      )
+      is.list(build_p),
+      all(c("data", "panel", "plot") %in% names(build_p))
     )
 
     #append

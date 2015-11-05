@@ -12,7 +12,6 @@
 #' called measurementscale.
 #' 
 #' @export
-#' 
 #' @return a cdf data frame with the roster objects
 
 roster_to_cdf <- function(
@@ -79,7 +78,6 @@ roster_to_cdf <- function(
 #' called measurementscale.
 #' 
 #' @export
-#' 
 #' @return a growth data frame with the roster objects
 
 roster_to_growth_df <- function(

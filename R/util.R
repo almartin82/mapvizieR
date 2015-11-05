@@ -279,7 +279,6 @@ standardize_kinder <- function(x, other_codes = NULL){
 #' 
 #' @return a labeled string
 #' @export
-#' 
 
 fall_spring_me <- function(x) {
   
@@ -320,19 +319,19 @@ fall_spring_me <- function(x) {
 
 #' @title round_to_any
 #' 
-#' @description because we don't want \code{suggests: plyr, dpylr if we can avoid it}
+#' @description because we don't want \code{suggests: plyr} if we can avoid it.
 #' 
 #' @param x numeric or date-time (POSIXct) vector to round
 #' @param accuracy number to round to; for POSIXct objects, a number of seconds
 #' @param f rounding function: \code{\link{floor}}, \code{\link{ceiling}} or
 #'  \code{\link{round}}
 #'  
+#'  @return a numeric vector
 #'  @export
 
 round_to_any <- function(x, accuracy, f = round) {
   f(x / accuracy) * accuracy
 }
-
 
 
 #' @title df_sorter

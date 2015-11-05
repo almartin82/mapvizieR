@@ -13,6 +13,7 @@ Depends:
     grid,
     gridExtra (>= 0.9.1),
     ggplot2,
+    magrittr,
     R(>= 2.10.0)
 Suggests:
     testthat,
@@ -21,7 +22,6 @@ LazyData: true
 VignetteBuilder: knitr
 Imports:
     dplyr,
-    magrittr,
     reshape2,
     assertthat,
     lubridate,
@@ -29,3 +29,4 @@ Imports:
     ensurer,
     scales,
     toOrdinal
+RoxygenNote: 5.0.0
