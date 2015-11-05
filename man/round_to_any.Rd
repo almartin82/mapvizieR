@@ -12,12 +12,12 @@ round_to_any(x, accuracy, f = round)
 \item{accuracy}{number to round to; for POSIXct objects, a number of seconds}
 
 \item{f}{rounding function: \code{\link{floor}}, \code{\link{ceiling}} or
-\code{\link{round}}
-
-@return a numeric vector
-@export}
+\code{\link{round}}}
+}
+\value{
+a numeric vector
 }
 \description{
-because we don't want \code{suggests: plyr} if we can avoid it.
+because we don't want to have to suggest plyr, if we can avoid it.
 }
 
