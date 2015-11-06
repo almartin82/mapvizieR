@@ -5,7 +5,7 @@ testing_constants()
 
 ex_target_rit <- calc_cgp(
     measurementscale = 'Reading', 
-    grade = 2, 
+    end_grade = 2, 
     growth_window = 'Fall to Spring', 
     baseline_avg_rit = 173
   )[['targets']]
@@ -19,7 +19,7 @@ test_that("calc_cgp tests", {
 
   diff_params <- calc_cgp(
     measurementscale = 'Reading', 
-    grade = 2, 
+    end_grade = 2, 
     growth_window = 'Fall to Spring', 
     baseline_avg_rit = 173, 
     calc_for = c(50:60)
@@ -28,7 +28,7 @@ test_that("calc_cgp tests", {
   #addl params
   expect_equal(sum(diff_params$growth_target), 171.3971, tolerance = .01)
     
-  low_npr_ex <- calc_cgp(measurementscale = 'Reading', grade = 2, 
+  low_npr_ex <- calc_cgp(measurementscale = 'Reading', end_grade = 2, 
     growth_window = 'Fall to Spring', baseline_avg_rit = 133
   )[['targets']]
   
@@ -41,7 +41,9 @@ test_that("calc_cgp tests", {
 test_that("calc_cgp should fail given parameters out of range", {
 
   expect_error(
-    calc_cgp(measurementscale = 'Reading', grade = 2, growth_window = 'Fall to Spring', 
+    calc_cgp(
+      measurementscale = 'Reading', 
+      end_grade = 2, growth_window = 'Fall to Spring', 
       baseline_avg_rit = 173, calc_for = c(-10:2)
     )
   )
@@ -53,7 +55,7 @@ test_that("calc_cgp results", {
   
   rit_ex <- calc_cgp(
     measurementscale = 'Mathematics', 
-    grade = 8, 
+    end_grade = 8, 
     growth_window = 'Spring to Spring', 
     baseline_avg_rit = 226.7,
     ending_avg_rit = 233
@@ -67,7 +69,7 @@ test_that("calc_cgp results handle missing data", {
   
   rit_ex <- calc_cgp(
     measurementscale = 'Mathematics', 
-    grade = 8, 
+    end_grade = 8, 
     growth_window = 'Spring to Spring', 
     baseline_avg_rit = 226.7
   )[['results']]
@@ -105,7 +107,7 @@ test_that("calc_cgp is correct from NWEA lookups", {
   m5ss_results_199 <- c()
   for (i in c(4:16)) {
     m5ss <- calc_cgp(
-      measurementscale = 'Mathematics', grade = 5, 
+      measurementscale = 'Mathematics', end_grade = 5, 
       growth_window = 'Spring to Spring', 
       baseline_avg_rit = 199, ending_avg_rit = 199 + i
     )[['results']] 
@@ -119,7 +121,7 @@ test_that("calc_cgp is correct from NWEA lookups", {
   m5ss_results_205 <- c()
   for (i in c(3:15)) {
     m5ss <- calc_cgp(
-      measurementscale = 'Mathematics', grade = 5, 
+      measurementscale = 'Mathematics', end_grade = 5, 
       growth_window = 'Spring to Spring', 
       baseline_avg_rit = 205, ending_avg_rit = 205 + i
     )[['results']] 
@@ -161,5 +163,44 @@ test_that("one_cgp_step accurate", {
     'Reading', 203, 4, 84, 'Spring to Spring'
   )
   expect_equal(ex, 9.02, tolerance = .01)
+  
+})
+
+
+test_that("mapviz cgp targets correctly handles composite baseline", {  
+  
+  ex <- mapviz_cgp_targets(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Mathematics',
+    start_fws = c('Spring', 'Fall'),
+    start_year_offset = c(-1, 0),
+    end_fws = 'Spring',
+    end_academic_year = 2013,
+    end_grade = 6,
+    start_fws_prefer = 'Spring'
+  )
+  
+  expect_is(ex, 'data.frame')
+  expect_equal(ex$growth_target %>% sum(), 628.65, tolerance = 0.1)
+
+})
+
+
+test_that("mapviz cgp targets correctly handles explicit baseline", {  
+  
+  ex <- mapviz_cgp_targets(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Mathematics',
+    start_fws = 'Fall',
+    start_year_offset = 0,
+    end_fws = 'Spring',
+    end_academic_year = 2013,
+    end_grade = 6
+  )
+  
+  expect_is(ex, 'data.frame')
+  expect_equal(ex$growth_target %>% sum(), 762.3, tolerance = 0.1)
   
 })

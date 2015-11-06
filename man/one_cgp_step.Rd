@@ -2,9 +2,9 @@
 % Please edit documentation in R/cgp_prep.R
 \name{one_cgp_step}
 \alias{one_cgp_step}
-\title{wrapper to simplify CGP simulations interface to simplify CGP calculations}
+\title{wrapper to simplify CGP simulations}
 \usage{
-one_cgp_step(measurementscale, start_rit, start_grade, cgp,
+one_cgp_step(measurementscale, start_rit, end_grade, cgp,
   growth_window = "Spring to Spring")
 }
 \arguments{
@@ -12,7 +12,7 @@ one_cgp_step(measurementscale, start_rit, start_grade, cgp,
 
 \item{start_rit}{mean starting rit}
 
-\item{start_grade}{starting grade (not grade level season, just grade)}
+\item{end_grade}{starting grade (not grade level season, just grade)}
 
 \item{cgp}{target cgp.  can be single target or vector}
 

@@ -3,7 +3,7 @@
 #' @description calculates both cgp targets and cgp results.
 # '
 #' @param measurementscale MAP subject
-#' @param grade baseline/starting grad for the group of students
+#' @param end_grade baseline/starting grad for the group of students
 #' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students
 #' @param ending_avg_rit the baseline mean rit for the group of students
@@ -17,7 +17,7 @@
 
 calc_cgp <- function(
   measurementscale,
-  grade,
+  end_grade,
   growth_window,
   baseline_avg_rit = NA,
   ending_avg_rit = NA,
@@ -36,7 +36,7 @@ calc_cgp <- function(
   
   #valid terms
   vt <- sch_growth_study[, c('measurementscale', 'grade', 'growth_window')]
-  in_study <- paste(measurementscale, grade, growth_window, sep = '@') %in% paste(
+  in_study <- paste(measurementscale, end_grade, growth_window, sep = '@') %in% paste(
     vt$measurementscale, vt$grade, vt$growth_window, sep = '@'
   )
   if (!in_study) {
@@ -53,7 +53,7 @@ calc_cgp <- function(
   #TARGETS
   targets <- cohort_expectation(
     measurementscale,
-    grade,
+    end_grade,
     growth_window,
     baseline_avg_rit,
     calc_for
@@ -63,7 +63,7 @@ calc_cgp <- function(
   #lookup expectation
   grw_expect <- sch_growth_lookup(
     measurementscale,
-    grade,
+    end_grade,
     growth_window,
     baseline_avg_rit
   )
@@ -349,7 +349,7 @@ mapviz_cgp <- function(
     dplyr::mutate(
       cgp = calc_cgp(
         measurementscale = measurementscale,
-        grade = approx_grade,
+        end_grade = approx_grade,
         growth_window = paste(start_fallwinterspring, 'to', end_fallwinterspring),
         baseline_avg_rit = avg_start_rit,
         ending_avg_rit = avg_end_rit
@@ -361,13 +361,13 @@ mapviz_cgp <- function(
 }
 
 
-#' @title wrapper to simplify CGP simulations interface to simplify CGP calculations
+#' @title wrapper to simplify CGP simulations
 #'
 #' @description helps simulate what happens if a cohort grows at a constant CGP.
 #'
 #' @param measurementscale target subject
 #' @param start_rit mean starting rit
-#' @param start_grade starting grade (not grade level season, just grade)
+#' @param end_grade starting grade (not grade level season, just grade)
 #' @param cgp target cgp.  can be single target or vector
 #' @param growth_window what growth window to step
 #' 
@@ -376,14 +376,14 @@ mapviz_cgp <- function(
 one_cgp_step <- function(
   measurementscale, 
   start_rit, 
-  start_grade, 
+  end_grade, 
   cgp, 
   growth_window = 'Spring to Spring'
 ) {
   
   calc_cgp(
     measurementscale, 
-    start_grade,
+    end_grade,
     growth_window, 
     start_rit,
     calc_for = cgp
@@ -459,7 +459,7 @@ cdf_to_cgp <- function(cdf, grouping = 'implicit_cohort') {
     dplyr::mutate(
       cgp = calc_cgp(
         measurementscale = measurementscale,
-        grade = end_grade,
+        end_grade = end_grade,
         growth_window = paste(start_fallwinterspring, 'to', end_fallwinterspring),
         baseline_avg_rit = start_mean_rit,
         ending_avg_rit = end_mean_rit,
@@ -468,4 +468,143 @@ cdf_to_cgp <- function(cdf, grouping = 'implicit_cohort') {
     )
   
   return(grouped)
+}
+
+
+#' composite / preferred cdf baseline
+#' 
+#' @description given a vector of preferred baselines, will return
+#' one row per student
+#'
+#' @param cdf conforming cdf
+#' @param start_fws two or more seasons 
+#' @param start_year_offset vector of integers. 
+#' 0 if start season is same, -1 if start is prior year.
+#' @param end_fws ending season
+#' @param end_academic_year ending academic year
+#' @param start_fws_prefer which term is preferred?
+#' 
+#' @return cdf with one row per student/subject
+#' @export
+
+preferred_cdf_baseline <- function(
+  cdf, 
+  start_fws, 
+  start_year_offset, 
+  end_fws, 
+  end_academic_year, 
+  start_fws_prefer
+)  {
+  #munging
+  cdf <- cdf %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(
+      temp_year_season = paste(fallwinterspring, map_year_academic, sep = '_')
+    )
+  academic_years <- end_academic_year + start_year_offset
+  filter_year_seasons <- paste(start_fws, academic_years, sep = '_')
+  
+  #preferred row and filter
+  cdf <- cdf %>%
+    dplyr::filter(
+      temp_year_season %in% filter_year_seasons
+    ) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(
+      is_preferred = grepl(pattern = start_fws_prefer, x = temp_year_season),
+      for_filter = is_preferred %>% sum()
+    ) %>% 
+    dplyr::arrange(studentid, measurementscale, desc(for_filter)) %>% 
+    dplyr::group_by(studentid, measurementscale) %>%
+    dplyr::mutate(
+      for_filter = rank(-for_filter)
+    ) %>% 
+    dplyr::filter(
+      for_filter == 1
+    )
+  
+  return(cdf)
+}
+
+
+#' @title mapvizieR interface to simplify growth goal calculations
+#' 
+#' @description given an explicit window, or a composite baseline, will calculate
+#' CGP targets
+#' 
+#' @param mapvizieR_obj mapvizieR object
+#' @param studentids target students
+#' @param measurementscale target subject
+#' @param start_fws one academic season (if known); 
+#' pass vector of two and mapviz_cgp_targets will pick
+#' @param start_year_offset 0 if start season is same, -1 if start is prior year.
+#' @param end_fws ending season
+#' @param end_academic_year ending academic year
+#' @param specify the ending grade for the growth (this can't be reliably
+#' inferred from data).
+#' @param start_fws_prefer which term is preferred? not required if only one start_fws is passed
+#' 
+#' @return data frame of cgp targets
+#' @export
+
+mapviz_cgp_targets <- function(
+  mapvizieR_obj, 
+  studentids,
+  measurementscale,
+  start_fws,
+  start_year_offset,
+  end_fws,
+  end_academic_year,
+  end_grade,
+  start_fws_prefer = NA
+) {
+  #data validation and unpack
+  mv_opening_checks(mapvizieR_obj, studentids, 1)
+
+  #unpack the mapvizieR object and limit to desired students
+  df <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
+
+  #one term passed
+  if (length(start_fws) == 1) {
+    df <- df %>%
+      dplyr::filter(
+        fallwinterspring == start_fws &
+        map_year_academic == end_academic_year - start_year_offset
+      )
+    df$is_preferred <- TRUE
+
+  #multiple terms passed
+  } else if (length(start_fws) > 1) {
+    df <- preferred_cdf_baseline(
+      df, 
+      start_fws, 
+      start_year_offset, 
+      end_fws, 
+      end_academic_year, 
+      start_fws_prefer
+    ) 
+  }
+  
+  start_window <- df %>%
+    dplyr::ungroup() %>%
+    dplyr::filter(is_preferred) %>%
+    dplyr::select(
+      grade, fallwinterspring
+    ) %>%
+    unique() %>% unlist() %>% unname()
+
+  baseline_rit <- df %>%
+    dplyr::ungroup() %>%
+    dplyr::summarize(
+      baseline_rit = mean(testritscore, na.rm = TRUE)
+    ) %>% unlist() %>% unname()
+  
+  out <- calc_cgp(
+    measurementscale = measurementscale,
+    end_grade = end_grade,
+    growth_window = paste(start_window[2], 'to', end_fws),
+    baseline_avg_rit = baseline_rit
+  )[['targets']] 
+  
+  return(out)
 }
