@@ -112,6 +112,8 @@ stu_growth_detail <- function(
 #' @param studentids vector of studentids
 #' @param measurementscale target subject
 #' @param high_or_low_growth should we list most, or least growth?
+#' default is high.
+#' @param num_stu how many students to show in the table? default is 5.
 #' @param entry_grade_seasons what grades are considered entry grades
 #'
 #' @return a tableGrob 

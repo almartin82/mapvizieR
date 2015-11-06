@@ -15,7 +15,10 @@ stu_growth_detail_table(mapvizieR_obj, studentids, measurementscale,
 
 \item{measurementscale}{target subject}
 
-\item{high_or_low_growth}{should we list most, or least growth?}
+\item{high_or_low_growth}{should we list most, or least growth?
+default is high.}
+
+\item{num_stu}{how many students to show in the table? default is 5.}
 
 \item{entry_grade_seasons}{what grades are considered entry grades}
 }

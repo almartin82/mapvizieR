@@ -27,6 +27,8 @@ fall_goals_report(mapvizieR_obj, studentids, measurementscale, context,
 \item{end_academic_year}{ending academic year}
 
 \item{entry_grade_seasons}{for becca plot.  default is c(-0.8, 4.2)}
+
+\item{detail_academic_year}{passed through to various plots}
 }
 \value{
 a multipage report, represented as a list of grobs.

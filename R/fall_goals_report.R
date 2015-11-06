@@ -10,6 +10,7 @@
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
 #' @param entry_grade_seasons for becca plot.  default is c(-0.8, 4.2)
+#' @param detail_academic_year passed through to various plots
 #' 
 #' @return a multipage report, represented as a list of grobs.
 #' @export
