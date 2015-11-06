@@ -25,6 +25,10 @@ roster_to_cdf <- function(
     !'end_fallwinterspring' %in% names(.) ~ 
       "you provided a growth df, but this function is designed for the cdf. try roster_to_growth_df()"
   )
+  target_df %>% ensurer::ensure_that(
+    c('studentid', 'map_year_academic', 'fallwinterspring') %in% names(.) %>% all() ~ 
+      "c(studentid, map_year_academic, fallwinterspring) are minimum requirements for roster_to_cdf"
+  )  
   
   #get the roster
   roster <- mapvizieR_obj$roster
@@ -49,10 +53,12 @@ roster_to_cdf <- function(
   slim <- roster[, names(roster) %in% all_cols] %>% unique()
   
   #join
-  target_df <- target_df %>% dplyr::left_join(
-    slim,
-    by = basic_cols
-  )
+  target_df <- target_df %>%
+    dplyr::ungroup() %>%
+    dplyr::left_join(
+      slim %>% dplyr::ungroup(),
+      by = basic_cols
+    )
   
   return(target_df)
 }

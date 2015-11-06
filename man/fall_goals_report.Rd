@@ -2,7 +2,7 @@
 % Please edit documentation in R/fall_goals_report.R
 \name{fall_goals_report}
 \alias{fall_goals_report}
-\title{Title}
+\title{Fall Goals Report}
 \usage{
 fall_goals_report(mapvizieR_obj, studentids, measurementscale, context,
   start_fws = "Spring", start_year_offset = -1, end_fws = "Spring",
@@ -34,6 +34,6 @@ fall_goals_report(mapvizieR_obj, studentids, measurementscale, context,
 a multipage report, represented as a list of grobs.
 }
 \description{
-Title
+Fall Goals Report
 }
 

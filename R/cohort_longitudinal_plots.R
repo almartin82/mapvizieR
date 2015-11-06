@@ -9,6 +9,8 @@
 #' @param first_and_spring_only logical, should we include fall/winter scores
 #' from non-entry grades?
 #' @param entry_grade_seasons what grades are 'entry' grades for this school? 
+#' @param name_annotations should we include student names on the plot? 
+#' default is FALSE.
 #' @param student_norms which student norms for template?
 #' @param student_alpha how much to alpha-out the student observations?
 #' @param trace_lines what norms to show?
@@ -22,6 +24,7 @@ cohort_longitudinal_npr_plot <- function(
   measurementscale,
   first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2), 
+  name_annotations = FALSE,
   student_norms = 2015,
   student_alpha = 0.1,
   trace_lines = c(1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 99)
@@ -40,6 +43,29 @@ cohort_longitudinal_npr_plot <- function(
     this_cdf, first_and_spring_only, entry_grade_seasons, 9999
   )
   this_cdf$type <- 'Student'
+
+  #add student names
+  this_cdf <- roster_to_cdf(
+    this_cdf, mapvizieR_obj, c('studentfirstname', 'studentlastname')
+  )
+  
+  #for student display name
+  this_cdf <- this_cdf %>%
+    dplyr::mutate(
+      short_name = paste0(
+        stringr::str_sub(studentfirstname, 1, 1), '. ', studentlastname
+      )
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::arrange(
+      studentid, desc(grade_level_season)
+    ) %>%
+    dplyr::group_by(studentid) %>%
+    dplyr::mutate(
+      name_helper = cumsum(!is.na(testritscore)),
+      short_name = ifelse(!is.na(testritscore) & name_helper == 1, short_name, '')
+    ) %>%
+    dplyr::select(-name_helper)
   
   grouped <- this_cdf %>%
     dplyr::group_by(
@@ -50,57 +76,80 @@ cohort_longitudinal_npr_plot <- function(
     )
   grouped$type <- 'Cohort'
   grouped$studentid <- 'Cohort'
+  grouped$short_name <- 'Cohort'
   
   final_cdf <- rbind(
     grouped,
     this_cdf %>% 
-      dplyr::select(type, grade_level_season, testritscore, studentid)
+      dplyr::select(type, grade_level_season, testritscore, studentid, short_name)
   )
   
   out <- template + 
-  geom_point(
-    data = final_cdf,
-    aes(
-      x = grade_level_season,
-      y = testritscore,
-      group = studentid,
-      color = type,
-      size = type,
-      alpha = type
+    geom_point(
+      data = final_cdf,
+      aes(
+        x = grade_level_season,
+        y = testritscore,
+        group = studentid,
+        color = type,
+        size = type,
+        alpha = type
+      )
     )
-  ) +
-  geom_line(
-    data = final_cdf,
-    aes(
-      x = grade_level_season,
-      y = testritscore,
-      group = studentid,
-      color = type,
-      size = type,
-      alpha = type
-    )
-  ) +    
-  scale_size_manual(values = c(3, 1)) +
-  scale_alpha_manual(values = c(1, student_alpha)) +
-  scale_color_manual(values = c('red2', 'darkblue')) +
-  theme_bw() +
-  theme(
-    panel.grid = element_blank()
-  ) +
-  coord_cartesian(
-    xlim = c(
-      this_cdf$grade_level_season %>% min() %>% 
-        round_to_any(accuracy = 1, f = floor) - 0.05, 
-      this_cdf$grade_level_season %>% max() %>%
-        round_to_any(accuracy = 1, f = ceiling) + 0.05
-    ), 
-    ylim = c(
-      this_cdf$testritscore %>% min() %>% 
-        round_to_any(accuracy = 5, f = floor), 
-      this_cdf$testritscore %>% max() %>%
-        round_to_any(accuracy = 5, f = ceiling)
-    )
-  ) 
+  
+  if (name_annotations) {
+    out <- out +
+      geom_text(
+        data = final_cdf,
+        aes(
+          x = grade_level_season - 0.01,
+          y = testritscore,
+          group = studentid,
+          label = short_name,
+          color = type
+        ),
+        alpha = .25,
+        size = 3,
+        hjust = 1,
+        check_overlap = TRUE,
+        position = position_jitter(width = 0, height = 0.5)
+      )
+  }
+  
+  
+  out <- out +
+    geom_line(
+      data = final_cdf,
+      aes(
+        x = grade_level_season,
+        y = testritscore,
+        group = studentid,
+        color = type,
+        size = type,
+        alpha = type
+      )
+    ) +    
+    scale_size_manual(values = c(3, 1)) +
+    scale_alpha_manual(values = c(1, student_alpha)) +
+    scale_color_manual(values = c('red2', 'darkblue')) +
+    theme_bw() +
+    theme(
+      panel.grid = element_blank()
+    ) +
+    coord_cartesian(
+      xlim = c(
+        this_cdf$grade_level_season %>% min() %>% 
+          round_to_any(accuracy = 1, f = floor) - 0.05, 
+        this_cdf$grade_level_season %>% max() %>%
+          round_to_any(accuracy = 1, f = ceiling) + 0.05
+      ), 
+      ylim = c(
+        this_cdf$testritscore %>% min() %>% 
+          round_to_any(accuracy = 5, f = floor), 
+        this_cdf$testritscore %>% max() %>%
+          round_to_any(accuracy = 5, f = ceiling)
+      )
+    ) 
   
   return(out)
   

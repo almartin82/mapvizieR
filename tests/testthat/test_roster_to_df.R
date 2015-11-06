@@ -61,4 +61,11 @@ test_that("bad data tests", {
     roster_to_growth_df(mapviz$cdf, mapviz, 'studentgender'),
     "you provided a regular cdf, but this function is designed for the growth_df."
   )
+  
+  expect_error(
+    roster_to_cdf(
+      mapviz$cdf %>% dplyr::select(-studentid), mapviz, 'studentgender'
+    ),
+    "are minimum requirements for roster_to_cdf"
+  )
 })

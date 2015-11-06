@@ -1,5 +1,4 @@
-
-#' Title
+#' Fall Goals Report
 #'
 #' @param mapvizieR_obj a valid mapvizieR_object
 #' @param studentids a vector of studentids to run
@@ -64,7 +63,8 @@ fall_goals_report <- function(
     mapvizieR_obj = mapvizieR_obj,
     studentids = studentids,
     measurementscale = measurementscale,
-    student_alpha = 0.075
+    student_alpha = 0.075,
+    name_annotations = TRUE
   ) 
   
   most_growth <- stu_growth_detail_table(
@@ -84,14 +84,6 @@ fall_goals_report <- function(
     high_or_low_growth = 'low',
     num_stu = 10
   )
-  
-  stu_growth_detail_table(
-    mapvizieR_obj = mapviz,
-    studentids = studentids_normal_use,
-    measurementscale = 'Mathematics',
-    entry_grade_seasons = c(-0.8, 5.2)
-  )
-  
   
   left_stack <- arrangeGrob(becca, cgp_hist, nrow = 2)
   right_stack <- arrangeGrob(most_growth, least_growth, nrow = 2)
