@@ -362,7 +362,7 @@ quealy_permutation_stats <- function(df, subgroup) {
   for (i in 1:nrow(results)) {
     results[i, ]$cgp <- calc_cgp(
         measurementscale = results[i, ]$measurementscale,
-        grade = results[i, ]$approximate_grade,
+        end_grade = results[i, ]$approximate_grade,
         growth_window = paste(results[i, ]$start_fallwinterspring, 
           'to', results[i, ]$end_fallwinterspring),
         baseline_avg_rit = results[i, ]$start_rit,
