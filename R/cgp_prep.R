@@ -543,6 +543,7 @@ preferred_cdf_baseline <- function(
 #' @param specify the ending grade for the growth (this can't be reliably
 #' inferred from data).
 #' @param start_fws_prefer which term is preferred? not required if only one start_fws is passed
+#' @param calc_for passed through to calc_cgp, what values to calculate targets for?
 #' 
 #' @return data frame of cgp targets
 #' @export
@@ -556,7 +557,8 @@ mapviz_cgp_targets <- function(
   end_fws,
   end_academic_year,
   end_grade,
-  start_fws_prefer = NA
+  start_fws_prefer = NA,
+  calc_for = c(1:99)
 ) {
   #data validation and unpack
   mv_opening_checks(mapvizieR_obj, studentids, 1)
@@ -569,7 +571,7 @@ mapviz_cgp_targets <- function(
     df <- df %>%
       dplyr::filter(
         fallwinterspring == start_fws &
-        map_year_academic == end_academic_year - start_year_offset
+        map_year_academic == end_academic_year + start_year_offset
       )
     df$is_preferred <- TRUE
 
@@ -603,7 +605,8 @@ mapviz_cgp_targets <- function(
     measurementscale = measurementscale,
     end_grade = end_grade,
     growth_window = paste(start_window[2], 'to', end_fws),
-    baseline_avg_rit = baseline_rit
+    baseline_avg_rit = baseline_rit,
+    calc_for = calc_for
   )[['targets']] 
   
   return(out)
