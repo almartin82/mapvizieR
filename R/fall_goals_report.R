@@ -66,9 +66,37 @@ fall_goals_report <- function(
     student_alpha = 0.075
   ) 
   
+  most_growth <- stu_growth_detail_table(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale = measurementscale,
+    entry_grade_seasons = entry_grade_seasons,
+    high_or_low_growth = 'high',
+    num_stu = 10
+  )
+
+  least_growth <- stu_growth_detail_table(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale = measurementscale,
+    entry_grade_seasons = entry_grade_seasons,
+    high_or_low_growth = 'low',
+    num_stu = 10
+  )
+  
+  stu_growth_detail_table(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Mathematics',
+    entry_grade_seasons = c(-0.8, 5.2)
+  )
+  
+  
   left_stack <- arrangeGrob(becca, cgp_hist, nrow = 2)
+  right_stack <- arrangeGrob(most_growth, least_growth, nrow = 2)
+  
   p1b <- arrangeGrob(
-    left_stack, cohort_longitudinal, minimal, 
+    left_stack, cohort_longitudinal, right_stack, 
     ncol = 3, widths = c(1, 2, 1)
   )
   p1b <- report_footer(p1b, context)
