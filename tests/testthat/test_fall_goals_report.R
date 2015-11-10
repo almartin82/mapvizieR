@@ -41,3 +41,26 @@ test_that("fall goals data table returns tableGrob", {
   
   fgt_test %>% plot()
 })
+
+
+test_that("options on fall goals component plots", {
+  
+  ex_table <- fall_goals_data_table(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Mathematics',
+    start_fws = 'Spring',
+    start_year_offset = -1,
+    end_fws = 'Spring',
+    end_academic_year = 2013,
+    end_grade = 6,
+    start_fws_prefer = NA, 
+    calc_for = 80,
+    output = 'both',
+    font_size = 34
+  )
+  
+  expect_is(ex_table, 'gtable')
+  expect_is(ex_table, 'grob')
+  
+})

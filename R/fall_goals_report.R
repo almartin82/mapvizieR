@@ -10,6 +10,7 @@
 #' @param end_academic_year ending academic year
 #' @param entry_grade_seasons for becca plot.  default is c(-0.8, 4.2)
 #' @param detail_academic_year passed through to various plots
+#' @param goal_cgp what target CGP should be used for goals?
 #' 
 #' @return a multipage report, represented as a list of grobs.
 #' @export
@@ -24,7 +25,8 @@ fall_goals_report <- function(
   end_fws = 'Spring',
   end_academic_year = 2015,
   entry_grade_seasons = c(-0.8, 4.2),
-  detail_academic_year = 9999
+  detail_academic_year = 9999,
+  goal_cgp = 80
 ) {
   
   #placeholder
@@ -98,7 +100,6 @@ fall_goals_report <- function(
   
   report_list[[1]] <- p1
 
-  
   #2. Where do they need to go?
   end_grade <- mapvizieR_obj$roster %>%
     dplyr::filter(
@@ -110,6 +111,7 @@ fall_goals_report <- function(
     ) %>%
     table() %>% names() %>% extract(1)
   
+  #in words
   goals_words <- fall_goals_data_table(
     mapvizieR_obj,
     studentids,
@@ -120,22 +122,93 @@ fall_goals_report <- function(
     end_academic_year,
     end_grade,
     start_fws_prefer, 
-    calc_for = 80
+    calc_for = goal_cgp,
+    output = 'baseline',
+    font_size = 34
+  )
+  goals_words_exp1 <- h_var(
+    "Baseline RIT (measured in class average RIT)",
+    gp = grid::gpar(fontsize = 16, fontface = "italic")
+  )
+  if (length(start_fws) > 1) {
+    goals_words_exp2 <- h_var(
+      sprintf(
+        "Baseline RIT includes student %s score when available, %s when not.", 
+        start_fws[1], start_fws[2]
+      ),
+      gp = grid::gpar(fontsize = 11, fontface = 'plain')
+    )
+  } else if (length(start_fws == 1)) {
+    goals_words_exp2 <- h_var(
+      sprintf("Baseline RIT includes only student %s scores.", start_fws), 
+      gp = grid::gpar(fontsize = 11, fontface = 'plain')
+    )
+  }
+  
+  goals_words <- gridExtra::arrangeGrob(
+    goals_words_exp1, goals_words, goals_words_exp2, nrow = 3, heights = c(1, 2.5, .5)
   )
   
-  goals_chart_explanation <- h_var(
-    "Our goal is for this cohort to grow \nin the top 20% of cohorts nationally.",
-    20
+  #distro
+  expectations_df <- mapviz_cgp_targets(
+    mapvizieR_obj,
+    studentids,
+    measurementscale,
+    start_fws,
+    start_year_offset,
+    end_fws,
+    end_academic_year,
+    end_grade,
+    start_fws_prefer, 
+    calc_for = goal_cgp,
+    returns = 'expectations'
   )
-  goals_chart <- gridExtra::arrangeGrob(
-    goals_chart_explanation, minimal, nrow = 2, heights = c(1, 3)
+  
+  goals_distro_exp <- h_var(
+    "The NWEA school growth study shows \nhow much growth similar classes make.",
+    gp = grid::gpar(fontsize = 16, fontface = "italic")
+  )
+  goals_distro_plot <- cohort_growth_expectations_plot(expectations_df)
+  goals_distro <- gridExtra::arrangeGrob(
+    goals_distro_exp, goals_distro_plot, nrow = 2, heights = c(1, 3)
+  )
+  
+  #goals
+  goals_target_exp <- h_var(
+    "Our goal is for this cohort to grow \nin the top 20% of cohorts nationally.",
+    gp = grid::gpar(fontsize = 16, fontface = "italic")
+  )
+  goals_target <- fall_goals_data_table(
+    mapvizieR_obj,
+    studentids,
+    measurementscale,
+    start_fws,
+    start_year_offset,
+    end_fws,
+    end_academic_year,
+    end_grade,
+    start_fws_prefer, 
+    calc_for = goal_cgp,
+    output = 'goals',
+    font_size = 34
+  )
+  goals_target <- gridExtra::arrangeGrob(
+    goals_target_exp, goals_target, minimal, nrow = 3, heights = c(1, 2.5, .5)
   )
   
   goals <- gridExtra::arrangeGrob(
-    goals_words, goals_chart, ncol = 2
+    goals_words, goals_distro, goals_target, ncol = 3
   )
   
-  sim <- minimal
+  #sim
+  sim_exp1 <- h_var(
+    sprintf("Why have we set our growth goal at the %sth percentile?", goal_cgp),
+    gp = grid::gpar(fontsize = 16, fontface = "italic")
+  )
+  
+  sim <- gridExtra::arrangeGrob(
+    sim_exp1, minimal, nrow = 2, heights = c(1, 12)
+  )
   
   p2_top <- h_var('2. Where do they need to go?', 36)
   p2 <- gridExtra::arrangeGrob(
@@ -149,6 +222,24 @@ fall_goals_report <- function(
 }
 
 
+#' Basline and Goals, for printing reports
+#'
+#' @param mapvizieR_obj a valid mapvizieR object
+#' @param studentids vector of studentids
+#' @param measurementscale target subject
+#' @param start_fws character, starting season for school growth norms
+#' @param start_year_offset 0 if start season is same, -1 if start is prior year.
+#' @param end_fws ending season
+#' @param end_academic_year ending academic year
+#' @param end_grade grade level at end of growth window (for lookup)
+#' @param start_fws_prefer if more than one start_fws, what is the preferred term?
+#' @param calc_for what CGPs to calc for?  vector of integers between 1:99
+#' @param output c('both', 'baseline', 'goals')
+#' @param font_size how big to print
+#'
+#' @return gridArrange object of grobs
+#' @export
+
 fall_goals_data_table <- function(
   mapvizieR_obj,
   studentids,
@@ -159,7 +250,9 @@ fall_goals_data_table <- function(
   end_academic_year,
   end_grade,
   start_fws_prefer = NA, 
-  calc_for = 80
+  calc_for = 80,
+  output = 'both',
+  font_size = 20
 ) {
   
   targets_df <- mapviz_cgp_targets(
@@ -174,7 +267,7 @@ fall_goals_data_table <- function(
     start_fws_prefer, 
     calc_for
   )
-  
+
   df <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
   
   if (length(start_fws) == 1) {
@@ -196,27 +289,117 @@ fall_goals_data_table <- function(
   }
   
   baseline_df <- baseline_df %>%
-  dplyr::summarize(
-    avg_rit = mean(testritscore, na.rm = TRUE),
-    avg_npr = mean(consistent_percentile, na.rm = TRUE)
-  )
+    dplyr::summarize(
+      avg_rit = mean(testritscore, na.rm = TRUE),
+      avg_npr = mean(consistent_percentile, na.rm = TRUE)
+    )
   
   baseline_rit <- baseline_df$avg_rit %>% round(1) %>% unlist() %>% unname()
   target_change <- targets_df$growth_target %>% round(1) %>% unlist() %>% unname()
   
-  r1a <- h_var("Start: ", 20)
-  r2a <- h_var("Goal: ", 20)
+  r1a <- h_var("Baseline: ", font_size)
+  r2a <- h_var("Spring Goal: ", font_size)
   
-  r1b <- h_var(baseline_rit, 26)
+  r1b <- h_var(baseline_rit, font_size)
   r2b <- h_var(
-    paste0(baseline_rit + target_change, ' (+', target_change, ')'), 26
+    paste0(baseline_rit + target_change, ' (+', target_change, ')'), font_size
   ) 
   
   r1 <- gridExtra::arrangeGrob(r1a, r1b, ncol = 2)
   r2 <- gridExtra::arrangeGrob(r2a, r2b, ncol = 2)
   
-  final <- gridExtra::arrangeGrob(r1, r2, nrow = 2)
+  if (output == 'both') {
+    final <- gridExtra::arrangeGrob(r1, r2, nrow = 2)
+  } else if (output == 'baseline') {
+    final <- r1    
+  } else if (output == 'goals') {
+    final <- r2
+  }
   
   return(final)
 }
 
+
+
+#' Expectation distribution
+#'
+#' @param expectations_df output of mapviz_cgp_targets - the expectations
+#' data frame
+#' @param num_sd how many sds to show?  default is +/- 3 
+#' @param ref_lines what CGP reference lines to show?  
+#' default is 1, 5, 20, 50, 80, 95, 99
+#' @param should we highlight a reference line?  set to -1 if not wanted
+#'
+#' @return a ggplot object
+#' @export
+
+cohort_growth_expectations_plot <- function(
+  expectations_df,
+  num_sd = 3,
+  ref_lines = c(.01, .05, .2, .5, .8, .95, .99),
+  highlight = .8
+  ) {
+  
+  c_mean <- expectations_df$typical_cohort_growth
+  c_sd <- expectations_df$sd_of_expectation
+  
+  c_lower <- c_mean + -num_sd * c_sd
+  c_upper <- c_mean + num_sd * c_sd
+  
+  ref_display <- c_mean + (c_sd * qnorm(ref_lines))
+  
+  out <- ggplot(
+    data = data.frame(x = c(-num_sd * c_sd, num_sd * c_sd)), 
+    aes(x)
+  ) + 
+  geom_vline(
+    data = data.frame(
+      x = ref_display,
+      hilite = ref_lines == highlight
+    ),
+    aes(xintercept = x, color = hilite, size = hilite),
+    alpha = 0.5
+  ) +
+  geom_text(
+    data = data.frame(
+      x = ref_display,
+      cgp = ref_lines * 100,
+      helper = ifelse(ref_display >= 0, '+', '')
+    ),
+    aes(
+      x = x,
+      label = paste0('CGP ', cgp, ': ', helper, x %>% round(1)),
+      y = 0
+    ),
+    angle = 90,
+    vjust = 0,
+    hjust = 0,
+    size = 3
+  ) +
+  scale_color_manual(values = c('gray50', 'green3')) +
+  scale_size_manual(values = c(.5, 1.25)) +
+  stat_function(
+    fun = dnorm, 
+    args = list(mean = c_mean, sd = c_sd)
+  ) +
+  theme_bw() +
+  theme(
+    panel.grid = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank()
+  ) +
+  scale_x_continuous(
+    breaks = seq(
+      round_to_any(c_lower, 2, floor), 
+      round_to_any(c_upper, 2, ceiling),
+      2
+    ),
+    limits = c(c_lower, c_upper)
+  ) +
+  labs(
+    x = 'Expected cohort growth (in mean RIT)',
+    y = ''
+  )
+  
+  out  
+}

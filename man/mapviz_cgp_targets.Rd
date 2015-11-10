@@ -6,7 +6,7 @@
 \usage{
 mapviz_cgp_targets(mapvizieR_obj, studentids, measurementscale, start_fws,
   start_year_offset, end_fws, end_academic_year, end_grade,
-  start_fws_prefer = NA, calc_for = c(1:99))
+  start_fws_prefer = NA, calc_for = c(1:99), returns = "targets")
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -27,6 +27,8 @@ pass vector of two and mapviz_cgp_targets will pick}
 \item{start_fws_prefer}{which term is preferred? not required if only one start_fws is passed}
 
 \item{calc_for}{passed through to calc_cgp, what values to calculate targets for?}
+
+\item{returns}{'targets' or 'expectations'?}
 
 \item{specify}{the ending grade for the growth (this can't be reliably
 inferred from data).}

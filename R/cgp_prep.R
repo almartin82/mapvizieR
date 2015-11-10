@@ -75,9 +75,11 @@ calc_cgp <- function(
   
   z_score = (act - typ) / sdev
   cgp = pnorm(z_score) * 100
-    
+  
+  #include observed baseline in expectations
+  grw_expect$observed_baseline <- baseline_avg_rit
   return(
-    list("targets" = targets, "results" = cgp)
+    list("targets" = targets, "results" = cgp, "expectations" = grw_expect)
   )
 }
 
@@ -544,6 +546,7 @@ preferred_cdf_baseline <- function(
 #' inferred from data).
 #' @param start_fws_prefer which term is preferred? not required if only one start_fws is passed
 #' @param calc_for passed through to calc_cgp, what values to calculate targets for?
+#' @param returns 'targets' or 'expectations'?
 #' 
 #' @return data frame of cgp targets
 #' @export
@@ -558,7 +561,8 @@ mapviz_cgp_targets <- function(
   end_academic_year,
   end_grade,
   start_fws_prefer = NA,
-  calc_for = c(1:99)
+  calc_for = c(1:99),
+  returns = 'targets'
 ) {
   #data validation and unpack
   mv_opening_checks(mapvizieR_obj, studentids, 1)
@@ -607,7 +611,7 @@ mapviz_cgp_targets <- function(
     growth_window = paste(start_window[2], 'to', end_fws),
     baseline_avg_rit = baseline_rit,
     calc_for = calc_for
-  )[['targets']] 
+  )[[returns]]
   
   return(out)
 }
