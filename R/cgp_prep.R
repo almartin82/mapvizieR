@@ -78,6 +78,15 @@ calc_cgp <- function(
   
   #include observed baseline in expectations
   grw_expect$observed_baseline <- baseline_avg_rit
+  #include implied start grade_level_season in expectations
+  if (grw_expect$growth_window == 'Fall to Spring') {
+    grw_expect$start_grade_level_season <- grw_expect$grade - 0.8
+  } else if (grw_expect$growth_window == 'Spring to Spring') {
+    grw_expect$start_grade_level_season <- grw_expect$grade - 1
+  } else {
+    grw_expect$start_grade_level_season <- NA_real_
+  }
+  
   return(
     list("targets" = targets, "results" = cgp, "expectations" = grw_expect)
   )
@@ -390,6 +399,55 @@ one_cgp_step <- function(
     start_rit,
     calc_for = cgp
   )[['targets']]$growth_target
+}
+
+
+#' simulate school growth at a constant CGP
+#'
+#' @param measurementscale target subject
+#' @param start_rit RIT the cohort started at
+#' @param cgp what CGP to simulate growth at
+#' @param sim_over 'ES', 'MS' or a vector of grade levels, at least length 2
+#'
+#' @return a named list, with grades and rits
+#' @export
+
+cgp_sim <- function(
+  measurementscale, 
+  start_rit, 
+  cgp, 
+  sim_over = 'MS'
+  ) {
+  
+  #ms or es
+  if (is.numeric(sim_over)) {
+    start_grade <- sim_over[1]
+    iterate_over <- sim_over[-1]
+  } else if (sim_over == 'MS') {
+    start_grade <- 4.2
+    iterate_over <- c(5:8)
+  } else if (sim_over == 'ES') {
+    start_grade <- -0.8
+    iterate_over <- c(0:8)
+  } 
+  
+  #running rit starts at input value
+  rit <- start_rit
+  
+  #store the values
+  running_rits <- c(rit)
+  grades <- c(start_grade)
+  
+  for (i in iterate_over) {
+    #entry
+    if (i %in% c(0, 5)) window <- 'Fall to Spring' else window <- 'Spring to Spring'
+    
+    rit <- one_cgp_step(measurementscale, rit, i, cgp, window) + rit
+    grades <- c(grades, i)
+    running_rits <- c(running_rits, rit)
+  }
+  
+  list('grade_seq' = grades, 'rit_seq' = running_rits)  
 }
 
 

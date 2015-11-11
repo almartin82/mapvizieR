@@ -11,6 +11,7 @@
 #' @param entry_grade_seasons for becca plot.  default is c(-0.8, 4.2)
 #' @param detail_academic_year passed through to various plots
 #' @param goal_cgp what target CGP should be used for goals?
+#' @param school_type c('ES', 'MS')
 #' 
 #' @return a multipage report, represented as a list of grobs.
 #' @export
@@ -26,7 +27,9 @@ fall_goals_report <- function(
   end_academic_year = 2015,
   entry_grade_seasons = c(-0.8, 4.2),
   detail_academic_year = 9999,
-  goal_cgp = 80
+  goal_cgp = 80,
+  school_type = 'MS',
+  localization = localize('Newark')
 ) {
   
   #placeholder
@@ -168,14 +171,22 @@ fall_goals_report <- function(
     "The NWEA school growth study shows \nhow much growth similar classes make.",
     gp = grid::gpar(fontsize = 16, fontface = "italic")
   )
-  goals_distro_plot <- cohort_growth_expectations_plot(expectations_df)
+  goals_distro_plot <- cohort_growth_expectations_plot(
+    expectations_df = expectations_df,
+    ref_lines = c(.01, .05, .2, .5, .8, .95, .99, goal_cgp / 100) %>% unique(),
+    highlight = goal_cgp / 100
+  )
+  
   goals_distro <- gridExtra::arrangeGrob(
     goals_distro_exp, goals_distro_plot, nrow = 2, heights = c(1, 3)
   )
   
   #goals
   goals_target_exp <- h_var(
-    "Our goal is for this cohort to grow \nin the top 20% of cohorts nationally.",
+    paste0(
+      "Our goal is for this cohort to grow \nin the top ", 
+      sprintf("%s of cohorts nationally.", paste0(100 - goal_cgp, '%'))
+    ),
     gp = grid::gpar(fontsize = 16, fontface = "italic")
   )
   goals_target <- fall_goals_data_table(
@@ -201,13 +212,142 @@ fall_goals_report <- function(
   )
   
   #sim
-  sim_exp1 <- h_var(
-    sprintf("Why have we set our growth goal at the %sth percentile?", goal_cgp),
-    gp = grid::gpar(fontsize = 16, fontface = "italic")
+  fall_goals_local_df = localization$fall_goals_data
+  
+  this_report <- fall_goals_local_df %>%
+    dplyr::filter(
+      report_measurementscale == measurementscale &
+        report_schooltype == school_type
+    )
+  
+  sim_header_l <- h_var(
+    sprintf("Why is our growth goal at the %sth percentile?", goal_cgp),
+    gp = grid::gpar(fontsize = 20, fontface = "bold.italic")
   )
   
+  sim_header_r <- h_var(
+    sprintf("What would %sth CGP growth mean for this cohort?", goal_cgp),
+    gp = grid::gpar(fontsize = 20, fontface = "bold.italic")
+  )
+  
+  left_exp <- RGraphics::splitTextGrob(
+    paste0(
+      "The KIPP 2020 Goal calls for 50% of students to finish ",
+      sprintf("%s school above the 75th ", this_report$verbose_schooltype),
+      sprintf("percentile in %s. ", measurementscale),
+      "That's roughly equivalent to a class average RIT ",
+      sprintf("of %s by the end ", this_report$annotate_y),
+      sprintf("of %s grade. ", this_report$annotate_x %>% toOrdinal::toOrdinal()),
+      "The chart below is a 'what-if' chart that illustrates how a cohort ",
+      "would grow over time, assuming growth at ",
+      sprintf("the %s CGP, using our average ", goal_cgp %>% toOrdinal::toOrdinal()),
+      sprintf("historical entering cohort (RIT %s) ", this_report$sim_start),
+      "as a starting point."
+    ),
+    gp = grid::gpar(fontsize = 14)
+  )
+  
+  goal_equiv <- empty_norm_grade_space(
+    measurementscale = measurementscale,
+    spring_only = TRUE
+  )
+  
+  goal_equiv <- goal_equiv +
+    annotate(
+      geom = 'point',
+      x = this_report$annotate_x, y = this_report$annotate_y,
+      shape = 24,
+      fill = 'gold1',
+      size = 4
+    ) +
+    coord_cartesian(
+      xlim = c(this_report$xmin, this_report$xmax),
+      ylim = c(this_report$ymin, this_report$ymax)
+    )
+  
+  idealized_growth <- cgp_sim(
+    measurementscale = measurementscale, 
+    start_rit = this_report$sim_start, 
+    cgp = goal_cgp, 
+    sim_over = school_type
+  )
+  
+  idealized_growth <- data.frame(
+    grade_seq = idealized_growth$grade_seq,
+    rit = idealized_growth$rit_seq
+  )
+  
+  idealized_sim <- goal_equiv +
+    geom_text(
+      data = idealized_growth,
+      aes(x = grade_seq, y = rit, label = rit %>% round()),
+      vjust = 1
+    ) +
+    geom_line(
+      data = idealized_growth,
+      aes(x = grade_seq, y = rit)
+    ) +
+    labs(
+      title = sprintf(
+        "Idealized 'What if?' growth, %s %s", school_type, measurementscale
+      )
+    )
+    
+  left_stack <- gridExtra::arrangeGrob(
+    left_exp, idealized_sim, nrow = 2, heights = c(1, 6)
+  )
+  
+  #right
+  right_exp <- RGraphics::splitTextGrob(
+    paste0(
+      "The chart below shows what would happen if this cohort grew ",
+      "from their current baseline ",
+      sprintf("(RIT %s) ", expectations_df$observed_baseline %>% round(1)),
+      sprintf("at CGP %s through the ", goal_cgp),
+      sprintf("end of %s ", this_report$annotate_x %>% toOrdinal::toOrdinal()),
+      "grade."
+    ),
+    gp = grid::gpar(fontsize = 14)
+  )
+  
+  start_sim <- expectations_df$start_grade_level_season
+  specific_growth <- cgp_sim(
+    measurementscale = measurementscale, 
+    start_rit = expectations_df$observed_baseline, 
+    cgp = goal_cgp, 
+    sim_over = c(start_sim, seq(expectations_df$grade, this_report$annotate_x, 1))
+  )
+  
+  specific_growth <- data.frame(
+    grade_seq = specific_growth$grade_seq,
+    rit = specific_growth$rit_seq
+  )
+  
+  specific_sim <- goal_equiv +
+    geom_text(
+      data = specific_growth,
+      aes(x = grade_seq, y = rit, label = rit %>% round(1)),
+      vjust = 1
+    ) +
+    geom_line(
+      data = specific_growth,
+      aes(x = grade_seq, y = rit)
+    ) +
+    labs(
+      title = sprintf(
+        "Simulated Growth for this cohort, assuming %s CGP", goal_cgp
+      )
+    )
+  
+  right_stack <- gridExtra::arrangeGrob(
+    right_exp, specific_sim, nrow = 2, heights = c(1, 6)
+  )
+  
+  sim_header <- gridExtra::arrangeGrob(sim_header_l, sim_header_r, ncol = 2)
+  sim_bottom <- gridExtra::arrangeGrob(left_stack, right_stack, ncol = 2)
+  
   sim <- gridExtra::arrangeGrob(
-    sim_exp1, minimal, nrow = 2, heights = c(1, 12)
+    sim_header, sim_bottom, nrow = 2, heights = c(1, 12)
   )
   
   p2_top <- h_var('2. Where do they need to go?', 36)

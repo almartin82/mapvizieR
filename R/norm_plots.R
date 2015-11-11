@@ -7,6 +7,9 @@
 #' @param norms which norm study to use
 #' @param norm_linetype any valid ggplot linetype (eg 'dashed').  
 #' default is 'solid'.
+#' @param spring_only fall norms show a 'summer slump' effect; this can be
+#' visually distracting.  spring_only won't include those points in the reference
+#' lines.
 #' 
 #' @export
 
@@ -14,7 +17,8 @@ empty_norm_grade_space <- function(
   measurementscale, 
   trace_lines = c(5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95),
   norms = 2015,
-  norm_linetype = 'solid'
+  norm_linetype = 'solid',
+  spring_only = FALSE
 )  {
 
   if (norms == 2011) {
@@ -47,6 +51,14 @@ empty_norm_grade_space <- function(
       RIT = min(RIT) 
     )
   this_norms <- rbind(below_50, above_50)
+  
+  if (spring_only) {
+    this_norms <- this_norms %>%
+      dplyr::ungroup() %>%
+      dplyr::filter(
+        fallwinterspring == 'Spring' | grade_level_season == -0.8
+      )
+  }
   
   p <- ggplot(
     data = this_norms
