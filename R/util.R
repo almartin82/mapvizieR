@@ -780,3 +780,15 @@ numeric_nwea_seasons <- function(x) {
   
   return(x_joined[, 'season_offset', drop = TRUE])
 }
+
+
+#' peek
+#'
+#' @param df a data frame
+#'
+#' @return just the head of the data frame, all columns visible
+#' @export
+
+peek <- function(df) {
+  df %>% head() %>% as.data.frame(stringsAsFactors = FALSE)
+}

@@ -219,6 +219,24 @@
 #' @source NWEA 2012 school growth study (PDF)
 "sch_growth_norms_2012"
 
+#' school growth norms 2015 study
+#'
+#' school / cohort growth norms published by NWEA 
+#' @format
+#' \describe{
+#' \item{end_grade}{END grade, eg grade 2 spring to spring is grade 1 TO grade 2}
+#' \item{measurementscale}{measurementscale}
+#' \item{growth_window}{growth_window}
+#' \item{start_fallwinterspring}{start_fallwinterspring}
+#' \item{end_fallwinterspring}{end_fallwinterspring}
+#' \item{typical_cohort_growth}{typical_cohort_growth}
+#' \item{sd_of_expectation}{sd_of_expectation}
+#' \item{reported_cohort_growth}{reported_cohort_growth}
+#' }
+#' @source NWEA 2015 norms table, cleaned with
+#' 'growth norms munging.R' in /data-raw
+"sch_growth_norms_2015"
+
 ##
 ## ACT LINKING
 ##
