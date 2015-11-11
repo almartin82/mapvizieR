@@ -16,7 +16,7 @@ data frame}
 \item{ref_lines}{what CGP reference lines to show?
 default is 1, 5, 20, 50, 80, 95, 99}
 
-\item{should}{we highlight a reference line?  set to -1 if not wanted}
+\item{highlight}{should we highlight a reference line?  set to -1 if not wanted}
 }
 \value{
 a ggplot object

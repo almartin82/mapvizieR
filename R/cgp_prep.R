@@ -600,7 +600,7 @@ preferred_cdf_baseline <- function(
 #' @param start_year_offset 0 if start season is same, -1 if start is prior year.
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
-#' @param specify the ending grade for the growth (this can't be reliably
+#' @param end_grade specify the ending grade for the growth (this can't be reliably
 #' inferred from data).
 #' @param start_fws_prefer which term is preferred? not required if only one start_fws is passed
 #' @param calc_for passed through to calc_cgp, what values to calculate targets for?

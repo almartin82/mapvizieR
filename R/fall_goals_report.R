@@ -12,6 +12,8 @@
 #' @param detail_academic_year passed through to various plots
 #' @param goal_cgp what target CGP should be used for goals?
 #' @param school_type c('ES', 'MS')
+#' @param localization controls goals and goal logic for report.  
+#' See localization.R for more details
 #' 
 #' @return a multipage report, represented as a list of grobs.
 #' @export
@@ -226,7 +228,7 @@ fall_goals_report <- function(
   )
   
   sim_header_r <- h_var(
-    sprintf("What would %sth CGP growth mean for this cohort?", goal_cgp),
+    sprintf("What would CGP %s growth mean for this cohort?", goal_cgp),
     gp = grid::gpar(fontsize = 20, fontface = "bold.italic")
   )
   
@@ -238,11 +240,10 @@ fall_goals_report <- function(
       "That's roughly equivalent to a class average RIT ",
       sprintf("of %s by the end ", this_report$annotate_y),
       sprintf("of %s grade. ", this_report$annotate_x %>% toOrdinal::toOrdinal()),
-      "The chart below is a 'what-if' chart that illustrates how a cohort ",
-      "would grow over time, assuming growth at ",
-      sprintf("the %s CGP, using our average ", goal_cgp %>% toOrdinal::toOrdinal()),
-      sprintf("historical entering cohort (RIT %s) ", this_report$sim_start),
-      "as a starting point."
+      "The chart below demonstrates how we calibrated these goals, ",
+      "showing how a cohort would grow, assuming our historical entering ",
+      sprintf("%s RIT (%s) as a baseline, ", school_type, this_report$sim_start),
+      sprintf("and growth at the %s CGP.", goal_cgp %>% toOrdinal::toOrdinal())
     ),
     gp = grid::gpar(fontsize = 14)
   )
@@ -285,14 +286,26 @@ fall_goals_report <- function(
     ) +
     geom_line(
       data = idealized_growth,
-      aes(x = grade_seq, y = rit)
+      aes(x = grade_seq, y = rit),
+      linetype = 'dashed'
     ) +
     labs(
       title = sprintf(
         "Idealized 'What if?' growth, %s %s", school_type, measurementscale
       )
     )
-    
+  
+  idealized_sim$layers <- annotate(
+    geom = 'text',
+    x = (this_report$xmin + this_report$xmax) / 2,
+    y = (this_report$ymin + this_report$ymax) / 2,
+    label = 'Illustration',
+    size = 40,
+    angle = 33,
+    color = 'hotpink',
+    alpha = 0.15
+  ) %>% c(idealized_sim$layers)
+
   left_stack <- gridExtra::arrangeGrob(
     left_exp, idealized_sim, nrow = 2, heights = c(1, 6)
   )
@@ -320,8 +333,16 @@ fall_goals_report <- function(
   
   specific_growth <- data.frame(
     grade_seq = specific_growth$grade_seq,
-    rit = specific_growth$rit_seq
+    rit = specific_growth$rit_seq,
+    rowids = c(1:length(specific_growth$rit_seq))
   )
+  
+  specific_growth <- specific_growth %>%
+    dplyr::mutate(
+      next_rit = lead(rit), 
+      year_y = (rit + next_rit) / 2,
+      year_label = end_academic_year + rowids
+    )
   
   specific_sim <- goal_equiv +
     geom_text(
@@ -329,15 +350,34 @@ fall_goals_report <- function(
       aes(x = grade_seq, y = rit, label = rit %>% round(1)),
       vjust = 1
     ) +
+    geom_text(
+      data = specific_growth,
+      aes(x = grade_seq + 0.5, y = year_y, label = year_label),
+      size = 4,
+      fontface = 'italic'
+    ) +
     geom_line(
       data = specific_growth,
-      aes(x = grade_seq, y = rit)
+      aes(x = grade_seq, y = rit),
+      linetype = 'dashed'
     ) +
     labs(
       title = sprintf(
-        "Simulated Growth for this cohort, assuming %s CGP", goal_cgp
+        "Simulated Growth for this cohort at %s CGP", 
+        goal_cgp %>% toOrdinal::toOrdinal()
       )
     )
+  
+  specific_sim$layers <- annotate(
+    geom = 'text',
+    x = (this_report$xmin + this_report$xmax) / 2,
+    y = (this_report$ymin + this_report$ymax) / 2,
+    label = 'Your students!',
+    size = 32,
+    angle = 33,
+    color = 'hotpink',
+    alpha = 0.15
+  ) %>% c(specific_sim$layers)
   
   right_stack <- gridExtra::arrangeGrob(
     right_exp, specific_sim, nrow = 2, heights = c(1, 6)
@@ -468,7 +508,7 @@ fall_goals_data_table <- function(
 #' @param num_sd how many sds to show?  default is +/- 3 
 #' @param ref_lines what CGP reference lines to show?  
 #' default is 1, 5, 20, 50, 80, 95, 99
-#' @param should we highlight a reference line?  set to -1 if not wanted
+#' @param highlight should we highlight a reference line?  set to -1 if not wanted
 #'
 #' @return a ggplot object
 #' @export

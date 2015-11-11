@@ -7,7 +7,8 @@
 fall_goals_report(mapvizieR_obj, studentids, measurementscale, context,
   start_fws = "Spring", start_year_offset = -1, end_fws = "Spring",
   end_academic_year = 2015, entry_grade_seasons = c(-0.8, 4.2),
-  detail_academic_year = 9999, goal_cgp = 80, school_type = "MS")
+  detail_academic_year = 9999, goal_cgp = 80, school_type = "MS",
+  localization = localize("Newark"))
 }
 \arguments{
 \item{mapvizieR_obj}{a valid mapvizieR_object}
@@ -33,6 +34,9 @@ fall_goals_report(mapvizieR_obj, studentids, measurementscale, context,
 \item{goal_cgp}{what target CGP should be used for goals?}
 
 \item{school_type}{c('ES', 'MS')}
+
+\item{localization}{controls goals and goal logic for report.
+See localization.R for more details}
 }
 \value{
 a multipage report, represented as a list of grobs.

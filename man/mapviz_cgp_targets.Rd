@@ -24,14 +24,14 @@ pass vector of two and mapviz_cgp_targets will pick}
 
 \item{end_academic_year}{ending academic year}
 
+\item{end_grade}{specify the ending grade for the growth (this can't be reliably
+inferred from data).}
+
 \item{start_fws_prefer}{which term is preferred? not required if only one start_fws is passed}
 
 \item{calc_for}{passed through to calc_cgp, what values to calculate targets for?}
 
 \item{returns}{'targets' or 'expectations'?}
-
-\item{specify}{the ending grade for the growth (this can't be reliably
-inferred from data).}
 }
 \value{
 data frame of cgp targets

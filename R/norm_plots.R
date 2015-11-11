@@ -67,7 +67,8 @@ empty_norm_grade_space <- function(
     aes(
       x = grade_level_season,
       y = RIT,
-      group = student_percentile
+      group = student_percentile,
+      order = 1
     ),
     alpha = 0.3,
     color = 'gray30',
