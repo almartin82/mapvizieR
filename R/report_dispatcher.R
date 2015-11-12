@@ -176,6 +176,6 @@ report_dispatcher <- function(
 #' @param x a list of report_dispatcher output
 
 only_valid_plots <- function(x) {
-  mask <- sapply(x, is_not_error) 
+  mask <- vapply(x, is_not_error, logical(1))
   x[mask]
 }
