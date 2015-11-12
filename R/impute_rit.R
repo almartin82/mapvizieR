@@ -33,6 +33,9 @@ impute_rit <- function(
     out <- impute_rit_simple_average(this_cdf, interpolate_only)
   }
    
+  #fixes for imputation issues
+  out <- season_fix(out)
+  
   out
 }
 
@@ -254,4 +257,26 @@ impute_rit_simple_average <- function(cdf, interpolate_only = TRUE) {
   out <- scaffold[, name_mask]
 
   return(out)
+}
+
+
+#' season fix
+#'
+#' @description fixes the season column of a cdf after imputation
+#' @param cdf a cdf, after imputation
+#'
+#' @return the cdf, with a repaired fallwinterspring column
+#' @export
+
+season_fix <- function(cdf) {
+  gls <- sprintf("%.1f", cdf$grade_level_season %>% unlist() %>% unname())
+  gls <- strsplit(gls, '.', fixed = TRUE) %>% unlist() %>% 
+    matrix(., ncol = 2, byrow = TRUE)
+  gls <- gls[ , 2]
+  gls <- ifelse(gls == '2', 'Fall', gls)
+  gls <- ifelse(gls == '5', 'Winter', gls)
+  gls <- ifelse(gls == '0', 'Spring', gls)
+  
+  cdf$fallwinterspring <- gls
+  cdf
 }

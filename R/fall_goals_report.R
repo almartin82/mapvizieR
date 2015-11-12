@@ -52,14 +52,16 @@ fall_goals_report <- function(
     measurementscale = measurementscale,
     detail_academic_year = detail_academic_year,
     entry_grade_seasons = entry_grade_seasons
-  )
+  ) + 
+  labs(title = 'Historical Quartile Change')
   
   cgp_hist <- cohort_cgp_hist_plot(
     mapvizieR_obj = mapvizieR_obj,
     studentids = studentids,
     measurementscale = measurementscale,
     entry_grade_seasons = entry_grade_seasons
-  ) 
+  ) +
+  labs(title = 'Historic Cohort Growth Percentiles')
   
   cohort_longitudinal <- cohort_longitudinal_npr_plot(
     mapvizieR_obj = mapvizieR_obj,
@@ -67,7 +69,8 @@ fall_goals_report <- function(
     measurementscale = measurementscale,
     student_alpha = 0.075,
     name_annotations = TRUE
-  ) 
+  ) +
+  labs(title = 'Historic Student and Cohort Growth')
   
   most_growth <- stu_growth_detail_table(
     mapvizieR_obj = mapvizieR_obj,
@@ -75,7 +78,10 @@ fall_goals_report <- function(
     measurementscale = measurementscale,
     entry_grade_seasons = entry_grade_seasons,
     high_or_low_growth = 'high',
-    num_stu = 10
+    num_stu = 12
+  )
+  most_growth <- gridExtra::arrangeGrob(
+    h_var('Most Growth', 12), most_growth, nrow = 2, heights = c(1, 13)
   )
 
   least_growth <- stu_growth_detail_table(
@@ -84,14 +90,18 @@ fall_goals_report <- function(
     measurementscale = measurementscale,
     entry_grade_seasons = entry_grade_seasons,
     high_or_low_growth = 'low',
-    num_stu = 10
+    num_stu = 12
   )
+  least_growth <- gridExtra::arrangeGrob(
+    h_var('Least Growth', 12), least_growth, nrow = 2, heights = c(1, 13)
+  )  
   
-  p1_top <- h_var('1. Where have my students been?', 12)
-  
+  p1_top <- h_var('1. Where have my students been?', 20)
   
   left_stack <- gridExtra::arrangeGrob(becca, cgp_hist, nrow = 2)
-  right_stack <- gridExtra::arrangeGrob(most_growth, least_growth, nrow = 2)
+  right_stack <- gridExtra::arrangeGrob(
+    most_growth, least_growth, nrow = 2
+  )
   
   p1_main <- gridExtra::arrangeGrob(
     left_stack, cohort_longitudinal, right_stack, 
@@ -99,7 +109,7 @@ fall_goals_report <- function(
   )
   
   p1 <- gridExtra::arrangeGrob(
-    p1_top, p1_main, nrow = 2, heights = c(1, 15)
+    p1_top, p1_main, nrow = 2, heights = c(1, 17)
   )
   p1 <- report_footer(p1, context)
   
@@ -245,7 +255,7 @@ fall_goals_report <- function(
       sprintf("%s RIT (%s) as a baseline, ", school_type, this_report$sim_start),
       sprintf("and growth at the %s CGP.", goal_cgp %>% toOrdinal::toOrdinal())
     ),
-    gp = grid::gpar(fontsize = 14)
+    gp = grid::gpar(fontsize = 13)
   )
   
   goal_equiv <- empty_norm_grade_space(
@@ -320,7 +330,7 @@ fall_goals_report <- function(
       sprintf("end of %s ", this_report$annotate_x %>% toOrdinal::toOrdinal()),
       "grade."
     ),
-    gp = grid::gpar(fontsize = 14)
+    gp = grid::gpar(fontsize = 13)
   )
   
   start_sim <- expectations_df$start_grade_level_season
@@ -392,14 +402,17 @@ fall_goals_report <- function(
     sim_header, sim_bottom, nrow = 2, heights = c(1, 12)
   )
   
-  p2_top <- h_var('2. Where do they need to go?', 36)
+  p2_top <- h_var('2. Where do they need to go?', 20)
   p2 <- gridExtra::arrangeGrob(
     goals, sim, nrow = 2, heights = c(1, 3)
   )
-  p2_main <- report_footer(p2, context)
+  p2 <- gridExtra::arrangeGrob(
+    p2_top, p2, nrow = 2, heights = c(1, 17)
+  )
+  p2 <- report_footer(p2, context)
   
   report_list[[2]] <- p2
-  
+
   return(report_list)
 }
 
