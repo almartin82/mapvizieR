@@ -4,7 +4,7 @@
 \alias{cgp_sim}
 \title{simulate school growth at a constant CGP}
 \usage{
-cgp_sim(measurementscale, start_rit, cgp, sim_over = "MS")
+cgp_sim(measurementscale, start_rit, cgp, sim_over = "MS", norms = 2015)
 }
 \arguments{
 \item{measurementscale}{target subject}
@@ -14,6 +14,9 @@ cgp_sim(measurementscale, start_rit, cgp, sim_over = "MS")
 \item{cgp}{what CGP to simulate growth at}
 
 \item{sim_over}{'ES', 'MS' or a vector of grade levels, at least length 2}
+
+\item{norms}{which school growth study to use.  c(2012, 2015).  default is
+2015.}
 }
 \value{
 a named list, with grades and rits

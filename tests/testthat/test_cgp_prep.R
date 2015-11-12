@@ -1,8 +1,5 @@
 context("cgp_prep tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 ex_target_rit <- calc_cgp(
     measurementscale = 'Reading', 
     end_grade = 2, 

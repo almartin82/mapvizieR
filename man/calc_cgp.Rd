@@ -5,8 +5,7 @@
 \title{calc_cgp}
 \usage{
 calc_cgp(measurementscale, end_grade, growth_window, baseline_avg_rit = NA,
-  ending_avg_rit = NA, sch_growth_study = sch_growth_norms_2012,
-  calc_for = c(1:99), verbose = TRUE)
+  ending_avg_rit = NA, norms = 2015, calc_for = c(1:99), verbose = TRUE)
 }
 \arguments{
 \item{measurementscale}{MAP subject}
@@ -19,7 +18,8 @@ calc_cgp(measurementscale, end_grade, growth_window, baseline_avg_rit = NA,
 
 \item{ending_avg_rit}{the baseline mean rit for the group of students}
 
-\item{sch_growth_study}{a school growth study to use.  default is sch_growth_norms_2012}
+\item{norms}{which school growth study to use.  c(2012, 2015).  default is
+2015.}
 
 \item{calc_for}{vector of cgp targets to calculate for.}
 

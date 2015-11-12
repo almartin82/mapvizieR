@@ -5,7 +5,7 @@
 \title{wrapper to simplify CGP simulations}
 \usage{
 one_cgp_step(measurementscale, start_rit, end_grade, cgp,
-  growth_window = "Spring to Spring")
+  growth_window = "Spring to Spring", norms = 2015)
 }
 \arguments{
 \item{measurementscale}{target subject}
@@ -17,6 +17,9 @@ one_cgp_step(measurementscale, start_rit, end_grade, cgp,
 \item{cgp}{target cgp.  can be single target or vector}
 
 \item{growth_window}{what growth window to step}
+
+\item{norms}{which school growth study to use.  c(2012, 2015).  default is
+2015.}
 }
 \description{
 helps simulate what happens if a cohort grows at a constant CGP.

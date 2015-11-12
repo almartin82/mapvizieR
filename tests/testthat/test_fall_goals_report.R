@@ -1,8 +1,5 @@
 context("fall goals report tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("fall goals report should return list of plots", {  
   
     fg_test <- fall_goals_report(

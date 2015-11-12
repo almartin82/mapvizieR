@@ -1,8 +1,5 @@
 context("testing cdf_check functions for accurate behavior and error messages")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("check_cdf correctly identifies a cdf with bad names", {
   
   #running check_cdf on the raw assessment results should fail.

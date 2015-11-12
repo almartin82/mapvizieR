@@ -1,8 +1,5 @@
 context("quealy_subgroups tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("quealy_subgroups errors when handed an improper mapviz object", {
   expect_error(
     quealy_subgroups(processed_cdf, studentids), 

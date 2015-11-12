@@ -1,8 +1,5 @@
 context("roster_to_df tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("roster_to_cdf tests", {
 
   ex <- roster_to_cdf(

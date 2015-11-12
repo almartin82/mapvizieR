@@ -10,6 +10,7 @@
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
 #' @param big_font how big are the stats
+#' @param norms which norm study to use
 #' 
 #' @export
 
@@ -21,11 +22,12 @@ cgp_table <- function(
   start_academic_year, 
   end_fws, 
   end_academic_year,
-  big_font = 50
+  big_font = 50,
+  norms = 2015
 ) {
   
   cgp_df <- mapviz_cgp(mapvizieR_obj, studentids, measurementscale,
-    start_fws, start_academic_year, end_fws, end_academic_year)
+    start_fws, start_academic_year, end_fws, end_academic_year, norms)
   
   l1 <- h_var("% Making\nTypical Growth", 13)
   l2 <- h_var("RIT Change", 13)

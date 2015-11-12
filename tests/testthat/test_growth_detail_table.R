@@ -1,8 +1,5 @@
 context("growth detail table tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("stu_growth_detail should return valid data frame", {
 
   ex <- stu_growth_detail(

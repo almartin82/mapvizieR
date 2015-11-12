@@ -5,7 +5,7 @@
 \title{cohort_expectation}
 \usage{
 cohort_expectation(measurementscale, end_grade, growth_window, baseline_avg_rit,
-  calc_for, sch_growth_study = sch_growth_norms_2012)
+  calc_for, norms = 2015)
 }
 \arguments{
 \item{measurementscale}{a MAP subject}
@@ -20,8 +20,8 @@ of the 2012 school growth study}
 
 \item{calc_for}{what CGPs to calculate for?}
 
-\item{sch_growth_study}{which school growth study to use.  currently only have the 2012 data
-files in the package}
+\item{norms}{which school growth study to use.  c(2012, 2015).  default is
+2015.}
 }
 \description{
 wrapper function to get cohort growth expectations for the lookup method

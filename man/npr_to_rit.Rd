@@ -15,7 +15,8 @@ npr_to_rit(measurementscale, current_grade, season, npr, norms = 2015)
 
 \item{npr}{a percentile rank, between 1-99}
 
-\item{norms}{which norm study to use}
+\item{norms}{which school growth study to use.  c(2012, 2015).  default is
+2015.}
 }
 \value{
 a integer vector length one

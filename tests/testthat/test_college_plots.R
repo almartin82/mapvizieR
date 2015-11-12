@@ -1,8 +1,5 @@
 context("college plots tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 #templates
 test_that("npr templates generate correctly", {
 

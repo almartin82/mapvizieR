@@ -1,9 +1,5 @@
 context("typical growth distribution")
 
-#make sure that constants used below exist
-testing_constants()
-
-
 test_that("growth distribution should return a bar plot", {  
   typ_test <- kipp_typ_growth_distro(
     nat_results_df = fake_kipp_data,

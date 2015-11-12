@@ -1,9 +1,5 @@
 context("two-pager report tests")
 
-#make sure that constants used below exist
-testing_constants()
-
-
 test_that("cgp_table works", {
   ex_cgp <- cgp_table(
     mapvizieR_obj = mapviz,

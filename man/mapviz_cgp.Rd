@@ -5,7 +5,7 @@
 \title{mapvizieR interface to simplify CGP calculations, for one target term}
 \usage{
 mapviz_cgp(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_academic_year, end_fws, end_academic_year)
+  start_academic_year, end_fws, end_academic_year, norms = 2015)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -21,6 +21,9 @@ mapviz_cgp(mapvizieR_obj, studentids, measurementscale, start_fws,
 \item{end_fws}{ending season}
 
 \item{end_academic_year}{ending academic year}
+
+\item{norms}{which school growth study to use.  c(2012, 2015).  default is
+2015.}
 }
 \description{
 given an explicit growth term (start/end), will calculate CGP

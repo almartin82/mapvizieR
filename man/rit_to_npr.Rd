@@ -15,7 +15,8 @@ rit_to_npr(measurementscale, current_grade, season, RIT, norms = 2015)
 
 \item{RIT}{rit score}
 
-\item{norms}{which norm study to use}
+\item{norms}{which school growth study to use.  c(2012, 2015).  default is
+2015.}
 }
 \value{
 a integer vector length one

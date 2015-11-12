@@ -1,8 +1,5 @@
 context("cohort longitudinal plot tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("cohort_longitudinal_npr_plot should return valid plot", {
 
   p <- cohort_longitudinal_npr_plot(
@@ -20,8 +17,6 @@ test_that("cohort_longitudinal_npr_plot should return valid plot", {
   
 })
 
-
-testing_constants()
 
 test_that("cohort_longitudinal_npr_plot with name annotations", {
   

@@ -1,23 +1,20 @@
 context("growth data frame prep")
 
-#make sure that constants used below exist
-testing_constants()
-
 #additional constants
 norms_long <- norms_students_wide_to_long(student_growth_norms_2015)
   
 f2s_scaffold <- student_scaffold(
-  processed_cdf = processed_cdf
- ,start_season = 'Fall'
- ,end_season = 'Spring'
- ,year_offset = 0
+  processed_cdf = processed_cdf,
+  start_season = 'Fall',
+  end_season = 'Spring',
+  year_offset = 0
 )
 
 s2s_scaffold <- student_scaffold(
-  processed_cdf = processed_cdf
- ,start_season = 'Spring'
- ,end_season = 'Spring'
- ,year_offset = 1
+  processed_cdf = processed_cdf,
+  start_season = 'Spring',
+  end_season = 'Spring',
+  year_offset = 1
 )
 
 

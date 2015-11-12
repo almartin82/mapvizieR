@@ -1,8 +1,5 @@
 context("report dispatcher tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 
 test_that("basic test on silly plot.  report dispatcher should find roster structure on test data", {  
   

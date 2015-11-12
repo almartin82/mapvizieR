@@ -4,12 +4,14 @@
 \alias{quealy_permutation_stats}
 \title{quealy_permutation_stats}
 \usage{
-quealy_permutation_stats(df, subgroup)
+quealy_permutation_stats(df, subgroup, norms = 2015)
 }
 \arguments{
 \item{df}{a growth data frame}
 
 \item{subgroup}{the subgroup to group and calculate summary stats for}
+
+\item{norms}{school growth norms to use.  2012 or 2015.}
 }
 \value{
 a data frame

@@ -1,9 +1,5 @@
 context("norm plots")
 
-#make sure that constants used below exist
-testing_constants()
-
-
 test_that("empty norm grade space should return a ggplot object", {  
   p <- empty_norm_grade_space('Reading', norms = 2011)
   p_build <- ggplot2::ggplot_build(p)

@@ -6,7 +6,8 @@
 \usage{
 mapviz_cgp_targets(mapvizieR_obj, studentids, measurementscale, start_fws,
   start_year_offset, end_fws, end_academic_year, end_grade,
-  start_fws_prefer = NA, calc_for = c(1:99), returns = "targets")
+  start_fws_prefer = NA, calc_for = c(1:99), returns = "targets",
+  norms = 2015)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -32,6 +33,9 @@ inferred from data).}
 \item{calc_for}{passed through to calc_cgp, what values to calculate targets for?}
 
 \item{returns}{'targets' or 'expectations'?}
+
+\item{norms}{which school growth study to use.  c(2012, 2015).  default is
+2015.}
 }
 \value{
 data frame of cgp targets

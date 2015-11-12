@@ -29,6 +29,8 @@
 #' subgroup_cols.  does not apply to magic subgroups.
 #' @param join_by_measurementscale boolean, passed to roster_to_growth_df.  TRUE if
 #' the subgroup col is per-subject.
+#' @param school_growth_norms passed through to calc_cgp.  determines what norm study
+#' to use.  default is 2015 (most recent study).
 #' 
 #' @return a grob composed of multiple ggplots
 #' 
@@ -51,7 +53,8 @@ quealy_subgroups <- function(
   drop_NA_groups = TRUE,
   include_all = TRUE,
   small_n_cutoff = -1,
-  join_by_measurementscale = FALSE
+  join_by_measurementscale = FALSE,
+  school_growth_norms = 2015
 ) {
   
   #1. validation
@@ -72,7 +75,7 @@ quealy_subgroups <- function(
     ensurer::ensure_that(
       nrow(.) > 0 ~ "no matching students for the specified subject/terms."
     )
-
+  
   #3. put SUBGROUPS values from roster onto df
   df <- roster_to_growth_df(
     target_df = df,
@@ -145,7 +148,7 @@ quealy_subgroups <- function(
       )
       
       #calc subgroup stats
-      perm_stats <- quealy_permutation_stats(this_stu, i)
+      perm_stats <- quealy_permutation_stats(this_stu, i, school_growth_norms)
       perm_stats %>% ensurer::ensure_that(
         nrow(.) == 1 ~ 'there should only be one group!')
       
@@ -207,7 +210,9 @@ quealy_subgroups <- function(
         this_start_quartile <- start_quartile_data %>%
           dplyr::filter(as.numeric(start_testquartile) == i)
         
-        perm_stats <- quealy_permutation_stats(this_start_quartile, 'start_testquartile')
+        perm_stats <- quealy_permutation_stats(
+          this_start_quartile, 'start_testquartile', school_growth_norms
+        )
           perm_stats %>% ensurer::ensure_that(
             nrow(.) == 1 ~ 'there should only be one group!')
         
@@ -287,7 +292,9 @@ quealy_subgroups <- function(
       paste(collapse = ',') %>% strsplit(split = ',') %>% unlist()
     mask <- df$persistent_names %in% all_rownames
     #calc group stats on those stu
-    this_sum <- quealy_permutation_stats(df[mask, ], subgroup_cols[i])
+    this_sum <- quealy_permutation_stats(
+      df[mask, ], subgroup_cols[i], school_growth_norms
+    )
     names(this_sum)[names(this_sum) == subgroup_cols[i]] <- 'facet_me'
     
     plot_list[[plot_counter]] <- quealy_facet_one_subgroup(
@@ -334,12 +341,13 @@ quealy_subgroups <- function(
 #' 
 #' @param df a growth data frame
 #' @param subgroup the subgroup to group and calculate summary stats for
+#' @param norms school growth norms to use.  2012 or 2015.
 #' 
 #' @return a data frame
 #' 
 #' @export
 
-quealy_permutation_stats <- function(df, subgroup) {
+quealy_permutation_stats <- function(df, subgroup, norms = 2015) {
 
   results <- df %>%
     dplyr::group_by_(
@@ -366,7 +374,8 @@ quealy_permutation_stats <- function(df, subgroup) {
         growth_window = paste(results[i, ]$start_fallwinterspring, 
           'to', results[i, ]$end_fallwinterspring),
         baseline_avg_rit = results[i, ]$start_rit,
-        ending_avg_rit = results[i, ]$end_rit
+        ending_avg_rit = results[i, ]$end_rit,
+        norms = norms
       )[['results']]
   }
   

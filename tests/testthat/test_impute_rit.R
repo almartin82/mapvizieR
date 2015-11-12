@@ -1,9 +1,5 @@
 context("growth_status_scatter tests")
 
-#make sure that constants used below exist
-testing_constants()
-
-
 test_that("impute_rit only accepts valid inputs", {
 
   expect_error(

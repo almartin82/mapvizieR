@@ -1,9 +1,5 @@
 context("mapvizier filter tests")
 
-#make sure that constants used below exist
-testing_constants()
-
-
 test_that("mapvizier filters cdf year", {
   filter_ex <- mv_filter(
     mapvizieR_obj = mapviz, 

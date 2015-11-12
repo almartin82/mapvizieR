@@ -1,8 +1,5 @@
 context("test util functions on a variety of different inputs")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("abbrev abbreviates school names properly", {
 
   roster <- prep_roster(ex_CombinedStudentsBySchool)

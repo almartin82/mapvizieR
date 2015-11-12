@@ -1,9 +1,5 @@
 context("checking that the CDF de-duping logic behaves as intended")
 
-#make sure that constants used below exist
-testing_constants()
-
-
 test_that("dedupe NWEA style returns one row per student/subject/term", {
   
   #dedupe NWEA style
