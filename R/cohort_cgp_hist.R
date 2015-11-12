@@ -28,8 +28,7 @@ cohort_cgp_hist_plot <- function(
   match_method = 'no matching',
   first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2), 
-  #TODO: implement norms as paramenter in cgp calcs (#221)
-  school_norms = 2012,
+  school_norms = 2015,
   primary_cohort_only = TRUE
 ) {
 
@@ -45,8 +44,8 @@ cohort_cgp_hist_plot <- function(
   
   #limit to primary cohort
   if (primary_cohort_only) {
-    primary_cohort <- this_cdf$implicit_cohort %>% table() %>%
-      names() %>% magrittr::extract(1)
+    primary_cohort <- this_cdf$implicit_cohort %>%
+      table() %>% sort() %>% names() %>% rev() %>% magrittr::extract(1)
   
     this_cdf <- this_cdf %>%
       dplyr::filter(
@@ -108,7 +107,11 @@ cohort_cgp_hist_plot <- function(
   scale_x_continuous(
     breaks = as_cgp$start_grade_level_season %>% unique(),
     labels = as_cgp$start_grade_level_season %>% 
-      lapply(fall_spring_me) %>% unlist()
+      lapply(fall_spring_me) %>% unlist(),
+    limits = c(
+      as_cgp$start_grade_level_season %>% unique() %>% min() - .1,
+      as_cgp$start_grade_level_season %>% unique() %>% max() + .1
+    )
   ) +
   labs(
     x = 'Grade & Season',

@@ -89,9 +89,9 @@ calc_cgp <- function(
   grw_expect$observed_baseline <- baseline_avg_rit
   #include implied start grade_level_season in expectations
   if (grw_expect$growth_window == 'Fall to Spring') {
-    grw_expect$start_grade_level_season <- grw_expect$grade - 0.8
+    grw_expect$start_grade_level_season <- grw_expect$end_grade - 0.8
   } else if (grw_expect$growth_window == 'Spring to Spring') {
-    grw_expect$start_grade_level_season <- grw_expect$grade - 1
+    grw_expect$start_grade_level_season <- grw_expect$end_grade - 1
   } else {
     grw_expect$start_grade_level_season <- NA_real_
   }
@@ -185,7 +185,7 @@ rit_gain_needed <- function(percentile, sd_gain, mean_gain) {
 #' @description get cohort growth expectations via lookup from growth study
 #' 
 #' @param measurementscale MAP subject
-#' @param start_grade baseline/starting grade for the group of students
+#' @param end_grade grade students will be in at the end of the window
 #' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students
 #' @param norms which school growth study to use.  c(2012, 2015).  default is
@@ -195,14 +195,14 @@ rit_gain_needed <- function(percentile, sd_gain, mean_gain) {
 
 sch_growth_lookup <- function(  
   measurementscale,
-  start_grade,
+  end_grade,
   growth_window,
   baseline_avg_rit,
   norms = 2015
 ) {
   #nse
   measurementscale_in <- measurementscale
-  grade_in <- start_grade
+  grade_in <- end_grade
   growth_window_in <- growth_window
   
   if (norms == 2012) {
@@ -472,9 +472,13 @@ cgp_sim <- function(
   
   for (i in iterate_over) {
     #entry
-    if (i %in% c(0, 5)) window <- 'Fall to Spring' else window <- 'Spring to Spring'
+    if (i %in% c(0, 5)) {
+      sim_wind <- 'Fall to Spring'
+    } else {
+      sim_wind <- 'Spring to Spring'
+    }
     
-    rit <- one_cgp_step(measurementscale, rit, i, cgp, window, norms) + rit
+    rit <- one_cgp_step(measurementscale, rit, i, cgp, sim_wind, norms) + rit
     grades <- c(grades, i)
     running_rits <- c(running_rits, rit)
   }
@@ -691,7 +695,7 @@ mapviz_cgp_targets <- function(
     dplyr::ungroup() %>%
     dplyr::filter(is_preferred) %>%
     dplyr::select(
-      grade, fallwinterspring
+      fallwinterspring
     ) %>%
     unique() %>% unlist() %>% unname()
 
@@ -704,7 +708,7 @@ mapviz_cgp_targets <- function(
   out <- calc_cgp(
     measurementscale = measurementscale,
     end_grade = end_grade,
-    growth_window = paste(start_window[2], 'to', end_fws),
+    growth_window = paste(start_window, 'to', end_fws),
     baseline_avg_rit = baseline_rit,
     calc_for = calc_for,
     norms = norms

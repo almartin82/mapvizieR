@@ -9,6 +9,9 @@
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
 #' @param entry_grade_seasons for becca plot.  default is c(-0.8, 4.2)
+#' @param exclude_prior_year_holdover if, for instance, this year's 3rd grade
+#' includes students who were in the 3rd grade last year,  drop their records from
+#' the data
 #' @param detail_academic_year passed through to various plots
 #' @param goal_cgp what target CGP should be used for goals?
 #' @param school_type c('ES', 'MS')
@@ -28,6 +31,7 @@ fall_goals_report <- function(
   end_fws = 'Spring',
   end_academic_year = 2015,
   entry_grade_seasons = c(-0.8, 4.2),
+  exclude_prior_year_holdover = TRUE,
   detail_academic_year = 9999,
   goal_cgp = 80,
   school_type = 'MS',
@@ -45,6 +49,23 @@ fall_goals_report <- function(
     studentids = studentids, 
     measurementscale = measurementscale
   )
+
+  end_grade <- mapvizieR_obj$roster %>%
+    dplyr::filter(
+      studentid %in% studentids &
+        map_year_academic == end_academic_year
+    ) %>% 
+    dplyr::select(
+      grade
+    ) %>%
+    table() %>% sort() %>% names() %>% rev() %>% 
+    magrittr::extract(1) %>% as.numeric()
+  
+  if (exclude_prior_year_holdover) {
+    mapvizieR_obj$cdf <- mapvizieR_obj$cdf %>% dplyr::filter(
+      grade < end_grade
+    )
+  }  
   
   becca <- becca_plot(
     mapvizieR_obj = mapvizieR_obj, 
@@ -116,16 +137,6 @@ fall_goals_report <- function(
   report_list[[1]] <- p1
 
   #2. Where do they need to go?
-  end_grade <- mapvizieR_obj$roster %>%
-    dplyr::filter(
-      studentid %in% studentids &
-        map_year_academic == end_academic_year
-    ) %>% 
-    dplyr::select(
-      grade
-    ) %>%
-    table() %>% names() %>% extract(1)
-  
   #in words
   goals_words <- fall_goals_data_table(
     mapvizieR_obj,
