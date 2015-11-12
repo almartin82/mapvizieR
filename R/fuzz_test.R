@@ -92,7 +92,6 @@ silly_plot <- function(mapvizieR_obj, studentids) {
 }
 
 
-
 #' @title error ridden plot
 #'
 #' @description a plot that is definitely going to break

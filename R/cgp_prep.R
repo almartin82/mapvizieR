@@ -7,7 +7,8 @@
 #' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students
 #' @param ending_avg_rit the baseline mean rit for the group of students
-#' @param sch_growth_study a school growth study to use.  default is sch_growth_norms_2012
+#' @param norms which school growth study to use.  c(2012, 2015).  default is
+#' 2015.
 #' @param calc_for vector of cgp targets to calculate for.
 #' @param verbose should warnings about invalid seasons be raised?
 #' 
@@ -21,7 +22,7 @@ calc_cgp <- function(
   growth_window,
   baseline_avg_rit = NA,
   ending_avg_rit = NA,
-  sch_growth_study = sch_growth_norms_2012,
+  norms = 2015,
   calc_for = c(1:99),
   verbose = TRUE
 ) {
@@ -34,8 +35,14 @@ calc_cgp <- function(
       }
     )
   
+  if (norms == 2012) {
+    active_norms <- sch_growth_norms_2012
+  } else if (norms == 2015) {
+    active_norms <- sch_growth_norms_2015
+  } 
+  
   #valid terms
-  vt <- sch_growth_study[, c('measurementscale', 'end_grade', 'growth_window')]
+  vt <- active_norms[, c('measurementscale', 'end_grade', 'growth_window')]
   in_study <- paste(measurementscale, end_grade, growth_window, sep = '@') %in% paste(
     vt$measurementscale, vt$end_grade, vt$growth_window, sep = '@'
   )
@@ -56,7 +63,8 @@ calc_cgp <- function(
     end_grade,
     growth_window,
     baseline_avg_rit,
-    calc_for
+    calc_for,
+    norms
   )
 
   #RESULTS
@@ -65,7 +73,8 @@ calc_cgp <- function(
     measurementscale,
     end_grade,
     growth_window,
-    baseline_avg_rit
+    baseline_avg_rit,
+    norms = norms
   )
 
   #actual - typical over sd
@@ -105,8 +114,8 @@ calc_cgp <- function(
 #' @param growth_window the growth window to calculate CGP over
 #' @param baseline_avg_rit mean rit at the START of the growth window
 #' @param calc_for what CGPs to calculate for?
-#' @param sch_growth_study which school growth study to use.  currently only have the 2012 data
-#' files in the package
+#' @param norms which school growth study to use.  c(2012, 2015).  default is
+#' 2015.
 #' 
 #' @export
 
@@ -116,15 +125,22 @@ cohort_expectation <- function(
   growth_window,
   baseline_avg_rit,
   calc_for,
-  sch_growth_study = sch_growth_norms_2012
+  norms = 2015
 ) {
+  
+  if (norms == 2012) {
+    active_norms <- sch_growth_norms_2012
+  } else if (norms == 2015) {
+    active_norms <- sch_growth_norms_2015
+  }   
   
   #get expectation
   grw_expect <- sch_growth_lookup(
     measurementscale,
     end_grade,
     growth_window,
-    baseline_avg_rit
+    baseline_avg_rit,
+    norms
   )
   
   #calc targets over range
@@ -172,7 +188,8 @@ rit_gain_needed <- function(percentile, sd_gain, mean_gain) {
 #' @param start_grade baseline/starting grade for the group of students
 #' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students
-#' @param sch_growth_study NWEA school growth study to use for lookup; defaults to 2012.
+#' @param norms which school growth study to use.  c(2012, 2015).  default is
+#' 2015.
 #' 
 #' @export
 
@@ -181,14 +198,20 @@ sch_growth_lookup <- function(
   start_grade,
   growth_window,
   baseline_avg_rit,
-  sch_growth_study = sch_growth_norms_2012
+  norms = 2015
 ) {
   #nse
   measurementscale_in <- measurementscale
   grade_in <- start_grade
   growth_window_in <- growth_window
   
-  norm_match <- sch_growth_study %>%
+  if (norms == 2012) {
+    active_norms <- sch_growth_norms_2012
+  } else if (norms == 2015) {
+    active_norms <- sch_growth_norms_2015
+  }  
+  
+  norm_match <- active_norms %>%
     dplyr::filter(
       measurementscale == measurementscale_in, 
       growth_window == growth_window_in, 
@@ -213,7 +236,8 @@ sch_growth_lookup <- function(
 #' @param current_grade grade level
 #' @param season fall winter spring
 #' @param RIT rit score
-#' @param norms which norm study to use
+#' @param norms which school growth study to use.  c(2012, 2015).  default is
+#' 2015.
 #' 
 #' @return a integer vector length one
 
@@ -257,7 +281,8 @@ rit_to_npr <- function(measurementscale, current_grade, season, RIT, norms = 201
 #' @param current_grade grade level
 #' @param season fall winter spring
 #' @param npr a percentile rank, between 1-99
-#' @param norms which norm study to use
+#' @param norms which school growth study to use.  c(2012, 2015).  default is
+#' 2015.
 #' 
 #' @return a integer vector length one
 
@@ -302,6 +327,8 @@ npr_to_rit <- function(measurementscale, current_grade, season, npr, norms = 201
 #' @param start_academic_year starting academic year
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
+#' @param norms which school growth study to use.  c(2012, 2015).  default is
+#' 2015.
 #' 
 #' @export
 
@@ -312,7 +339,8 @@ mapviz_cgp <- function(
   start_fws, 
   start_academic_year, 
   end_fws, 
-  end_academic_year
+  end_academic_year,
+  norms = 2015
 ) {
   #data validation and unpack
   mv_opening_checks(mapvizieR_obj, studentids, 1)
@@ -334,8 +362,7 @@ mapviz_cgp <- function(
       measurementscale, start_fallwinterspring, start_map_year_academic,
       end_fallwinterspring, end_map_year_academic
     ) 
-
-
+  #summarize
   df <- this_growth %>%
     dplyr::summarize(
       avg_start_rit = mean(start_testritscore, na.rm = TRUE),
@@ -362,7 +389,8 @@ mapviz_cgp <- function(
         end_grade = approx_grade,
         growth_window = paste(start_fallwinterspring, 'to', end_fallwinterspring),
         baseline_avg_rit = avg_start_rit,
-        ending_avg_rit = avg_end_rit
+        ending_avg_rit = avg_end_rit,
+        norms = norms
       )[['results']] 
   ) %>%
   as.data.frame
@@ -380,6 +408,8 @@ mapviz_cgp <- function(
 #' @param end_grade starting grade (not grade level season, just grade)
 #' @param cgp target cgp.  can be single target or vector
 #' @param growth_window what growth window to step
+#' @param norms which school growth study to use.  c(2012, 2015).  default is
+#' 2015.
 #' 
 #' @export
 
@@ -388,15 +418,16 @@ one_cgp_step <- function(
   start_rit, 
   end_grade, 
   cgp, 
-  growth_window = 'Spring to Spring'
+  growth_window = 'Spring to Spring',
+  norms = 2015
 ) {
-  
   calc_cgp(
     measurementscale, 
     end_grade,
     growth_window, 
     start_rit,
-    calc_for = cgp
+    calc_for = cgp,
+    norms = norms
   )[['targets']]$growth_target
 }
 
@@ -407,6 +438,8 @@ one_cgp_step <- function(
 #' @param start_rit RIT the cohort started at
 #' @param cgp what CGP to simulate growth at
 #' @param sim_over 'ES', 'MS' or a vector of grade levels, at least length 2
+#' @param norms which school growth study to use.  c(2012, 2015).  default is
+#' 2015.
 #'
 #' @return a named list, with grades and rits
 #' @export
@@ -415,9 +448,9 @@ cgp_sim <- function(
   measurementscale, 
   start_rit, 
   cgp, 
-  sim_over = 'MS'
+  sim_over = 'MS',
+  norms = 2015
   ) {
-  
   #ms or es
   if (is.numeric(sim_over)) {
     start_grade <- sim_over[1]
@@ -441,7 +474,7 @@ cgp_sim <- function(
     #entry
     if (i %in% c(0, 5)) window <- 'Fall to Spring' else window <- 'Spring to Spring'
     
-    rit <- one_cgp_step(measurementscale, rit, i, cgp, window) + rit
+    rit <- one_cgp_step(measurementscale, rit, i, cgp, window, norms) + rit
     grades <- c(grades, i)
     running_rits <- c(running_rits, rit)
   }
@@ -454,11 +487,13 @@ cgp_sim <- function(
 #'
 #' @param cdf conforming cdf file
 #' @param grouping what column to group on.  default is implicit_cohort
+#' @param norms which school growth study to use.  c(2012, 2015).  default is
+#' 2015.
 #'
 #' @return a data frame with summary start/end rit, and cgps
 #' @export
 
-cdf_to_cgp <- function(cdf, grouping = 'implicit_cohort') {
+cdf_to_cgp <- function(cdf, grouping = 'implicit_cohort', norms = 2015) {
   
   grouped <- cdf %>%
     dplyr::group_by_(
@@ -522,6 +557,7 @@ cdf_to_cgp <- function(cdf, grouping = 'implicit_cohort') {
         growth_window = paste(start_fallwinterspring, 'to', end_fallwinterspring),
         baseline_avg_rit = start_mean_rit,
         ending_avg_rit = end_mean_rit,
+        norms = norms,
         verbose = FALSE
       )[['results']] 
     )
@@ -604,6 +640,8 @@ preferred_cdf_baseline <- function(
 #' @param start_fws_prefer which term is preferred? not required if only one start_fws is passed
 #' @param calc_for passed through to calc_cgp, what values to calculate targets for?
 #' @param returns 'targets' or 'expectations'?
+#' @param norms which school growth study to use.  c(2012, 2015).  default is
+#' 2015.
 #' 
 #' @return data frame of cgp targets
 #' @export
@@ -619,7 +657,8 @@ mapviz_cgp_targets <- function(
   end_grade,
   start_fws_prefer = NA,
   calc_for = c(1:99),
-  returns = 'targets'
+  returns = 'targets',
+  norms = 2015
 ) {
   #data validation and unpack
   mv_opening_checks(mapvizieR_obj, studentids, 1)
@@ -667,7 +706,8 @@ mapviz_cgp_targets <- function(
     end_grade = end_grade,
     growth_window = paste(start_window[2], 'to', end_fws),
     baseline_avg_rit = baseline_rit,
-    calc_for = calc_for
+    calc_for = calc_for,
+    norms = norms
   )[[returns]]
   
   return(out)
