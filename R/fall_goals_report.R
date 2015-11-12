@@ -328,7 +328,9 @@ fall_goals_report <- function(
     measurementscale = measurementscale, 
     start_rit = expectations_df$observed_baseline, 
     cgp = goal_cgp, 
-    sim_over = c(start_sim, seq(expectations_df$grade, this_report$annotate_x, 1))
+    sim_over = c(
+      start_sim, seq(expectations_df$end_grade, this_report$annotate_x, 1)
+    )
   )
   
   specific_growth <- data.frame(

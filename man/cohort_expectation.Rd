@@ -4,13 +4,13 @@
 \alias{cohort_expectation}
 \title{cohort_expectation}
 \usage{
-cohort_expectation(measurementscale, grade, growth_window, baseline_avg_rit,
+cohort_expectation(measurementscale, end_grade, growth_window, baseline_avg_rit,
   calc_for, sch_growth_study = sch_growth_norms_2012)
 }
 \arguments{
 \item{measurementscale}{a MAP subject}
 
-\item{grade}{the ENDING grade level for the growth window.  ie, if this calculation
+\item{end_grade}{the ENDING grade level for the growth window.  ie, if this calculation
 crosses school years, use the grade level for the END of the term, per the example on p. 7
 of the 2012 school growth study}
 

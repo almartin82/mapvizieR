@@ -4,14 +4,20 @@ context("very meta tests of the fuzz_test function")
 testing_constants()
 
 test_that("fuzz test a vanilla ggplot", {
-  results <- fuzz_test_plot('silly_plot', n = 10)
+  results <- fuzz_test_plot(
+    plot_name = 'silly_plot', 
+    n = 5,
+    mapvizieR_obj = mapviz
+  )
   expect_true(all(unlist(results)))
 })
 
+
 test_that("fuzz test a vanilla ggplot", {    
-  results <- fuzz_test_plot('error_ridden_plot', n = 3)
+  results <- fuzz_test_plot('error_ridden_plot', n = 3, mapvizieR_obj = mapviz)
   expect_false(all(unlist(results)))
 })
+
 
 test_that("fuzz test treats a known error as TRUE result", {    
   
@@ -22,7 +28,7 @@ test_that("fuzz test treats a known error as TRUE result", {
     'goalbar', n = 10,
     additional_args = list('measurementscale' = 'Mathematics', 'start_fws' = 'Fall',
       'start_academic_year' = 2013, 'end_fws' = 'Spring', 'end_academic_year' = 2013),
-    mapviz = mapviz
+    mapvizieR_obj = mapviz
   )
   
   expect_true(all(unlist(results)))

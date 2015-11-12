@@ -208,7 +208,7 @@
 #' 
 #' @format
 #' \describe{
-#' \item{grade}{END grade, eg grade 2 spring to spring is grade 1 TO grade 2}
+#' \item{end_grade}{END grade, eg grade 2 spring to spring is grade 1 TO grade 2}
 #' \item{measurementscale}{measurementscale}
 #' \item{growth_window}{growth_window}
 #' \item{start_fallwinterspring}{start_fallwinterspring}

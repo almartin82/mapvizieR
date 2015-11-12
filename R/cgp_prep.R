@@ -35,9 +35,9 @@ calc_cgp <- function(
     )
   
   #valid terms
-  vt <- sch_growth_study[, c('measurementscale', 'grade', 'growth_window')]
+  vt <- sch_growth_study[, c('measurementscale', 'end_grade', 'growth_window')]
   in_study <- paste(measurementscale, end_grade, growth_window, sep = '@') %in% paste(
-    vt$measurementscale, vt$grade, vt$growth_window, sep = '@'
+    vt$measurementscale, vt$end_grade, vt$growth_window, sep = '@'
   )
   if (!in_study) {
     if (verbose) warning("measurementscale/grade/growth window combination isn't in school growth study.")
@@ -99,7 +99,7 @@ calc_cgp <- function(
 #' @description wrapper function to get cohort growth expectations for the lookup method
 #' 
 #' @param measurementscale a MAP subject
-#' @param grade the ENDING grade level for the growth window.  ie, if this calculation
+#' @param end_grade the ENDING grade level for the growth window.  ie, if this calculation
 #' crosses school years, use the grade level for the END of the term, per the example on p. 7
 #' of the 2012 school growth study
 #' @param growth_window the growth window to calculate CGP over
@@ -112,7 +112,7 @@ calc_cgp <- function(
 
 cohort_expectation <- function(
   measurementscale,
-  grade,
+  end_grade,
   growth_window,
   baseline_avg_rit,
   calc_for,
@@ -122,7 +122,7 @@ cohort_expectation <- function(
   #get expectation
   grw_expect <- sch_growth_lookup(
     measurementscale,
-    grade,
+    end_grade,
     growth_window,
     baseline_avg_rit
   )
@@ -169,7 +169,7 @@ rit_gain_needed <- function(percentile, sd_gain, mean_gain) {
 #' @description get cohort growth expectations via lookup from growth study
 #' 
 #' @param measurementscale MAP subject
-#' @param grade baseline/starting grade for the group of students
+#' @param start_grade baseline/starting grade for the group of students
 #' @param growth_window desired growth window for targets (fall/spring, spring/spring, fall/fall)
 #' @param baseline_avg_rit the baseline mean rit for the group of students
 #' @param sch_growth_study NWEA school growth study to use for lookup; defaults to 2012.
@@ -178,21 +178,21 @@ rit_gain_needed <- function(percentile, sd_gain, mean_gain) {
 
 sch_growth_lookup <- function(  
   measurementscale,
-  grade,
+  start_grade,
   growth_window,
   baseline_avg_rit,
   sch_growth_study = sch_growth_norms_2012
 ) {
   #nse
   measurementscale_in <- measurementscale
-  grade_in <- grade
+  grade_in <- start_grade
   growth_window_in <- growth_window
   
   norm_match <- sch_growth_study %>%
     dplyr::filter(
       measurementscale == measurementscale_in, 
       growth_window == growth_window_in, 
-      grade == grade_in
+      end_grade == grade_in
     ) 
   
   norm_match$diff <- norm_match$rit - baseline_avg_rit
@@ -210,14 +210,14 @@ sch_growth_lookup <- function(
 #' (assumes the subject is a student, not a school/cohort.)
 #' 
 #' @param measurementscale MAP subject
-#' @param grade grade level
+#' @param current_grade grade level
 #' @param season fall winter spring
 #' @param RIT rit score
 #' @param norms which norm study to use
 #' 
 #' @return a integer vector length one
 
-rit_to_npr <- function(measurementscale, grade, season, RIT, norms = 2015) {
+rit_to_npr <- function(measurementscale, current_grade, season, RIT, norms = 2015) {
   
   if (norms == 2011) {
     active_norms <- student_status_norms_2011
@@ -225,7 +225,7 @@ rit_to_npr <- function(measurementscale, grade, season, RIT, norms = 2015) {
     active_norms <- status_norms_2015
   }  
   measurementscale_in <- measurementscale
-  grade_in <- grade
+  grade_in <- current_grade
   rit_in <- RIT
   
   matches <- active_norms %>%
@@ -254,18 +254,17 @@ rit_to_npr <- function(measurementscale, grade, season, RIT, norms = 2015) {
 #' (assumes the subject is a student, not a school/cohort.)
 #' 
 #' @param measurementscale MAP subject
-#' @param grade grade level
+#' @param current_grade grade level
 #' @param season fall winter spring
 #' @param npr a percentile rank, between 1-99
 #' @param norms which norm study to use
 #' 
 #' @return a integer vector length one
 
-
-npr_to_rit <- function(measurementscale, grade, season, npr, norms = 2015) {
+npr_to_rit <- function(measurementscale, current_grade, season, npr, norms = 2015) {
   
   measurementscale_in <- measurementscale
-  grade_in <- grade
+  grade_in <- current_grade
   
   if (norms == 2011) {
     active_norms <- student_status_norms_2011_dense_extended
