@@ -30,8 +30,10 @@ test_that("calc_cgp tests with 2012 norms", {
   #addl params
   expect_equal(sum(diff_params$growth_target), 171.3971, tolerance = .01)
     
-  low_npr_ex <- calc_cgp(measurementscale = 'Reading', end_grade = 2, 
-    growth_window = 'Fall to Spring', baseline_avg_rit = 133
+  low_npr_ex <- calc_cgp(
+    measurementscale = 'Reading', end_grade = 2, 
+    growth_window = 'Fall to Spring', baseline_avg_rit = 133,
+    norms = 2012
   )[['targets']]
   
   expect_equal(as.character(low_npr_ex$measured_in), c(rep("RIT", 99)))
