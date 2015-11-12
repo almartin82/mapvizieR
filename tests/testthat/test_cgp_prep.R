@@ -7,7 +7,8 @@ ex_target_rit <- calc_cgp(
     measurementscale = 'Reading', 
     end_grade = 2, 
     growth_window = 'Fall to Spring', 
-    baseline_avg_rit = 173
+    baseline_avg_rit = 173,
+    norms = 2012
   )[['targets']]
 
 

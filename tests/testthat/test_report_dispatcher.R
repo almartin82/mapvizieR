@@ -10,10 +10,11 @@ test_that("basic test on silly plot.  report dispatcher should find roster struc
   call_these <- list(FALSE, TRUE, TRUE)
 
   silly_test <- report_dispatcher(
-    mapvizieR_obj = mapviz
-   ,cut_list = cut_by
-   ,call_list = call_these
-   ,func_to_call = "silly_plot"
+    mapvizieR_obj = mapviz,
+    cut_list = cut_by,
+    call_list = call_these,
+    func_to_call = "silly_plot",
+    verbose = FALSE
   )
 
   expect_equal(class(silly_test), "list")
@@ -27,21 +28,19 @@ test_that("report dispatcher on elephants using test data", {
   call_these <- list(TRUE)
   
   ele_test <- report_dispatcher(
-    mapvizieR_obj = mapviz
-   ,cut_list = cut_by
-   ,call_list = call_these
-   ,func_to_call = "galloping_elephants"
-   ,arg_list = list('measurementscale' = 'Mathematics')
+    mapvizieR_obj = mapviz,
+    cut_list = cut_by,
+    call_list = call_these,
+    func_to_call = "galloping_elephants",
+    arg_list = list('measurementscale' = 'Mathematics'),
+    verbose = FALSE
   )
 
   expect_equal(length(ele_test), 4)
   expect_true("ggplot" %in% class(ele_test[[1]]))
-  expect_true(
-    all(
-      c("data","layers","scales","mapping","theme","coordinates","facet","plot_env","labels") %in%
-       names(ele_test[[1]]) 
-    )  
-  )
+  c("data", "layers", "scales", "mapping", "theme", "coordinates",
+    "facet", "plot_env", "labels") %in% names(ele_test[[1]]) %>%
+    all() %>% expect_true()
   
 })  
 
@@ -120,7 +119,8 @@ test_that("report dispatcher throws an error if bad cut/call list provided", {
       cut_list = list('schoolname', 'grade'),
       call_list = list(TRUE),
       func_to_call = "galloping_elephants",
-      arg_list = list('measurementscale' = 'Mathematics')
+      arg_list = list('measurementscale' = 'Mathematics'),
+      verbose = FALSE
     ),
     "cut list and call list should be same length."
   )
