@@ -4,13 +4,13 @@
 \alias{sch_growth_lookup}
 \title{sch_growth_lookup}
 \usage{
-sch_growth_lookup(measurementscale, start_grade, growth_window,
-  baseline_avg_rit, norms = 2015)
+sch_growth_lookup(measurementscale, end_grade, growth_window, baseline_avg_rit,
+  norms = 2015)
 }
 \arguments{
 \item{measurementscale}{MAP subject}
 
-\item{start_grade}{baseline/starting grade for the group of students}
+\item{end_grade}{grade students will be in at the end of the window}
 
 \item{growth_window}{desired growth window for targets (fall/spring, spring/spring, fall/fall)}
 

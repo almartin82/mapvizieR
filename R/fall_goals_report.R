@@ -67,68 +67,23 @@ fall_goals_report <- function(
     )
   }  
   
-  becca <- becca_plot(
-    mapvizieR_obj = mapvizieR_obj, 
-    studentids = studentids,
-    measurementscale = measurementscale,
-    detail_academic_year = detail_academic_year,
-    entry_grade_seasons = entry_grade_seasons
-  ) + 
-  labs(title = 'Historical Quartile Change')
-  
-  cgp_hist <- cohort_cgp_hist_plot(
-    mapvizieR_obj = mapvizieR_obj,
-    studentids = studentids,
-    measurementscale = measurementscale,
-    entry_grade_seasons = entry_grade_seasons
-  ) +
-  labs(title = 'Historic Cohort Growth Percentiles')
-  
-  cohort_longitudinal <- cohort_longitudinal_npr_plot(
-    mapvizieR_obj = mapvizieR_obj,
-    studentids = studentids,
-    measurementscale = measurementscale,
-    student_alpha = 0.075,
-    name_annotations = TRUE
-  ) +
-  labs(title = 'Historic Student and Cohort Growth')
-  
-  most_growth <- stu_growth_detail_table(
-    mapvizieR_obj = mapvizieR_obj,
-    studentids = studentids,
-    measurementscale = measurementscale,
-    entry_grade_seasons = entry_grade_seasons,
-    high_or_low_growth = 'high',
-    num_stu = 12
+  p1_main <- fall_goals_report_p1(
+    mapvizieR_obj, 
+    studentids, 
+    measurementscale, 
+    context,
+    start_fws,
+    start_year_offset,
+    end_fws,
+    end_academic_year,
+    entry_grade_seasons,
+    exclude_prior_year_holdover,
+    detail_academic_year,
+    goal_cgp,
+    school_type,
+    localization
   )
-  most_growth <- gridExtra::arrangeGrob(
-    h_var('Most Growth', 12), most_growth, nrow = 2, heights = c(1, 13)
-  )
-
-  least_growth <- stu_growth_detail_table(
-    mapvizieR_obj = mapvizieR_obj,
-    studentids = studentids,
-    measurementscale = measurementscale,
-    entry_grade_seasons = entry_grade_seasons,
-    high_or_low_growth = 'low',
-    num_stu = 12
-  )
-  least_growth <- gridExtra::arrangeGrob(
-    h_var('Least Growth', 12), least_growth, nrow = 2, heights = c(1, 13)
-  )  
-  
   p1_top <- h_var('1. Where have my students been?', 20)
-  
-  left_stack <- gridExtra::arrangeGrob(becca, cgp_hist, nrow = 2)
-  right_stack <- gridExtra::arrangeGrob(
-    most_growth, least_growth, nrow = 2
-  )
-  
-  p1_main <- gridExtra::arrangeGrob(
-    left_stack, cohort_longitudinal, right_stack, 
-    ncol = 3, widths = c(1, 2, 1)
-  )
-  
   p1 <- gridExtra::arrangeGrob(
     p1_top, p1_main, nrow = 2, heights = c(1, 17)
   )
@@ -608,4 +563,99 @@ cohort_growth_expectations_plot <- function(
   )
   
   out  
+}
+
+
+#' Fall Goals Report p 1
+#'
+#' @inheritParams fall_goals_report
+#' 
+#' @return a multipage report, represented as a list of grobs.
+#' @export
+
+fall_goals_report_p1 <- function(
+  mapvizieR_obj, 
+  studentids, 
+  measurementscale, 
+  context,
+  start_fws = 'Spring',
+  start_year_offset = -1,
+  end_fws = 'Spring',
+  end_academic_year = 2015,
+  entry_grade_seasons = c(-0.8, 4.2),
+  exclude_prior_year_holdover = TRUE,
+  detail_academic_year = 9999,
+  goal_cgp = 80,
+  school_type = 'MS',
+  localization = localize('Newark')
+) {
+
+  mapvizieR_obj$cdf <- impute_rit(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids, 
+    measurementscale = measurementscale
+  )
+  
+  end_grade <- mapvizieR_obj$roster %>%
+    dplyr::filter(
+      studentid %in% studentids &
+        map_year_academic == end_academic_year
+    ) %>% 
+    dplyr::select(
+      grade
+    ) %>%
+    table() %>% sort() %>% names() %>% rev() %>% 
+    magrittr::extract(1) %>% as.numeric()
+  
+  if (exclude_prior_year_holdover) {
+    mapvizieR_obj$cdf <- mapvizieR_obj$cdf %>% dplyr::filter(
+      grade < end_grade
+    )
+  } 
+
+  becca <- becca_plot(
+    mapvizieR_obj = mapvizieR_obj, 
+    studentids = studentids,
+    measurementscale = measurementscale,
+    detail_academic_year = detail_academic_year,
+    entry_grade_seasons = entry_grade_seasons
+  ) + 
+  labs(title = 'Historical Quartile Change')
+  
+  cgp_hist <- cohort_cgp_hist_plot(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale = measurementscale,
+    entry_grade_seasons = entry_grade_seasons
+  ) +
+  labs(title = 'Historic Cohort Growth Percentiles')
+  
+  cohort_longitudinal <- cohort_longitudinal_npr_plot(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale = measurementscale,
+    student_alpha = 0.075,
+    name_annotations = TRUE
+  ) +
+  labs(title = 'Historic Student and Cohort Growth')
+  
+  most_growth <- stu_growth_detail_table(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale = measurementscale,
+    entry_grade_seasons = entry_grade_seasons,
+    high_or_low_growth = 'high',
+    num_stu = 12
+  ) 
+  
+  least_growth <- stu_growth_detail_table(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale = measurementscale,
+    entry_grade_seasons = entry_grade_seasons,
+    high_or_low_growth = 'low',
+    num_stu = 12
+  ) 
+
+  template_04(becca, cgp_hist, cohort_longitudinal, most_growth, least_growth)
 }

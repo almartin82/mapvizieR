@@ -98,13 +98,13 @@ roster_to_growth_df <- function(
     !'fallwinterspring' %in% names(.) ~ 
       "you provided a regular cdf, but this function is designed for the growth_df. try roster_to_cdf()"
   )
-
+  
   #get the roster
   roster <- mapvizieR_obj$roster
   
   #what student year season pairs are in the target df?
   pairs <- target_df[ ,c('studentid', 'start_map_year_academic', 'start_fallwinterspring', 
-    'end_map_year_academic', 'end_fallwinterspring')] %>% unique()
+                         'end_map_year_academic', 'end_fallwinterspring')] %>% unique()
   
   pairs$start_sort <- numeric_nwea_seasons(pairs$start_fallwinterspring) + pairs$start_map_year_academic
   pairs$end_sort <- numeric_nwea_seasons(pairs$end_fallwinterspring) + pairs$end_map_year_academic
@@ -138,7 +138,7 @@ roster_to_growth_df <- function(
     slim <- slim %>%
       dplyr::group_by(studentid)
   }
-    
+  
   slim <- slim %>%
     unique() %>%
     dplyr::mutate(

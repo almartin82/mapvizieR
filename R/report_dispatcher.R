@@ -122,7 +122,7 @@ report_dispatcher <- function(
       if (verbose) print(rd_env$depth_string)
       
       #get the matching kids
-      studentids <- unique(merge(roster, this_perm))$studentid
+      studentids <- merge(roster, this_perm)$studentid %>% unique()
       
       #create a local arg list that includes the current perm context
       this_arg_list <- append(arg_list, as.list(this_perm))
@@ -142,7 +142,7 @@ report_dispatcher <- function(
         this_arg_list <- this_arg_list[mask]
       } 
       
-      #now that we have the studentids and arg list, call the function      
+      #now that we have the studentids and arg list, call the function
       this_output <- try(
         do.call(
           what = func_to_call,

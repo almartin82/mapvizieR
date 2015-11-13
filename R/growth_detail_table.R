@@ -89,6 +89,12 @@ stu_growth_detail <- function(
       change_df, by = 'studentid'
     )
   
+  summary_df <- summary_df %>%
+    dplyr::mutate(
+      rank_npr_most = rank(-npr_change, ties.method = 'first'),
+      rank_npr_least = rank(npr_change, ties.method = 'first')
+    )
+  
   #student names
   summary_df <- summary_df %>%
     dplyr::left_join(
@@ -115,6 +121,7 @@ stu_growth_detail <- function(
 #' default is high.
 #' @param num_stu how many students to show in the table? default is 5.
 #' @param entry_grade_seasons what grades are considered entry grades
+#' @param ... additional arguments to tableGrob
 #'
 #' @return a tableGrob 
 #' @export
@@ -125,7 +132,8 @@ stu_growth_detail_table <- function(
   measurementscale,
   high_or_low_growth = 'high',
   num_stu = 5,
-  entry_grade_seasons = c(-0.8, 4.2)
+  entry_grade_seasons = c(-0.8, 4.2),
+  ...
 ) {
   
   growth_df <- stu_growth_detail(
@@ -140,7 +148,7 @@ stu_growth_detail_table <- function(
     dplyr::rowwise() %>%
     dplyr::mutate(
       filter_by = ifelse(
-        high_or_low_growth == 'high', rank_cgi_most, rank_cgi_least
+        high_or_low_growth == 'high', rank_npr_most, rank_npr_least
       )
     ) %>%
     dplyr::filter(
@@ -159,7 +167,8 @@ stu_growth_detail_table <- function(
         rank, studentfirstlast, rit_change, npr_change
       ),
     rows = NULL,
-    cols = c('Rank', 'Student', 'RIT Change', '%ile Change')
+    cols = c('Rank', 'Student', 'RIT Change', '%ile Change'),
+    ...
   )
   
   return(out)

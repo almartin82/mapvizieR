@@ -19,7 +19,7 @@ test_that("fall goals report should return list of plots", {
     expect_true("list" %in% class(fg_test))
     expect_true("grob" %in% class(fg_test[[2]]))
     
-    fg_test[[2]] %>% plot()
+    fg_test[[1]] %>% grid.draw()
 })  
 
 test_that("fall goals data table returns tableGrob", {

@@ -82,8 +82,10 @@ fuzz_test_plot <- function(
 #' @param studentids a vector of studentids
 
 silly_plot <- function(mapvizieR_obj, studentids) {
+  this_df <- mv_limit_cdf(mapvizieR_obj, studentids, 'Mathematics')
+  
   p <- ggplot(
-    data = mapvizieR_obj$cdf,
+    data = this_df,
     aes(x = testritscore)
   ) +
   geom_histogram()

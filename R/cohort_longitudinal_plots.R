@@ -11,7 +11,6 @@
 #' @param entry_grade_seasons what grades are 'entry' grades for this school? 
 #' @param name_annotations should we include student names on the plot? 
 #' default is FALSE.
-#' @param student_norms which student norms for template?
 #' @param student_alpha how much to alpha-out the student observations?
 #' @param trace_lines what norms to show?
 #'
@@ -25,18 +24,9 @@ cohort_longitudinal_npr_plot <- function(
   first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2), 
   name_annotations = FALSE,
-  student_norms = 2015,
   student_alpha = 0.1,
   trace_lines = c(1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 99)
 ) {
-  #template
-  template <- empty_norm_grade_space(
-    measurementscale = measurementscale,
-    trace_lines = trace_lines,
-    norms = student_norms,
-    norm_linetype = 'dotted'
-  )
-  
   #limit to these students, subject, and entry grade logic
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
   this_cdf <- valid_grade_seasons(
@@ -72,7 +62,8 @@ cohort_longitudinal_npr_plot <- function(
       grade_level_season
     ) %>%
     dplyr::summarize(
-      testritscore = mean(testritscore, na.rm = TRUE)
+      testritscore = mean(testritscore, na.rm = TRUE),
+      consistent_percentile = mean(consistent_percentile, na.rm = TRUE)
     )
   grouped$type <- 'Cohort'
   grouped$studentid <- 'Cohort'
@@ -81,15 +72,18 @@ cohort_longitudinal_npr_plot <- function(
   final_cdf <- rbind(
     grouped,
     this_cdf %>% 
-      dplyr::select(type, grade_level_season, testritscore, studentid, short_name)
+      dplyr::select(
+        type, grade_level_season, testritscore, 
+        consistent_percentile, studentid, short_name
+      )
   )
   
-  out <- template + 
+  out <- ggplot() + 
     geom_point(
       data = final_cdf,
       aes(
         x = grade_level_season,
-        y = testritscore,
+        y = consistent_percentile,
         group = studentid,
         color = type,
         size = type,
@@ -103,7 +97,7 @@ cohort_longitudinal_npr_plot <- function(
         data = final_cdf,
         aes(
           x = grade_level_season - 0.01,
-          y = testritscore,
+          y = consistent_percentile,
           group = studentid,
           label = short_name,
           color = type
@@ -122,7 +116,7 @@ cohort_longitudinal_npr_plot <- function(
       data = final_cdf,
       aes(
         x = grade_level_season,
-        y = testritscore,
+        y = consistent_percentile,
         group = studentid,
         color = type,
         size = type,
@@ -136,19 +130,13 @@ cohort_longitudinal_npr_plot <- function(
     theme(
       panel.grid = element_blank()
     ) +
+    scale_y_continuous(breaks = seq(0, 100, 10)) +
     coord_cartesian(
       xlim = c(
-        this_cdf$grade_level_season %>% min() %>% 
-          round_to_any(accuracy = 1, f = floor) - 0.05, 
-        this_cdf$grade_level_season %>% max() %>%
-          round_to_any(accuracy = 1, f = ceiling) + 0.05
+        this_cdf$grade_level_season %>% min() %>%  - 0.05, 
+        this_cdf$grade_level_season %>% max() %>% + 0.05
       ), 
-      ylim = c(
-        this_cdf$testritscore %>% min() %>% 
-          round_to_any(accuracy = 5, f = floor), 
-        this_cdf$testritscore %>% max() %>%
-          round_to_any(accuracy = 5, f = ceiling)
-      )
+      ylim = c(0, 100)
     ) 
   
   return(out)
