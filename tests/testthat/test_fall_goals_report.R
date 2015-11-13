@@ -11,6 +11,7 @@ test_that("fall goals report should return list of plots", {
       start_year_offset = -1,
       end_fws = 'Spring',
       end_academic_year = 2013,
+      exclude_prior_year_holdover = FALSE,
       detail_academic_year = 2013,
       goal_cgp = 80
     )

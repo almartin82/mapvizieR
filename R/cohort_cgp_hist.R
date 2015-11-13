@@ -58,7 +58,7 @@ cohort_cgp_hist_plot <- function(
     this_cdf, first_and_spring_only, entry_grade_seasons, 9999
   )
   
-  as_cgp <- cdf_to_cgp(cdf = munge, grouping = 'implicit_cohort')
+  as_cgp <- cdf_to_cgp(cdf = munge, grouping = 'implicit_cohort', norms = school_norms)
   
   as_cgp <- as_cgp %>%
     dplyr::mutate(
