@@ -274,6 +274,7 @@ season_fix <- function(cdf) {
     matrix(., ncol = 2, byrow = TRUE)
   gls <- gls[ , 2]
   gls <- ifelse(gls == '2', 'Fall', gls)
+  gls <- ifelse(gls == '8', 'Fall', gls)
   gls <- ifelse(gls == '5', 'Winter', gls)
   gls <- ifelse(gls == '0', 'Spring', gls)
   
