@@ -645,7 +645,8 @@ fall_goals_report_p1 <- function(
     measurementscale = measurementscale,
     entry_grade_seasons = entry_grade_seasons,
     high_or_low_growth = 'high',
-    num_stu = 12
+    num_stu = 12,
+    title = 'Most Growth'
   ) 
   
   least_growth <- stu_growth_detail_table(
@@ -654,7 +655,8 @@ fall_goals_report_p1 <- function(
     measurementscale = measurementscale,
     entry_grade_seasons = entry_grade_seasons,
     high_or_low_growth = 'low',
-    num_stu = 12
+    num_stu = 12,
+    title = 'Least Growth'
   ) 
 
   template_04(becca, cgp_hist, cohort_longitudinal, most_growth, least_growth)

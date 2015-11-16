@@ -6,7 +6,7 @@
 \usage{
 stu_growth_detail_table(mapvizieR_obj, studentids, measurementscale,
   high_or_low_growth = "high", num_stu = 5, entry_grade_seasons = c(-0.8,
-  4.2), ...)
+  4.2), title = "", ...)
 }
 \arguments{
 \item{mapvizieR_obj}{a conforming mapvizieR object}
@@ -21,6 +21,8 @@ default is high.}
 \item{num_stu}{how many students to show in the table? default is 5.}
 
 \item{entry_grade_seasons}{what grades are considered entry grades}
+
+\item{title}{if desired, a title for the table}
 
 \item{...}{additional arguments to tableGrob}
 }

@@ -5,7 +5,7 @@ test_that("fall goals report should return list of plots", {
     fg_test <- fall_goals_report(
       mapvizieR_obj = mapviz,
       studentids = studentids_normal_use,
-      measurementscale = 'Mathematics',
+      measurementscale = 'Reading',
       context = '6th grade Mt. Bachelor | Reading', 
       start_fws = 'Spring',
       start_year_offset = -1,
@@ -20,6 +20,8 @@ test_that("fall goals report should return list of plots", {
     expect_true("grob" %in% class(fg_test[[2]]))
     
     fg_test[[1]] %>% grid.draw()
+    grid.newpage()
+    fg_test[[2]] %>% grid.draw()
 })  
 
 test_that("fall goals data table returns tableGrob", {

@@ -121,6 +121,7 @@ stu_growth_detail <- function(
 #' default is high.
 #' @param num_stu how many students to show in the table? default is 5.
 #' @param entry_grade_seasons what grades are considered entry grades
+#' @param title if desired, a title for the table
 #' @param ... additional arguments to tableGrob
 #'
 #' @return a tableGrob 
@@ -133,6 +134,7 @@ stu_growth_detail_table <- function(
   high_or_low_growth = 'high',
   num_stu = 5,
   entry_grade_seasons = c(-0.8, 4.2),
+  title = '',
   ...
 ) {
   
@@ -171,6 +173,20 @@ stu_growth_detail_table <- function(
     ...
   )
   
+  if (! title == '') {
+    table_title <- grid::textGrob(title)
+    #table_title <- grid::textGrob(title, gp = gpar(fontsize = 16))
+    padding <- unit(0.5, "line")
+    out <- gtable::gtable_add_rows(
+      out, heights = unit(1, "lines"), pos = 0
+    )
+    out <- gtable::gtable_add_grob(
+      out, table_title,
+      t = 1, l = 1, r = ncol(out)
+    )
+  }
+  
+
   return(out)
 }
   
