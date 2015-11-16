@@ -4,6 +4,8 @@
 #' @param studentids a vector of studentids to run
 #' @param measurementscale desired subject
 #' @param context what school/grade/class/etc grouping is represented?
+#' @param small_n_cutoff drop a grade_level_season if less than x% of the max? 
+#' (useful when dealing with weird cohort histories)
 #' @param start_fws character, starting season for school growth norms
 #' @param start_year_offset 0 if start season is same, -1 if start is prior year.
 #' @param end_fws ending season
@@ -26,6 +28,7 @@ fall_goals_report <- function(
   studentids, 
   measurementscale, 
   context,
+  small_n_cutoff = 0,
   start_fws = 'Spring',
   start_year_offset = -1,
   end_fws = 'Spring',
@@ -42,6 +45,7 @@ fall_goals_report <- function(
   minimal = rectGrob(gp = gpar(col = "white"))
   
   report_list <- list()
+  counter <- 1
   
   #1. Where have my students been?
   mapvizieR_obj$cdf <- impute_rit(
@@ -65,31 +69,37 @@ fall_goals_report <- function(
     mapvizieR_obj$cdf <- mapvizieR_obj$cdf %>% dplyr::filter(
       grade < end_grade
     )
-  }  
+  }
   
-  p1_main <- fall_goals_report_p1(
-    mapvizieR_obj, 
-    studentids, 
-    measurementscale, 
-    context,
-    start_fws,
-    start_year_offset,
-    end_fws,
-    end_academic_year,
-    entry_grade_seasons,
-    exclude_prior_year_holdover,
-    detail_academic_year,
-    goal_cgp,
-    school_type,
-    localization
-  )
-  p1_top <- h_var('1. Where have my students been?', 20)
-  p1 <- gridExtra::arrangeGrob(
-    p1_top, p1_main, nrow = 2, heights = c(1, 17)
-  )
-  p1 <- report_footer(p1, context)
+  mapvizieR_obj$cdf <- min_term_filter(mapvizieR_obj$cdf, small_n_cutoff)
   
-  report_list[[1]] <- p1
+  if (mapvizieR_obj$cdf$map_year_academic %>% unique() %>% length > 2) {
+    p1_main <- fall_goals_report_p1(
+      mapvizieR_obj, 
+      studentids, 
+      measurementscale, 
+      context,
+      small_n_cutoff,
+      start_fws,
+      start_year_offset,
+      end_fws,
+      end_academic_year,
+      entry_grade_seasons,
+      exclude_prior_year_holdover,
+      detail_academic_year,
+      goal_cgp,
+      school_type,
+      localization
+    )
+    p1_top <- h_var('1. Where have my students been?', 20)
+    p1 <- gridExtra::arrangeGrob(
+      p1_top, p1_main, nrow = 2, heights = c(1, 17)
+    )
+    p1 <- report_footer(p1, context)
+    
+    report_list[[counter]] <- p1
+    counter <- counter + 1
+  }
 
   #2. Where do they need to go?
   #in words
@@ -377,7 +387,7 @@ fall_goals_report <- function(
   )
   p2 <- report_footer(p2, context)
   
-  report_list[[2]] <- p2
+  report_list[[counter]] <- p2
 
   return(report_list)
 }
@@ -578,6 +588,7 @@ fall_goals_report_p1 <- function(
   studentids, 
   measurementscale, 
   context,
+  small_n_cutoff = 0,
   start_fws = 'Spring',
   start_year_offset = -1,
   end_fws = 'Spring',
@@ -613,6 +624,8 @@ fall_goals_report_p1 <- function(
     )
   } 
 
+  mapvizieR_obj$cdf <- min_term_filter(mapvizieR_obj$cdf, small_n_cutoff)
+  
   becca <- becca_plot(
     mapvizieR_obj = mapvizieR_obj, 
     studentids = studentids,

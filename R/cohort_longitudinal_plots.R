@@ -39,6 +39,8 @@ cohort_longitudinal_npr_plot <- function(
     this_cdf, mapvizieR_obj, c('studentfirstname', 'studentlastname')
   )
   
+  #this_cdf %>% peek() %>% print()
+  
   #for student display name
   this_cdf <- this_cdf %>%
     dplyr::mutate(
@@ -130,6 +132,11 @@ cohort_longitudinal_npr_plot <- function(
     theme(
       panel.grid = element_blank()
     ) +
+    scale_x_continuous(
+      breaks = final_cdf$grade_level_season %>% unique(),
+      labels = final_cdf$grade_level_season %>% unique() %>%
+        lapply(fall_spring_me) %>% unlist()
+    ) +
     scale_y_continuous(breaks = seq(0, 100, 10)) +
     coord_cartesian(
       xlim = c(
@@ -137,7 +144,11 @@ cohort_longitudinal_npr_plot <- function(
         this_cdf$grade_level_season %>% max() %>% + 0.05
       ), 
       ylim = c(0, 100)
-    ) 
+    ) +
+    labs(
+      x = 'Grade & Season',
+      y = 'National Percentile Rank'
+    )
   
   return(out)
   

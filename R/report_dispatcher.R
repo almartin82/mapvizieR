@@ -28,8 +28,9 @@ report_dispatcher <- function(
     cut_list, 
     call_list, 
     func_to_call, 
-    arg_list=list(),
+    arg_list = list(),
     calling_env = parent.frame(),
+    pre_process = function(x) return(x),
     post_process = "only_valid_plots",
     verbose = TRUE,
     ...
@@ -61,7 +62,7 @@ report_dispatcher <- function(
   perm_disp <- list()
   counter <- 1
   
-  #set names of each cut to 'All' so that sbugroups can be referenced before 
+  #set names of each cut to 'All' so that subgroups can be referenced before 
   for (cut in cut_list) {
     assign(cut, 'All')
   }
@@ -96,6 +97,11 @@ report_dispatcher <- function(
     }
   #end make perm list loop  
   }
+  
+  #pre-process the perm list
+  
+  perm_list <- lapply(perm_list, pre_process)
+  perm_disp <- lapply(perm_list, pre_process)
   
   if (verbose) {writeLines('permutations on selected cuts are:'); print(perm_disp)}
 
