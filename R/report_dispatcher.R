@@ -101,7 +101,7 @@ report_dispatcher <- function(
   #pre-process the perm list
   
   perm_list <- lapply(perm_list, pre_process)
-  perm_disp <- lapply(perm_list, pre_process)
+  perm_disp <- lapply(perm_disp, pre_process)
   
   if (verbose) {writeLines('permutations on selected cuts are:'); print(perm_disp)}
 
