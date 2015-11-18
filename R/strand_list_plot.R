@@ -36,7 +36,7 @@ strands_list_plot <- function(mapvizier_obj,
                               measurement_scale,
                               season,
                               year
-                              ){
+){
   
   if(!is.mapvizieR(mapvizier_obj)) stop("You need to use a proper mapvizieR object.  Your object isn't proper.")
   
@@ -46,22 +46,22 @@ strands_list_plot <- function(mapvizier_obj,
                   map_year_academic == year,
                   studentid %in% studentids) %>%
     dplyr::inner_join(mapvizier_obj$roster %>%
-                 dplyr::filter(fallwinterspring == season,
-                        map_year_academic == year) %>%
-                   dplyr::select(-grade), 
-               by = c("studentid", "termname"))
+                        dplyr::filter(fallwinterspring == season,
+                                      map_year_academic == year) %>%
+                        dplyr::select(-grade), 
+                      by = c("studentid", "termname"))
   
   m.sub.scores <- .data %>% 
     dplyr::select(studentid, 
-                 studentfirstname,
-                 studentlastname,
-                 grade,
-                 measurementscale,
-                 testritscore,
-                 consistent_percentile,
-                 testquartile,
-                 matches("(goal)[0-9]ritscore")
-                 )
+                  studentfirstname,
+                  studentlastname,
+                  grade,
+                  measurementscale,
+                  testritscore,
+                  consistent_percentile,
+                  testquartile,
+                  matches("(goal)[0-9]ritscore")
+    )
   
   
   
@@ -75,18 +75,18 @@ strands_list_plot <- function(mapvizier_obj,
                   consistent_percentile,
                   testquartile,
                   matches("(goal)[0-9]name")
-                  )
+    )
   
   # melt scores
   m.melt.scores <- reshape2::melt(m.sub.scores, 
-                      id.vars = names(m.sub.scores)[1:8], 
-                      measure.vars = names(m.sub.scores)[-c(1:8)]
+                                  id.vars = names(m.sub.scores)[1:8], 
+                                  measure.vars = names(m.sub.scores)[-c(1:8)]
   ) %>%
     dplyr::mutate(value=as.numeric(value))
   
   m.melt.names<-reshape2::melt(m.sub.names, 
-                     id.vars=names(m.sub.names)[1:8],
-                     measure.vars = names(m.sub.names)[-c(1:8)]
+                               id.vars=names(m.sub.names)[1:8],
+                               measure.vars = names(m.sub.names)[-c(1:8)]
   )
   
   
@@ -94,7 +94,7 @@ strands_list_plot <- function(mapvizier_obj,
   m.long <- m.melt.scores 
   m.long$goal_name<-m.melt.names$value
   
-
+  
   
   m.long.2<-m.long %>% dplyr::filter(!is.na(goal_name))
   m.long.2<-m.long.2 %>% dplyr::filter(!is.na(value))
@@ -105,8 +105,8 @@ strands_list_plot <- function(mapvizier_obj,
     dplyr::group_by(grade, measurementscale, goal_name) %>%
     dplyr::mutate(Rank2 = rank(value, ties.method = "random")) %>%
     dplyr::mutate(studentfullname = paste(studentfirstname, 
-                                   studentlastname)
-           ) %>%
+                                          studentlastname)
+    ) %>%
     dplyr::filter(!is.na(goal_name)|is.na(value))
   
   x_max<-max(m.plot$value)+50
