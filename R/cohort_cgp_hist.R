@@ -41,7 +41,6 @@ cohort_cgp_hist_plot <- function(
       cohort = implicit_cohort
     )
   
-  
   #limit to primary cohort
   if (primary_cohort_only) {
     primary_cohort <- this_cdf$cohort %>%
