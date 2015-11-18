@@ -4,19 +4,20 @@
 \alias{sch_growth_lookup}
 \title{sch_growth_lookup}
 \usage{
-sch_growth_lookup(measurementscale, grade, growth_window, baseline_avg_rit,
-  sch_growth_study = sch_growth_norms_2012)
+sch_growth_lookup(measurementscale, end_grade, growth_window, baseline_avg_rit,
+  norms = 2015)
 }
 \arguments{
 \item{measurementscale}{MAP subject}
 
-\item{grade}{baseline/starting grade for the group of students}
+\item{end_grade}{grade students will be in at the end of the window}
 
 \item{growth_window}{desired growth window for targets (fall/spring, spring/spring, fall/fall)}
 
 \item{baseline_avg_rit}{the baseline mean rit for the group of students}
 
-\item{sch_growth_study}{NWEA school growth study to use for lookup; defaults to 2012.}
+\item{norms}{which school growth study to use.  c(2012, 2015).  default is
+2015.}
 }
 \description{
 get cohort growth expectations via lookup from growth study

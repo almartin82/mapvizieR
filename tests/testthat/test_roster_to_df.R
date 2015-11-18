@@ -1,8 +1,5 @@
 context("roster_to_df tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("roster_to_cdf tests", {
 
   ex <- roster_to_cdf(
@@ -60,5 +57,12 @@ test_that("bad data tests", {
   expect_error(
     roster_to_growth_df(mapviz$cdf, mapviz, 'studentgender'),
     "you provided a regular cdf, but this function is designed for the growth_df."
+  )
+  
+  expect_error(
+    roster_to_cdf(
+      mapviz$cdf %>% dplyr::select(-studentid), mapviz, 'studentgender'
+    ),
+    "are minimum requirements for roster_to_cdf"
   )
 })

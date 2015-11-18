@@ -1,8 +1,5 @@
 context("student_npr_history_plot tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 studentids <- mapviz$roster %>%
   dplyr::filter(grade == 8,
          schoolname == "Mt. Bachelor Middle School",

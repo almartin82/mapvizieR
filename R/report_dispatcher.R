@@ -28,8 +28,9 @@ report_dispatcher <- function(
     cut_list, 
     call_list, 
     func_to_call, 
-    arg_list=list(),
+    arg_list = list(),
     calling_env = parent.frame(),
+    pre_process = function(x) return(x),
     post_process = "only_valid_plots",
     verbose = TRUE,
     ...
@@ -61,7 +62,7 @@ report_dispatcher <- function(
   perm_disp <- list()
   counter <- 1
   
-  #set names of each cut to 'All' so that sbugroups can be referenced before 
+  #set names of each cut to 'All' so that subgroups can be referenced before 
   for (cut in cut_list) {
     assign(cut, 'All')
   }
@@ -97,6 +98,11 @@ report_dispatcher <- function(
   #end make perm list loop  
   }
   
+  #pre-process the perm list
+  
+  perm_list <- lapply(perm_list, pre_process)
+  perm_disp <- lapply(perm_list, pre_process)
+  
   if (verbose) {writeLines('permutations on selected cuts are:'); print(perm_disp)}
 
   #iterate over the perm list
@@ -122,7 +128,7 @@ report_dispatcher <- function(
       if (verbose) print(rd_env$depth_string)
       
       #get the matching kids
-      studentids <- unique(merge(roster, this_perm))$studentid
+      studentids <- merge(roster, this_perm)$studentid %>% unique()
       
       #create a local arg list that includes the current perm context
       this_arg_list <- append(arg_list, as.list(this_perm))
@@ -142,7 +148,7 @@ report_dispatcher <- function(
         this_arg_list <- this_arg_list[mask]
       } 
       
-      #now that we have the studentids and arg list, call the function      
+      #now that we have the studentids and arg list, call the function
       this_output <- try(
         do.call(
           what = func_to_call,
@@ -176,6 +182,6 @@ report_dispatcher <- function(
 #' @param x a list of report_dispatcher output
 
 only_valid_plots <- function(x) {
-  mask <- sapply(x, is_not_error) 
+  mask <- vapply(x, is_not_error, logical(1))
   x[mask]
 }

@@ -7,84 +7,68 @@
 #' @param n how many times to test?
 #' @param additional_args all plots will get "mapvizieR_obj" and "studentids".  if your
 #' plot needs additional args, pass them here.
-#' @param mapviz a \code{\link{mapvizieR}} object.
+#' @param mapvizieR_obj a \code{\link{mapvizieR}} object.
 
 fuzz_test_plot <- function(
   plot_name,
   n = 100,
   additional_args = list(),
-  mapviz = mapvizieR(
+  mapvizieR_obj = mapvizieR(
     cdf = ex_CombinedAssessmentResults,
     roster = ex_CombinedStudentsBySchool
   )
 ) {
-
   results <- vector("list", n)
-  studentids <- vector("list", n)
 
   sample_limit <- ifelse(
-    length(mapviz[['roster']]$studentid) < 500, length(mapviz[['roster']]$studentid), 500
+    length(mapvizieR_obj[['roster']]$studentid) < 500, 
+    length(mapvizieR_obj[['roster']]$studentid), 500
   )
-
+  seed_list <- list()
+  
   for (i in seq(1:n)) {
-    stu_random <- sample(mapviz[['roster']]$studentid, sample(20:sample_limit, 1)) %>%
-      unique
-
-    arg_list <- list(
-      "mapvizieR_obj" = mapviz
-     ,"studentids" = stu_random
-    )
-
+    fuzz_seed <- sample(100000000, 1)
+    set.seed(fuzz_seed)
+    seed_list[[i]] <- fuzz_seed
+    
+    stu_random <- base::sample(
+      mapvizieR_obj[['roster']]$studentid, sample(20:sample_limit, 1)
+    ) %>% unique()
+    
+    arg_list <- list("mapvizieR_obj" = mapvizieR_obj, "studentids" = stu_random)
     arg_list <- c(arg_list, additional_args)
-
+    
     p <- try(
-      do.call(
-        what = plot_name,
-        args = arg_list
-      ),
+      do.call(what = plot_name, args = arg_list),
       silent = TRUE
     )
-
-    known_error <- try(
-      stringr::str_detect(p, stringr::fixed("Sorry, can't plot that")), 
-      silent = TRUE
-    )
-
-    if(known_error %>% any() == TRUE) {
-      #known errors are passed tests
-      results[[i]] <- known_error
-      studentids[[i]] <- stu_random
-      next
+    
+    if ('ggplot' %in% class(p)) {
+      build_p <- try(ggplot_build(p))
+      tests <- all(
+        is.list(build_p),
+        all(c("data", "panel", "plot") %in% names(build_p))
+      )
+      results[[i]] <- tests      
+    #known errors are passed tests
+    } else if ('character' %in% class(p)) {
+      known_error <- try(
+        stringr::str_detect(p, stringr::fixed("Sorry, can't plot that")), 
+        silent = TRUE
+      )
+      if (known_error %>% any() == TRUE) {
+        results[[i]] <- known_error
+        next
+      }      
     }
-
-    build_p <- try(ggplot_build(p))
-
-    tests <- all(
-      is.list(build_p),
-      all(c("data", "panel", "plot") %in% names(build_p))
-    )
-
-    #append
-    results[[i]] <- tests
-
-    #always put the studentids on the list
-    studentids[[i]] <- stu_random
   }
-
-  #if a test fails, print the results
+  
+  #if a test fails, print the seed
   if (!(all(unlist(results)))) {
-
     writeLines(paste('fuzz testing', plot_name, 'failed!'))
-    writeLines(paste('outputting studentid vectors that caused', plot_name, 'to fail:'))
-
-    failed_on <- studentids[c(results == FALSE)] %>%
-      paste(collapse = '\n\n\n') %>%
-      strwrap()
-
-    writeLines(failed_on)
-
+    writeLines(sprintf('seed for failed test was %s', seed_list[[i]]))
   }
-
+  
   return(results)
 }
 
@@ -98,17 +82,16 @@ fuzz_test_plot <- function(
 #' @param studentids a vector of studentids
 
 silly_plot <- function(mapvizieR_obj, studentids) {
-  mapvizieR_obj %>% ensure_is_mapvizieR()
-
+  this_df <- mv_limit_cdf(mapvizieR_obj, studentids, 'Mathematics')
+  
   p <- ggplot(
-    data = mapvizieR_obj[['cdf']]
-   ,aes(x = testritscore)
+    data = this_df,
+    aes(x = testritscore)
   ) +
   geom_histogram()
-
+  
   return(p)
 }
-
 
 
 #' @title error ridden plot
@@ -121,12 +104,12 @@ silly_plot <- function(mapvizieR_obj, studentids) {
 error_ridden_plot <- function(mapvizieR_obj, studentids) {
   cdf <- mapvizieR_obj[['cdf']]
   cdf <- cdf[cdf$studentid == 'pancakes', ]
-
+  
   p <- ggplot(
     data = cdf
-   ,aes(x = testritscore)
+    ,aes(x = testritscore)
   ) +
-  geom_histogram()
-
+    geom_histogram()
+  
   return(p)
 }

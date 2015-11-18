@@ -1,9 +1,5 @@
 context("becca_plot tests")
 
-#make sure that constants used below exist
-testing_constants()
-
-
 test_that("becca_plot errors when handed an improper mapviz object", {
   expect_error(
     becca_plot(cdf, studentids), 

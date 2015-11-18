@@ -8,7 +8,6 @@
 #'
 #' @return a ggplot object
 #' @export
-#'
 #' @examples
 #' \dontrun{
 #' require(dplyr)

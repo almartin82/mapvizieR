@@ -25,6 +25,10 @@ roster_to_cdf <- function(
     !'end_fallwinterspring' %in% names(.) ~ 
       "you provided a growth df, but this function is designed for the cdf. try roster_to_growth_df()"
   )
+  target_df %>% ensurer::ensure_that(
+    c('studentid', 'map_year_academic', 'fallwinterspring') %in% names(.) %>% all() ~ 
+      "c(studentid, map_year_academic, fallwinterspring) are minimum requirements for roster_to_cdf"
+  )  
   
   #get the roster
   roster <- mapvizieR_obj$roster
@@ -49,11 +53,14 @@ roster_to_cdf <- function(
   slim <- roster[, names(roster) %in% all_cols] %>% unique()
   
   #join
-  target_df <- target_df %>% dplyr::left_join(
-    slim,
-    by = basic_cols
-  )
+  target_df <- target_df %>%
+    dplyr::ungroup() %>%
+    dplyr::left_join(
+      slim %>% dplyr::ungroup(),
+      by = basic_cols
+    )
   
+  #target_df %>% peek() %>% print()
   return(target_df)
 }
 
@@ -92,13 +99,13 @@ roster_to_growth_df <- function(
     !'fallwinterspring' %in% names(.) ~ 
       "you provided a regular cdf, but this function is designed for the growth_df. try roster_to_cdf()"
   )
-
+  
   #get the roster
   roster <- mapvizieR_obj$roster
   
   #what student year season pairs are in the target df?
   pairs <- target_df[ ,c('studentid', 'start_map_year_academic', 'start_fallwinterspring', 
-    'end_map_year_academic', 'end_fallwinterspring')] %>% unique()
+                         'end_map_year_academic', 'end_fallwinterspring')] %>% unique()
   
   pairs$start_sort <- numeric_nwea_seasons(pairs$start_fallwinterspring) + pairs$start_map_year_academic
   pairs$end_sort <- numeric_nwea_seasons(pairs$end_fallwinterspring) + pairs$end_map_year_academic
@@ -132,7 +139,7 @@ roster_to_growth_df <- function(
     slim <- slim %>%
       dplyr::group_by(studentid)
   }
-    
+  
   slim <- slim %>%
     unique() %>%
     dplyr::mutate(

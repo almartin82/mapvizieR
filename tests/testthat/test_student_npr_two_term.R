@@ -1,8 +1,5 @@
 context("student_npr_two_term_plot tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("student_npr_two_year_plot errors when handed an improper mapviz object", {
   expect_error(
     student_npr_two_term_plot(cdf,

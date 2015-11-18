@@ -1,8 +1,5 @@
 context("growth_histogram tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("growth_histogram errors when handed an improper mapviz object", {
   expect_error(
     growth_histogram(processed_cdf, studentids), 

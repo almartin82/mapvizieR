@@ -33,6 +33,7 @@ prep_roster <- function(students_by_school, kinder_codes=NULL) {
   
   #implicit cohort
   roster$implicit_cohort <- roster$map_year_academic + 13 - roster$grade
+  roster$implicit_cohort <- paste0('c', roster$implicit_cohort)
   
   #check that roster conforms to our expectations
   assertthat::assert_that(check_roster(roster))

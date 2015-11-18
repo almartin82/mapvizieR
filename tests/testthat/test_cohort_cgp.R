@@ -1,8 +1,5 @@
 context("cohort cgp history tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("cohort_cgp_hist_plot should return a plot", {  
   
   p <- cohort_cgp_hist_plot(

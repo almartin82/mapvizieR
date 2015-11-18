@@ -1,7 +1,4 @@
 context("adding accelerated growth goals to growth_df")
-  
-#make sure that constants used below exist
-testing_constants()
 
 test_that("goal_kipp_tiered creates proper object", {
   goal_obj <- goal_kipp_tiered(mapviz, iterations = 1)

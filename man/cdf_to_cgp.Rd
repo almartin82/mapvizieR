@@ -4,12 +4,15 @@
 \alias{cdf_to_cgp}
 \title{CDF to CGP summary}
 \usage{
-cdf_to_cgp(cdf, grouping = "implicit_cohort")
+cdf_to_cgp(cdf, grouping = "implicit_cohort", norms = 2015)
 }
 \arguments{
 \item{cdf}{conforming cdf file}
 
 \item{grouping}{what column to group on.  default is implicit_cohort}
+
+\item{norms}{which school growth study to use.  c(2012, 2015).  default is
+2015.}
 }
 \value{
 a data frame with summary start/end rit, and cgps

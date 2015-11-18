@@ -1,8 +1,5 @@
 context("schambach_figure tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("schambach_figure should return list of tables", {  
 #   figs <- schambach_figure(mapvizieR_obj = mapviz,
 #                            measurementscale_in = 'Reading',

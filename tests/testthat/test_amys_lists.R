@@ -1,8 +1,5 @@
 context("amy's lists tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("amys_lists errors when handed an improper mapviz object", {
   expect_error(
     amys_lists(cdf, studentids),

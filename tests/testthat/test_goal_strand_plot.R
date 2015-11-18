@@ -1,8 +1,5 @@
 context("goal strand plot tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("goal_strand_plot errors when handed an improper mapviz object", {
   expect_error(
     goal_strand_plot(cdf, studentids,  measurementscale = "Mathematics", 

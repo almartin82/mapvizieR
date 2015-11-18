@@ -1,9 +1,5 @@
 context("auto growth window")
 
-#make sure that constants used below exist
-testing_constants()
-
-
 test_that("auto_growth_window picks correct window", {
   ex_window <- auto_growth_window(
     mapvizieR_obj = mapviz,

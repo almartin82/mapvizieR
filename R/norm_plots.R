@@ -4,15 +4,29 @@
 #' shows the norm space across grade levels or a given subject
 #' @param measurementscale a NWEA map measurementscale
 #' @param trace_lines vector of percentiles to show.  must be between 1 and 99.
+#' @param norms which norm study to use
+#' @param norm_linetype any valid ggplot linetype (eg 'dashed').  
+#' default is 'solid'.
+#' @param spring_only fall norms show a 'summer slump' effect; this can be
+#' visually distracting.  spring_only won't include those points in the reference
+#' lines.
 #' 
 #' @export
 
 empty_norm_grade_space <- function(
   measurementscale, 
-  trace_lines = c(5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95)
+  trace_lines = c(5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95),
+  norms = 2015,
+  norm_linetype = 'solid',
+  spring_only = FALSE
 )  {
 
-  this_norms <- student_status_norms_2011_dense_extended %>%
+  if (norms == 2011) {
+    active_norms <- student_status_norms_2011_dense_extended
+  } else if (norms == 2015) {
+    active_norms <- student_status_norms_2015_dense_extended
+  }  
+  this_norms <- active_norms %>%
     dplyr::filter(
       measurementscale == get("measurementscale") &
       student_percentile %in% trace_lines
@@ -38,6 +52,14 @@ empty_norm_grade_space <- function(
     )
   this_norms <- rbind(below_50, above_50)
   
+  if (spring_only) {
+    this_norms <- this_norms %>%
+      dplyr::ungroup() %>%
+      dplyr::filter(
+        fallwinterspring == 'Spring' | grade_level_season == -0.8
+      )
+  }
+  
   p <- ggplot(
     data = this_norms
   ) +
@@ -45,10 +67,12 @@ empty_norm_grade_space <- function(
     aes(
       x = grade_level_season,
       y = RIT,
-      group = student_percentile
+      group = student_percentile,
+      order = 1
     ),
     alpha = 0.3,
-    color = 'gray30'
+    color = 'gray30',
+    linetype = norm_linetype
   ) +
   geom_text(
     data = this_norms %>% dplyr::filter(grade_level_season %% 1 == 0),
@@ -67,12 +91,13 @@ empty_norm_grade_space <- function(
     y = 'RIT Score'
   ) +
   scale_x_continuous(
-    breaks = c(0:12),
-    labels = c(0:12)
-  ) + 
+    breaks = this_norms$grade_level_season %>% unique() %>% sort(),
+    labels = this_norms$grade_level_season %>% unique() %>% sort() %>%
+      lapply(fall_spring_me) %>% unlist()
+  ) +
   theme(
     panel.grid = element_blank()
   )
   
-  p
+  return(p)
 }

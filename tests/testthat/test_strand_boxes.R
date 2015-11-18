@@ -1,9 +1,5 @@
 context("strand boxes tests")
 
-#make sure that constants used below exist
-testing_constants()
-
-
 test_that("strand boxes errors when handed an improper mapviz object", {
   expect_error(
     mapvizieR::strand_boxes(cdf, studentids, 'Mathematics', 'Spring', 2013), 

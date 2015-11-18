@@ -1,8 +1,5 @@
 context("baseline_calc tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("baseline_calc behaves", {
   
   ex_baseline <- calc_baseline_detail(

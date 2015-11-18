@@ -2,11 +2,14 @@
 % Please edit documentation in R/fall_goals_report.R
 \name{fall_goals_report}
 \alias{fall_goals_report}
-\title{Title}
+\title{Fall Goals Report}
 \usage{
 fall_goals_report(mapvizieR_obj, studentids, measurementscale, context,
-  start_fws = "Spring", start_year_offset = -1, end_fws = "Spring",
-  end_academic_year = 2015, entry_grade_seasons = c(-0.8, 4.2))
+  small_n_cutoff = 0, start_fws = "Spring", start_year_offset = -1,
+  end_fws = "Spring", end_academic_year = 2015,
+  entry_grade_seasons = c(-0.8, 4.2), exclude_prior_year_holdover = TRUE,
+  detail_academic_year = 9999, goal_cgp = 80, school_type = "MS",
+  localization = localize("Newark"))
 }
 \arguments{
 \item{mapvizieR_obj}{a valid mapvizieR_object}
@@ -17,6 +20,9 @@ fall_goals_report(mapvizieR_obj, studentids, measurementscale, context,
 
 \item{context}{what school/grade/class/etc grouping is represented?}
 
+\item{small_n_cutoff}{drop a grade_level_season if less than x% of the max? 
+(useful when dealing with weird cohort histories)}
+
 \item{start_fws}{character, starting season for school growth norms}
 
 \item{start_year_offset}{0 if start season is same, -1 if start is prior year.}
@@ -26,11 +32,24 @@ fall_goals_report(mapvizieR_obj, studentids, measurementscale, context,
 \item{end_academic_year}{ending academic year}
 
 \item{entry_grade_seasons}{for becca plot.  default is c(-0.8, 4.2)}
+
+\item{exclude_prior_year_holdover}{if, for instance, this year's 3rd grade
+includes students who were in the 3rd grade last year,  drop their records from
+the data}
+
+\item{detail_academic_year}{passed through to various plots}
+
+\item{goal_cgp}{what target CGP should be used for goals?}
+
+\item{school_type}{c('ES', 'MS')}
+
+\item{localization}{controls goals and goal logic for report.
+See localization.R for more details}
 }
 \value{
 a multipage report, represented as a list of grobs.
 }
 \description{
-Title
+Fall Goals Report
 }
 

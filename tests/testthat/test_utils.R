@@ -1,8 +1,5 @@
 context("test util functions on a variety of different inputs")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("abbrev abbreviates school names properly", {
 
   roster <- prep_roster(ex_CombinedStudentsBySchool)
@@ -23,7 +20,7 @@ test_that("abbrev abbreviates school names properly", {
 })
 
 
-test_that("kipp_quartile returns KIPP style quartiles",{
+test_that("kipp_quartile returns KIPP style quartiles", {
 
   test_percentiles <- c(78, 16, 64, 72, 17, 27, 92, 34, 67, 33, 25, 50, 75)
   expected_quartiles_kipp <- c(4,1,3,3,1,2,4,2,3,2,2,3,4)
@@ -55,7 +52,7 @@ test_that("kipp_quartile returns KIPP style quartiles",{
 })
 
 
-test_that("tiered_growth_factors calculates proper tiered growth factors",{
+test_that("tiered_growth_factors calculates proper tiered growth factors", {
 
   grades <- rep(0:12, times = 4)
   quartiles <- c(
@@ -177,7 +174,7 @@ test_that("fall_spring_me properly sets grade-season labels", {
 })
 
 
-test_that("df sorter correctly sorts sample df",{
+test_that("df sorter correctly sorts sample df", {
 
   ex_sort <- df_sorter(ex_CombinedStudentsBySchool, by=names(ex_CombinedStudentsBySchool))
 
@@ -191,7 +188,7 @@ test_that("df sorter correctly sorts sample df",{
 })
 
 
-test_that("is_error and is_not_error tags properly",{
+test_that("is_error and is_not_error tags properly", {
 
   expect_false(is_error("foo"))
   expect_true(is_error(try(kipp_quartile(-1))))
@@ -228,7 +225,7 @@ test_that("make_npr_consistent returns expected values", {
 })
 
 
-test_that("timing functions",{
+test_that("timing functions", {
   gls <- unique(processed_cdf$grade_level_season)
   for_test <- base::sample(gls, 100000, replace = TRUE)
 
@@ -241,7 +238,7 @@ test_that("timing functions",{
 })
 
 
-test_that("mv_limit_cdf tests",{
+test_that("mv_limit_cdf tests", {
   cdf_limit <- mv_limit_cdf(mapviz, studentids_normal_use, 'Reading')
   expect_equal(nrow(cdf_limit), 316)
   expect_equal(sum(cdf_limit$grade_level_season), 1738.1, tolerance = 0.01)
@@ -249,7 +246,7 @@ test_that("mv_limit_cdf tests",{
 })
 
 
-test_that("mv_limit_growth tests",{
+test_that("mv_limit_growth tests", {
 
   growth_df_limit <- mv_limit_growth(mapviz, studentids_normal_use, 'Mathematics')
   expect_equal(nrow(growth_df_limit), 948)
@@ -259,9 +256,17 @@ test_that("mv_limit_growth tests",{
 })
 
 
-test_that("force_string_breaks",{
+test_that("force_string_breaks", {
   expect_equal(
     force_string_breaks("I am an American, Chicago born-Chicago, that somber city-and go at things as I have taught myself, free-style, and will make the record in my own way: first to knock, first admitted; sometimes an innocent knock, sometimes a not so innocent", 40),
     "I am an American, Chicago born-Chicago,\nthat somber city-and go at things as I\nhave taught myself, free-style, and will\nmake the record in my own way: first to\nknock, first admitted; sometimes an\ninnocent knock, sometimes a not so\ninnocent"
+  )
+})
+
+
+test_that("peek tests", {
+  expect_equal(
+    mapviz$roster %>% peek() %>% magrittr::extract(4) %>% unlist() %>% unname(),
+    c("Koolstra", "Cornick", "Corvello", "Teepe", "Galen", "Myers")
   )
 })

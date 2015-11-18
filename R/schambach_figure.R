@@ -70,7 +70,7 @@ schambach_figure <- function(
         df,
         #rows = c(),
         cols = col_names,
-        theme = theme_default(
+        theme = ttheme_default(
           core = list(
             fg_params = list(fontsize = 10, just = "center"),
             bg_params = list(alpha = c(.5,1), fill = 'lightgreen')),

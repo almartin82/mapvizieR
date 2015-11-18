@@ -6,7 +6,8 @@
 \usage{
 report_dispatcher(mapvizieR_obj, cut_list, call_list, func_to_call,
   arg_list = list(), calling_env = parent.frame(),
-  post_process = "only_valid_plots", verbose = TRUE, ...)
+  pre_process = function(x) return(x), post_process = "only_valid_plots",
+  verbose = TRUE, ...)
 }
 \arguments{
 \item{mapvizieR_obj}{a conforming mapvizieR object.}

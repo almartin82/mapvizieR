@@ -4,18 +4,19 @@
 \alias{npr_to_rit}
 \title{npr_to_rit}
 \usage{
-npr_to_rit(measurementscale, grade, season, npr, norms = 2015)
+npr_to_rit(measurementscale, current_grade, season, npr, norms = 2015)
 }
 \arguments{
 \item{measurementscale}{MAP subject}
 
-\item{grade}{grade level}
+\item{current_grade}{grade level}
 
 \item{season}{fall winter spring}
 
 \item{npr}{a percentile rank, between 1-99}
 
-\item{norms}{which norm study to use}
+\item{norms}{which school growth study to use.  c(2012, 2015).  default is
+2015.}
 }
 \value{
 a integer vector length one
