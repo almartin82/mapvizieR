@@ -36,7 +36,11 @@ cohort_cgp_hist_plot <- function(
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
   
   #put cohort onto cdf
-  this_cdf <- roster_to_cdf(this_cdf, mapvizieR_obj, 'implicit_cohort')
+  this_cdf <- roster_to_cdf(this_cdf, mapvizieR_obj, 'implicit_cohort') %>%
+    dplyr::rename(
+      cohort = implicit_cohort
+    )
+  
   
   #limit to primary cohort
   if (primary_cohort_only) {
