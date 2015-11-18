@@ -1,8 +1,5 @@
 context("strands_list_plot tests")
 
-#make sure that constants used below exist
-testing_constants()
-
 test_that("strands_list_plot errors when handed an improper mapviz object", {
   expect_error(
     strands_list_plot(cdf, studentids_normal_use, "Reading", season = "Fall", 2013),
