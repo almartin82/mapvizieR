@@ -21,6 +21,12 @@ historic_recap_report <- function(
     first_and_spring_only = first_and_spring_only,
     entry_grade_seasons = entry_grade_seasons,
     small_n_cutoff = small_n_cutoff
+  ) +
+  labs(
+    title = sprintf(
+      'Percent at Target %%ile (%s), by Cohort', 
+      target_percentile %>% toOrdinal::toOrdinal()
+    )
   )
   
   p_cgp <- multi_cohort_cgp_hist_plot(
