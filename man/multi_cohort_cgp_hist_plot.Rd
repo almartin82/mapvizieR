@@ -7,7 +7,7 @@
 multi_cohort_cgp_hist_plot(mapvizieR_obj, studentids, measurementscale,
   match_method = "no matching", first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2), school_norms = 2015,
-  primary_cohort_only = TRUE, arrange_logic = c(ncol = length(plots)))
+  small_n_cutoff = 0.5, min_cohort_size = -1)
 }
 \arguments{
 \item{mapvizieR_obj}{conforming mapvizieR obj}
@@ -31,9 +31,8 @@ default is TRUE.}
 \item{school_norms}{c(2012, 2015).  what school norms to use?  default
 is 2012.}
 
-\item{primary_cohort_only}{will determine the most frequent cohort and limit to 
-students in that cohort.  designed to handle discrepancies in grade/cohort
-pattern caused by previous holdovers.  default is TRUE.}
+\item{min_cohort_size}{filter cohorts with less than this many students.
+useful when weird enrollment patterns exist in your data.}
 
 \item{arrange_logic}{layout logic passed to grid.arrange.  default is
 wide, one column per plot.  if, for instance, one row per plot was

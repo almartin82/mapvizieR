@@ -7,7 +7,7 @@
 cohort_cgp_hist_plot(mapvizieR_obj, studentids, measurementscale,
   match_method = "no matching", first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2), school_norms = 2015,
-  primary_cohort_only = TRUE)
+  primary_cohort_only = TRUE, small_n_cutoff = 0.5, no_labs = FALSE)
 }
 \arguments{
 \item{mapvizieR_obj}{conforming mapvizieR obj}
@@ -34,6 +34,8 @@ is 2012.}
 \item{primary_cohort_only}{will determine the most frequent cohort and limit to 
 students in that cohort.  designed to handle discrepancies in grade/cohort
 pattern caused by previous holdovers.  default is TRUE.}
+
+\item{no_labs}{if TRUE, will not label x or y axis}
 }
 \value{
 a ggplot object
