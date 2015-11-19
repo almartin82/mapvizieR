@@ -17,6 +17,7 @@
 #' @param primary_cohort_only will determine the most frequent cohort and limit to 
 #' students in that cohort.  designed to handle discrepancies in grade/cohort
 #' pattern caused by previous holdovers.  default is TRUE.  
+#' @param no_labs if TRUE, will not label x or y axis
 #'
 #' @return a ggplot object
 #' @export
@@ -29,18 +30,19 @@ cohort_cgp_hist_plot <- function(
   first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2), 
   school_norms = 2015,
-  primary_cohort_only = TRUE
+  primary_cohort_only = TRUE,
+  small_n_cutoff = .5,
+  no_labs = FALSE
 ) {
 
   mv_opening_checks(mapvizieR_obj, studentids, 1)
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
+  this_cdf <- min_term_filter(this_cdf, small_n_cutoff) 
   
   #put cohort onto cdf
-  if (! 'cohort' %in% names(this_cdf) %>% any()) {
+  if (!'cohort' %in% names(this_cdf) %>% any()) {
     this_cdf <- roster_to_cdf(this_cdf, mapvizieR_obj, 'implicit_cohort') %>%
-      dplyr::rename(
-        cohort = implicit_cohort
-      )
+      dplyr::rename(cohort = implicit_cohort)
   }
   
   #limit to primary cohort
@@ -86,17 +88,25 @@ cohort_cgp_hist_plot <- function(
   geom_point() +
   geom_text(
     aes(y = start_mean_npr - 2),
+    alpha = 0.5,
     vjust = 1
   ) +
-  geom_line() +
-  geom_text(
-    aes(
-      x = x_cgp, 
-      y = y_cgp,
-      label = cgp_label
-    ),
-    color = 'hotpink'
-  ) +
+  geom_line() 
+  
+  #only out geom text on plot if it exists
+  if (as_cgp$cgp %>% is.na() %>% `n'est pas`() %>% any) {
+    out <- out +   
+      geom_text(
+      aes(
+        x = x_cgp, 
+        y = y_cgp,
+        label = cgp_label
+      ),
+      color = 'hotpink'
+    ) 
+  }
+  
+  out <- out +
   theme_bw() +
   theme(
     panel.grid = element_blank()
@@ -113,11 +123,20 @@ cohort_cgp_hist_plot <- function(
       as_cgp$start_grade_level_season %>% unique() %>% min() - .1,
       as_cgp$start_grade_level_season %>% unique() %>% max() + .1
     )
-  ) +
-  labs(
-    x = 'Grade & Season',
-    y = 'Average Percentile Rank'
-  )
+  ) 
+  
+  if (!no_labs) {
+    out <- out +
+      labs(
+        x = 'Grade & Season',
+        y = 'Average Percentile Rank'
+      )
+  } else {
+    out <- out +
+      theme(
+        axis.title = element_blank()
+      )
+  }
 
   return(out)
 }
@@ -136,6 +155,8 @@ cohort_cgp_hist_plot <- function(
 #' @param arrange_logic layout logic passed to grid.arrange.  default is
 #' wide, one column per plot.  if, for instance, one row per plot was
 #' desired, pass \code{c(nrow = length(plots))} to arrange_logic.
+#' @param min_cohort_size filter cohorts with less than this many students.
+#' useful when weird enrollment patterns exist in your data.
 #' 
 #' @return a list of ggplotGrobs
 #' @export
@@ -149,23 +170,42 @@ multi_cohort_cgp_hist_plot <- function(
   entry_grade_seasons = c(-0.8, 4.2), 
   school_norms = 2015,
   primary_cohort_only = TRUE,
-  arrange_logic = c(ncol = length(plots))
+  small_n_cutoff = .5,
+  arrange_logic = c(ncol = length(plots)),
+  min_cohort_size = -1
 ) {
+  mv_opening_checks(mapvizieR_obj, studentids, 1)
+  this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
+
+  #put cohort onto cdf
+  if (!'cohort' %in% names(this_cdf) %>% any()) {
+    this_cdf <- roster_to_cdf(this_cdf, mapvizieR_obj, 'implicit_cohort') %>%
+      dplyr::rename(cohort = implicit_cohort)
+  }
+  
   #given a vector of studentids, find the cohorts
-  cohorts <- mapvizieR_obj$roster %>%
-    dplyr::filter(
-      studentid %in% studentids
+  cohort_df <- this_cdf %>%
+    dplyr::group_by(cohort) %>%
+    dplyr::summarize(
+      n = n()
     ) %>%
-    dplyr::select(implicit_cohort) %>%
-    unlist() %>% unname() %>% unique()
+    dplyr::filter(
+      n >= min_cohort_size
+    )
+  
+  cohorts <- cohort_df$cohort %>% unlist() %>% unname() %>% unique() %>% sort()
   
   #iterate over the cohorts, make a cgp plot
   plots <- list()
+
+  min_x <- numeric(0)
+  max_x <- numeric(0)
+  x_breaks <- c(numeric(0))
   
   for (i in seq_along(cohorts)) {
     #just the studentids in this cohort
-    this_students <- mapvizieR_obj$roster %>%
-      dplyr::filter(implicit_cohort == cohorts[i]) %>%
+    this_students <- this_cdf %>%
+      dplyr::filter(cohort == cohorts[i]) %>%
       dplyr::select(studentid) %>% unlist() %>% unname() %>% unique()
     
     #make plot and add to list as grob
@@ -177,12 +217,30 @@ multi_cohort_cgp_hist_plot <- function(
       first_and_spring_only = first_and_spring_only,
       entry_grade_seasons = entry_grade_seasons,
       school_norms = school_norms,
-      primary_cohort_only = primary_cohort_only
+      primary_cohort_only = primary_cohort_only,
+      small_n_cutoff = small_n_cutoff,
+      no_labs = TRUE
     ) +
     facet_grid(. ~ cohort)
+
+    this_min_x <- p$data$start_grade_level_season %>% min(na.rm = TRUE)
+    this_max_x <- p$data$start_grade_level_season %>% max(na.rm = TRUE)
     
-    plots[[i]] <- ggplotGrob(p)
+    min_x <- min(min_x, this_min_x)
+    max_x <- max(max_x, this_max_x)
+    x_breaks <- c(x_breaks, p$data$start_grade_level_season) %>% unique()
+    
+    plots[[i]] <- p
   }
+  
+  plot_scale <- scale_x_continuous(
+    limits = c(min_x, max_x), 
+    breaks = x_breaks,
+    labels = x_breaks %>% lapply(fall_spring_me) %>% unlist()
+  )
+  
+  plots <- lapply(X = plots, FUN = function(x) x + plot_scale)
+  plots <- lapply(X = plots, FUN = ggplotGrob)
   
   #grid arrange the list of plots and return
   out <- do.call(
@@ -193,4 +251,110 @@ multi_cohort_cgp_hist_plot <- function(
 }
 
 
+multi_cohort_cgp_hist_plot2 <- function(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  match_method = 'no matching',
+  first_and_spring_only = TRUE,
+  entry_grade_seasons = c(-0.8, 4.2), 
+  school_norms = 2015,
+  small_n_cutoff = .5,
+  min_cohort_size = -1
+) {
+  
+  mv_opening_checks(mapvizieR_obj, studentids, 1)
+  this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
 
+  #put cohort onto cdf
+  if (!'cohort' %in% names(this_cdf) %>% any()) {
+    this_cdf <- roster_to_cdf(this_cdf, mapvizieR_obj, 'implicit_cohort') %>%
+      dplyr::rename(cohort = implicit_cohort)
+  }
+  
+  #only valid seasons
+  munge <- valid_grade_seasons(
+    this_cdf, first_and_spring_only, entry_grade_seasons, 9999
+  )
+  
+  as_cgp <- cdf_to_cgp(cdf = munge, grouping = 'cohort', norms = school_norms)
+  
+  #min size
+  as_cgp <- as_cgp %>%
+    dplyr::filter(
+      n > min_cohort_size
+    )
+  
+  as_cgp <- as_cgp %>%
+    dplyr::mutate(
+      x_cgp = c(start_grade_level_season, end_grade_level_season) %>% mean(),
+      y_cgp = c(start_mean_npr, end_mean_npr) %>% mean()
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(
+      cgp_label = cgp %>% round(0),
+      cgp_helper = cumsum(!is.na(cgp)),
+      cgp_label = ifelse(
+        !is.na(cgp_label) & cgp_helper == 1, paste0('CGP: ', cgp_label), cgp_label
+      )
+    )
+  
+  out <- ggplot(
+    data = as_cgp,
+    aes(
+      x = start_grade_level_season,
+      y = start_mean_npr,
+      label = start_mean_rit %>% round(1),
+      group = cohort
+    )
+  ) +
+  geom_point() +
+  geom_text(
+    aes(y = start_mean_npr - 2),
+    alpha = 0.5,
+    size = 4,
+    vjust = 1
+  ) +
+  geom_line() +
+  facet_grid(. ~ cohort)
+
+  #only out geom text on plot if it exists
+  if (as_cgp$cgp %>% is.na() %>% `n'est pas`() %>% any) {
+    out <- out +   
+      geom_text(
+        data = as_cgp %>% dplyr::filter(!is.na(cgp)),
+        aes(
+          x = x_cgp, 
+          y = y_cgp,
+          label = cgp_label,
+          group = cohort
+        ),
+        color = 'hotpink'
+      ) 
+  }
+  
+  out <- out +
+    theme_bw() +
+    theme(
+      panel.grid = element_blank()
+    ) +
+    scale_y_continuous(
+      limits = c(0, 100),
+      breaks = seq(0, 100, 10)
+    ) +
+    scale_x_continuous(
+      breaks = as_cgp$start_grade_level_season %>% unique(),
+      labels = as_cgp$start_grade_level_season %>% unique() %>%
+        lapply(fall_spring_me) %>% unlist(),
+      limits = c(
+        as_cgp$start_grade_level_season %>% unique() %>% min() - .1,
+        as_cgp$start_grade_level_season %>% unique() %>% max() + .1
+      )
+    ) +
+    labs(
+      x = 'Grade & Season',
+      y = 'Average Percentile Rank'
+    )
+
+  return(out)
+}

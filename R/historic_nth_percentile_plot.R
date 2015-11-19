@@ -15,7 +15,8 @@ historic_nth_percentile_plot <- function(
   measurementscale,
   target_percentile = 75,
   first_and_spring_only = TRUE,
-  entry_grade_seasons = c(-0.8, 4.2)
+  entry_grade_seasons = c(-0.8, 4.2),
+  small_n_cutoff = .5
 ) {
   mv_opening_checks(mapvizieR_obj, studentids, 1)
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
@@ -33,6 +34,30 @@ historic_nth_percentile_plot <- function(
     this_cdf, first_and_spring_only, entry_grade_seasons, 9999
   )
   
+  #small_n_filter
+  to_keep <- this_cdf %>%
+    dplyr::group_by(cohort, grade_level_season) %>%
+    dplyr::summarize(
+      n = n()
+    ) %>%
+    dplyr::group_by(cohort) %>%
+    #only per cohort that is above the small n cutoff
+    dplyr::filter(
+      n >= max(n) * small_n_cutoff
+    ) %>%
+    dplyr::mutate(
+      cohort_season = paste(cohort, grade_level_season, sep = '_')      
+    ) %>%
+    as.data.frame()
+
+  this_cdf <- this_cdf %>%
+    dplyr::mutate(
+      cohort_season = paste(cohort, grade_level_season, sep = '_')      
+    ) %>%
+    dplyr::filter(
+      cohort_season %in% to_keep$cohort_season
+    )
+
   cdf_sum <- this_cdf %>%
     dplyr::group_by(
       cohort, map_year_academic, grade_level_season

@@ -511,47 +511,31 @@ cdf_to_cgp <- function(cdf, grouping = 'implicit_cohort', norms = 2015) {
       mean_npr = mean(consistent_percentile, na.rm = TRUE),
       n = n()
     ) %>%
-    dplyr::ungroup() %>%
     dplyr::arrange(
       measurementscale, grade_level_season
-    )
-  
-  #add a psuedoid for joining
-  grouped$id <- row.names(grouped) %>% as.numeric()
-  
-  #limited df for joining
-  for_join <- grouped %>%
-    dplyr::select(
-      id,
-      fallwinterspring,
-      grade,
-      grade_level_season,
-      mean_rit,
-      mean_npr
-    ) %>%
-    dplyr::rename(
-      end_fallwinterspring = fallwinterspring,
-      end_grade = grade,
-      end_grade_level_season = grade_level_season,
-      end_mean_rit = mean_rit,
-      end_mean_npr = mean_npr
-    ) %>%
-    dplyr::mutate(
-      id = id - 1
-    )
+    ) 
+  grouped$psuedo_id <- row.names(grouped) %>% as.numeric()
+
+
   
   grouped <- grouped %>%
+    dplyr::group_by_(grouping, quote(measurementscale)) %>%
+    dplyr::arrange(psuedo_id) %>%
+    dplyr::mutate(
+      end_fallwinterspring = lead(fallwinterspring),
+      end_grade = lead(grade),      
+      end_grade_level_season = lead(grade_level_season),
+      end_mean_rit = lead(mean_rit),
+      end_mean_npr = lead(mean_npr)
+    ) %>% 
     dplyr::rename(
       start_fallwinterspring = fallwinterspring,
       start_grade = grade,
       start_grade_level_season = grade_level_season,
       start_mean_rit = mean_rit,
       start_mean_npr = mean_npr
-    )
-  
-  grouped <- grouped %>%
-    dplyr::left_join(for_join, by = 'id')
-  
+    ) 
+    
   grouped <- grouped %>%
     dplyr::rowwise() %>%
     dplyr::mutate(
