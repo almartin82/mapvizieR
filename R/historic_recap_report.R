@@ -9,7 +9,8 @@ historic_recap_report <- function(
   first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2),
   small_n_cutoff = 0.2,
-  min_cohort_size = -1
+  min_cohort_size = -1,
+  title_text = ''
 ) {
  
   p_75 <- historic_nth_percentile_plot(  
@@ -22,7 +23,7 @@ historic_recap_report <- function(
     small_n_cutoff = small_n_cutoff
   )
   
-  p_cgp <- multi_cohort_cgp_hist_plot2(
+  p_cgp <- multi_cohort_cgp_hist_plot(
     mapvizieR_obj = mapvizieR_obj,
     studentids = studentids,
     measurementscale = measurementscale,
@@ -32,5 +33,10 @@ historic_recap_report <- function(
     min_cohort_size = min_cohort_size
   )
   
-  template_05(p_75, p_cgp)
+  t <- template_05(p_75, p_cgp)
+  
+  gridExtra::arrangeGrob(
+    h_var(title_text, 36), t,
+    nrow = 2, heights = c(1, 17)
+  )
 }

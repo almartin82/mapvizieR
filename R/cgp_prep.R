@@ -515,8 +515,6 @@ cdf_to_cgp <- function(cdf, grouping = 'implicit_cohort', norms = 2015) {
       measurementscale, grade_level_season
     ) 
   grouped$psuedo_id <- row.names(grouped) %>% as.numeric()
-
-
   
   grouped <- grouped %>%
     dplyr::group_by_(grouping, quote(measurementscale)) %>%
