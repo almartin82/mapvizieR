@@ -1,6 +1,6 @@
-#' template one 
+#' template 1 
 #' 
-#' @description (1 x 1)
+#' @description (1 x 1) columns
 #'
 #' @param p01 plot or grob
 #' @param p02 plot or grob
@@ -17,7 +17,7 @@ template_01 <- function(p01, p02) {
 }
   
 
-#' template two 
+#' template 2 
 #' 
 #' @description (1 x 1 x 1)
 #'
@@ -37,7 +37,7 @@ template_02 <- function(p01, p02, p03) {
 }
 
 
-#' template 3 
+#' template 3
 #' 
 #' @description row 1: (1 x 1), row 2 (1 x 1)
 #'
@@ -94,3 +94,21 @@ tg <- function(x) {
   x
 }
 
+
+#' template 5 
+#' 
+#' @description (1 x 1), rows
+#'
+#' @param p01 plot or grob
+#' @param p02 plot or grob
+#'
+#' @return grob, output of arrangeGrob
+#' @export
+
+template_05 <- function(p01, p02) {
+  grid::grid.newpage()
+  
+  gridExtra::arrangeGrob(
+    p01 %>% tg(), p02 %>% tg(), nrow = 2    
+  )
+}

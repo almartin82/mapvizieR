@@ -6,10 +6,9 @@
 #' @param first_and_spring_only logical, should we drop winter/fall scores?
 #' @param entry_grade_seasons what seasons are entry grades?
 #'
-#' @return
+#' @return a ggplot object
 #' @export
-#'
-#' @examples
+
 historic_nth_percentile_plot <- function(  
   mapvizieR_obj,
   studentids,
@@ -22,10 +21,12 @@ historic_nth_percentile_plot <- function(
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
   
   #put cohort onto cdf
-  this_cdf <- roster_to_cdf(this_cdf, mapvizieR_obj, 'implicit_cohort') %>%
-    dplyr::rename(
-      cohort = implicit_cohort
-    )
+  if (! 'cohort' %in% names(this_cdf) %>% any()) {
+    this_cdf <- roster_to_cdf(this_cdf, mapvizieR_obj, 'implicit_cohort') %>%
+      dplyr::rename(
+        cohort = implicit_cohort
+      )
+  }
   
   #only valid seasons
   this_cdf <- valid_grade_seasons(
@@ -64,6 +65,10 @@ historic_nth_percentile_plot <- function(
     breaks = cdf_sum$grade_level_season %>% unique(),
     labels = cdf_sum$grade_level_season %>% unique() %>%
       lapply(fall_spring_me) %>% unlist()
+  ) +
+  labs(
+    x = 'Grade/Season',
+    y = sprintf('Percent Above %s %%ile', target_percentile)
   )
   
   return(out)

@@ -36,10 +36,12 @@ cohort_cgp_hist_plot <- function(
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
   
   #put cohort onto cdf
-  this_cdf <- roster_to_cdf(this_cdf, mapvizieR_obj, 'implicit_cohort') %>%
-    dplyr::rename(
-      cohort = implicit_cohort
-    )
+  if (! 'cohort' %in% names(this_cdf) %>% any()) {
+    this_cdf <- roster_to_cdf(this_cdf, mapvizieR_obj, 'implicit_cohort') %>%
+      dplyr::rename(
+        cohort = implicit_cohort
+      )
+  }
   
   #limit to primary cohort
   if (primary_cohort_only) {
@@ -119,3 +121,60 @@ cohort_cgp_hist_plot <- function(
 
   return(out)
 }
+
+
+
+
+
+
+multi_cohort_cgp_hist_plot <- function(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  match_method = 'no matching',
+  first_and_spring_only = TRUE,
+  entry_grade_seasons = c(-0.8, 4.2), 
+  school_norms = 2015,
+  primary_cohort_only = TRUE
+) {
+  #given a vector of studentids, find the cohorts
+  cohorts <- mapvizieR_obj$roster %>%
+    dplyr::filter(
+      studentid %in% studentids
+    ) %>%
+    dplyr::select(implicit_cohort) %>%
+    unlist() %>% unname() %>% unique()
+  
+  #iterate over the cohorts, make a cgp plot
+  plots <- list()
+  
+  for (i in seq_along(cohorts)) {
+    #just the studentids in this cohort
+    this_students <- mapvizieR_obj$roster %>%
+      dplyr::filter(implicit_cohort == cohorts[i]) %>%
+      dplyr::select(studentid) %>% unlist() %>% unname() %>% unique()
+    
+    #make plot and add to list as grob
+    p <- cohort_cgp_hist_plot(
+      mapvizieR_obj = mapvizieR_obj,
+      studentids = this_students,
+      measurementscale = measurementscale,
+      match_method = match_method,
+      first_and_spring_only = first_and_spring_only,
+      entry_grade_seasons = entry_grade_seasons,
+      school_norms = school_norms,
+      primary_cohort_only = primary_cohort_only
+    ) +
+    facet_grid(. ~ cohort)
+    
+    plots[[i]] <- ggplotGrob(p)
+  }
+  
+  #grid arrange the list of plots and return
+  out <- do.call("grid.arrange", c(plots, ncol = length(plots)))
+  
+  return(out)
+}
+
+
+
