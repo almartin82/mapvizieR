@@ -85,6 +85,12 @@ template_04 <- function(p01, p02, p03, p04, p05) {
 }
 
 
+#' tg "to grob" helper function
+#'
+#' @param x a report object. currently supports grobs or ggplot objects
+#'
+#' @return a grob, suitable for arrangeGrob on a report layout
+
 tg <- function(x) {
 
   if ('ggplot' %in% class(x)) {
