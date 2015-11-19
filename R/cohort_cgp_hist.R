@@ -127,6 +127,19 @@ cohort_cgp_hist_plot <- function(
 
 
 
+#' Multiple Cohort CGP histories
+#'
+#' @description see cohort_cgp_hist_plot for use.  Pass a vector of studentids
+#' of *all* desired cohorts.  Plot will facet one plot per cohort.
+#' 
+#' @inheritParams cohort_cgp_hist_plot
+#' @param arrange_logic layout logic passed to grid.arrange.  default is
+#' wide, one column per plot.  if, for instance, one row per plot was
+#' desired, pass \code{c(nrow = length(plots))} to arrange_logic.
+#' 
+#' @return a list of ggplotGrobs
+#' @export
+
 multi_cohort_cgp_hist_plot <- function(
   mapvizieR_obj,
   studentids,
@@ -135,7 +148,8 @@ multi_cohort_cgp_hist_plot <- function(
   first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2), 
   school_norms = 2015,
-  primary_cohort_only = TRUE
+  primary_cohort_only = TRUE,
+  arrange_logic = c(ncol = length(plots))
 ) {
   #given a vector of studentids, find the cohorts
   cohorts <- mapvizieR_obj$roster %>%
@@ -171,7 +185,9 @@ multi_cohort_cgp_hist_plot <- function(
   }
   
   #grid arrange the list of plots and return
-  out <- do.call("grid.arrange", c(plots, ncol = length(plots)))
+  out <- do.call(
+    what = "grid.arrange", args = c(plots, arrange_logic)
+  )
   
   return(out)
 }
