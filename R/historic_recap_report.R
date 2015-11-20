@@ -79,9 +79,29 @@ historic_recap_report_detail <- function(
     end_fws,
     end_academic_year,
     start_fws_prefer = NA,
+    entry_grade_seasons = c(-0.8, 4.2),
     title_text = ''
 ) {
   end_academic_year <- as.integer(end_academic_year)
+  
+  if (length(start_fws) == 1) {
+    inferred_start_fws <- start_fws
+    inferred_start_academic_year <- end_academic_year + start_year_offset
+  } else {
+    auto_windows <- auto_growth_window(
+      mapvizieR_obj = mapvizieR_obj,
+      studentids = studentids,
+      measurementscale = measurementscale,
+      end_fws = end_fws, 
+      end_academic_year = end_academic_year,
+      candidate_start_fws = start_fws,
+      candidate_year_offsets = start_year_offset,
+      candidate_prefer = start_fws_prefer,
+      window_tolerance = 0.66
+    )
+    inferred_start_fws <- auto_windows[[1]]
+    inferred_start_academic_year <- auto_windows[[2]]
+  }
   
   p1 <- h_var(title_text, 36)
   p2 <- quealy_subgroups(
@@ -97,9 +117,51 @@ historic_recap_report_detail <- function(
     end_academic_year = end_academic_year,
     start_fws_prefer = start_fws_prefer
   )
-  p3 <- textGrob('cgp table')
-  p4 <- textGrob('schambach')
-  p5 <- textGrob('becca')
-
-  template_06(p1, p2, p3, p4, p5)
+  
+  p3 <- schambach_figure(
+    mapvizieR_obj = mapvizieR_obj,
+    measurementscale_in = measurementscale,
+    studentids_in = studentids,
+    subgroup_cols = subgroup_cols,
+    pretty_names = pretty_names,
+    start_fws = inferred_start_fws, 
+    start_academic_year = inferred_start_academic_year, 
+    end_fws = end_fws, 
+    end_academic_year = end_academic_year
+  )
+  
+  p4 <- cgp_table(
+    mapvizieR_obj = mapvizieR_obj, 
+    studentids = studentids,
+    measurementscale = measurementscale, 
+    start_fws = inferred_start_fws, 
+    start_academic_year = inferred_start_academic_year, 
+    end_fws = end_fws, 
+    end_academic_year = end_academic_year,
+    big_font = 50,
+    norms = 2015
+  )
+      
+  
+  p5 <- cohort_cgp_hist_plot(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale = measurementscale,
+    entry_grade_seasons = entry_grade_seasons
+  ) +
+  labs(title = 'Historic Cohort Growth Percentiles')
+  
+  mapvizieR_obj$cdf <- mapvizieR_obj$cdf %>%
+    dplyr::filter(
+      map_year_academic <= end_academic_year
+    )
+  p6 <- becca_plot(
+    mapvizieR_obj = mapvizieR_obj,
+    studentids = studentids,
+    measurementscale = measurementscale,
+    detail_academic_year = end_academic_year,
+    entry_grade_seasons = entry_grade_seasons
+  ) 
+  
+  template_06(p1, p2, p3, p4, p5, p6)
 }

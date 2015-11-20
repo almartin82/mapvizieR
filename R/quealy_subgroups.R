@@ -81,7 +81,8 @@ quealy_subgroups <- function(
     target_df = df,
     mapvizieR_obj = mapvizieR_obj,
     roster_cols = subgroup_cols,
-    by_measurementscale = join_by_measurementscale
+    by_measurementscale = join_by_measurementscale,
+    join_by = 'end'
   )
   #put rownames back on the df
   df$persistent_names <- rownames(df)

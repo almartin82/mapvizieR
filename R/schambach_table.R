@@ -36,7 +36,7 @@ schambach_table_1d <- function(
   assertthat::assert_that(length(subgroup_cols) == length(pretty_names))
   
   #unpack the mapvizieR object and limit to desired students
-  roster <- mapvizieR_obj[['roster']]
+  roster <- mapvizieR_obj$roster
   
   #limit to desired studentids and measurementscale
   growth_df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale_in)
@@ -88,13 +88,11 @@ schambach_table_1d <- function(
     
     minimal_roster <- roster[, c('studentid', 'map_year_academic', 'fallwinterspring', subgroup)]
     
-    combined_df <- dplyr::inner_join(
-      x = this_growth,
-      y = minimal_roster,
-      by = c('studentid' = 'studentid',
-             'start_map_year_academic' = 'map_year_academic', 
-             'start_fallwinterspring' = 'fallwinterspring'
-      )
+    combined_df <- roster_to_growth_df(
+      target_df = this_growth,
+      mapvizieR_obj = mapvizieR_obj,
+      roster_cols = subgroup_cols,
+      join_by = 'end'
     )
     
     #first row: summary of first cut

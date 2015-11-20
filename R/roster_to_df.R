@@ -78,6 +78,7 @@ roster_to_cdf <- function(
 #' @param target_df the df you want to put stuff on
 #' @param mapvizieR_obj a conforming mapvizieR object
 #' @param roster_cols roster column names you want to move over.
+#' @param join_by c('start', 'end', 'both')
 #' @param disambiguation_method how to disambiguate?  default is 'last'.
 #' @param by_measurementscale boolean, when you have student demographics that are specific to a 
 #' particular assessment - eg course enrollment, but the match is specific to student AND
@@ -91,6 +92,7 @@ roster_to_growth_df <- function(
   target_df,
   mapvizieR_obj,
   roster_cols,
+  join_by = 'end', 
   disambiguation_method = 'last',
   by_measurementscale = FALSE
 ) {
@@ -104,17 +106,28 @@ roster_to_growth_df <- function(
   roster <- mapvizieR_obj$roster
   
   #what student year season pairs are in the target df?
-  pairs <- target_df[ ,c('studentid', 'start_map_year_academic', 'start_fallwinterspring', 
-                         'end_map_year_academic', 'end_fallwinterspring')] %>% unique()
+  pairs <- target_df %>%
+    dplyr::select(
+      studentid, start_map_year_academic, start_fallwinterspring,
+      end_map_year_academic, end_fallwinterspring
+    ) %>%
+    unique() %>%
+    as.data.frame(stringsAsFactors = FALSE)
   
   pairs$start_sort <- numeric_nwea_seasons(pairs$start_fallwinterspring) + pairs$start_map_year_academic
   pairs$end_sort <- numeric_nwea_seasons(pairs$end_fallwinterspring) + pairs$end_map_year_academic
   
   #get them in LONG format
-  pairs <- pairs[, c('studentid', 'start_sort', 'end_sort')] %>%
-    reshape2::melt(
-      id.vars = 'studentid'
-    )
+  if (join_by == 'start') {
+    pairs <- pairs[, c('studentid', 'start_sort')] %>%
+      reshape2::melt(id.vars = 'studentid')
+  } else if (join_by == 'end') {
+    pairs <- pairs[, c('studentid', 'end_sort')] %>%
+      reshape2::melt(id.vars = 'studentid')
+  } else if (join_by == 'both') {
+    pairs <- pairs[, c('studentid', 'start_sort', 'end_sort')] %>%
+      reshape2::melt(id.vars = 'studentid')
+  }
   
   #now subset the roster to only have the values 
   #first make year field

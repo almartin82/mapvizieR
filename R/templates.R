@@ -130,20 +130,22 @@ template_05 <- function(p01, p02) {
 #' @param p03 plot or grob
 #' @param p04 plot or grob
 #' @param p05 plot or grob
+#' @param p06 plot or grob
 #'
 #' @return grob, output of arrangeGrob
 #' @export
 
-template_06 <- function(p01, p02, p03, p04, p05) {
+template_06 <- function(p01, p02, p03, p04, p05, p06) {
   grid.newpage()
   
   arrangeGrob(
     grobs = list(
-      p01 %>% tg(), p02 %>% tg(), p03 %>% tg(), p04 %>% tg(), p05 %>% tg()
+      p01 %>% tg(), p02 %>% tg(), p03 %>% tg(), 
+      p04 %>% tg(), p05 %>% tg(), p06 %>% tg()
     ), 
     layout_matrix = cbind(
-      c(1, 2, 2, 2, 2, 2, 2, 2, 2), 
-      c(3, 3, 3, 4, 4, 4, 5, 5, 5)),
+      c(1, 2, 2, 2, 2, 2, 3, 3, 3), 
+      c(4, 4, 4, 5, 5, 5, 6, 6, 6)),
     ncol = 2, widths = c(2, 1)
   )
 }
