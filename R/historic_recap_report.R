@@ -78,10 +78,13 @@ historic_recap_report_detail <- function(
     start_year_offset,
     end_fws,
     end_academic_year,
-    start_fws_prefer = NA
+    start_fws_prefer = NA,
+    title_text = ''
 ) {
+  end_academic_year <- as.integer(end_academic_year)
   
-  p1 <- quealy_subgroups(
+  p1 <- h_var(title_text, 36)
+  p2 <- quealy_subgroups(
     mapvizieR_obj = mapvizieR_obj, 
     studentids = studentids, 
     measurementscale = measurementscale,
@@ -94,7 +97,6 @@ historic_recap_report_detail <- function(
     end_academic_year = end_academic_year,
     start_fws_prefer = start_fws_prefer
   )
-  p2 <- textGrob('quealy')
   p3 <- textGrob('cgp table')
   p4 <- textGrob('schambach')
   p5 <- textGrob('becca')

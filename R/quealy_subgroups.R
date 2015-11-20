@@ -42,7 +42,7 @@ quealy_subgroups <- function(
   measurementscale,
   subgroup_cols = c('starting_quartile'),
   pretty_names = c('Starting Quartile'),
-  magic_subgroups = FALSE,
+  magic_subgroups = TRUE,
   start_fws,
   start_year_offset,
   end_fws,
@@ -146,6 +146,10 @@ quealy_subgroups <- function(
         start_fallwinterspring == inferred_start_fws &
         start_map_year_academic == inferred_start_academic_year
       )
+      
+      if(nrow(this_stu) == 0) {
+        next
+      }
       
       #calc subgroup stats
       perm_stats <- quealy_permutation_stats(this_stu, i, school_growth_norms)
@@ -348,10 +352,10 @@ quealy_subgroups <- function(
 #' @export
 
 quealy_permutation_stats <- function(df, subgroup, norms = 2015) {
-
   results <- df %>%
     dplyr::group_by_(
-      subgroup, quote(measurementscale), quote(start_fallwinterspring), quote(end_fallwinterspring)
+      subgroup, quote(measurementscale), 
+      quote(start_fallwinterspring), quote(end_fallwinterspring)
     ) %>%
     dplyr::summarize(    
       approximate_grade = round(mean(end_grade, na.rm = TRUE), 0), 

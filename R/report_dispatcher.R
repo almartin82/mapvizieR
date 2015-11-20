@@ -16,9 +16,11 @@
 #' @param post_process a post processing function to apply to the list of plots we get back.
 #' default behavior is only_valid_plots(), which drops any plot that failed.  
 #' don't want that?  write something new :)
-#' @param verbose should the function print updates about what is happening?  default is TRUE.
-#' @param ... other parameters to pass through (namely cdfs).  todo: reformat this function
-#' to take mapvizieR object.
+#' @param verbose should the function print updates about what is happening?  
+#' default is TRUE.
+#' @param debug_mode if TRUE, runs the function without try, to assist
+#' with debugging
+#' @param ... additional arguments
 #' 
 #' @export
 #' @return a list of output from the function you called
@@ -33,6 +35,7 @@ report_dispatcher <- function(
     pre_process = function(x) return(x),
     post_process = "only_valid_plots",
     verbose = TRUE,
+    debug_mode = FALSE,
     ...
   ) {
   #cut list and call list should be the same length
@@ -149,13 +152,15 @@ report_dispatcher <- function(
       } 
       
       #now that we have the studentids and arg list, call the function
-      this_output <- try(
-        do.call(
-          what = func_to_call,
-          args = this_arg_list,
-          envir = rd_env
+      if (debug_mode) {
+        this_output <- do.call(
+          what = func_to_call, args = this_arg_list, envir = rd_env
         )
-      )
+      } else {
+        this_output <- try(
+          do.call(what = func_to_call, args = this_arg_list, envir = rd_env)
+        )
+      }
       
       output_list[[counter]] <- this_output
       names(output_list)[[counter]] <- paste0(rd_env$depth_string)
