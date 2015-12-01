@@ -47,6 +47,7 @@ calc_cgp <- function(
     vt$measurementscale, vt$end_grade, vt$growth_window, sep = '@'
   )
   if (!in_study) {
+    print(growth_window)
     if (verbose) warning("measurementscale/grade/growth window combination isn't in school growth study.")
     return(list("targets" = NA_real_, "results" = NA_real_))
     
@@ -388,7 +389,7 @@ mapviz_cgp <- function(
       cgp = calc_cgp(
         measurementscale = measurementscale,
         end_grade = approx_grade,
-        growth_window = paste(start_fallwinterspring, 'to', end_fallwinterspring),
+        growth_window = paste(start_fws, 'to', end_fws),
         baseline_avg_rit = avg_start_rit,
         ending_avg_rit = avg_end_rit,
         norms = norms
@@ -499,10 +500,10 @@ cgp_sim <- function(
 #' @export
 
 cdf_to_cgp <- function(
-  cdf, grouping = 'implicit_cohort', norms = 2015
+  mapvizieR_obj, cdf, grouping = 'implicit_cohort', norms = 2015
 ) {
   
-  scaffold <- cdf %>%
+  cgp_scaffold <- cdf %>%
     dplyr::select_(
       grouping, quote(measurementscale), 
       quote(fallwinterspring),
@@ -521,14 +522,15 @@ cdf_to_cgp <- function(
     dplyr::mutate(
       end_fallwinterspring = lead(fallwinterspring),
       end_grade = lead(grade),
-      end_map_year_academic = lead(map_year_academic)
+      end_map_year_academic = lead(map_year_academic),
+      end_grade_level_season = lead(grade_level_season)
     ) %>%
     dplyr::rename(
       start_fallwinterspring = fallwinterspring,
       start_grade = grade,
-      start_map_year_academic = map_year_academic
+      start_map_year_academic = map_year_academic,
+      start_grade_level_season = grade_level_season
     ) %>%
-    dplyr::select(-grade_level_season) %>%
     dplyr::mutate(
       cgp = NA_real_,
       start_mean_rit = NA_real_,
@@ -537,27 +539,28 @@ cdf_to_cgp <- function(
       end_mean_npr = NA_real_
     )
   
-  scaffold %>% peek()
-  
-  for (i in 1:nrow(scaffold)) {
-    
+  for (i in 1:nrow(cgp_scaffold)) {
     this_cgp <- mapviz_cgp(
-      mapvizieR_obj, 
-      studentids, 
+      mapvizieR_obj,
+      studentids,
       measurementscale,
-      scaffold[i, 'start_fallwinterspring'] %>% unlist(), 
-      scaffold[i, 'start_map_year_academic'] %>% unlist(), 
-      scaffold[i, 'end_fallwinterspring'] %>% unlist(), 
-      scaffold[i, 'end_map_year_academic'] %>% unlist(), 
+      cgp_scaffold[i, 'start_fallwinterspring'] %>% unlist() %>% unname(), 
+      cgp_scaffold[i, 'start_map_year_academic'] %>% unlist() %>% unname(), 
+      cgp_scaffold[i, 'end_fallwinterspring'] %>% unlist() %>% unname(), 
+      cgp_scaffold[i, 'end_map_year_academic'] %>% unlist() %>% unname(), 
       norms
     )
     
-    scaffold[i, 'cgp'] <- this_cgp$cgp
-    scaffold[i, 'start_mean_rit']
-    
+    if (nrow(this_cgp) == 1) {
+      cgp_scaffold[i, 'cgp'] <- this_cgp$cgp
+      cgp_scaffold[i, 'start_mean_rit'] <- this_cgp$avg_start_rit
+      cgp_scaffold[i, 'end_mean_rit'] <- this_cgp$avg_end_rit
+      cgp_scaffold[i, 'start_mean_npr'] <- this_cgp$avg_start_npr
+      cgp_scaffold[i, 'end_mean_npr'] <- this_cgp$avg_end_npr
+    }
   }
   
-  
+  cgp_scaffold
 }
 
 cdf_to_cgp_old <- function(

@@ -63,7 +63,13 @@ cohort_cgp_hist_plot <- function(
   
   farts <<- munge
   
-  as_cgp <- cdf_to_cgp_old(cdf = munge, grouping = 'cohort', norms = school_norms)
+  #as_cgp <- cdf_to_cgp_old(cdf = munge, grouping = 'cohort', norms = school_norms)
+  as_cgp <- cdf_to_cgp(
+    mapvizieR_obj = mapvizieR_obj,
+    cdf = munge, 
+    grouping = 'cohort', 
+    norms = school_norms
+  )
   
   as_cgp <- as_cgp %>%
     dplyr::mutate(
