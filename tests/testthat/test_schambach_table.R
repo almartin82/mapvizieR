@@ -17,7 +17,7 @@ test_that("schambach_table produces proper table dimensions", {
   )
   
   expect_equal(length(samp_dflist), 1)
-  expect_equal(dim(samp_dflist[[1]]), c(4, 8))
+  expect_equal(dim(samp_dflist[[1]]), c(5, 8))
   
   # three cuts
   samp_dflist <- schambach_table_1d(
@@ -34,9 +34,9 @@ test_that("schambach_table produces proper table dimensions", {
   )
   
   expect_equal(length(samp_dflist), 3)
-  expect_equal(dim(samp_dflist[[1]]), c(4, 8))
-  expect_equal(dim(samp_dflist[[2]]), c(3, 8))
-  expect_equal(dim(samp_dflist[[3]]), c(6, 8))
+  expect_equal(dim(samp_dflist[[1]]), c(5, 8))
+  expect_equal(dim(samp_dflist[[2]]), c(4, 8))
+  expect_equal(dim(samp_dflist[[3]]), c(7, 8))
   
   
   # complete_obsv = TRUE
@@ -54,6 +54,6 @@ test_that("schambach_table produces proper table dimensions", {
   )
   
   expect_equal(length(samp_dflist), 1)
-  expect_equal(dim(samp_dflist[[1]]), c(4, 8))
+  expect_equal(dim(samp_dflist[[1]]), c(5, 8))
   
 })

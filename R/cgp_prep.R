@@ -47,7 +47,6 @@ calc_cgp <- function(
     vt$measurementscale, vt$end_grade, vt$growth_window, sep = '@'
   )
   if (!in_study) {
-    print(growth_window)
     if (verbose) warning("measurementscale/grade/growth window combination isn't in school growth study.")
     return(list("targets" = NA_real_, "results" = NA_real_))
     
@@ -537,18 +536,24 @@ cdf_to_cgp <- function(
       end_mean_rit = NA_real_,
       start_mean_npr = NA_real_,
       end_mean_npr = NA_real_
-    )
+    ) %>% as.data.frame()
   
   for (i in 1:nrow(cgp_scaffold)) {
+    
+    start_fws <- cgp_scaffold[i, 'start_fallwinterspring'] 
+    start_year <- cgp_scaffold[i, 'start_map_year_academic'] 
+    end_fws <- cgp_scaffold[i, 'end_fallwinterspring'] 
+    end_year <- cgp_scaffold[i, 'end_map_year_academic']
+    
     this_cgp <- mapviz_cgp(
-      mapvizieR_obj,
-      studentids,
-      measurementscale,
-      cgp_scaffold[i, 'start_fallwinterspring'] %>% unlist() %>% unname(), 
-      cgp_scaffold[i, 'start_map_year_academic'] %>% unlist() %>% unname(), 
-      cgp_scaffold[i, 'end_fallwinterspring'] %>% unlist() %>% unname(), 
-      cgp_scaffold[i, 'end_map_year_academic'] %>% unlist() %>% unname(), 
-      norms
+      mapvizieR_obj = mapvizieR_obj,
+      studentids = cdf$studentid %>% unique(),
+      measurementscale = cdf$measurementscale %>% unique(),
+      start_fws = start_fws,
+      start_academic_year = start_year,
+      end_fws = end_fws,
+      end_academic_year = end_year,
+      norms = norms
     )
     
     if (nrow(this_cgp) == 1) {

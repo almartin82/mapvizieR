@@ -72,6 +72,7 @@ cohort_cgp_hist_plot <- function(
   )
   
   as_cgp <- as_cgp %>%
+    dplyr::rowwise() %>%
     dplyr::mutate(
       x_cgp = c(start_grade_level_season, end_grade_level_season) %>% mean(),
       y_cgp = c(start_mean_npr, end_mean_npr) %>% mean()
@@ -83,23 +84,55 @@ cohort_cgp_hist_plot <- function(
       cgp_label = ifelse(
         !is.na(cgp_label) & cgp_helper == 1, paste0('CGP: ', cgp_label), cgp_label
       )
-    )
+    ) %>%
+    as.data.frame(stringsAsFactors = FALSE)
   
   out <- ggplot(
     data = as_cgp,
     aes(
       x = start_grade_level_season,
-      y = start_mean_npr,
-      label = start_mean_rit %>% round(1)
+      y = start_mean_npr
     )
   ) +
-  geom_point() +
-  geom_text(
-    aes(y = start_mean_npr - 2),
-    alpha = 0.5,
-    vjust = 1
+  geom_point(
+    aes(
+      x = start_grade_level_season,
+      y = start_mean_npr
+    ),
+    shape = 1
   ) +
-  geom_line() 
+  geom_point(
+    aes(
+      x = end_grade_level_season,
+      y = end_mean_npr
+    ),
+    shape = 1
+  ) +
+  geom_text(
+    aes(
+      y = start_mean_npr - 1,
+      label = start_mean_rit %>% round(1)
+    ),
+    alpha = 0.5,
+    vjust = 1,
+    color = 'lightblue'
+  ) +
+  geom_text(
+    aes(
+      x = end_grade_level_season,
+      y = end_mean_npr + 1,
+      label = end_mean_rit %>% round(1)
+    ),
+    alpha = 0.5,
+    vjust = 0,
+    color = 'darkblue'
+  ) +    
+  geom_segment(
+    aes(
+      xend = end_grade_level_season,
+      yend = end_mean_npr
+    )
+  ) 
   
   #only out geom text on plot if it exists
   if (as_cgp$cgp %>% is.na() %>% `n'est pas`() %>% any) {
