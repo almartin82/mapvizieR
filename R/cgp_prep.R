@@ -11,7 +11,7 @@
 #' 2015.
 #' @param calc_for vector of cgp targets to calculate for.
 #' @param verbose should warnings about invalid seasons be raised?
-#' 
+#' cdf_to_cgp_old
 #' @return a named list - targets, and results
 #' 
 #' @export
@@ -340,7 +340,8 @@ mapviz_cgp <- function(
   start_academic_year, 
   end_fws, 
   end_academic_year,
-  norms = 2015
+  norms = 2015,
+  use_complete_obsv = TRUE
 ) {
   #data validation and unpack
   mv_opening_checks(mapvizieR_obj, studentids, 1)
@@ -356,7 +357,7 @@ mapviz_cgp <- function(
       start_fallwinterspring == start_fws,
       end_map_year_academic == end_academic_year,
       end_fallwinterspring == end_fws,
-      complete_obsv == TRUE
+      complete_obsv == use_complete_obsv
     ) %>%
     dplyr::group_by(
       measurementscale, start_fallwinterspring, start_map_year_academic,
@@ -497,7 +498,71 @@ cgp_sim <- function(
 #' @return a data frame with summary start/end rit, and cgps
 #' @export
 
-cdf_to_cgp <- function(cdf, grouping = 'implicit_cohort', norms = 2015) {
+cdf_to_cgp <- function(
+  cdf, grouping = 'implicit_cohort', norms = 2015
+) {
+  
+  scaffold <- cdf %>%
+    dplyr::select_(
+      grouping, quote(measurementscale), 
+      quote(fallwinterspring),
+      quote(grade_level_season),
+      quote(grade),
+      quote(map_year_academic)
+    ) %>%
+    dplyr::arrange_(
+      grouping, quote(measurementscale), 
+      quote(grade_level_season), quote(map_year_academic)
+    ) %>%
+    unique() %>%
+    dplyr::group_by_(
+      grouping, quote(measurementscale)
+    ) %>%
+    dplyr::mutate(
+      end_fallwinterspring = lead(fallwinterspring),
+      end_grade = lead(grade),
+      end_map_year_academic = lead(map_year_academic)
+    ) %>%
+    dplyr::rename(
+      start_fallwinterspring = fallwinterspring,
+      start_grade = grade,
+      start_map_year_academic = map_year_academic
+    ) %>%
+    dplyr::select(-grade_level_season) %>%
+    dplyr::mutate(
+      cgp = NA_real_,
+      start_mean_rit = NA_real_,
+      end_mean_rit = NA_real_,
+      start_mean_npr = NA_real_,
+      end_mean_npr = NA_real_
+    )
+  
+  scaffold %>% peek()
+  
+  for (i in 1:nrow(scaffold)) {
+    
+    this_cgp <- mapviz_cgp(
+      mapvizieR_obj, 
+      studentids, 
+      measurementscale,
+      scaffold[i, 'start_fallwinterspring'] %>% unlist(), 
+      scaffold[i, 'start_map_year_academic'] %>% unlist(), 
+      scaffold[i, 'end_fallwinterspring'] %>% unlist(), 
+      scaffold[i, 'end_map_year_academic'] %>% unlist(), 
+      norms
+    )
+    
+    scaffold[i, 'cgp'] <- this_cgp$cgp
+    scaffold[i, 'start_mean_rit']
+    
+  }
+  
+  
+}
+
+cdf_to_cgp_old <- function(
+  cdf, grouping = 'implicit_cohort', norms = 2015
+) {
   
   grouped <- cdf %>%
     dplyr::group_by_(
