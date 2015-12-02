@@ -30,10 +30,10 @@ corresponding to the key/value cut and element outlined above}
 default behavior is only_valid_plots(), which drops any plot that failed.  
 don't want that?  write something new :)}
 
-\item{verbose}{should the function print updates about what is happening?  default is TRUE.}
+\item{verbose}{should the function print updates about what is happening?
+default is TRUE.}
 
-\item{...}{other parameters to pass through (namely cdfs).  todo: reformat this function
-to take mapvizieR object.}
+\item{...}{additional arguments}
 }
 \value{
 a list of output from the function you called

@@ -23,7 +23,8 @@ calc_cgp(measurementscale, end_grade, growth_window, baseline_avg_rit = NA,
 
 \item{calc_for}{vector of cgp targets to calculate for.}
 
-\item{verbose}{should warnings about invalid seasons be raised?}
+\item{verbose}{should warnings about invalid seasons be raised?
+cdf_to_cgp_old}
 }
 \value{
 a named list - targets, and results
