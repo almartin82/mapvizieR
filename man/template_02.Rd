@@ -2,7 +2,7 @@
 % Please edit documentation in R/templates.R
 \name{template_02}
 \alias{template_02}
-\title{template two}
+\title{template 2}
 \usage{
 template_02(p01, p02, p03)
 }

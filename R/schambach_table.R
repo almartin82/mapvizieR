@@ -36,7 +36,7 @@ schambach_table_1d <- function(
   assertthat::assert_that(length(subgroup_cols) == length(pretty_names))
   
   #unpack the mapvizieR object and limit to desired students
-  roster <- mapvizieR_obj[['roster']]
+  roster <- mapvizieR_obj$roster
   
   #limit to desired studentids and measurementscale
   growth_df <- mv_limit_growth(mapvizieR_obj, studentids, measurementscale_in)
@@ -67,11 +67,13 @@ schambach_table_1d <- function(
     df <- grouped_df %>%
       dplyr::summarize(
         end_rit = round(mean(end_testritscore, na.rm = TRUE), digits = 1),
-        start_top75 = round(100 * sum(start_testpercentile >= 75) / n(), digits = 0),
-        end_top75 = round(100 * sum(end_testpercentile >= 75) / n(), digits = 0),
-        avg_pg = round(mean((end_testpercentile - start_testpercentile), na.rm = TRUE), digits = 1),
-        p_ku = round(100 * sum(met_typical_growth, na.rm = TRUE) / n(), digits = 0),
-        p_rr = round(100 * sum(met_accel_growth, na.rm = TRUE) / n(), digits = 0),
+        start_top75 = (sum(start_testpercentile >= 75, na.rm = TRUE) /
+             sum(!is.null(start_testpercentile))) %>% round(0),
+        end_top75 = (sum(end_testpercentile >= 75, na.rm = TRUE) /
+                       sum(!is.null(end_testpercentile))) %>% round(0),
+        avg_pg = mean((end_testpercentile - start_testpercentile), na.rm = TRUE) %>% round(1),
+        p_ku = (sum(met_typical_growth, na.rm = TRUE) / sum(!is.null(met_typical_growth))) %>% round(0),
+        p_rr = (sum(met_accel_growth, na.rm = TRUE) / sum(!is.null(met_accel_growth))) %>% round(0),
         n = n()
       ) %>% 
       as.data.frame
@@ -88,24 +90,26 @@ schambach_table_1d <- function(
     
     minimal_roster <- roster[, c('studentid', 'map_year_academic', 'fallwinterspring', subgroup)]
     
-    combined_df <- dplyr::inner_join(
-      x = this_growth,
-      y = minimal_roster,
-      by = c('studentid' = 'studentid',
-             'start_map_year_academic' = 'map_year_academic', 
-             'start_fallwinterspring' = 'fallwinterspring'
-      )
+    combined_df <- roster_to_growth_df(
+      target_df = this_growth,
+      mapvizieR_obj = mapvizieR_obj,
+      roster_cols = subgroup_cols,
+      join_by = 'end'
     )
     
     #first row: summary of first cut
     row1 <- c(
       paste('All Students'),
-      round(mean(combined_df$end_testritscore, na.rm = TRUE), digits = 1),
-      round(100 * sum(combined_df$start_testpercentile >= 75) / nrow(combined_df), digits = 0),
-      round(100 * sum(combined_df$end_testpercentile >= 75) / nrow(combined_df), digits = 0),
-      round(mean((combined_df$end_testpercentile - combined_df$start_testpercentile), na.rm = TRUE), digits = 1),
-      round(100 * sum(combined_df$met_typical_growth, na.rm = TRUE) / nrow(combined_df), digits = 0),
-      round(100 * sum(combined_df$met_accel_growth, na.rm = TRUE) / nrow(combined_df), digits = 0),
+      mean(combined_df$end_testritscore, na.rm = TRUE) %>% round(1),
+      (sum(combined_df$start_testpercentile >= 75, na.rm = TRUE) /
+        sum(!is.null(combined_df$start_testpercentile))) %>% round(0),
+      (sum(combined_df$end_testpercentile >= 75, na.rm = TRUE) /
+         sum(!is.null(combined_df$end_testpercentile))) %>% round(0),
+      mean((combined_df$end_testpercentile - combined_df$start_testpercentile), na.rm = TRUE) %>% round(1),
+      (sum(combined_df$met_typical_growth, na.rm = TRUE) /
+         sum(!is.null(combined_df$met_typical_growth))) %>% round(0),      
+      (sum(combined_df$met_accel_growth, na.rm = TRUE) /
+         sum(!is.null(combined_df$met_accel_growth)))  %>% round(0),      
       nrow(combined_df)
     )
     

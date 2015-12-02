@@ -11,7 +11,6 @@
 #' @param start_academic_year starting academic year
 #' @param end_fws ending season
 #' @param end_academic_year ending academic year
-#' @param report_title text grob to put on report
 #' @param complete_obsv if TRUE, limit only to students who have BOTH a start
 #' and end score. default is FALSE.
 #' 
@@ -27,7 +26,6 @@ schambach_figure <- function(
   start_academic_year,
   end_fws,
   end_academic_year,
-  report_title = NA, 
   complete_obsv = FALSE
 ) {
   
@@ -51,14 +49,7 @@ schambach_figure <- function(
     df
   }
   
-  if (!is.na(report_title)) {
-    title <- h_var(report_title, 16)
-  } else {
-    title <- h_var('Provide a Title', 16)
-  }
-  
   tables <- list()
-#   if (length(schambach_dflist) == 1) {
     for (i in 1:length(schambach_dflist)) {
       df <- schambach_dflist[[i]]
       df <- formatter(df)
@@ -68,25 +59,23 @@ schambach_figure <- function(
                'Percent Met\n Accel Growth', 'Number of\n Students')
       t <- gridExtra::tableGrob(
         df,
-        #rows = c(),
         cols = col_names,
         theme = ttheme_default(
           core = list(
-            fg_params = list(fontsize = 10, just = "center"),
+            fg_params = list(fontsize = 9, just = "center"),
             bg_params = list(alpha = c(.5,1), fill = 'lightgreen')),
             colhead = list(
-              fg_params = list(fontsize = 12, fontface = "bold", col = "black")
+              fg_params = list(fontsize = 10, fontface = "bold", col = "black")
             )
         )
       )
                                 
-     tables[[i]] <- gridExtra::grid.arrange(
-       grob_justifier(title, 'center', 'bottom'),
-       grob_justifier(t, 'center', 'top'),
-       nrow = 2,
-       heights = c(1, 4)
-     )
+     tables[[i]] <- t
     }
   
-  return(tables)
+  out <- do.call(
+    what = "grid.arrange", args = c(tables, c(nrow = length(tables)))
+  )
+  
+  return(out)
 }

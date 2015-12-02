@@ -11,7 +11,7 @@
 #' 2015.
 #' @param calc_for vector of cgp targets to calculate for.
 #' @param verbose should warnings about invalid seasons be raised?
-#' 
+#' cdf_to_cgp_old
 #' @return a named list - targets, and results
 #' 
 #' @export
@@ -340,7 +340,8 @@ mapviz_cgp <- function(
   start_academic_year, 
   end_fws, 
   end_academic_year,
-  norms = 2015
+  norms = 2015,
+  use_complete_obsv = TRUE
 ) {
   #data validation and unpack
   mv_opening_checks(mapvizieR_obj, studentids, 1)
@@ -356,7 +357,7 @@ mapviz_cgp <- function(
       start_fallwinterspring == start_fws,
       end_map_year_academic == end_academic_year,
       end_fallwinterspring == end_fws,
-      complete_obsv == TRUE
+      complete_obsv == use_complete_obsv
     ) %>%
     dplyr::group_by(
       measurementscale, start_fallwinterspring, start_map_year_academic,
@@ -387,7 +388,7 @@ mapviz_cgp <- function(
       cgp = calc_cgp(
         measurementscale = measurementscale,
         end_grade = approx_grade,
-        growth_window = paste(start_fallwinterspring, 'to', end_fallwinterspring),
+        growth_window = paste(start_fws, 'to', end_fws),
         baseline_avg_rit = avg_start_rit,
         ending_avg_rit = avg_end_rit,
         norms = norms
@@ -497,7 +498,79 @@ cgp_sim <- function(
 #' @return a data frame with summary start/end rit, and cgps
 #' @export
 
-cdf_to_cgp <- function(cdf, grouping = 'implicit_cohort', norms = 2015) {
+cdf_to_cgp <- function(
+  mapvizieR_obj, cdf, grouping = 'implicit_cohort', norms = 2015
+) {
+  
+  cgp_scaffold <- cdf %>%
+    dplyr::select_(
+      grouping, quote(measurementscale), 
+      quote(fallwinterspring),
+      quote(grade_level_season),
+      quote(grade),
+      quote(map_year_academic)
+    ) %>%
+    dplyr::arrange_(
+      grouping, quote(measurementscale), 
+      quote(grade_level_season), quote(map_year_academic)
+    ) %>%
+    unique() %>%
+    dplyr::group_by_(
+      grouping, quote(measurementscale)
+    ) %>%
+    dplyr::mutate(
+      end_fallwinterspring = lead(fallwinterspring),
+      end_grade = lead(grade),
+      end_map_year_academic = lead(map_year_academic),
+      end_grade_level_season = lead(grade_level_season)
+    ) %>%
+    dplyr::rename(
+      start_fallwinterspring = fallwinterspring,
+      start_grade = grade,
+      start_map_year_academic = map_year_academic,
+      start_grade_level_season = grade_level_season
+    ) %>%
+    dplyr::mutate(
+      cgp = NA_real_,
+      start_mean_rit = NA_real_,
+      end_mean_rit = NA_real_,
+      start_mean_npr = NA_real_,
+      end_mean_npr = NA_real_
+    ) %>% as.data.frame()
+  
+  for (i in 1:nrow(cgp_scaffold)) {
+    
+    start_fws <- cgp_scaffold[i, 'start_fallwinterspring'] 
+    start_year <- cgp_scaffold[i, 'start_map_year_academic'] 
+    end_fws <- cgp_scaffold[i, 'end_fallwinterspring'] 
+    end_year <- cgp_scaffold[i, 'end_map_year_academic']
+    
+    this_cgp <- mapviz_cgp(
+      mapvizieR_obj = mapvizieR_obj,
+      studentids = cdf$studentid %>% unique(),
+      measurementscale = cdf$measurementscale %>% unique(),
+      start_fws = start_fws,
+      start_academic_year = start_year,
+      end_fws = end_fws,
+      end_academic_year = end_year,
+      norms = norms
+    )
+    
+    if (nrow(this_cgp) == 1) {
+      cgp_scaffold[i, 'cgp'] <- this_cgp$cgp
+      cgp_scaffold[i, 'start_mean_rit'] <- this_cgp$avg_start_rit
+      cgp_scaffold[i, 'end_mean_rit'] <- this_cgp$avg_end_rit
+      cgp_scaffold[i, 'start_mean_npr'] <- this_cgp$avg_start_npr
+      cgp_scaffold[i, 'end_mean_npr'] <- this_cgp$avg_end_npr
+    }
+  }
+  
+  cgp_scaffold
+}
+
+cdf_to_cgp_old <- function(
+  cdf, grouping = 'implicit_cohort', norms = 2015
+) {
   
   grouped <- cdf %>%
     dplyr::group_by_(
@@ -511,47 +584,29 @@ cdf_to_cgp <- function(cdf, grouping = 'implicit_cohort', norms = 2015) {
       mean_npr = mean(consistent_percentile, na.rm = TRUE),
       n = n()
     ) %>%
-    dplyr::ungroup() %>%
     dplyr::arrange(
       measurementscale, grade_level_season
-    )
-  
-  #add a psuedoid for joining
-  grouped$id <- row.names(grouped) %>% as.numeric()
-  
-  #limited df for joining
-  for_join <- grouped %>%
-    dplyr::select(
-      id,
-      fallwinterspring,
-      grade,
-      grade_level_season,
-      mean_rit,
-      mean_npr
-    ) %>%
-    dplyr::rename(
-      end_fallwinterspring = fallwinterspring,
-      end_grade = grade,
-      end_grade_level_season = grade_level_season,
-      end_mean_rit = mean_rit,
-      end_mean_npr = mean_npr
-    ) %>%
-    dplyr::mutate(
-      id = id - 1
-    )
+    ) 
+  grouped$psuedo_id <- row.names(grouped) %>% as.numeric()
   
   grouped <- grouped %>%
+    dplyr::group_by_(grouping, quote(measurementscale)) %>%
+    dplyr::arrange(psuedo_id) %>%
+    dplyr::mutate(
+      end_fallwinterspring = lead(fallwinterspring),
+      end_grade = lead(grade),      
+      end_grade_level_season = lead(grade_level_season),
+      end_mean_rit = lead(mean_rit),
+      end_mean_npr = lead(mean_npr)
+    ) %>% 
     dplyr::rename(
       start_fallwinterspring = fallwinterspring,
       start_grade = grade,
       start_grade_level_season = grade_level_season,
       start_mean_rit = mean_rit,
       start_mean_npr = mean_npr
-    )
-  
-  grouped <- grouped %>%
-    dplyr::left_join(for_join, by = 'id')
-  
+    ) 
+    
   grouped <- grouped %>%
     dplyr::rowwise() %>%
     dplyr::mutate(
