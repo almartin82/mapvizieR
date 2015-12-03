@@ -1,7 +1,7 @@
 context("historic_recap_report tests")
 
 
-testthat("historic recap report produces valid plot", {
+test_that("historic recap report produces valid plot", {
   
   p <- historic_recap_report(
     mapvizieR_obj = mapviz,
@@ -33,7 +33,7 @@ testthat("historic recap report produces valid plot", {
   
 })
 
-testthat("historic recap report detail produces valid plot", {
+test_that("historic recap report detail produces valid plot", {
   
   p <- historic_recap_report_detail(
     mapvizieR_obj = mapviz,
