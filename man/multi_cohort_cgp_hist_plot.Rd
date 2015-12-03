@@ -31,12 +31,11 @@ default is TRUE.}
 \item{school_norms}{c(2012, 2015).  what school norms to use?  default
 is 2012.}
 
+\item{small_n_cutoff}{any cohort below this percent will get filtered out.
+default is 0.5, eg cohorts under 0.5 of max size will get dropped.}
+
 \item{min_cohort_size}{filter cohorts with less than this many students.
 useful when weird enrollment patterns exist in your data.}
-
-\item{arrange_logic}{layout logic passed to grid.arrange.  default is
-wide, one column per plot.  if, for instance, one row per plot was
-desired, pass \code{c(nrow = length(plots))} to arrange_logic.}
 }
 \value{
 a list of ggplotGrobs

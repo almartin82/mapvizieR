@@ -7,6 +7,8 @@
 cdf_to_cgp(mapvizieR_obj, cdf, grouping = "implicit_cohort", norms = 2015)
 }
 \arguments{
+\item{mapvizieR_obj}{conforming mapvizieR object}
+
 \item{cdf}{conforming cdf file}
 
 \item{grouping}{what column to group on.  default is implicit_cohort}

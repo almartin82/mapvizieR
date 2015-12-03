@@ -11,7 +11,7 @@
 #' 2015.
 #' @param calc_for vector of cgp targets to calculate for.
 #' @param verbose should warnings about invalid seasons be raised?
-#' cdf_to_cgp_old
+#' 
 #' @return a named list - targets, and results
 #' 
 #' @export
@@ -329,6 +329,8 @@ npr_to_rit <- function(measurementscale, current_grade, season, npr, norms = 201
 #' @param end_academic_year ending academic year
 #' @param norms which school growth study to use.  c(2012, 2015).  default is
 #' 2015.
+#' @param use_complete_obsv should we only use rows that have both a 
+#' beginning and ending score for the term being evaluated?
 #' 
 #' @export
 
@@ -490,6 +492,7 @@ cgp_sim <- function(
 
 #' CDF to CGP summary
 #'
+#' @param mapvizieR_obj conforming mapvizieR object
 #' @param cdf conforming cdf file
 #' @param grouping what column to group on.  default is implicit_cohort
 #' @param norms which school growth study to use.  c(2012, 2015).  default is
@@ -503,6 +506,7 @@ cdf_to_cgp <- function(
 ) {
   
   cgp_scaffold <- cdf %>%
+    dplyr::ungroup() %>%
     dplyr::select_(
       grouping, quote(measurementscale), 
       quote(fallwinterspring),
@@ -535,7 +539,8 @@ cdf_to_cgp <- function(
       start_mean_rit = NA_real_,
       end_mean_rit = NA_real_,
       start_mean_npr = NA_real_,
-      end_mean_npr = NA_real_
+      end_mean_npr = NA_real_,
+      n = NA_integer_
     ) %>% as.data.frame()
   
   for (i in 1:nrow(cgp_scaffold)) {
@@ -562,66 +567,11 @@ cdf_to_cgp <- function(
       cgp_scaffold[i, 'end_mean_rit'] <- this_cgp$avg_end_rit
       cgp_scaffold[i, 'start_mean_npr'] <- this_cgp$avg_start_npr
       cgp_scaffold[i, 'end_mean_npr'] <- this_cgp$avg_end_npr
+      cgp_scaffold[i, 'n'] <- this_cgp$n
     }
   }
   
   cgp_scaffold
-}
-
-cdf_to_cgp_old <- function(
-  cdf, grouping = 'implicit_cohort', norms = 2015
-) {
-  
-  grouped <- cdf %>%
-    dplyr::group_by_(
-      grouping, quote(measurementscale), 
-      quote(fallwinterspring),
-      quote(grade_level_season),
-      quote(grade)
-    ) %>%
-    dplyr::summarize(
-      mean_rit = mean(testritscore, na.rm = TRUE),
-      mean_npr = mean(consistent_percentile, na.rm = TRUE),
-      n = n()
-    ) %>%
-    dplyr::arrange(
-      measurementscale, grade_level_season
-    ) 
-  grouped$psuedo_id <- row.names(grouped) %>% as.numeric()
-  
-  grouped <- grouped %>%
-    dplyr::group_by_(grouping, quote(measurementscale)) %>%
-    dplyr::arrange(psuedo_id) %>%
-    dplyr::mutate(
-      end_fallwinterspring = lead(fallwinterspring),
-      end_grade = lead(grade),      
-      end_grade_level_season = lead(grade_level_season),
-      end_mean_rit = lead(mean_rit),
-      end_mean_npr = lead(mean_npr)
-    ) %>% 
-    dplyr::rename(
-      start_fallwinterspring = fallwinterspring,
-      start_grade = grade,
-      start_grade_level_season = grade_level_season,
-      start_mean_rit = mean_rit,
-      start_mean_npr = mean_npr
-    ) 
-    
-  grouped <- grouped %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(
-      cgp = calc_cgp(
-        measurementscale = measurementscale,
-        end_grade = end_grade,
-        growth_window = paste(start_fallwinterspring, 'to', end_fallwinterspring),
-        baseline_avg_rit = start_mean_rit,
-        ending_avg_rit = end_mean_rit,
-        norms = norms,
-        verbose = FALSE
-      )[['results']] 
-    )
-  
-  return(grouped)
 }
 
 

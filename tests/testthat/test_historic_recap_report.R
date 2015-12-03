@@ -7,7 +7,8 @@ test_that("historic recap report produces valid plot", {
     mapvizieR_obj = mapviz,
     studentids = studentids_normal_use,
     measurementscale = 'Mathematics',
-    entry_grade_seasons = c(-0.8, 5.2)
+    entry_grade_seasons = c(-0.8, 5.2),
+    first_and_spring_only = FALSE
   ) 
   
   expect_is(p, 'grob')
@@ -18,7 +19,8 @@ test_that("historic recap report produces valid plot", {
     mapvizieR_obj = mapviz,
     studentids = studentids_ms,
     measurementscale = 'Mathematics',
-    entry_grade_seasons = c(-0.8, 5.2)
+    entry_grade_seasons = c(-0.8, 5.2),
+    first_and_spring_only = FALSE
   ) 
   
   expect_is(p, 'grob')

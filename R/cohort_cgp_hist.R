@@ -17,6 +17,8 @@
 #' @param primary_cohort_only will determine the most frequent cohort and limit to 
 #' students in that cohort.  designed to handle discrepancies in grade/cohort
 #' pattern caused by previous holdovers.  default is TRUE.  
+#' @param small_n_cutoff any cohort below this percent will get filtered out.  
+#' default is 0.5, eg cohorts under 0.5 of max size will get dropped.
 #' @param no_labs if TRUE, will not label x or y axis
 #'
 #' @return a ggplot object
@@ -60,10 +62,7 @@ cohort_cgp_hist_plot <- function(
   munge <- valid_grade_seasons(
     this_cdf, first_and_spring_only, entry_grade_seasons, 9999
   )
-  
-  farts <<- munge
-  
-  #as_cgp <- cdf_to_cgp_old(cdf = munge, grouping = 'cohort', norms = school_norms)
+
   as_cgp <- cdf_to_cgp(
     mapvizieR_obj = mapvizieR_obj,
     cdf = munge, 
@@ -193,9 +192,6 @@ cohort_cgp_hist_plot <- function(
 #' of *all* desired cohorts.  Plot will facet one plot per cohort.
 #' 
 #' @inheritParams cohort_cgp_hist_plot
-#' @param arrange_logic layout logic passed to grid.arrange.  default is
-#' wide, one column per plot.  if, for instance, one row per plot was
-#' desired, pass \code{c(nrow = length(plots))} to arrange_logic.
 #' @param min_cohort_size filter cohorts with less than this many students.
 #' useful when weird enrollment patterns exist in your data.
 #' 
@@ -228,7 +224,9 @@ multi_cohort_cgp_hist_plot <- function(
     this_cdf, first_and_spring_only, entry_grade_seasons, 9999
   )
   
-  as_cgp <- cdf_to_cgp_old(cdf = munge, grouping = 'cohort', norms = school_norms)
+  as_cgp <- cdf_to_cgp(
+    mapvizieR_obj, cdf = munge, grouping = 'cohort', norms = school_norms
+  )
   
   #min size
   as_cgp <- as_cgp %>%
@@ -237,6 +235,7 @@ multi_cohort_cgp_hist_plot <- function(
     )
   
   as_cgp <- as_cgp %>%
+    dplyr::rowwise() %>%
     dplyr::mutate(
       x_cgp = c(start_grade_level_season, end_grade_level_season) %>% mean(),
       y_cgp = c(start_mean_npr, end_mean_npr) %>% mean()

@@ -58,7 +58,7 @@ test_that("mult_cohort_cgp_hist_plot produces valid plot", {
   
   expect_is(p_mult, 'ggplot')
   p_mult <- ggplot_build(p_mult)
-  expect_equal(p_mult$data[[1]]$y %>% round(2) %>% sum(na.rm = TRUE), 874.3)
+  expect_equal(p_mult$data[[1]]$y %>% round(2) %>% sum(na.rm = TRUE), 459.32)
   
 })
 

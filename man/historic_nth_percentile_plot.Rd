@@ -15,9 +15,15 @@ historic_nth_percentile_plot(mapvizieR_obj, studentids, measurementscale,
 
 \item{measurementscale}{target subject}
 
+\item{target_percentile}{what is the goal percentile for calcs (pct
+of students at/above this percentile?)}
+
 \item{first_and_spring_only}{logical, should we drop winter/fall scores?}
 
 \item{entry_grade_seasons}{what seasons are entry grades?}
+
+\item{small_n_cutoff}{any cohort below this percent will get filtered out.
+default is 0.5, eg cohorts under 0.5 of max size will get dropped.}
 }
 \value{
 a ggplot object

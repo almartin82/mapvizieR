@@ -3,8 +3,12 @@
 #' @param mapvizieR_obj a conforming mapvizieR object
 #' @param studentids vector of studentids
 #' @param measurementscale target subject
+#' @param target_percentile what is the goal percentile for calcs (pct
+#' of students at/above this percentile?)
 #' @param first_and_spring_only logical, should we drop winter/fall scores?
 #' @param entry_grade_seasons what seasons are entry grades?
+#' @param small_n_cutoff any cohort below this percent will get filtered out.  
+#' default is 0.5, eg cohorts under 0.5 of max size will get dropped.
 #'
 #' @return a ggplot object
 #' @export

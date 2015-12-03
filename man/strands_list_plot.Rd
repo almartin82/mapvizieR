@@ -15,6 +15,8 @@ strands_list_plot(mapvizier_obj, studentids, measurement_scale, season, year)
 \item{measurement_scale}{the subject to subest to}
 
 \item{season}{the season to use}
+
+\item{year}{academic year}
 }
 \value{
 a ggplot object

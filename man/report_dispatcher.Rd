@@ -26,6 +26,10 @@ corresponding to the key/value cut and element outlined above}
 
 \item{calling_env}{defaults to parent frame.}
 
+\item{pre_process}{should we filter the list of unique org units?
+helpful if you only want to run for one school, year, etc.  default is 
+run everything.}
+
 \item{post_process}{a post processing function to apply to the list of plots we get back.
 default behavior is only_valid_plots(), which drops any plot that failed.  
 don't want that?  write something new :)}

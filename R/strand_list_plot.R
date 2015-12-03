@@ -5,6 +5,7 @@
 #' @param studentids a set of student ids to subset to
 #' @param measurement_scale the subject to subest to
 #' @param season the season to use
+#' @param year academic year
 #'
 #' @return a ggplot object
 #' @export

@@ -35,6 +35,9 @@ is 2012.}
 students in that cohort.  designed to handle discrepancies in grade/cohort
 pattern caused by previous holdovers.  default is TRUE.}
 
+\item{small_n_cutoff}{any cohort below this percent will get filtered out.
+default is 0.5, eg cohorts under 0.5 of max size will get dropped.}
+
 \item{no_labs}{if TRUE, will not label x or y axis}
 }
 \value{
