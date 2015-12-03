@@ -4,7 +4,7 @@
 \alias{roster_to_growth_df}
 \title{roster_to_growth_df}
 \usage{
-roster_to_growth_df(target_df, mapvizieR_obj, roster_cols,
+roster_to_growth_df(target_df, mapvizieR_obj, roster_cols, join_by = "end",
   disambiguation_method = "last", by_measurementscale = FALSE)
 }
 \arguments{
@@ -13,6 +13,8 @@ roster_to_growth_df(target_df, mapvizieR_obj, roster_cols,
 \item{mapvizieR_obj}{a conforming mapvizieR object}
 
 \item{roster_cols}{roster column names you want to move over.}
+
+\item{join_by}{c('start', 'end', 'both')}
 
 \item{disambiguation_method}{how to disambiguate?  default is 'last'.}
 

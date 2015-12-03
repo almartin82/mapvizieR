@@ -5,7 +5,8 @@
 \title{mapvizieR interface to simplify CGP calculations, for one target term}
 \usage{
 mapviz_cgp(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_academic_year, end_fws, end_academic_year, norms = 2015)
+  start_academic_year, end_fws, end_academic_year, norms = 2015,
+  use_complete_obsv = TRUE)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
@@ -24,6 +25,9 @@ mapviz_cgp(mapvizieR_obj, studentids, measurementscale, start_fws,
 
 \item{norms}{which school growth study to use.  c(2012, 2015).  default is
 2015.}
+
+\item{use_complete_obsv}{should we only use rows that have both a 
+beginning and ending score for the term being evaluated?}
 }
 \description{
 given an explicit growth term (start/end), will calculate CGP

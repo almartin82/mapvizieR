@@ -62,3 +62,48 @@ test_that("options on fall goals component plots", {
   expect_is(ex_table, 'grob')
   
 })
+
+
+test_that("options on fall goals report", {  
+  
+  fg_test <- fall_goals_report(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Reading',
+    context = '6th grade Mt. Bachelor | Reading', 
+    start_fws = 'Spring',
+    start_year_offset = -1,
+    end_fws = 'Spring',
+    end_academic_year = 2013,
+    exclude_prior_year_holdover = TRUE,
+    detail_academic_year = 2013,
+    goal_cgp = 80
+  )
+  expect_equal(length(fg_test), 1)
+  expect_true("list" %in% class(fg_test))
+  expect_true("grob" %in% class(fg_test[[1]]))
+  
+})  
+
+
+test_that("fall goals page 1", {  
+  
+  fg_test <- fall_goals_report_p1(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Mathematics',
+    context = '6th grade Mt. Bachelor | Mathematics', 
+    start_fws = 'Spring',
+    start_year_offset = -1,
+    end_fws = 'Spring',
+    end_academic_year = 2013,
+    exclude_prior_year_holdover = FALSE,
+    detail_academic_year = 2013,
+    goal_cgp = 80,
+    entry_grade_seasons = c(-0.8, 5.2)
+  )
+  expect_equal(length(fg_test), 5)
+  expect_true("grob" %in% class(fg_test))
+  expect_true("gtable" %in% class(fg_test))
+  
+})  

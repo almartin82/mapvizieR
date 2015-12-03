@@ -4,7 +4,7 @@
 \alias{template_06}
 \title{template 6}
 \usage{
-template_06(p01, p02, p03, p04, p05)
+template_06(p01, p02, p03, p04, p05, p06)
 }
 \arguments{
 \item{p01}{plot or grob}
@@ -16,6 +16,8 @@ template_06(p01, p02, p03, p04, p05)
 \item{p04}{plot or grob}
 
 \item{p05}{plot or grob}
+
+\item{p06}{plot or grob}
 }
 \value{
 grob, output of arrangeGrob

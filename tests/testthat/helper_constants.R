@@ -47,6 +47,16 @@ studentids_hs <- cdf %>%
   dplyr::select(studentid) %>%
   unlist() %>% unname()
 
+studentids_ms <- cdf %>%
+  dplyr::filter(
+    map_year_academic == 2013 & 
+      measurementscale == 'Mathematics' & 
+      fallwinterspring == 'Fall' &
+      grade %in% c(5,6,7,8)
+  ) %>%
+  dplyr::select(studentid) %>%
+  unlist() %>% unname()
+
 studentids_gr11 <- cdf %>%
   dplyr::filter(
     map_year_academic == 2013 & 
