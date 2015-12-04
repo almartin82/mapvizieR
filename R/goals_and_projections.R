@@ -44,12 +44,12 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
       end_testid,
       end_fallwinterspring,
       start_testritscore,
-      start_testpercentile,
+      start_consistent_percentile,
       reported_growth,
       rit_growth,
     iter) %>%
     dplyr::mutate(
-      start_testquartile = kipp_quartile(start_testpercentile),
+      start_testquartile = kipp_quartile(start_consistent_percentile),
       kipp_tiered_growth = tiered_growth_factors(
         quartile = start_testquartile, 
         grade = start_grade),
