@@ -76,19 +76,19 @@ read_cdf <- function(
   # rbind_list each list
   if (verbose) message("Stacking separate CDF tables into single data frames")
   
-  assessemnt_results <- dplyr::rbind_all(assessments_list)
+  assessemnt_results <- dplyr::bind_rows(assessments_list)
   if (nrow(assessemnt_results) == 0) warning("Your AssessmentResults files lack data.")
     
-  students_by_school <- dplyr::rbind_all(students_list)
+  students_by_school <- dplyr::bind_rows(students_list)
   if (nrow(students_by_school) == 0) warning("Your StudentsBySchool files lack data.")
   
-  class_assignments <- dplyr::rbind_all(class_list)
+  class_assignments <- dplyr::bind_rows(class_list)
   if (nrow(class_assignments) == 0) message("Your ClassAssignments files lack data.")
   
-  accommodation_assignments <- dplyr::rbind_all(accommodation_list)
+  accommodation_assignments <- dplyr::bind_rows(accommodation_list)
   if (nrow(accommodation_assignments) == 0) message("Your AccommodationAssignments files lack data.")
   
-  program_assignments <- dplyr::rbind_all(programs_list)
+  program_assignments <- dplyr::bind_rows(programs_list)
   if (nrow(program_assignments) == 0) message("Your ProgramAssignments files lack data.")
   
   

@@ -155,7 +155,7 @@ report_dispatcher <- function(
       this_output <- try(
         do.call(what = func_to_call, args = this_arg_list, envir = rd_env)
       )
-      
+
       output_list[[counter]] <- this_output
       names(output_list)[[counter]] <- paste0(rd_env$depth_string)
       counter <- counter + 1
