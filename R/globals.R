@@ -1,5 +1,5 @@
 utils::globalVariables(
-  c(".", "..y..", "accel_growth", "accel_growth.x", "accel_growth.y", 
+  c("%>%", ".", "..y..", "accel_growth", "accel_growth.x", "accel_growth.y", 
     "act", "act_df", "aes", "annotate", "approx_grade", "avg_end_rit", 
     "avg_start_rit", "avg_y_dummy", "baseline_color", "cdf", "cgp", 
     "cgp_helper", "cgp_label", "cohort_year", "color_identity", "complete_obsv", 
@@ -32,7 +32,7 @@ utils::globalVariables(
     "max_grade_level_season", "mean_npr", "mean_rit", "measurementscale", 
     "met_accel_growth", "met_accel_growth.x", "met_accel_growth.y", 
     "met_typical_growth", "midpoint", "min_extent", "min_extent_rit", 
-    "min_grade_level_season", "n", "n_accel_growth", "n_negative", 
+    "min_grade_level_season", "mutate", "n", "n_accel_growth", "n_negative", 
     "n_quartile", "n_students", "n_total", "n_typ_false", "n_typ_true", 
     "n_typical", "na_flag", "name", "name_x", "num_valid", "one_of", 
     "pct", "Perc_Growth", "percent", "PercentCorrect", "position_jitter", 

@@ -76,11 +76,11 @@ read_cdf <- function(
   # rbind_list each list
   if (verbose) message("Stacking separate CDF tables into single data frames")
   
-  assessemnt_results <- dplyr::bind_rows(assessments_list)
-  if (nrow(assessemnt_results) == 0) warning("Your AssessmentResults files lack data.")
+  assessement_results <- dplyr::bind_rows(assessments_list)
+  if (nrow(assessement_results) == 0) message("Your AssessmentResults files lack data.")
     
   students_by_school <- dplyr::bind_rows(students_list)
-  if (nrow(students_by_school) == 0) warning("Your StudentsBySchool files lack data.")
+  if (nrow(students_by_school) == 0) message("Your StudentsBySchool files lack data.")
   
   class_assignments <- dplyr::bind_rows(class_list)
   if (nrow(class_assignments) == 0) message("Your ClassAssignments files lack data.")
@@ -102,7 +102,7 @@ read_cdf <- function(
       } else { df }
     }
     
-    assessemnt_results <- bad_stu_filter(assessemnt_results, bad_students)
+    assessement_results <- bad_stu_filter(assessement_results, bad_students)
     students_by_school <- bad_stu_filter(students_by_school, bad_students)
     class_assignments <- bad_stu_filter(class_assignments, bad_students)
     accommodation_assignments <- bad_stu_filter(accommodation_assignments, bad_students)
@@ -111,7 +111,7 @@ read_cdf <- function(
 
   
   #Construct output object with each set of files as member of list
-  cdf_out <- list(assessemnt_results = assessemnt_results, 
+  cdf_out <- list(assessement_results = assessement_results, 
                  students_by_school = students_by_school,
                  class_assignments = class_assignments,
                  accommodation_assignments = accommodation_assignments,
@@ -183,8 +183,8 @@ clean_cdf <- function(
       )
     }
     
-    cdf_list$assessemnt_results <- sub_studentid(
-      cdf_list$assessemnt_results, ids_df[i, 'bad_id'], ids_df[i, 'good_id']
+    cdf_list$assessement_results <- sub_studentid(
+      cdf_list$assessement_results, ids_df[i, 'bad_id'], ids_df[i, 'good_id']
     )
 
     cdf_list$students_by_school <- sub_studentid(
