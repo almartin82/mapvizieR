@@ -1,7 +1,7 @@
 Package: mapvizieR
 Type: Package
 Title: Visualization and Data Analysis tools for NWEA MAP student data
-Version: 0.2.4
+Version: 0.2.5
 Date: 2015-01-14
 Authors@R: c(
   person("Andrew", "Martin", role = c("aut","cre"), email = "almartin@gmail.com"), 
@@ -30,5 +30,6 @@ Imports:
     scales,
     toOrdinal,
     RGraphics,
-    gtable
+    gtable,
+    readr
 RoxygenNote: 5.0.0

@@ -433,7 +433,6 @@ quealy_facet_one_subgroup <- function(
   #cgp labeler
   cgp_labeler <- function(n, cgp) {
     if (
-      (unique(sum_df$start_fallwinterspring) == 'Fall' & unique(sum_df$end_fallwinterspring) == 'Winter') | 
       (unique(sum_df$start_fallwinterspring) == 'Spring' & unique(sum_df$end_fallwinterspring) == 'Winter') |
       all(is.na(sum_df$cgp))
     ) {

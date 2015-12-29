@@ -62,25 +62,31 @@ read_cdf <- function(
   
   # Write files to list objects
   if (verbose) message("Reading CSV files.")
-  assessments_list <- lapply(assessment_files, read.csv, stringsAsFactors = FALSE)
-  
-  students_list <- lapply(student_files, read.csv, stringsAsFactors = FALSE)
-  
-  class_list <- lapply(class_files, read.csv, stringsAsFactors = FALSE)
-  
-  accommodation_list <- lapply(accommodation_files, read.csv, stringsAsFactors = FALSE)
-  
-  programs_list <- lapply(program_files, read.csv, stringsAsFactors = FALSE)
+  assessments_list <- lapply(
+    assessment_files, read.csv, stringsAsFactors = FALSE, colClasses = 'character'
+  )
+  students_list <- lapply(
+    student_files, read.csv, stringsAsFactors = FALSE, colClasses = 'character'
+  )
+  class_list <- lapply(
+    class_files, read.csv, stringsAsFactors = FALSE, colClasses = 'character'
+  )
+  accommodation_list <- lapply(
+    accommodation_files, read.csv, stringsAsFactors = FALSE, colClasses = 'character'
+  )
+  programs_list <- lapply(
+    program_files, read.csv, stringsAsFactors = FALSE, colClasses = 'character'
+  )
  
   
   # rbind_list each list
   if (verbose) message("Stacking separate CDF tables into single data frames")
   
-  assessemnt_results <- dplyr::bind_rows(assessments_list)
-  if (nrow(assessemnt_results) == 0) warning("Your AssessmentResults files lack data.")
+  assessement_results <- dplyr::bind_rows(assessments_list)
+  if (nrow(assessement_results) == 0) message("Your AssessmentResults files lack data.")
     
   students_by_school <- dplyr::bind_rows(students_list)
-  if (nrow(students_by_school) == 0) warning("Your StudentsBySchool files lack data.")
+  if (nrow(students_by_school) == 0) message("Your StudentsBySchool files lack data.")
   
   class_assignments <- dplyr::bind_rows(class_list)
   if (nrow(class_assignments) == 0) message("Your ClassAssignments files lack data.")
@@ -91,6 +97,18 @@ read_cdf <- function(
   program_assignments <- dplyr::bind_rows(programs_list)
   if (nrow(program_assignments) == 0) message("Your ProgramAssignments files lack data.")
   
+  #clean up types on assessment and students by school
+  assessement_results <- readr::type_convert(
+    df = assessement_results, 
+    col_types = readr::cols(
+      TestStartDate = readr::col_date(format = '%m/%d/%Y'), 
+      TestStartTime = readr::col_character()
+    )
+  )
+  
+  students_by_school <- readr::type_convert(
+    df = students_by_school
+  )
   
   #drop students if given a list of bad studentids
   if (class(bad_students) == 'numeric') {
@@ -102,7 +120,7 @@ read_cdf <- function(
       } else { df }
     }
     
-    assessemnt_results <- bad_stu_filter(assessemnt_results, bad_students)
+    assessement_results <- bad_stu_filter(assessement_results, bad_students)
     students_by_school <- bad_stu_filter(students_by_school, bad_students)
     class_assignments <- bad_stu_filter(class_assignments, bad_students)
     accommodation_assignments <- bad_stu_filter(accommodation_assignments, bad_students)
@@ -111,7 +129,7 @@ read_cdf <- function(
 
   
   #Construct output object with each set of files as member of list
-  cdf_out <- list(assessemnt_results = assessemnt_results, 
+  cdf_out <- list(assessement_results = assessement_results, 
                  students_by_school = students_by_school,
                  class_assignments = class_assignments,
                  accommodation_assignments = accommodation_assignments,
@@ -183,8 +201,8 @@ clean_cdf <- function(
       )
     }
     
-    cdf_list$assessemnt_results <- sub_studentid(
-      cdf_list$assessemnt_results, ids_df[i, 'bad_id'], ids_df[i, 'good_id']
+    cdf_list$assessement_results <- sub_studentid(
+      cdf_list$assessement_results, ids_df[i, 'bad_id'], ids_df[i, 'good_id']
     )
 
     cdf_list$students_by_school <- sub_studentid(
