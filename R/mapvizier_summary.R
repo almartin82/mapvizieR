@@ -70,7 +70,15 @@ summary.mapvizieR <- function(object, ...){
     start_mean_testritscore = round(mean(start_testritscore, na.rm = TRUE), digits),
     end_mean_testritscore = round(mean(end_testritscore, na.rm = TRUE), digits),
     mean_rit_growth = round(mean(rit_growth, na.rm = TRUE), digits),
-    mean_cgi = round(mean(cgi,na.rm = TRUE), digits)
+    mean_cgi = round(mean(cgi,na.rm = TRUE), digits),
+    mean_sgp = pnorm(mean_cgi),
+    start_median_testritscore = round(median(start_testritscore, na.rm = TRUE), digits),
+    end_median_testritscore = round(median(end_testritscore, na.rm = TRUE), digits),
+    median_rit_growth = round(median(rit_growth, na.rm = TRUE), digits),
+    median_cgi = round(median(cgi, na.rm = TRUE), digits),
+    median_sgp = round(median(sgp, na.rm = TRUE), digits),
+    start_median_consistent_percentile = round(median(start_consistent_percentile, na.rm = TRUE), digits),
+    end_median_consistent_percentile = round(median(end_consistent_percentile, na.rm = TRUE), digits)
   )
   
   class(mapSummary) <- c("mapvizieR_summary", class(mapSummary))
