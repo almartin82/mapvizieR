@@ -62,15 +62,21 @@ read_cdf <- function(
   
   # Write files to list objects
   if (verbose) message("Reading CSV files.")
-  assessments_list <- lapply(assessment_files, read.csv, stringsAsFactors = FALSE)
-  
-  students_list <- lapply(student_files, read.csv, stringsAsFactors = FALSE)
-  
-  class_list <- lapply(class_files, read.csv, stringsAsFactors = FALSE)
-  
-  accommodation_list <- lapply(accommodation_files, read.csv, stringsAsFactors = FALSE)
-  
-  programs_list <- lapply(program_files, read.csv, stringsAsFactors = FALSE)
+  assessments_list <- lapply(
+    assessment_files, read.csv, stringsAsFactors = FALSE, colClasses = 'character'
+  )
+  students_list <- lapply(
+    student_files, read.csv, stringsAsFactors = FALSE, colClasses = 'character'
+  )
+  class_list <- lapply(
+    class_files, read.csv, stringsAsFactors = FALSE, colClasses = 'character'
+  )
+  accommodation_list <- lapply(
+    accommodation_files, read.csv, stringsAsFactors = FALSE, colClasses = 'character'
+  )
+  programs_list <- lapply(
+    program_files, read.csv, stringsAsFactors = FALSE, colClasses = 'character'
+  )
  
   
   # rbind_list each list
@@ -91,6 +97,18 @@ read_cdf <- function(
   program_assignments <- dplyr::bind_rows(programs_list)
   if (nrow(program_assignments) == 0) message("Your ProgramAssignments files lack data.")
   
+  #clean up types on assessment and students by school
+  assessement_results <- readr::type_convert(
+    df = assessement_results, 
+    col_types = readr::cols(
+      TestStartDate = readr::col_date(format = '%m/%d/%Y'), 
+      TestStartTime = readr::col_character()
+    )
+  )
+  
+  students_by_school <- readr::type_convert(
+    df = students_by_school
+  )
   
   #drop students if given a list of bad studentids
   if (class(bad_students) == 'numeric') {

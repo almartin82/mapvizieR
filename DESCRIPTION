@@ -30,5 +30,6 @@ Imports:
     scales,
     toOrdinal,
     RGraphics,
-    gtable
+    gtable,
+    readr
 RoxygenNote: 5.0.0
