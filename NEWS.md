@@ -1,3 +1,9 @@
+# mapvizieR 0.2.6
+
+* added median calculations to `summary()` method
+
+* added cohort growth percentile calculations to `summary()` method.
+
 # mapvizieR 0.2.5
 
 * `read_cdf` generates messages, not warnings or errors, when it encounters 0-length data files.
