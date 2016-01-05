@@ -29,11 +29,16 @@ test_that("strand boxes produces proper plot with a grade level of kids", {
 
 
 test_that("fuzz test strand boxes plot", {
+  
   results <- fuzz_test_plot(
-    'strand_boxes', n = 10,
+    plot_name = 'strand_boxes', 
+    n = 10,
     additional_args = list(
-      'measurementscale' = 'Mathematics', 'fws' = 'Fall', 'academic_year' = 2013
-    )
+      'measurementscale' = 'Mathematics', 'fws' = 'Fall', 
+      'academic_year' = 2013
+    ),
+    mapvizieR_obj = mapviz
   )
   expect_true(all(unlist(results)))
+  
 })

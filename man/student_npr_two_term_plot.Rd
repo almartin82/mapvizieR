@@ -5,7 +5,7 @@
 \title{A small multiples plot of a set of students' national percentile rank over two terms.}
 \usage{
 student_npr_two_term_plot(mapvizieR_obj, studentids,
-  measurement_scale = "Reading", term_first, term_second, n_col = 9,
+  measurementscale = "Reading", term_first, term_second, n_col = 9,
   min_n = 10)
 }
 \arguments{
@@ -13,7 +13,7 @@ student_npr_two_term_plot(mapvizieR_obj, studentids,
 
 \item{studentids}{a set of student ids to subset to}
 
-\item{measurement_scale}{a MAP measurementscale}
+\item{measurementscale}{a MAP measurementscale}
 
 \item{term_first}{the first test term. You need to use the full name, such
 as 'Spring 2012-2013'}
@@ -51,7 +51,7 @@ ids <- ex_CombinedStudentsBySchool \%>\%
 student_npr_two_term_plot(
   map_mv,
   studentids = ids[1:80, "StudentID"],
-  measurement_scale ="Reading", 
+  measurementscale ="Reading", 
   term_first = "Spring 2012-2013", 
   term_second = "Fall 2013-2014", 
   n_col = 7, 

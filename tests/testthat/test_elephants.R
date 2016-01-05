@@ -49,15 +49,20 @@ test_that("galloping_elephants returns expected data with a nonsense grouping of
 test_that("fuzz test elephants plot", {
   results <- fuzz_test_plot(
     'galloping_elephants', 
-    n=25,
-    additional_args=list('measurementscale'='Mathematics')
+    n = 25,
+    additional_args = list('measurementscale' = 'Mathematics'),
+    mapvizieR_obj = mapviz
   )
   expect_true(all(unlist(results)))
   
   results <- fuzz_test_plot(
    plot_name = 'galloping_elephants', 
    n = 25, 
-   additional_args=list("first_and_spring_only" = FALSE, 'measurementscale' = 'Mathematics')
+   additional_args = list(
+     "first_and_spring_only" = FALSE, 
+     'measurementscale' = 'Mathematics'
+    ),
+   mapvizieR_obj = mapviz
  )
  expect_true(all(unlist(results)))
  

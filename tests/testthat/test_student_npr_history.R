@@ -28,9 +28,10 @@ test_that("student_npr_history_plot produces proper plot with a grade level of k
 
 test_that("fuzz test student_npr_history_plot plot", {
   results <- fuzz_test_plot(
-    'student_npr_history_plot', 
+    plot_name = 'student_npr_history_plot', 
     n = 5,
-    additional_args=list('measurementscale' = 'Mathematics')
+    additional_args = list('measurementscale' = 'Mathematics'),
+    mapvizieR_obj = mapviz
   )
   expect_true(all(unlist(results)))
 })

@@ -45,7 +45,8 @@ test_that("fuzz test growth_status_scatter", {
       'start_academic_year' = 2013,
       'end_fws' = 'Spring',
       'end_academic_year' = 2013
-    )
+    ),
+    mapvizieR_obj = mapviz
   )
   expect_true(all(unlist(results))) 
 })

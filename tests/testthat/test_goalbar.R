@@ -71,8 +71,9 @@ test_that("goalbar should throw a warning if some students cant be categorized",
 test_that("goalbar should throw a error if no students have normative data",{
     
   expect_error(
-    goalbar(mapviz, studentids_gr11, 'Mathematics', 'Fall', 2013,
-         'Spring', 2013),
+    goalbar(
+      mapviz, studentids_gr11, 'Mathematics', 'Fall', 2013, 'Spring', 2013
+    ),
     "Sorry, can't plot that: None of the students in your selection have typical growth norms"
   )
            
@@ -80,13 +81,19 @@ test_that("goalbar should throw a error if no students have normative data",{
 
 
 test_that("fuzz test goalbar plot", {
+  
   results <- fuzz_test_plot(
-    'goalbar', 
-    n=10,
-    additional_args=list('measurementscale' = 'Mathematics', 'start_fws' = 'Fall',
-      'start_academic_year' = 2013, 'end_fws' = 'Spring', 'end_academic_year' = 2013)
+    plot_name = 'goalbar', 
+    n = 10,
+    additional_args = list(
+      'measurementscale' = 'Mathematics', 'start_fws' = 'Fall',
+      'start_academic_year' = 2013, 'end_fws' = 'Spring', 
+      'end_academic_year' = 2013
+    ),
+    mapvizieR_obj = mapviz
   )
   expect_true(all(unlist(results)))
+  
 })
 
 

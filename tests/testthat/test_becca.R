@@ -84,7 +84,8 @@ test_that("fuzz test becca_plot plot", {
     n = 10,
     additional_args = list(
       'measurementscale' = 'Mathematics', 'detail_academic_year' = 2013
-    )
+    ),
+    mapvizieR_obj = mapviz
   )
   expect_true(all(unlist(results)))
   
@@ -93,7 +94,8 @@ test_that("fuzz test becca_plot plot", {
     n = 10, 
     additional_args = list(
      "first_and_spring_only" = FALSE, 'measurementscale' = 'Mathematics'
-    )
+    ),
+    mapvizieR_obj = mapviz
  )
  expect_true(all(unlist(results)))
  

@@ -95,6 +95,7 @@ test_that("growth_histogram produces proper plot with a grade level of kids", {
 
 
 test_that("fuzz test growth_histogram", {
+  
   results <- fuzz_test_plot(
     'growth_histogram', 
     n = 10,
@@ -104,8 +105,10 @@ test_that("fuzz test growth_histogram", {
       'start_academic_year' = 2013,
       'end_fws' = 'Spring',
       'end_academic_year' = 2013
-    )
+    ),
+    mapvizieR_obj = mapviz
   )
   expect_true(all(unlist(results))) 
+  
 })
 

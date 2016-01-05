@@ -5,7 +5,7 @@ test_that("student_npr_two_year_plot errors when handed an improper mapviz objec
     student_npr_two_term_plot(
       mapvizieR_obj = cdf,
       studentids = studentids_normal_use,
-      measurement_scale = "Reading", 
+      measurementscale = "Reading", 
       term_first = "Spring 2012-2013", 
       term_second = "Fall 2013-2014", 
       n_col = 7, 
@@ -19,7 +19,7 @@ test_that("student_npr_two_term_plot produces proper plot with a grade level of 
   p <- student_npr_two_term_plot(
     mapvizieR_obj = mapviz,
     studentids = studentids_normal_use,
-    measurement_scale = "Reading", 
+    measurementscale = "Reading", 
     term_first = "Spring 2012-2013", 
     term_second = "Fall 2013-2014", 
     n_col = 7, 
@@ -37,9 +37,9 @@ test_that("student_npr_two_term_plot produces proper plot with a grade level of 
 test_that("fuzz test student_npr_two_term_plot plot", {
   results <- fuzz_test_plot(
     'student_npr_two_term_plot', 
-    n = 10,
+    n = 5,
     additional_args = list(
-      'measurement_scale' = "Reading", 
+      'measurementscale' = "Reading", 
       'term_first' = "Spring 2012-2013", 
       'term_second' = "Fall 2013-2014", 
       'n_col' = 7, 
