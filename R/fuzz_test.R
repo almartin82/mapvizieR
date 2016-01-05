@@ -102,14 +102,11 @@ silly_plot <- function(mapvizieR_obj, studentids) {
 #' @param studentids a vector of studentids
 
 error_ridden_plot <- function(mapvizieR_obj, studentids) {
-  cdf <- mapvizieR_obj[['cdf']]
-  cdf <- cdf[cdf$studentid == 'pancakes', ]
-  
   p <- ggplot(
-    data = cdf
-    ,aes(x = testritscore)
+    data = pancakes,
+    aes(x = testritscore)
   ) +
-    geom_histogram()
+  geom_histogram()
   
   return(p)
 }

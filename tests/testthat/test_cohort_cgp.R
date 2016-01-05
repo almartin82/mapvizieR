@@ -23,7 +23,7 @@ test_that("cohort_cgp_hist_plot should return a plot", {
   
   expect_is(p2, 'ggplot')
   p2 <- ggplot_build(p2)
-  expect_equal(p2$data[[5]][1,] %>% sum(na.rm = TRUE) %>% round(2), 102.88)
+  expect_equal(p2$data[[5]][1,1:2] %>% sum(na.rm = TRUE) %>% round(2), 89.68)
   
 })
 

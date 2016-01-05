@@ -23,7 +23,12 @@ test_that("growth_status_scatter produces proper plot with a grade level of kids
   p_build <- ggplot_build(samp_scatter)
   
   expect_equal(length(p_build), 3)
-  expect_equal(dimnames(p_build[[1]][[2]])[[2]], c("x", "y", "PANEL", "group"))
+  expect_equal(
+    dimnames(p_build[[1]][[2]])[[2]], 
+    c("x", "y", "PANEL", "group", "colour", "size", "angle", "hjust", 
+      "vjust", "alpha", "family", "fontface", "lineheight", "label"
+    )
+  )
   expect_equal(sum(p_build[[1]][[2]]$x), 298, tolerance = 0.01)
   
 })
@@ -40,7 +45,8 @@ test_that("fuzz test growth_status_scatter", {
       'start_academic_year' = 2013,
       'end_fws' = 'Spring',
       'end_academic_year' = 2013
-    )
+    ),
+    mapvizieR_obj = mapviz
   )
   expect_true(all(unlist(results))) 
 })

@@ -21,16 +21,17 @@ test_that("student_npr_history_plot produces proper plot with a grade level of k
   p_build <- ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 160)
-  expect_equal(ncol(p_build$data[[2]]), 4)
+  expect_equal(ncol(p_build$data[[2]]), 10)
   expect_equal(sum(p_build$data[[3]][, 2]), 320, tolerance = .001)
 })
 
 
 test_that("fuzz test student_npr_history_plot plot", {
   results <- fuzz_test_plot(
-    'student_npr_history_plot', 
+    plot_name = 'student_npr_history_plot', 
     n = 5,
-    additional_args=list('measurementscale' = 'Mathematics')
+    additional_args = list('measurementscale' = 'Mathematics'),
+    mapvizieR_obj = mapviz
   )
   expect_true(all(unlist(results)))
 })

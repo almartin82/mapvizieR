@@ -33,7 +33,8 @@ test_that("haid_plot produces proper plot with a grade level of kids", {
   expect_equal(length(p_build), 3)
   expect_equal(
     dimnames(p_build[[1]][[2]])[[2]],
-    c("y", "x", "PANEL", "group")
+    c("y", "x", "PANEL", "group", "shape", "colour", "size", "fill", 
+      "alpha", "stroke")
   )
   expect_equal(sum(p_build[[1]][[5]]$xend), 19884, tolerance=0.01)
   
@@ -65,7 +66,8 @@ test_that("haid_plot with one season of data", {
   expect_equal(length(p_build), 3)
   expect_equal(
     dimnames(p_build[[1]][[2]])[[2]],
-    c("y", "x", "PANEL", "group")
+    c("y", "x", "PANEL", "group", "shape", "colour", "size", "fill", 
+      "alpha", "stroke")
   )
   expect_equal(sum(p_build[[1]][[5]]$x), 20744.75, tolerance=0.01)
   

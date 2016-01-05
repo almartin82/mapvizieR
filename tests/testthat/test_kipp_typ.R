@@ -1,4 +1,4 @@
-context("typical growth distribution")
+context("kipp typical growth")
 
 test_that("growth distribution should return a bar plot", {  
   typ_test <- kipp_typ_growth_distro(
@@ -16,7 +16,7 @@ test_that("growth distribution should return a bar plot", {
   p_build <- ggplot2::ggplot_build(typ_test)
   expect_true(is.ggplot(typ_test))
   expect_equal(nrow(p_build$data[[1]]), 26)
-  expect_equal(ncol(p_build$data[[2]]), 5)
+  expect_equal(ncol(p_build$data[[2]]), 15)
 })  
 
 
@@ -36,6 +36,6 @@ test_that("growth distribution with big data set", {
   p_build <- ggplot2::ggplot_build(typ_test)
   expect_true(is.ggplot(typ_test))
   expect_equal(nrow(p_build$data[[1]]), 101)
-  expect_equal(ncol(p_build$data[[2]]), 5)
+  expect_equal(ncol(p_build$data[[2]]), 15)
 })  
 
