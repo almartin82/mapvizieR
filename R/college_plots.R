@@ -162,16 +162,14 @@ rit_height_weight_npr <- function(
       data = e$df[e$df$rib == 'below_1', ],
       aes(x = x, ymin = ymin, ymax = ymax),
       fill = color_list[1],
-      alpha = ribbon_alpha,
-      environment = e
+      alpha = ribbon_alpha
     )
     
     e$rib_above_99 <- ggplot2::geom_ribbon(
       data = e$df[e$df$rib == 'above_99', ],
       aes(x = x, ymin = ymin, ymax = ymax),
       fill = color_list[14],
-      alpha = ribbon_alpha,
-      environment = e
+      alpha = ribbon_alpha
     )
  
    for (i in 1:length(e$ribbons)) {
@@ -181,8 +179,7 @@ rit_height_weight_npr <- function(
        data = e$df[e$df$rib == e$ribbons[i], ],
        aes(x = x, ymin = ymin, ymax = ymax),
        fill = color_list[i + 1],
-       alpha = ribbon_alpha,
-       environment = e       
+       alpha = ribbon_alpha  
      )
      
      #appropriate df
@@ -398,8 +395,7 @@ rit_height_weight_ACT <- function(
         data = inner_df,
         aes(x = x, ymin = ymin, ymax = ymax),
         fill = color_list[i + 1],
-        alpha = active_settings$ribbon_alpha,
-        environment = e      
+        alpha = active_settings$ribbon_alpha
       )
     
       #assign variable name
@@ -1147,7 +1143,6 @@ build_student_1year_goal_plot <- function(
       y = y,
       label = label
     ),
-    shape = 3,
     color = 'red',
     size = 5,
     alpha = 0.9,
@@ -1171,7 +1166,6 @@ build_student_1year_goal_plot <- function(
       y = y,
       label = label
     ),
-    shape = 3,
     color = 'red',
     size = 5,
     alpha = 0.9,
