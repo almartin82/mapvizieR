@@ -21,7 +21,7 @@ test_that("student_npr_history_plot produces proper plot with a grade level of k
   p_build <- ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 160)
-  expect_equal(ncol(p_build$data[[2]]), 4)
+  expect_equal(ncol(p_build$data[[2]]), 10)
   expect_equal(sum(p_build$data[[3]][, 2]), 320, tolerance = .001)
 })
 
