@@ -26,7 +26,7 @@ test_that("historic recap report produces valid plot", {
   expect_is(p, 'grob')
   expect_is(p, 'gtable')
   expect_equal(
-    p$grobs[[2]][[1]][[2]][[1]][[11]]$children$axis$grobs[[2]]$x,
+    p$grobs[[2]][[1]][[2]][[1]][[11]]$children$axis$grobs[[2]]$children[[1]]$x,
     structure(
       c(0.850649350649351, 0.928571428571429, 0.590909090909091, 
         0.668831168831169, 0.331168831168831, 0.409090909090909, 0.0714285714285713, 

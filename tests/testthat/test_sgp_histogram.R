@@ -1,4 +1,4 @@
-context("growth_histogram tests")
+context("sgp histogram tests")
 
 test_that("growth_histogram errors when handed an improper mapviz object", {
   expect_error(
@@ -33,8 +33,9 @@ test_that("growth_histogram produces proper plot with a grade level of kids", {
   expect_equal(length(p_build), 3)
   expect_equal(
     dimnames(p_build[[1]][[2]])[[2]],
-    c("y", "count", "x", "ndensity", "ncount", "density", "PANEL", 
-      "group", "ymin", "ymax", "xmin", "xmax")
+    c("y", "count", "x", "density", "ncount", "ndensity", "PANEL", 
+      "group", "ymin", "ymax", "xmin", "xmax", "colour", "fill", "size", 
+      "linetype", "alpha")
   )
   expect_equal(sum(p_build[[1]][[2]]$density), 0.1, tolerance = 0.01)
   
