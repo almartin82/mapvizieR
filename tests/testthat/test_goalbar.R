@@ -16,7 +16,7 @@ test_that("goalbar produces proper plot with a grade level of kids", {
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 4)
   expect_equal(sum(p_build$data[[1]][, 6]), 155, tolerance=.001)  
-  expect_equal(ncol(p_build$data[[2]]), 6)
+  expect_equal(ncol(p_build$data[[2]]), 15)
   expect_equal(sum(p_build$data[[2]][, 3]), 201.5, tolerance=.001)
   
   p <- goalbar(mapviz, studentids_normal_use, 'Mathematics', 'Fall', 2013,
@@ -25,7 +25,7 @@ test_that("goalbar produces proper plot with a grade level of kids", {
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 4)
   expect_equal(sum(p_build$data[[1]][, 6]), 155, tolerance=.001)  
-  expect_equal(ncol(p_build$data[[2]]), 6)
+  expect_equal(ncol(p_build$data[[2]]), 15)
   expect_equal(sum(p_build$data[[2]][, 3]), 201.5, tolerance=.001)
 
 })

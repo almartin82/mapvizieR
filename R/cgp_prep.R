@@ -47,7 +47,7 @@ calc_cgp <- function(
     vt$measurementscale, vt$end_grade, vt$growth_window, sep = '@'
   )
   if (!in_study) {
-    if (verbose) warning("measurementscale/grade/growth window combination isn't in school growth study.")
+    if (verbose) message("measurementscale/grade/growth window combination isn't in school growth study.")
     return(list("targets" = NA_real_, "results" = NA_real_))
     
   }

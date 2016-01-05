@@ -10,9 +10,9 @@ test_that("fuzz test a vanilla ggplot", {
 })
 
 
-test_that("fuzz test a vanilla ggplot", {    
+test_that("fuzz test a broken ggplot", {    
   results <- fuzz_test_plot('error_ridden_plot', n = 3, mapvizieR_obj = mapviz)
-  expect_false(all(unlist(results)))
+  expect_false(any(unlist(results)))
 })
 
 
