@@ -82,7 +82,5 @@ localize <- function(region, verbose = FALSE) {
     
   }
     
-  
   return(final_list)
 }
-

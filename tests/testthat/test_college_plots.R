@@ -217,3 +217,23 @@ test_that("bulk goal plot", {
   expect_equal(length(goal_ex), 20)
   expect_equal(goal_ex[[1]]$data$rit %>% sum(), 21765.1)
 })
+
+
+test_that("npr templates generate correctly with default localizations", {
+  
+  math_act <- rit_height_weight_ACT(
+    measurementscale = 'Mathematics',
+    localization = localize('default')
+  )
+  read_act <- rit_height_weight_ACT(
+    measurementscale = 'Reading',
+    localization = localize('default')
+  )
+
+  expect_is(math_act, 'ggplot')
+  expect_is(read_act, 'ggplot')
+  math_act <- ggplot_build(math_act)
+  expect_equal(math_act$data[[8]]$y %>% sum(), 18662.3)
+  read_act <- ggplot_build(read_act)
+  expect_equal(read_act$data[[8]]$y %>% sum(), 18090.7)
+})
