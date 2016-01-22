@@ -14,6 +14,10 @@
 #' @param year academic year to plot
 #' @param cohort cohort year to plot as integer or FALSE (the default).  If `cohort`
 #' is not FALSE then `year` is ignored
+#' @param spring_is_first logical indicating whether spring is in the given 
+#' acadmeic year or from the year prior. 
+#' @param filter_args a list of character vectors to filter `mapvizieR_obj$cdf` 
+#' by that is passed to \code{\link[dplyr]{filter}}
 #' 
 #' @return a ggplot2 object
 #' 
@@ -47,12 +51,14 @@ goal_strand_summary_plot <- function(
   measurementscale,
   fws = c("Fall", "Winter", "Spring"),
   year,
-  cohort = FALSE
+  cohort = FALSE,
+  spring_is_first = FALSE,
+  filter_args = NULL
 ) {
   #NSE problems
   measurementscale_in <- measurementscale
   cohort_year <- cohort
-  # validation
+  
   #data validation and unpack
   mv_opening_checks(mapvizieR_obj, studentids, 1)
 
@@ -70,6 +76,28 @@ goal_strand_summary_plot <- function(
         cohort == cohort_year
       )
   } else {
+    if(spring_is_first){
+      .data_not_spring <- .data %>%
+        dplyr::filter(
+          fallwinterspring %in% dplyr::setdiff(fws, "Spring"),
+          map_year_academic == year,
+          measurementscale == measurementscale_in,
+          studentid %in% studentids 
+          )
+      
+      .data_prior_spring <- .data %>%
+        dplyr::filter(
+          fallwinterspring == "Spring",
+          map_year_academic == year-1,
+          measurementscale == measurementscale_in,
+          studentid %in% studentids 
+        ) %>%
+        dplyr::mutate(grade = grade+1,
+                      map_year_academic = map_year_academic +1)
+      
+      .data <- dplyr::bind_rows(.data_not_spring,
+                       .data_prior_spring)
+    } else {
     .data <- .data %>%
       dplyr::filter(
         fallwinterspring %in% fws,
@@ -77,7 +105,20 @@ goal_strand_summary_plot <- function(
         measurementscale == measurementscale_in,
         studentid %in% studentids
       )
+    }
   }
+  
+  # other filter arguments
+  
+  
+    if(!missing(filter_args)) {
+    filter_args$.data <- .data
+    .data <- do.call(dplyr::filter_, filter_args)
+    }
+    
+      
+  
+  
   
   m_goal_scores <- .data %>%
     dplyr::select(studentid, testid, measurementscale, schoolname, cohort, termname, fallwinterspring, map_year_academic, grade,
@@ -126,13 +167,30 @@ goal_strand_summary_plot <- function(
   goals_summary_by_school <- m_goals %>%
     dplyr::group_by(goal_name, cohort, grade, fallwinterspring, map_year_academic, schoolname) %>%
     dplyr::summarize(mean_score = mean(goal_score),
-              mean_stderr = round(sqrt(mean((goal_stderr^2))),1),
+              mean_stderr = round(sqrt(mean((goal_stderr ^ 2))),1),
               mean_low = mean(goal_low),
               mean_high = mean(goal_high),
               n_students = n()) %>%
     dplyr::ungroup() %>%
-    dplyr::filter(n_students>20) %>%
-    dplyr::mutate(season = factor(fallwinterspring, c("Fall", "Winter", "Spring"), ordered=TRUE))
+    dplyr::filter(n_students>20)
+  
+  if(spring_is_first & any(cohort==FALSE)) {
+    
+    goals_summary_by_school <- goals_summary_by_school %>%
+      dplyr::mutate(
+        fws = ifelse(fallwinterspring=="Spring", 
+                     "Prior\nSpring", 
+                     fallwinterspring),
+        season = factor(fws, 
+                        c("Prior\nSpring", "Fall", "Winter"), 
+                        ordered=TRUE))
+  } else {
+    goals_summary_by_school <- goals_summary_by_school %>%
+      dplyr::mutate(season = factor(fallwinterspring, 
+                                    c("Fall", "Winter", "Spring"), 
+                                    ordered=TRUE))
+  }
+    
   
   
   ggplot(goals_summary_by_school,
@@ -143,24 +201,24 @@ goal_strand_summary_plot <- function(
                   color=schoolname),
               position = position_dodge(width = 1),
               hjust=1,
-              vjust=1) +
+              vjust=1,
+              show.legend = FALSE) +
     geom_text(aes(y = mean_high,
                   label = round(mean_high),
                   color=schoolname),
               position = position_dodge(width = 1),
               hjust=0,
-              vjust=1) +
+              vjust=1,
+              show.legend = FALSE) +
     geom_linerange(aes(ymin = mean_low,
                        ymax = mean_high,
                        x = season,
                        color=schoolname),
                    position = position_dodge(width = 1)) +
-    
     geom_point(aes(y = mean_score,
                    x = season,
                    color=schoolname),
                position = position_dodge(width = 1)) +
-
     geom_text(aes(y = mean_score,
                   label = round(mean_score),
                   color=schoolname),
@@ -168,13 +226,15 @@ goal_strand_summary_plot <- function(
               hjust=.5,
               vjust=-.7,
               size=4,
-              fontface="bold") +
+              fontface="bold",
+              show.legend = FALSE) +
     coord_flip() +
     facet_grid(goal_name ~ grade, switch = "y") +
     theme_light() +
     theme(legend.position = "bottom",
           strip.text.y = element_text(angle = 180)) + 
     labs(x = "RIT Score",
-         y = "Goal Strand & Season")
+         y = "Goal Strand & Season",
+         color = "School")
 }
   

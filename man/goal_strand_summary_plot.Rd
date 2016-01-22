@@ -5,7 +5,8 @@
 \title{Plot MAP Goal Strand Summary Info}
 \usage{
 goal_strand_summary_plot(mapvizieR_obj, studentids, measurementscale,
-  fws = c("Fall", "Winter", "Spring"), year, cohort = FALSE)
+  fws = c("Fall", "Winter", "Spring"), year, cohort = FALSE,
+  spring_is_first = FALSE, filter_args = NULL)
 }
 \arguments{
 \item{mapvizieR_obj}{a \code{mapvizieR} object}
@@ -20,6 +21,12 @@ goal_strand_summary_plot(mapvizieR_obj, studentids, measurementscale,
 
 \item{cohort}{cohort year to plot as integer or FALSE (the default).  If `cohort`
 is not FALSE then `year` is ignored}
+
+\item{spring_is_first}{logical indicating whether spring is in the given
+acadmeic year or from the year prior.}
+
+\item{filter_args}{a list of character vectors to filter `mapvizieR_obj$cdf`
+by that is passed to \code{\link[dplyr]{filter}}}
 }
 \value{
 a ggplot2 object
