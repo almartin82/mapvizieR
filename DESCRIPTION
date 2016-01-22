@@ -31,5 +31,6 @@ Imports:
     toOrdinal,
     RGraphics,
     gtable,
-    readr
+    readr,
+    tidyr
 RoxygenNote: 5.0.0
