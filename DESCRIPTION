@@ -33,4 +33,4 @@ Imports:
     gtable,
     readr,
     tidyr
-RoxygenNote: 5.0.0
+RoxygenNote: 5.0.1

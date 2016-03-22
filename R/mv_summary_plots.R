@@ -1,16 +1,16 @@
 #' @title Plots mapvizieR summary object metrics longitudinally
 #'
 #'
-#' @description Plots a group of students' average RIT scores and RIT Ranges for 
-#' goal strands. 
+#' @description Plots a grade-level metrics longitudinally
 #'
-#' @details Creates and prints a ggplot2 object showing average and and average range 
-#' of goal strand RIT scores 
+#' @details Creates and prints a ggplot2 object showing line graphs of school-level 
+#' metrics by grade or cohort and  and by subject over time
 #' 
 #' @param mapvizieR_summary a \code{mapvizieR_summary} summary object.
-#' @growth_window growth window to plot as character vector: "Fall to Spring", "Spring to Spring", etc.
+#' @param growth_window growth window to plot as character vector: "Fall to Spring", "Spring to Spring", etc.
 #' @param by character vector of whether to plot "grade" or "cohort" longitudinally
 #' @param metric which column from `mapviier_summary` to plot longitudinally
+#' @param school_col character vector specifying column name with schools' names.  Defaults to `end_schoolname`
 #' @param n_cutoff (default is 15), floor below which a growth calculation is ignored
 #' 
 #' @return a `ggplot` object.
@@ -24,20 +24,11 @@
 #' map_mv <- mapvizieR(ex_CombinedAssessmentResults, ex_CombinedStudentsBySchool)
 #' 
 #' mv_summary <- summary(map_mv)
-#'
-#' ids <- ex_CombinedStudentsBySchool %>%
-#' dplyr::filter(
-#'   TermName == "Spring 2013-2014") %>% select(StudentID) %>%
-#'   unique()
-#'
-#' goal_strand_summary_plot(map_mv, 
-#'    ids$StudentID, 
-#'    measurementscale = "Reading", 
-#'    year = 2013, 
-#'    cohort = 2019, 
-#'    fws  = c("Winter", "Spring")
-#'    )
+#' 
+#' summary_long_plot(mv_summary, metric = "pct_typical", 
+#' growth_window = "Fall to Spring")
 #'}
+
 #'@export
 
 summary_long_plot <- function(
@@ -97,8 +88,18 @@ summary_long_plot <- function(
   # Updating data
   if(by == "grade") {
     type <- "end_grade"
+    x_var <- "SY"
     } else {
-    type <- "cohort_year"
+      
+      mapvizieR_summary <- mapvizieR_summary %>% 
+        dplyr::group_by(end_schoolname, cohort_year) %>%
+        dplyr::mutate(cohort = sprintf("%s\n(Current Grade: %s)",
+                                cohort_year,
+                                max(end_grade)),
+               Grade = end_grade)
+      
+    type <- "cohort"
+    x_var <- "Grade"
     }
   
   facet_formula <- formula(sprintf("measurementscale ~ %s", type))
@@ -121,7 +122,7 @@ summary_long_plot <- function(
   p <- ggplot(
         x,
         aes_q(
-          x = ~SY,
+          x = as.name(x_var),
           y = as.name(metric)
         )
       ) + 
