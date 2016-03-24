@@ -121,15 +121,15 @@ summary_long_plot <- function(
   
   p <- ggplot(
         x,
-        aes_q(
-          x = as.name(x_var),
-          y = as.name(metric)
+        aes_string(
+          x = x_var,
+          y = metric
         )
       ) + 
     geom_line(
-      aes_(
-        color = as.name(school_col),
-        group = as.name(school_col)
+      aes_string(
+        color = school_col,
+        group = school_col
         )
       ) +
     geom_point(
@@ -143,7 +143,7 @@ summary_long_plot <- function(
           axis.text.x = element_text(size = 8, angle = 45, hjust = 1))
   
   # if the metric is a pct or between 0 and 1 then adjust to %
-  if(grepl("^pct_", metric) | x[metric] %in% c(0:1)){
+if(grepl("^pct_", metric) | all(dplyr::between(x[[metric]], 0, 1))) {
     p <- p +    
       geom_text(
         aes_string(
@@ -187,7 +187,9 @@ summary_long_plot <- function(
   
   
   
-  p + labs(y = y_lab)
+  p <- p + labs(y = y_lab)
+  
+  p
     
   
 }
