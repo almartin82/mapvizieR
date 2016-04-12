@@ -245,3 +245,41 @@ test_that("cgp_sim tests", {
   
 })
 
+
+ex_target_rit_2015 <- calc_cgp(
+  measurementscale = 'Reading', 
+  end_grade = 2, 
+  growth_window = 'Fall to Spring', 
+  baseline_avg_rit = 173,
+  norms = 2015
+)[['targets']]
+
+test_that("calc_cgp tests with 2015 norms", {
+  
+  expect_equal(sum(ex_target_rit_2015$growth_target), 1386.775, tolerance = .001)
+  
+  expect_equal(nrow(ex_target_rit_2015), 99)
+  
+  diff_params <- calc_cgp(
+    measurementscale = 'Reading', 
+    end_grade = 2, 
+    growth_window = 'Fall to Spring', 
+    baseline_avg_rit = 173, 
+    calc_for = c(50:60),
+    norms = 2015
+  )[['targets']]
+  
+  #addl params
+  expect_equal(sum(diff_params$growth_target), 157.5493, tolerance = .01)
+  
+  low_npr_ex <- calc_cgp(
+    measurementscale = 'Reading', end_grade = 2, 
+    growth_window = 'Fall to Spring', baseline_avg_rit = 133,
+    norms = 2015
+  )[['targets']]
+  
+  expect_equal(as.character(low_npr_ex$measured_in), c(rep("RIT", 99)))
+  expect_equal(sum(low_npr_ex$growth_target), 1467.182)
+  
+})
+

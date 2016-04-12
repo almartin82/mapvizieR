@@ -32,25 +32,27 @@ calc_baseline_detail <- function(
   
   minimal_cdf <- this_cdf[with(this_cdf, fallwinterspring == primary_fws &
       map_year_academic == primary_academic_year), 
-      c('studentid', 'testritscore', 'consistent_percentile')]
+      c('testid', 'studentid', 'testritscore', 'consistent_percentile')]
   
   #term 1
   munge <- dplyr::left_join(
-    x = data.frame(studentid=studentids),
+    x = data.frame(studentid = studentids),
     y = minimal_cdf,
     by = "studentid"
   )  
-  names(munge)[[2]] <- 'primary_RIT'
-  names(munge)[[3]] <- 'primary_npr'
-
+  names(munge)[names(munge) == 'testritscore'] <- 'primary_RIT'
+  names(munge)[names(munge) == 'consistent_percentile'] <- 'primary_npr'
+  names(munge)[names(munge) == 'testid'] <- 'primary_id'
+  
   fallback_cdf <- this_cdf[with(this_cdf, fallwinterspring == fallback_fws &
         map_year_academic == fallback_academic_year), 
-        c('studentid', 'testritscore', 'consistent_percentile')]
+        c('testid', 'studentid', 'testritscore', 'consistent_percentile')]
   
   #if there's no fallback, just generate a dummy column of NAs.
   if (all(is.na(fallback_fws), is.na(fallback_academic_year))) {
     munge$fallback_RIT <- NA
     munge$fallback_npr <- NA
+    munge$fallback_id <- NA
   #otherwise join to the fallback cdf and get the rit and percentile
   } else {
     munge <- dplyr::left_join(
@@ -58,13 +60,15 @@ calc_baseline_detail <- function(
       y = fallback_cdf,
       by = "studentid"
     )
-    names(munge)[[4]] <- 'fallback_RIT'
-    names(munge)[[5]] <- 'fallback_npr'
+    names(munge)[names(munge) == 'testritscore'] <- 'fallback_RIT'
+    names(munge)[names(munge) == 'consistent_percentile'] <- 'fallback_npr'
+    names(munge)[names(munge) == 'testid'] <- 'fallback_id'
   }
   
   #take primary or fallback based on data 
   munge$baseline_RIT <- ifelse(is.na(munge$primary_RIT), munge$fallback_RIT, munge$primary_RIT)
   munge$baseline_npr <- ifelse(is.na(munge$primary_npr), munge$fallback_npr, munge$primary_npr)
+  munge$testid <- ifelse(is.na(munge$primary_RIT), munge$fallback_id, munge$primary_id)
   
-  return(munge[ , c('studentid', 'baseline_RIT')])
+  return(munge[ , c('testid', 'studentid', 'baseline_RIT')])
 }
