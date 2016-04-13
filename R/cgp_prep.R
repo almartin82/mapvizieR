@@ -719,5 +719,8 @@ mapviz_cgp_targets <- function(
     norms = norms
   )[[returns]]
   
+  out$baseline_rit <- round(baseline_rit, 2)
+  out$growth_window <- paste(start_window, 'to', end_fws)
+  
   return(out)
 }

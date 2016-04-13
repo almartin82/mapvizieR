@@ -28,6 +28,6 @@ test_that("baseline_calc with no fallback", {
   )
     
   expect_equal(nrow(no_fallback), 93)
-  expect_equal(sum(no_fallback$baseline_RIT, na.rm=TRUE), 7745)
+  expect_equal(sum(no_fallback$baseline_RIT, na.rm = TRUE), 7745)
 })
 
