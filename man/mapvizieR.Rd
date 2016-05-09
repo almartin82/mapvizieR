@@ -16,6 +16,8 @@ mapvizieR(cdf, roster, verbose = FALSE, ...)
 \item{verbose}{should mapvizieR print status updates?  default is FALSE.}
 
 \item{...}{additional arguments to pass to constructor functions called by mapvizieR}
+
+\item{norms}{norm study to use. passed through to cdf prep}
 }
 \description{
 mapvizieR

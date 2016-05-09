@@ -7,6 +7,7 @@
 #' @param cdf a NWEA AssessmentResults.csv or CDF
 #' @param roster a NWEA students
 #' @param verbose should mapvizieR print status updates?  default is FALSE.
+#' @param norms norm study to use. passed through to cdf prep
 #' @param ... additional arguments to pass to constructor functions called by mapvizieR
 #' @examples
 #'\dontrun{
@@ -20,7 +21,7 @@
 mapvizieR <- function(cdf, roster, verbose = FALSE, ...) UseMethod("mapvizieR")
 
 #' @export
-mapvizieR.default <- function(cdf, roster, verbose = FALSE, ...) {
+mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
 
   cdf_status <- try(check_processed_cdf(cdf)$boolean, silent = TRUE)
   cdf_status <- all(!class(cdf_status) == "try-error" & cdf_status == TRUE)
@@ -43,7 +44,7 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, ...) {
     prepped_cdf$grade <- grade_levelify_cdf(prepped_cdf, roster)
   
     #THIRD, process the cdf
-    processed_cdf <- process_cdf_long(prepped_cdf)
+    processed_cdf <- process_cdf_long(prepped_cdf, norms = norms)
   
     #check to see that result conforms
     assertthat::assert_that(check_processed_cdf(processed_cdf)$boolean)  

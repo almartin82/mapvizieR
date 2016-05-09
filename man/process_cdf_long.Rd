@@ -4,10 +4,12 @@
 \alias{process_cdf_long}
 \title{process_cdf_long}
 \usage{
-process_cdf_long(prepped_cdf)
+process_cdf_long(prepped_cdf, norms = 2015)
 }
 \arguments{
 \item{prepped_cdf}{output of prep_cdf_long}
+
+\item{norms}{norm study to used.  passed through to consistent percentile}
 }
 \value{
 a processed cdf file

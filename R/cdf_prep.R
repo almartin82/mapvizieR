@@ -34,19 +34,20 @@ prep_cdf_long <- function(cdf_long) {
 #' \code{process_cdf_long} the second step in cdf processing
 #'
 #' @param prepped_cdf output of prep_cdf_long
+#' @param norms norm study to used.  passed through to consistent percentile
 #' 
 #' @return a processed cdf file
 #' 
 #' @export
 
-process_cdf_long <- function(prepped_cdf) {
+process_cdf_long <- function(prepped_cdf, norms = 2015) {
   
   munge <- prepped_cdf %>% 
     dedupe_cdf(method = "NWEA") %>%
     grade_level_seasonify() %>%
     grade_season_labelify() %>%
     grade_season_factors() %>%
-    make_npr_consistent()
+    make_npr_consistent(norm_study = norms)
   
   #tried to do this with dplyr::mutate but it threw a weird segfault!
   munge$testquartile <- kipp_quartile(munge$consistent_percentile)

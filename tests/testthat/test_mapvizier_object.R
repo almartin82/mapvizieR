@@ -109,3 +109,12 @@ test_that("mapvizieR messages print when in verbose mode", {
   )
   
 })
+
+
+test_that("mapvizieR object works with different norms",{
+  mv_2011 <- mapvizieR(
+    cdf = ex_CombinedAssessmentResults,
+    roster = ex_CombinedStudentsBySchool,
+    norms = 2011
+  )
+})
