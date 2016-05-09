@@ -31,7 +31,8 @@ becca_plot <- function(
   entry_grade_seasons = c(-0.8, 4.2), 
   detail_academic_year = 2014, 
   small_n_cutoff = .5,
-  color_scheme = 'KIPP Report Card'
+  color_scheme = 'KIPP Report Card',
+  quartile_type = 'kipp_quartile'
 ) {
 
   #data validation
@@ -56,11 +57,8 @@ becca_plot <- function(
   munge <- min_term_filter(munge, small_n_cutoff)
  
   #tag with quartiles
-  munge <- munge %>%
-    dplyr::mutate(
-      quartile = kipp_quartile(testpercentile)
-    )
-  
+  munge$quartile <- do.call(quartile_type, list(munge$testpercentile))
+
   #TRANSFORMATION 2 - BIN COUNTS FOR BECCA PLOT
   #calculate group level averages.  Our final data set should have
   #SUBJECT    GRADE_LEVEL_SEASON     QUARTILE      PCT
@@ -122,7 +120,7 @@ becca_plot <- function(
   npr_below <- npr_below %>%
     dplyr::group_by(grade_level_season) %>%
     dplyr::mutate(
-      cumsum = dplyr::with_order(order_by = order, fun = cumsum, x = pct),
+      cumsum = dplyr::with_order(order_by = -order, fun = cumsum, x = pct),
       midpoint = cumsum - (0.5 * pct)
     )
   

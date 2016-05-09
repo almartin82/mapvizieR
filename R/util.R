@@ -175,6 +175,51 @@ kipp_quartile <- function(x, return_factor = TRUE, proper_quartile = FALSE){
 
 
 
+#' ad-hoc psuedo quartile
+#'
+#' @description can be used to get becca plot to return predicted performance 
+#' bands, instead of quartile bands 
+#' @param vector to compare (presumably percentile ranks)
+#' @param breaks vector of breaks
+#'
+#' @return vector of 'quartiles'
+#' @export
+
+adhoc_psuedo_quartile <- function(x, breaks) {
+  expanded_long <- expand.grid(x, breaks)
+  expanded_long$group_label <- paste0('group_', x)
+  expanded_long$test <- expanded_long$Var1 > expanded_long$Var2
+  out <- expanded_long %>%
+    dplyr::group_by(group_label) %>%
+    dplyr::summarize(
+      psuedo_quartile = sum(test)
+    )
+  out$psuedo_quartile + 1
+}
+
+
+
+#' ny state psuedo-quartiles
+#'
+#' @param x vector to compare (presumably percentile ranks)
+#'
+#' @return vector of 'quartiles'
+#' @export
+nys_math_3 <- function(x) adhoc_psuedo_quartile(x, c(28, 56, 78))
+
+#' @export
+#' @rdname nys_math_3
+nys_math_4 <- function(x) adhoc_psuedo_quartile(x, c(29, 65, 90))
+
+#' @export
+#' @rdname nys_math_3
+nys_read_3 <- function(x) adhoc_psuedo_quartile(x, c(41, 72, 93))
+
+#' @export
+#' @rdname nys_math_3
+nys_read_4 <- function(x) adhoc_psuedo_quartile(x, c(40, 73, 88))
+
+
 #' @title Calculate KIPP Tiered Growth factors 
 #'
 #' @description

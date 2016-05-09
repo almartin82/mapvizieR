@@ -7,7 +7,7 @@
 becca_plot(mapvizieR_obj, studentids, measurementscale,
   first_and_spring_only = TRUE, entry_grade_seasons = c(-0.8, 4.2),
   detail_academic_year = 2014, small_n_cutoff = 0.5,
-  color_scheme = "KIPP Report Card")
+  color_scheme = "KIPP Report Card", quartile_type = "kipp_quartile")
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}
