@@ -119,16 +119,17 @@ becca_plot <- function(
 
   npr_below <- npr_below %>%
     dplyr::group_by(grade_level_season) %>%
+    dplyr::arrange(order) %>%
     dplyr::mutate(
-      cumsum = dplyr::with_order(order_by = -order, fun = cumsum, x = pct),
+      cumsum = dplyr::with_order(order_by = order, fun = cumsum, x = pct),
       midpoint = cumsum - (0.5 * pct)
     )
-  
+
   x_breaks <- sort(unique(prepped$grade_level_season))
   x_labels <- unlist(lapply(x_breaks, fall_spring_me))
-    
+
   #MAKE THE PLOT
-   p <- ggplot() +
+  p <- ggplot() +
     #top half of NPR plots
     geom_bar(
       data = npr_above,
@@ -202,15 +203,17 @@ becca_plot <- function(
     p <- p + scale_fill_manual(
       values = kipp_4col, labels = legend_labels, name = 'Quartiles' 
     )
-  } else if (color_scheme == 'Sequential Blues') {
-    p <- p + scale_fill_brewer(
-      type = "seq", palette = 1, labels = legend_labels, name = 'Quartiles'
-    ) 
+  } else if (color_scheme == 'NYS') {
+    p <- p + scale_fill_manual(
+      values = kipp_4col, labels = c('1', '2', '3', '4'), name = 'Perf Level'
+    )
   } else {
     p <- p + scale_fill_manual(
       values = color_scheme, labels = legend_labels, name = 'Quartiles'
     )
   }
+  
+  p <- p + guides(fill = guide_legend(reverse = TRUE))
   
   # return
   p
