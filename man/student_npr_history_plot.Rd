@@ -22,7 +22,7 @@ a ggplot2 object
 \description{
 This plots a proto-typical example of Edward Tufte's small multiples
 concept.  A class of students in one subject and grade is plotted, witch each
-student's historical national percentile rank plotted with a simple liear fit.
+student's historical national percentile rank plotted with a simple linear fit.
 
 The background colors indicate the quartile the assessment earned.
 }

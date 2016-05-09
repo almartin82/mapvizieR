@@ -229,7 +229,7 @@ make_npr_consistent <- function(
       measurementscale, fallwinterspring, grade, RIT, consistent_percentile
     )
   
-  dplyr::left_join(
+  out <- dplyr::left_join(
     x = cdf,
     y = norm_df,
     by = c(
@@ -239,6 +239,12 @@ make_npr_consistent <- function(
       "testritscore" = "RIT"
     )
   )
+  
+  if (nrow(out) > nrow(cdf)) {
+    stop('check consistent percentile.  the join appears to be incorrect.')
+  }
+  
+  out
 }
 
 
