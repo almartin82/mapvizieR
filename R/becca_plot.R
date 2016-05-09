@@ -31,7 +31,8 @@ becca_plot <- function(
   entry_grade_seasons = c(-0.8, 4.2), 
   detail_academic_year = 2014, 
   small_n_cutoff = .5,
-  color_scheme = 'KIPP Report Card'
+  color_scheme = 'KIPP Report Card',
+  quartile_type = 'kipp_quartile'
 ) {
 
   #data validation
@@ -56,11 +57,8 @@ becca_plot <- function(
   munge <- min_term_filter(munge, small_n_cutoff)
  
   #tag with quartiles
-  munge <- munge %>%
-    dplyr::mutate(
-      quartile = kipp_quartile(testpercentile)
-    )
-  
+  munge$quartile <- do.call(quartile_type, list(munge$testpercentile))
+
   #TRANSFORMATION 2 - BIN COUNTS FOR BECCA PLOT
   #calculate group level averages.  Our final data set should have
   #SUBJECT    GRADE_LEVEL_SEASON     QUARTILE      PCT
@@ -121,16 +119,17 @@ becca_plot <- function(
 
   npr_below <- npr_below %>%
     dplyr::group_by(grade_level_season) %>%
+    dplyr::arrange(order) %>%
     dplyr::mutate(
       cumsum = dplyr::with_order(order_by = order, fun = cumsum, x = pct),
       midpoint = cumsum - (0.5 * pct)
     )
-  
+
   x_breaks <- sort(unique(prepped$grade_level_season))
   x_labels <- unlist(lapply(x_breaks, fall_spring_me))
-    
+
   #MAKE THE PLOT
-   p <- ggplot() +
+  p <- ggplot() +
     #top half of NPR plots
     geom_bar(
       data = npr_above,
@@ -204,15 +203,17 @@ becca_plot <- function(
     p <- p + scale_fill_manual(
       values = kipp_4col, labels = legend_labels, name = 'Quartiles' 
     )
-  } else if (color_scheme == 'Sequential Blues') {
-    p <- p + scale_fill_brewer(
-      type = "seq", palette = 1, labels = legend_labels, name = 'Quartiles'
-    ) 
+  } else if (color_scheme == 'NYS') {
+    p <- p + scale_fill_manual(
+      values = kipp_4col, labels = c('1', '2', '3', '4'), name = 'Perf Level'
+    )
   } else {
     p <- p + scale_fill_manual(
       values = color_scheme, labels = legend_labels, name = 'Quartiles'
     )
   }
+  
+  p <- p + guides(fill = guide_legend(reverse = TRUE))
   
   # return
   p
