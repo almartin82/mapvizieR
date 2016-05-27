@@ -19,6 +19,7 @@
 #' @param small_n_cutoff any cohort below this percent will get filtered out.  
 #' default is 0.5, eg cohorts under 0.5 of max size will get dropped.
 #' @param no_labs if TRUE, will not label x or y axis
+#' @param labels c('RIT', 'NPR').  'RIT' is default.
 #'
 #' @return a ggplot object
 #' @export
@@ -32,7 +33,8 @@ alt_cohort_cgp_hist_plot <- function(
   entry_grade_seasons = c(-0.8, 4.2), 
   primary_cohort_only = TRUE,
   small_n_cutoff = .5,
-  no_labs = FALSE
+  no_labs = FALSE,
+  labels = 'RIT'
 ) {
 
   mv_opening_checks(mapvizieR_obj, studentids, 1)
@@ -110,6 +112,19 @@ alt_cohort_cgp_hist_plot <- function(
     ) %>%
     as.data.frame(stringsAsFactors = FALSE)
   
+  as_cgp$label1_text <- NA
+  as_cgp$label2_text <- NA
+  
+  if(labels == 'RIT') {
+    as_cgp$label1_text <- as_cgp$start_mean_rit %>% round(1)
+    as_cgp$label2_text <- as_cgp$end_mean_rit %>% round(1)
+  }
+
+  if(labels == 'NPR') {
+    as_cgp$label1_text <- as_cgp$start_cohort_status_npr
+    as_cgp$label2_text <- as_cgp$end_cohort_status_npr
+  }
+  
   out <- ggplot(
     data = as_cgp,
     aes(
@@ -134,7 +149,7 @@ alt_cohort_cgp_hist_plot <- function(
   geom_text(
     aes(
       y = start_cohort_status_npr - 1,
-      label = start_mean_rit %>% round(1)
+      label = label1_text
     ),
     alpha = 0.5,
     vjust = 1,
@@ -144,7 +159,7 @@ alt_cohort_cgp_hist_plot <- function(
     aes(
       x = end_grade_level_season,
       y = end_cohort_status_npr + 1,
-      label = end_mean_rit %>% round(1)
+      label = label2_text
     ),
     alpha = 0.5,
     vjust = 0,
@@ -218,6 +233,7 @@ alt_cohort_cgp_hist_plot <- function(
 #' @inheritParams cohort_cgp_hist_plot
 #' @param min_cohort_size filter cohorts with less than this many students.
 #' useful when weird enrollment patterns exist in your data.
+#' @param labels c('RIT', 'NPR').  'RIT' is default.
 #' 
 #' @return a list of ggplotGrobs
 #' @export
@@ -230,7 +246,8 @@ alt_multi_cohort_cgp_hist_plot <- function(
   first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2), 
   small_n_cutoff = .5,
-  min_cohort_size = -1
+  min_cohort_size = -1,
+  labels = 'RIT'
 ) {
   
   mv_opening_checks(mapvizieR_obj, studentids, 1)
@@ -291,22 +308,47 @@ alt_multi_cohort_cgp_hist_plot <- function(
       )
     )
   
+  as_cgp$label1_text <- NA
+  as_cgp$label2_text <- NA
+  
+  if(labels == 'RIT') {
+    as_cgp$label1_text <- as_cgp$start_mean_rit %>% round(1)
+    as_cgp$label2_text <- as_cgp$end_mean_rit %>% round(1)
+  }
+  
+  if(labels == 'NPR') {
+    as_cgp$label1_text <- as_cgp$start_cohort_status_npr
+    as_cgp$label2_text <- as_cgp$end_cohort_status_npr
+  }
+  
   out <- ggplot(
     data = as_cgp,
     aes(
       x = start_grade_level_season,
       y = start_cohort_status_npr,
-      label = start_mean_rit %>% round(1),
       group = cohort
     )
   ) +
   geom_point() +
   geom_text(
-    aes(y = start_cohort_status_npr - 2),
+    aes(
+      y = start_cohort_status_npr - 1,
+      label = label1_text
+    ),
     alpha = 0.5,
-    size = 4,
-    vjust = 1
+    vjust = 1,
+    color = 'lightblue'
   ) +
+  geom_text(
+    aes(
+      x = end_grade_level_season,
+      y = end_cohort_status_npr + 1,
+      label = label2_text
+    ),
+    alpha = 0.5,
+    vjust = 0,
+    color = 'darkblue'
+  ) +    
   geom_line() +
   facet_grid(. ~ cohort)
 

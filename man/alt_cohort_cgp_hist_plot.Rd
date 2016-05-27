@@ -8,7 +8,7 @@ but uses the 2015 school grade level attainment/status norms.}
 alt_cohort_cgp_hist_plot(mapvizieR_obj, studentids, measurementscale,
   match_method = "no matching", first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2), primary_cohort_only = TRUE,
-  small_n_cutoff = 0.5, no_labs = FALSE)
+  small_n_cutoff = 0.5, no_labs = FALSE, labels = "RIT")
 }
 \arguments{
 \item{mapvizieR_obj}{conforming mapvizieR obj}
@@ -37,6 +37,8 @@ pattern caused by previous holdovers.  default is TRUE.}
 default is 0.5, eg cohorts under 0.5 of max size will get dropped.}
 
 \item{no_labs}{if TRUE, will not label x or y axis}
+
+\item{labels}{c('RIT', 'NPR').  'RIT' is default.}
 }
 \value{
 a ggplot object
