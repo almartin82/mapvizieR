@@ -8,11 +8,11 @@
 
 # why mapvizieR?
 The [MAP](https://www.nwea.org/assessments/map/) assessment is a computer-adaptive, norm-referenced assessment published by [NWEA](https://www.nwea.org/about/), a not-for-profit organization that specializes in assessment.
-More than **10 million students** take the MAP assessment - including [KIPP](http://www.kipp.org/), the organization where [Andrew](https://twitter.com/moneywithwings) and [Chris](https://www.linkedin.com/in/chrishaid) work.
+More than **10 million students** take the MAP assessment - including [KIPP](http://www.kipp.org/), the organization where  [Chris](https://www.linkedin.com/in/chrishaid) works, and [Andrew](https://twitter.com/moneywithwings) used to work before he joined [Public Prep](http://publicprep.org).
 
 We'd like mapvizeR to be a home where data scientists [working with MAP data](https://github.com/search?l=r&q=testritscore&type=Code&utf8=%E2%9C%93) can share visualizations and analysis tools, given that we're all working on a common data set.  If you work with MAP data, please reach out!
 
-# is mapvizier licensed by, or affiliated with NWEA?
+# is mapvizier affiliated with NWEA?
 Nope!  This is an independent community effort.  
 
 # what's inside?
