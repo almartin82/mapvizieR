@@ -83,23 +83,26 @@ summary.mapvizieR <- function(object, ...){
     start_median_consistent_percentile = round(median(start_consistent_percentile, na.rm = TRUE), digits),
     end_median_consistent_percentile = round(median(end_consistent_percentile, na.rm = TRUE), digits),
     cgp = calc_cgp(measurementscale, end_grade, growth_window, start_mean_testritscore, end_mean_testritscore)[['results']] %>% round(digits)
-  ) %>%
-  dplyr::ungroup() %>%
-  dplyr::rowwise() %>%
-  dplyr::mutate(
-    start_cohort_status_npr = cohort_mean_rit_to_npr(
-      measurementscale, 
-      start_grade, 
-      start_fallwinterspring,
-      start_mean_testritscore
-    ),
-    end_cohort_status_npr = cohort_mean_rit_to_npr(
-      measurementscale, 
-      end_grade, 
-      end_fallwinterspring,
-      end_mean_testritscore
-    )     
   )
+
+  mapSummary$start_cohort_status_npr <- NA_integer_
+  mapSummary$end_cohort_status_npr <- NA_integer_
+  
+  for (i in 1:nrow(mapSummary)) {
+    mapSummary[i, ]$start_cohort_status_npr <- cohort_mean_rit_to_npr(
+      mapSummary[i, ]$measurementscale, 
+      mapSummary[i, ]$start_grade, 
+      mapSummary[i, ]$start_fallwinterspring,
+      mapSummary[i, ]$start_mean_testritscore
+    ) 
+    
+    mapSummary[i, ]$end_cohort_status_npr <- cohort_mean_rit_to_npr(
+      mapSummary[i, ]$measurementscale, 
+      mapSummary[i, ]$end_grade, 
+      mapSummary[i, ]$end_fallwinterspring,
+      mapSummary[i, ]$end_mean_testritscore
+    )     
+  }
 
   class(mapSummary) <- c("mapvizieR_summary", class(mapSummary))
   

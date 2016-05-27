@@ -12,5 +12,5 @@ test_that("summary works as expected", {
 })
 
 test_that("cohort/grade status percentile works", {
-  expect_equal(sum(ex$start_cohort_status_npr), 125)
+  expect_equal(sum(ex$start_cohort_status_npr, na.rm = TRUE), 9093)
 })
