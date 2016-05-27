@@ -316,6 +316,47 @@ npr_to_rit <- function(measurementscale, current_grade, season, npr, norms = 201
 }
 
 
+##' @title cohort_mean_rit_to_npr
+#' 
+#' @description given a mean RIT score for a cohort, return the best
+#'  match percentile rank.  (assumes the subject is grade/cohort, not a student.)
+#' only supports 2015 norms.
+#' 
+#' @param measurementscale MAP subject
+#' @param current_grade grade level
+#' @param season fall winter spring
+#' @param RIT mean rit score
+#' 
+#' @return a integer vector length one
+
+cohort_mean_rit_to_npr <- function(measurementscale, current_grade, season, RIT) {
+  
+  #placeholder for future norm studies
+  active_norms <- status_norms_2015
+  measurementscale_in <- measurementscale
+  grade_in <- current_grade
+  rit_in <- round(RIT, 0)
+  
+  matches <- active_norms %>%
+    dplyr::filter(
+      measurementscale == measurementscale_in & 
+        grade == grade_in & 
+        fallwinterspring == season &
+        round(RIT, 0) == rit_in     
+    ) %>%
+    dplyr::select(school_percentile)
+  
+  if (nrow(matches) == 0) {
+    out <- NA_integer_
+  } else{
+    out <- matches %>% unlist() %>% unname() %>% extract(1)
+  }
+  
+  return(out)
+}
+
+
+
 #' @title mapvizieR interface to simplify CGP calculations, for one target term
 #' 
 #' @description given an explicit growth term (start/end), will calculate CGP
