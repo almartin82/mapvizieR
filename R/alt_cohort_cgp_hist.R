@@ -68,13 +68,35 @@ alt_cohort_cgp_hist_plot <- function(
     norms = 2015
   )
   
+  cohort_mean_rit_to_npr(
+    measurementscale, 
+    as_cgp[2, ]$start_grade, 
+    as_cgp[2, ]$start_fallwinterspring,
+    as_cgp[2, ]$start_mean_rit
+  )
+  
+  as_cgp$start_cohort_status_npr <- NA_integer_
+  as_cgp$end_cohort_status_npr <- NA_integer_
+  
+  for (i in 1:nrow(as_cgp)) {
+    as_cgp[i, 'start_cohort_status_npr'] <- cohort_mean_rit_to_npr(
+      measurementscale, 
+      as_cgp[i, ]$start_grade, 
+      as_cgp[i, ]$start_fallwinterspring,
+      as_cgp[i, ]$start_mean_rit
+    )
+  
+    as_cgp[i, 'end_cohort_status_npr'] <- cohort_mean_rit_to_npr(
+      measurementscale, 
+      as_cgp[i, ]$end_grade, 
+      as_cgp[i, ]$end_fallwinterspring,
+      as_cgp[i, ]$end_mean_rit
+    )
+  }
+  
   as_cgp <- as_cgp %>%
     dplyr::rowwise() %>%
     dplyr::mutate(
-      start_cohort_status_npr = cohort_mean_rit_to_npr(
-        measurementscale, start_grade, start_season, start_mean_rit),
-      end_cohort_status_npr = cohort_mean_rit_to_npr(
-        measurementscale, end_grade, end_season, end_mean_rit),
       x_cgp = c(start_grade_level_season, end_grade_level_season) %>% mean(),
       y_cgp = c(start_cohort_status_npr, end_cohort_status_npr) %>% mean()
     ) %>%
@@ -234,14 +256,29 @@ alt_multi_cohort_cgp_hist_plot <- function(
     dplyr::filter(
       n > min_cohort_size
     )
+
+  as_cgp$start_cohort_status_npr <- NA_integer_
+  as_cgp$end_cohort_status_npr <- NA_integer_
+  
+  for (i in 1:nrow(as_cgp)) {
+    as_cgp[i, 'start_cohort_status_npr'] <- cohort_mean_rit_to_npr(
+      measurementscale, 
+      as_cgp[i, ]$start_grade, 
+      as_cgp[i, ]$start_fallwinterspring,
+      as_cgp[i, ]$start_mean_rit
+    )
+    
+    as_cgp[i, 'end_cohort_status_npr'] <- cohort_mean_rit_to_npr(
+      measurementscale, 
+      as_cgp[i, ]$end_grade, 
+      as_cgp[i, ]$end_fallwinterspring,
+      as_cgp[i, ]$end_mean_rit
+    )
+  }
   
   as_cgp <- as_cgp %>%
     dplyr::rowwise() %>%
     dplyr::mutate(
-      start_cohort_status_npr = cohort_mean_rit_to_npr(
-        measurementscale, start_grade, start_season, start_mean_rit),
-      end_cohort_status_npr = cohort_mean_rit_to_npr(
-        measurementscale, end_grade, end_season, end_mean_rit),
       x_cgp = c(start_grade_level_season, end_grade_level_season) %>% mean(),
       y_cgp = c(start_cohort_status_npr, end_cohort_status_npr) %>% mean()
     ) %>%
@@ -308,7 +345,7 @@ alt_multi_cohort_cgp_hist_plot <- function(
     ) +
     labs(
       x = 'Grade & Season',
-      y = 'Average Percentile Rank'
+      y = 'Grade/Cohort Status Percentile'
     )
 
   return(out)

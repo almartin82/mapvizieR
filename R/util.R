@@ -837,3 +837,22 @@ numeric_nwea_seasons <- function(x) {
 peek <- function(df) {
   df %>% head() %>% as.data.frame(stringsAsFactors = FALSE)
 }
+
+
+#' mv_debugging_vars
+#'
+#' @return injects some variables into your environment to ease function debugging
+
+mv_debugging_vars <- function() {
+  source(file.path('tests', 'testthat', 'helper_constants.R'))
+  mapvizieR_obj <<- mapviz
+  studentids <<- studentids_ms 
+  measurementscale <<- 'Reading'
+  match_method <<- 'no matching'
+  first_and_spring_only <<- TRUE
+  entry_grade_seasons <<- c(-0.8, 4.2) 
+  primary_cohort_only <<- TRUE
+  small_n_cutoff <<- .5
+  no_labs <<- FALSE
+  message('injected common mapvizieR parameter args into your environment as variables.')
+}
