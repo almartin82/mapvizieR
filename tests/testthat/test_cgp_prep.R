@@ -254,6 +254,7 @@ ex_target_rit_2015 <- calc_cgp(
   norms = 2015
 )[['targets']]
 
+
 test_that("calc_cgp tests with 2015 norms", {
   
   expect_equal(sum(ex_target_rit_2015$growth_target), 1386.775, tolerance = .001)
@@ -283,3 +284,35 @@ test_that("calc_cgp tests with 2015 norms", {
   
 })
 
+
+test_that("more known cgps", {
+  
+  ex1 <- calc_cgp(
+    measurementscale = 'Mathematics', 
+    end_grade = 0, 
+    growth_window = 'Fall to Winter', 
+    baseline_avg_rit = 135.1,
+    ending_avg_rit = 142.2,
+    norms = 2015
+  )[['results']]
+
+  ex2 <- calc_cgp(
+    measurementscale = 'Mathematics', 
+    end_grade = 1, 
+    growth_window = 'Fall to Winter', 
+    baseline_avg_rit = 156.7,
+    ending_avg_rit = 164.8,
+    norms = 2015
+  )[['results']]
+  
+  ex3 <- calc_cgp(
+    measurementscale = 'Mathematics', 
+    end_grade = 2, 
+    growth_window = 'Fall to Winter', 
+    baseline_avg_rit = 169.2,
+    ending_avg_rit = 176.9,
+    norms = 2012
+  )[['results']]
+  
+  #put response from NWEA here
+})

@@ -64,5 +64,68 @@ test_that("mult_cohort_cgp_hist_plot produces valid plot", {
 
 
 
+test_that("alt_cohort_cgp_hist_plot should return a plot", {  
+  
+  p <- alt_cohort_cgp_hist_plot(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Mathematics',
+    first_and_spring_only = FALSE,
+    entry_grade_seasons = c(-0.8, 5.2)
+  ) 
+  
+  expect_is(p, 'ggplot')
+  p <- ggplot_build(p)
+  expect_equal(p$data[[2]]$y %>% round(2) %>% sum(na.rm = TRUE), 78)
+  
+})
 
+test_that("alt_cohort_cgp_hist_plot with NPR labels", {  
+  
+  p <- alt_cohort_cgp_hist_plot(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Mathematics',
+    first_and_spring_only = FALSE,
+    entry_grade_seasons = c(-0.8, 5.2),
+    labels = 'NPR'
+  ) 
+  
+  expect_is(p, 'ggplot')
+  p <- ggplot_build(p)
+  expect_equal(p$data[[2]]$y %>% round(2) %>% sum(na.rm = TRUE), 78)
+  
+})
 
+test_that("alt_multi_cohort_cgp_hist_plot minimal test", {  
+  
+  p <- alt_multi_cohort_cgp_hist_plot(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Mathematics',
+    first_and_spring_only = FALSE,
+    entry_grade_seasons = c(-0.8, 5.2)
+  ) 
+  
+  expect_is(p, 'ggplot')
+  p <- ggplot_build(p)
+  expect_equal(p$data[[2]]$y %>% round(2) %>% sum(na.rm = TRUE), 73)
+  
+})
+
+test_that("alt_multi_cohort_cgp_hist_plot with NPR labels", {  
+  
+  p <- alt_multi_cohort_cgp_hist_plot(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
+    measurementscale = 'Mathematics',
+    first_and_spring_only = FALSE,
+    entry_grade_seasons = c(-0.8, 5.2),
+    labels = 'NPR'
+  ) 
+  
+  expect_is(p, 'ggplot')
+  p <- ggplot_build(p)
+  expect_equal(p$data[[2]]$y %>% round(2) %>% sum(na.rm = TRUE), 73)
+  
+})
