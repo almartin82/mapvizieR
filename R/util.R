@@ -503,6 +503,7 @@ mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu = 1) {
 #' @param entry_grade_seasons which grade seasons are 'entry' for this school?
 #' @param detail_academic_year what is the 'current' year?  never drop data for
 #' this year.
+#' @export
 
 valid_grade_seasons <- function(
   cdf, 
