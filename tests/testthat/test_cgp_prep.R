@@ -316,3 +316,22 @@ test_that("more known cgps", {
   
   #put response from NWEA here
 })
+
+
+test_that("cohort_mean_rit_to_npr behaves", {
+  
+  ex_read <- cohort_mean_rit_to_npr(
+    measurementscale = 'Reading', 
+    current_grade = 1, 
+    season = 'Spring', 
+    RIT = 176
+  )
+  ex_math <- cohort_mean_rit_to_npr(
+    measurementscale = 'Mathematics', 
+    current_grade = 1, 
+    season = 'Spring', 
+    RIT = 176
+  )
+  expect_equal(ex_read, 41)
+  expect_equal(ex_math, 22)
+})

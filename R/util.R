@@ -854,6 +854,7 @@ mv_debugging_vars <- function() {
   entry_grade_seasons <<- c(-0.8, 4.2) 
   primary_cohort_only <<- TRUE
   small_n_cutoff <<- .5
+  min_cohort_size <<- -1
   no_labs <<- FALSE
   plot_labels <<- 'RIT'
   message('injected common mapvizieR parameter args into your environment as variables.')

@@ -346,7 +346,7 @@ cohort_mean_rit_to_npr <- function(measurementscale, current_grade, season, RIT)
         round(RIT, 0) == rit_in     
     ) %>%
     dplyr::select(school_percentile)
-  
+
   if (nrow(matches) == 0) {
     out <- NA_integer_
   } else{
