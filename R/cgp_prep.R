@@ -328,6 +328,7 @@ npr_to_rit <- function(measurementscale, current_grade, season, npr, norms = 201
 #' @param RIT mean rit score
 #' 
 #' @return a integer vector length one
+#' @export
 
 cohort_mean_rit_to_npr <- function(measurementscale, current_grade, season, RIT) {
   
