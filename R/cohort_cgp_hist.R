@@ -194,6 +194,7 @@ cohort_cgp_hist_plot <- function(
 #' @inheritParams cohort_cgp_hist_plot
 #' @param min_cohort_size filter cohorts with less than this many students.
 #' useful when weird enrollment patterns exist in your data.
+#' @param facet_dir c('wide', 'long') facet the cohorts the wide way or the long way
 #' 
 #' @return a list of ggplotGrobs
 #' @export
@@ -207,7 +208,8 @@ multi_cohort_cgp_hist_plot <- function(
   entry_grade_seasons = c(-0.8, 4.2), 
   school_norms = 2015,
   small_n_cutoff = .5,
-  min_cohort_size = -1
+  min_cohort_size = -1,
+  facet_dir = 'wide'
 ) {
   
   mv_opening_checks(mapvizieR_obj, studentids, 1)
@@ -265,9 +267,15 @@ multi_cohort_cgp_hist_plot <- function(
     size = 4,
     vjust = 1
   ) +
-  geom_line() +
-  facet_grid(. ~ cohort)
-
+  geom_line()
+  
+  if (facet_dir == 'wide') {
+    out <- out + facet_grid(. ~ cohort) 
+  }
+  if (facet_dir == 'long') {
+    out <- out + facet_grid(cohort ~ .)
+  }
+  
   #only out geom text on plot if it exists
   if (as_cgp$cgp %>% is.na() %>% `n'est pas`() %>% any) {
     out <- out +   
