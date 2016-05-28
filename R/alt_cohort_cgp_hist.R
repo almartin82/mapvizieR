@@ -153,7 +153,7 @@ alt_cohort_cgp_hist_plot <- function(
     ),
     alpha = 0.5,
     vjust = 1,
-    color = 'lightblue'
+    color = 'purple'
   ) +
   geom_text(
     aes(
@@ -222,9 +222,6 @@ alt_cohort_cgp_hist_plot <- function(
 
 
 
-
-
-
 #' Multiple Cohort CGP histories
 #'
 #' @description see cohort_cgp_hist_plot for use.  Pass a vector of studentids
@@ -234,7 +231,6 @@ alt_cohort_cgp_hist_plot <- function(
 #' @param min_cohort_size filter cohorts with less than this many students.
 #' useful when weird enrollment patterns exist in your data.
 #' @param plot_labels c('RIT', 'NPR').  'RIT' is default.
-#' @param facet_dir c('wide', 'long') facet the cohorts the wide way or the long way
 #' 
 #' @return a list of ggplotGrobs
 #' @export
@@ -248,10 +244,10 @@ alt_multi_cohort_cgp_hist_plot <- function(
   entry_grade_seasons = c(-0.8, 4.2), 
   small_n_cutoff = .5,
   min_cohort_size = -1,
-  plot_labels = 'RIT',
-  facet_dir = 'wide'
+  plot_labels = 'RIT'
 ) {
   
+  error("This plot is currently broken.  Don't use it :)")
   mv_opening_checks(mapvizieR_obj, studentids, 1)
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
 
@@ -339,7 +335,7 @@ alt_multi_cohort_cgp_hist_plot <- function(
     ),
     alpha = 0.5,
     vjust = 1,
-    color = 'lightblue'
+    color = 'purple'
   ) +
   geom_text(
     aes(
@@ -351,15 +347,9 @@ alt_multi_cohort_cgp_hist_plot <- function(
     vjust = 0,
     color = 'darkblue'
   ) +    
-  geom_line()
-  
-  if (facet_dir == 'wide') {
-    out <- out + facet_grid(. ~ cohort) 
-  }
-  if (facet_dir == 'long') {
-    out <- out + facet_grid(cohort ~ .)
-  }
-  
+  geom_line() +
+  facet_grid(. ~ cohort)
+
   #only out geom text on plot if it exists
   if (as_cgp$cgp %>% is.na() %>% `n'est pas`() %>% any) {
     out <- out +   
