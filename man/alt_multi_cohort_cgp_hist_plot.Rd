@@ -7,7 +7,7 @@
 alt_multi_cohort_cgp_hist_plot(mapvizieR_obj, studentids, measurementscale,
   match_method = "no matching", first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2), small_n_cutoff = 0.5,
-  min_cohort_size = -1, labels = "RIT")
+  min_cohort_size = -1, plot_labels = "RIT")
 }
 \arguments{
 \item{mapvizieR_obj}{conforming mapvizieR obj}
@@ -34,7 +34,7 @@ default is 0.5, eg cohorts under 0.5 of max size will get dropped.}
 \item{min_cohort_size}{filter cohorts with less than this many students.
 useful when weird enrollment patterns exist in your data.}
 
-\item{labels}{c('RIT', 'NPR').  'RIT' is default.}
+\item{plot_labels}{c('RIT', 'NPR').  'RIT' is default.}
 }
 \value{
 a list of ggplotGrobs

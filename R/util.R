@@ -854,5 +854,6 @@ mv_debugging_vars <- function() {
   primary_cohort_only <<- TRUE
   small_n_cutoff <<- .5
   no_labs <<- FALSE
+  plot_labels <<- 'RIT'
   message('injected common mapvizieR parameter args into your environment as variables.')
 }
