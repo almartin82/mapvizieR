@@ -350,7 +350,7 @@ cohort_mean_rit_to_npr <- function(measurementscale, current_grade, season, RIT)
   if (nrow(matches) == 0) {
     out <- NA_integer_
   } else{
-    out <- matches %>% unlist() %>% unname() %>% extract(1)
+    out <- matches %>% unlist() %>% unname() %>% magrittr::extract(1)
   }
   
   return(out)
