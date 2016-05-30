@@ -48,9 +48,163 @@ ny_linking <- function(measurementscale, current_grade, season, RIT, returns = '
     proficient = TRUE,
     stringsAsFactors = FALSE
   )
+
+  ny_read_spr_g4_l1 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 4,
+    ny_season = 'Spring',
+    ny_rit = c(100:202),
+    perf_level = 'Level 1',
+    proficient = FALSE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g4_l2 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 4,
+    ny_season = 'Spring',
+    ny_rit = c(203:215),
+    perf_level = 'Level 2',
+    proficient = FALSE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g4_l3 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 4,
+    ny_season = 'Spring',
+    ny_rit = c(216:223),
+    perf_level = 'Level 3',
+    proficient = TRUE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g4_l4 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 4,
+    ny_season = 'Spring',
+    ny_rit = c(224:350),
+    perf_level = 'Level 4',
+    proficient = TRUE,
+    stringsAsFactors = FALSE
+  )
+
+  ny_read_spr_g5_l1 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 5,
+    ny_season = 'Spring',
+    ny_rit = c(100:209),
+    perf_level = 'Level 1',
+    proficient = FALSE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g5_l2 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 5,
+    ny_season = 'Spring',
+    ny_rit = c(210:221),
+    perf_level = 'Level 2',
+    proficient = FALSE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g5_l3 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 5,
+    ny_season = 'Spring',
+    ny_rit = c(222:230),
+    perf_level = 'Level 3',
+    proficient = TRUE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g5_l4 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 5,
+    ny_season = 'Spring',
+    ny_rit = c(231:350),
+    perf_level = 'Level 4',
+    proficient = TRUE,
+    stringsAsFactors = FALSE
+  )
+  
+  ny_read_spr_g6_l1 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 6,
+    ny_season = 'Spring',
+    ny_rit = c(100:210),
+    perf_level = 'Level 1',
+    proficient = FALSE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g6_l2 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 6,
+    ny_season = 'Spring',
+    ny_rit = c(211:224),
+    perf_level = 'Level 2',
+    proficient = FALSE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g6_l3 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 6,
+    ny_season = 'Spring',
+    ny_rit = c(225:231),
+    perf_level = 'Level 3',
+    proficient = TRUE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g6_l4 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 6,
+    ny_season = 'Spring',
+    ny_rit = c(232:350),
+    perf_level = 'Level 4',
+    proficient = TRUE,
+    stringsAsFactors = FALSE
+  )
+  
+  ny_read_spr_g7_l1 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 7,
+    ny_season = 'Spring',
+    ny_rit = c(100:215),
+    perf_level = 'Level 1',
+    proficient = FALSE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g7_l2 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 7,
+    ny_season = 'Spring',
+    ny_rit = c(100:215),
+    perf_level = 'Level 2',
+    proficient = FALSE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g7_l3 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 7,
+    ny_season = 'Spring',
+    ny_rit = c(100:215),
+    perf_level = 'Level 3',
+    proficient = TRUE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g7_l4 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 7,
+    ny_season = 'Spring',
+    ny_rit = c(100:215),
+    perf_level = 'Level 4',
+    proficient = TRUE,
+    stringsAsFactors = FALSE
+  )
+  
+  # 7   100-�‐215  1-�‐43  216-�‐227  44-�‐73  228-�‐238  74-�‐91  239-�‐350  92-�‐99 
+  # 8   100-�‐218  1-�‐46  219-�‐230  47-�‐74  231-�‐240  75-�‐90  241-�‐350  91-�‐99 
   
   ny_all <- dplyr::bind_rows(
-    ny_read_spr_g3_l1, ny_read_spr_g3_l2, ny_read_spr_g3_l3, ny_read_spr_g3_l4
+    ny_read_spr_g3_l1, ny_read_spr_g3_l2, ny_read_spr_g3_l3, ny_read_spr_g3_l4,
+    ny_read_spr_g4_l1, ny_read_spr_g4_l2, ny_read_spr_g4_l3, ny_read_spr_g4_l4,
+    ny_read_spr_g5_l1, ny_read_spr_g5_l2, ny_read_spr_g5_l3, ny_read_spr_g5_l4,
+    ny_read_spr_g6_l1, ny_read_spr_g6_l2, ny_read_spr_g6_l3, ny_read_spr_g6_l4,
   )
   
   out <- ny_all %>%
@@ -62,11 +216,6 @@ ny_linking <- function(measurementscale, current_grade, season, RIT, returns = '
     )
   
   out <- out[, returns] %>% unlist %>% unname()
-  # 4   100-�‐202  1-�‐40  203-�‐215  41-�‐73  216-�‐223  74-�‐88  224-�‐350  89-�‐99 
-  # 5   100-�‐209  1-�‐43  210-�‐221  44-�‐74  222-�‐230  75-�‐89  231-�‐350  90-�‐99 
-  # 6   100-�‐210  1-�‐36  211-�‐224  37-�‐72  225-�‐231  73-�‐85  232-�‐350  86-�‐99 
-  # 7   100-�‐215  1-�‐43  216-�‐227  44-�‐73  228-�‐238  74-�‐91  239-�‐350  92-�‐99 
-  # 8   100-�‐218  1-�‐46  219-�‐230  47-�‐74  231-�‐240  75-�‐90  241-�‐350  91-�‐99 
  
   out 
 }
