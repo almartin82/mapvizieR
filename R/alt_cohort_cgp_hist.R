@@ -19,7 +19,7 @@
 #' @param small_n_cutoff any cohort below this percent will get filtered out.  
 #' default is 0.5, eg cohorts under 0.5 of max size will get dropped.
 #' @param no_labs if TRUE, will not label x or y axis
-#' @param labels c('RIT', 'NPR').  'RIT' is default.
+#' @param plot_labels c('RIT', 'NPR').  'RIT' is default.
 #'
 #' @return a ggplot object
 #' @export
@@ -34,7 +34,7 @@ alt_cohort_cgp_hist_plot <- function(
   primary_cohort_only = TRUE,
   small_n_cutoff = .5,
   no_labs = FALSE,
-  labels = 'RIT'
+  plot_labels = 'RIT'
 ) {
 
   mv_opening_checks(mapvizieR_obj, studentids, 1)
@@ -115,12 +115,12 @@ alt_cohort_cgp_hist_plot <- function(
   as_cgp$label1_text <- NA
   as_cgp$label2_text <- NA
   
-  if(labels == 'RIT') {
+  if(plot_labels == 'RIT') {
     as_cgp$label1_text <- as_cgp$start_mean_rit %>% round(1)
     as_cgp$label2_text <- as_cgp$end_mean_rit %>% round(1)
   }
 
-  if(labels == 'NPR') {
+  if(plot_labels == 'NPR') {
     as_cgp$label1_text <- as_cgp$start_cohort_status_npr
     as_cgp$label2_text <- as_cgp$end_cohort_status_npr
   }
@@ -153,7 +153,7 @@ alt_cohort_cgp_hist_plot <- function(
     ),
     alpha = 0.5,
     vjust = 1,
-    color = 'lightblue'
+    color = 'purple'
   ) +
   geom_text(
     aes(
@@ -222,9 +222,6 @@ alt_cohort_cgp_hist_plot <- function(
 
 
 
-
-
-
 #' Multiple Cohort CGP histories
 #'
 #' @description see cohort_cgp_hist_plot for use.  Pass a vector of studentids
@@ -233,7 +230,7 @@ alt_cohort_cgp_hist_plot <- function(
 #' @inheritParams cohort_cgp_hist_plot
 #' @param min_cohort_size filter cohorts with less than this many students.
 #' useful when weird enrollment patterns exist in your data.
-#' @param labels c('RIT', 'NPR').  'RIT' is default.
+#' @param plot_labels c('RIT', 'NPR').  'RIT' is default.
 #' 
 #' @return a list of ggplotGrobs
 #' @export
@@ -247,9 +244,10 @@ alt_multi_cohort_cgp_hist_plot <- function(
   entry_grade_seasons = c(-0.8, 4.2), 
   small_n_cutoff = .5,
   min_cohort_size = -1,
-  labels = 'RIT'
+  plot_labels = 'RIT'
 ) {
   
+  error("This plot is currently broken.  Don't use it :)")
   mv_opening_checks(mapvizieR_obj, studentids, 1)
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
 
@@ -311,12 +309,12 @@ alt_multi_cohort_cgp_hist_plot <- function(
   as_cgp$label1_text <- NA
   as_cgp$label2_text <- NA
   
-  if(labels == 'RIT') {
+  if(plot_labels == 'RIT') {
     as_cgp$label1_text <- as_cgp$start_mean_rit %>% round(1)
     as_cgp$label2_text <- as_cgp$end_mean_rit %>% round(1)
   }
   
-  if(labels == 'NPR') {
+  if(plot_labels == 'NPR') {
     as_cgp$label1_text <- as_cgp$start_cohort_status_npr
     as_cgp$label2_text <- as_cgp$end_cohort_status_npr
   }
@@ -337,7 +335,7 @@ alt_multi_cohort_cgp_hist_plot <- function(
     ),
     alpha = 0.5,
     vjust = 1,
-    color = 'lightblue'
+    color = 'purple'
   ) +
   geom_text(
     aes(

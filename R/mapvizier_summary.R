@@ -46,13 +46,15 @@ summary.mapvizieR <- function(object, ...){
       end_map_year_academic, 
       cohort_year,
       growth_window, 
-      end_schoolname, 
-      end_grade, 
+      end_schoolname,
+      start_grade,
+      end_grade,
+      start_fallwinterspring,
+      end_fallwinterspring,
       measurementscale
     )
     
-  mapSummary <- dplyr::summarize(
-    df,
+  mapSummary <- df %>% dplyr::summarize(
     n_students = n(),
     n_typical = sum(met_typical_growth, na.rm = TRUE),
     pct_typical = round(n_typical/n_students, digits),
@@ -82,7 +84,26 @@ summary.mapvizieR <- function(object, ...){
     end_median_consistent_percentile = round(median(end_consistent_percentile, na.rm = TRUE), digits),
     cgp = calc_cgp(measurementscale, end_grade, growth_window, start_mean_testritscore, end_mean_testritscore)[['results']] %>% round(digits)
   )
+
+  mapSummary$start_cohort_status_npr <- NA_integer_
+  mapSummary$end_cohort_status_npr <- NA_integer_
   
+  for (i in 1:nrow(mapSummary)) {
+    mapSummary[i, ]$start_cohort_status_npr <- cohort_mean_rit_to_npr(
+      mapSummary[i, ]$measurementscale, 
+      mapSummary[i, ]$start_grade, 
+      mapSummary[i, ]$start_fallwinterspring,
+      mapSummary[i, ]$start_mean_testritscore
+    ) 
+    
+    mapSummary[i, ]$end_cohort_status_npr <- cohort_mean_rit_to_npr(
+      mapSummary[i, ]$measurementscale, 
+      mapSummary[i, ]$end_grade, 
+      mapSummary[i, ]$end_fallwinterspring,
+      mapSummary[i, ]$end_mean_testritscore
+    )     
+  }
+
   class(mapSummary) <- c("mapvizieR_summary", class(mapSummary))
   
   #return

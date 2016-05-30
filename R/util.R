@@ -503,6 +503,7 @@ mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu = 1) {
 #' @param entry_grade_seasons which grade seasons are 'entry' for this school?
 #' @param detail_academic_year what is the 'current' year?  never drop data for
 #' this year.
+#' @export
 
 valid_grade_seasons <- function(
   cdf, 
@@ -853,6 +854,8 @@ mv_debugging_vars <- function() {
   entry_grade_seasons <<- c(-0.8, 4.2) 
   primary_cohort_only <<- TRUE
   small_n_cutoff <<- .5
+  min_cohort_size <<- -1
   no_labs <<- FALSE
+  plot_labels <<- 'RIT'
   message('injected common mapvizieR parameter args into your environment as variables.')
 }

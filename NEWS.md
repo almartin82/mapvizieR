@@ -1,3 +1,9 @@
+# mapvizieR 0.2.7
+
+* added grade/class status percentiles to `summary()` method.
+
+* rewrote `cohort_cgp_hist_plot` to use grade/class status percentiles.
+
 # mapvizieR 0.2.6
 
 * added median calculations to `summary()` method

@@ -328,6 +328,7 @@ npr_to_rit <- function(measurementscale, current_grade, season, npr, norms = 201
 #' @param RIT mean rit score
 #' 
 #' @return a integer vector length one
+#' @export
 
 cohort_mean_rit_to_npr <- function(measurementscale, current_grade, season, RIT) {
   
@@ -345,11 +346,11 @@ cohort_mean_rit_to_npr <- function(measurementscale, current_grade, season, RIT)
         round(RIT, 0) == rit_in     
     ) %>%
     dplyr::select(school_percentile)
-  
+
   if (nrow(matches) == 0) {
     out <- NA_integer_
   } else{
-    out <- matches %>% unlist() %>% unname() %>% extract(1)
+    out <- matches %>% unlist() %>% unname() %>% magrittr::extract(1)
   }
   
   return(out)
