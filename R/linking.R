@@ -173,7 +173,7 @@ ny_linking <- function(measurementscale, current_grade, season, RIT, returns = '
     ny_subj = 'Reading',
     ny_grade = 7,
     ny_season = 'Spring',
-    ny_rit = c(100:215),
+    ny_rit = c(216:227),
     perf_level = 'Level 2',
     proficient = FALSE,
     stringsAsFactors = FALSE
@@ -182,7 +182,7 @@ ny_linking <- function(measurementscale, current_grade, season, RIT, returns = '
     ny_subj = 'Reading',
     ny_grade = 7,
     ny_season = 'Spring',
-    ny_rit = c(100:215),
+    ny_rit = c(228:238),
     perf_level = 'Level 3',
     proficient = TRUE,
     stringsAsFactors = FALSE
@@ -191,20 +191,56 @@ ny_linking <- function(measurementscale, current_grade, season, RIT, returns = '
     ny_subj = 'Reading',
     ny_grade = 7,
     ny_season = 'Spring',
-    ny_rit = c(100:215),
+    ny_rit = c(239:350),
     perf_level = 'Level 4',
     proficient = TRUE,
     stringsAsFactors = FALSE
   )
   
-  # 7   100-�‐215  1-�‐43  216-�‐227  44-�‐73  228-�‐238  74-�‐91  239-�‐350  92-�‐99 
-  # 8   100-�‐218  1-�‐46  219-�‐230  47-�‐74  231-�‐240  75-�‐90  241-�‐350  91-�‐99 
-  
+  ny_read_spr_g8_l1 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 8,
+    ny_season = 'Spring',
+    ny_rit = c(100:218),
+    perf_level = 'Level 1',
+    proficient = FALSE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g8_l2 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 8,
+    ny_season = 'Spring',
+    ny_rit = c(219:230),
+    perf_level = 'Level 2',
+    proficient = FALSE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g8_l3 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 8,
+    ny_season = 'Spring',
+    ny_rit = c(231:240),
+    perf_level = 'Level 3',
+    proficient = TRUE,
+    stringsAsFactors = FALSE
+  )
+  ny_read_spr_g8_l4 <- data.frame(
+    ny_subj = 'Reading',
+    ny_grade = 8,
+    ny_season = 'Spring',
+    ny_rit = c(241:350),
+    perf_level = 'Level 4',
+    proficient = TRUE,
+    stringsAsFactors = FALSE
+  )
+
   ny_all <- dplyr::bind_rows(
     ny_read_spr_g3_l1, ny_read_spr_g3_l2, ny_read_spr_g3_l3, ny_read_spr_g3_l4,
     ny_read_spr_g4_l1, ny_read_spr_g4_l2, ny_read_spr_g4_l3, ny_read_spr_g4_l4,
     ny_read_spr_g5_l1, ny_read_spr_g5_l2, ny_read_spr_g5_l3, ny_read_spr_g5_l4,
     ny_read_spr_g6_l1, ny_read_spr_g6_l2, ny_read_spr_g6_l3, ny_read_spr_g6_l4,
+    ny_read_spr_g7_l1, ny_read_spr_g7_l2, ny_read_spr_g7_l3, ny_read_spr_g7_l4,
+    ny_read_spr_g8_l1, ny_read_spr_g8_l2, ny_read_spr_g8_l3, ny_read_spr_g8_l4
   )
   
   out <- ny_all %>%
