@@ -1,11 +1,34 @@
+#' @title summary method for \code{mapvizieR} class
+#'
+#' @description produces a summary for all of the objects on the
+#' main mapvizieR object.  specifically returns \code{mapvizieR_growth_summary}
+#' and \code{mapvizieR_cdf_summary}
+#' @param object a \code{mapvizieR} object
+#' @param ... other arguments to be passed to other functions (not currently supported)
+#' @return summary stats as a \code{mapvizier_summary} object.
+#' @rdname summary
+#' @export
+
+summary.mapvizieR <- function(object, ...){
+  
+  out <- list(
+    'growth_summary' = summary(object$growth_df),
+    'cdf_summary' = summary(object$cdf)
+  )
+  
+  class(out) <- c("mapvizieR_summary", class(out))
+  
+  out
+}
+
 #' @title summary method for \code{mapvizieR_growth} class
 #'
 #' @description
-#'  summarizes growth data from \code{mapvizieR_growth} orbect.
+#'  summarizes growth data from \code{mapvizieR_growth} object.
 #'
-#' @details Creates a \code{mapvizier_summary} object of growth data from a \code{mapvizieR} 
+#' @details Creates a \code{mapvizier_growth_summary} object of growth data from a \code{mapvizieR} 
 #' object.  Includes the following summarizations for every growth term available
-#' in the \code{mapvizier} object:
+#' in the \code{mapvizier_growth} object:
 #' \itemize{
 #'  \item number tested in both assessment seasons (i.e., the number of students who 
 #'  too a test in both assessment season and for which we are able to calcualate growth stats).
@@ -22,17 +45,12 @@
 #'  \item Total students with NPR >= 75th percentile in the second assessment season
 #'  \item Percent students with NPR >= 75 percentile in the second assessment season
 #' } 
-
-#' @param object a \code{mapvizieR} object
+#' @param object a \code{mapvizieR_growth} object
 #' @param ... other arguments to be passed to other functions (not currently supported)
-
 #' @return summary stats as a \code{mapvizier_summary} object.
 #' @rdname summary
 #' @export
 
-#summary.mapvizieR <- function(object, ...){
-
-}
 summary.mapvizieR_growth <- function(object, ...) {
 
   #fix for s3 consistency cmd check (http://stackoverflow.com/a/9877719/561698)

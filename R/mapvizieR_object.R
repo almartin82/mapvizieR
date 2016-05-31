@@ -109,8 +109,8 @@ is.mapvizieR <- function(x) inherits(x, "mapvizieR")
 
 ensure_is_mapvizieR <- ensurer::ensures_that(
   is.mapvizieR(.) ~ paste0("The object you passed is not a conforming mapvizieR object.\n",
-     "Look at the examples in the mapvizieR() to see more about generating\n",
-     "a valid mapvizieR object.")
+                           "Look at the examples in the mapvizieR() to see more about generating\n",
+                           "a valid mapvizieR object.")
 )
 
 
@@ -187,7 +187,7 @@ grade_levelify_cdf <- function(prepped_cdf, roster) {
   slim_roster <- unique(roster[, c('studentid', 'termname', 'grade')])
   #first match on a student's EXACT termname
   matched_cdf <- dplyr::left_join(prepped_cdf, slim_roster, by=c('studentid', 'termname'))
-
+  
   exact_count <- nrow(!is.na(matched_cdf$grade))
   
   #if there are still unmatched students, attempt to match on map_year_academic
