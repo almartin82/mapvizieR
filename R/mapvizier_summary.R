@@ -109,3 +109,31 @@ summary.mapvizieR <- function(object, ...){
   #return
   mapSummary
 }
+
+
+simple_summary <- function(object) {
+  
+  df <- object %>%
+    dplyr::group_by(
+      measurementscale, map_year_academic, fallwinterspring, 
+      termname, schoolname, grade, grade_level_season) %>%
+    dplyr::summarize(
+      mean_testritscore = mean(testritscore, na.rm = TRUE),
+      mean_percentile = mean(consistent_percentile, na.rm = TRUE)
+    ) 
+  
+  df$cohort_status_npr <- NA_integer_
+  
+  for (i in 1:nrow(df)) {
+    df[i, ]$cohort_status_npr <- cohort_mean_rit_to_npr(
+      df[i, ]$measurementscale, 
+      df[i, ]$grade, 
+      df[i, ]$fallwinterspring,
+      df[i, ]$mean_testritscore
+    )
+  }
+
+  
+
+  
+}
