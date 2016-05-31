@@ -234,7 +234,7 @@ sch_growth_lookup <- function(
 #' 
 #' @param measurementscale MAP subject
 #' @param current_grade grade level
-#' @param season fall winter spring
+#' @param season c('fall', 'winter', 'spring')
 #' @param RIT rit score
 #' @param norms which school growth study to use.  c(2012, 2015).  default is
 #' 2015.

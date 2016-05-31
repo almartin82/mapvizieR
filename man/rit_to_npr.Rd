@@ -11,7 +11,7 @@ rit_to_npr(measurementscale, current_grade, season, RIT, norms = 2015)
 
 \item{current_grade}{grade level}
 
-\item{season}{fall winter spring}
+\item{season}{c('fall', 'winter', 'spring')}
 
 \item{RIT}{rit score}
 
