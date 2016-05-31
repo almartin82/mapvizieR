@@ -39,19 +39,21 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
     #FIRST, prep the cdf and the roster
     prepped_cdf <- prep_cdf_long(cdf)
     roster <- prep_roster(roster)
+    class(roster) <- c("mapvizieR_roster", class(roster))
     
     #SECOND, given a roster and cdf, grade level-ify the cdf
     prepped_cdf$grade <- grade_levelify_cdf(prepped_cdf, roster)
   
-    #THIRD, process the cdf
+    #THIRD, process the cdf and give it a class
     processed_cdf <- process_cdf_long(prepped_cdf, norms = norms)
-  
+    class(processed_cdf) <- c("mapvizieR_cdf", class(processed_cdf))
+    
     #check to see that result conforms
     assertthat::assert_that(check_processed_cdf(processed_cdf)$boolean)  
   }
   
   #headline growth df
-  if (verbose) {print('calculating growth scores for students...')}
+  if (verbose) print('calculating growth scores for students...')
   growth_df <- generate_growth_dfs(processed_cdf, ...)$headline
   
   #TODO: goal growth df
@@ -71,7 +73,7 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
   # default of KIPP Tiered growth.  This step must come after the 
   # class assignement since add_accelerated_growth can only be run 
   # on a mapvizieR class object by design (simplifies code and can be
-  # run after creating a mapvizieR object to increas goal objects attached).
+  # run after creating a mapvizieR object to increase goal objects attached).
   
   mapviz <- mapviz %>% 
     add_accelerated_growth(
@@ -81,7 +83,8 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
   )
   
   mapviz[['growth_df']] <- determine_growth_status(mapviz[['growth_df']])
-   
+  mapviz$growth_df <- c("mapvizieR_growth", class(mapviz$growth_df))
+  
   return(mapviz)
 }
 

@@ -1,7 +1,7 @@
-#' @title summary method for \code{mapvizieR} class
+#' @title summary method for \code{mapvizieR_growth} class
 #'
 #' @description
-#'  summarizes growth data from \code{mapvizieR} orbect.
+#'  summarizes growth data from \code{mapvizieR_growth} orbect.
 #'
 #' @details Creates a \code{mapvizier_summary} object of growth data from a \code{mapvizieR} 
 #' object.  Includes the following summarizations for every growth term available
@@ -30,7 +30,10 @@
 #' @rdname summary
 #' @export
 
-summary.mapvizieR <- function(object, ...){
+#summary.mapvizieR <- function(object, ...){
+
+}
+summary.mapvizieR_growth <- function(object, ...) {
 
   #fix for s3 consistency cmd check (http://stackoverflow.com/a/9877719/561698)
   if (!hasArg(digits)) {
@@ -104,14 +107,25 @@ summary.mapvizieR <- function(object, ...){
     )     
   }
 
-  class(mapSummary) <- c("mapvizieR_summary", class(mapSummary))
+  class(mapSummary) <- c("mapvizieR_growth_summary", class(mapSummary))
   
   #return
   mapSummary
 }
 
 
-simple_summary <- function(object) {
+#' @title summary method for \code{mapvizieR_cdf} class
+#'
+#' @param object 
+#'
+#' @param object a \code{mapvizieR_cdf} object
+#' @param ... other arguments to be passed to other functions (not currently supported)
+
+#' @return summary stats as a \code{mapvizier_cdf_summary} object.
+#' @rdname summary
+#' @export
+
+summary.mapvizieR_cdf <- function(object, ...) {
   
   df <- object %>%
     dplyr::group_by(
@@ -133,7 +147,7 @@ simple_summary <- function(object) {
     )
   }
 
+  class(df) <- c("mapvizieR_cdf_summary", class(df))
   
-
-  
+  df
 }
