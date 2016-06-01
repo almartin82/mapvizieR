@@ -52,14 +52,14 @@ summary.mapvizieR <- function(object, ...){
 #' @export
 
 summary.mapvizieR_growth <- function(object, ...) {
-
+  
   #fix for s3 consistency cmd check (http://stackoverflow.com/a/9877719/561698)
   if (!hasArg(digits)) {
     digits <- 2
   } else {
     digits <- list(...)$digits
   }
-
+  
   df <- as.data.frame(object$growth_df) %>%
     dplyr::filter(complete_obsv) %>%
     dplyr::mutate(cohort_year = end_map_year_academic + 1 + 12 - end_grade) %>%
@@ -74,7 +74,7 @@ summary.mapvizieR_growth <- function(object, ...) {
       end_fallwinterspring,
       measurementscale
     )
-    
+  
   mapSummary <- df %>% dplyr::summarize(
     n_students = n(),
     n_typical = sum(met_typical_growth, na.rm = TRUE),
@@ -105,7 +105,7 @@ summary.mapvizieR_growth <- function(object, ...) {
     end_median_consistent_percentile = round(median(end_consistent_percentile, na.rm = TRUE), digits),
     cgp = calc_cgp(measurementscale, end_grade, growth_window, start_mean_testritscore, end_mean_testritscore)[['results']] %>% round(digits)
   )
-
+  
   mapSummary$start_cohort_status_npr <- NA_integer_
   mapSummary$end_cohort_status_npr <- NA_integer_
   
@@ -124,7 +124,7 @@ summary.mapvizieR_growth <- function(object, ...) {
       mapSummary[i, ]$end_mean_testritscore
     )     
   }
-
+  
   class(mapSummary) <- c("mapvizieR_growth_summary", class(mapSummary))
   
   #return
