@@ -70,13 +70,6 @@ alt_cohort_cgp_hist_plot <- function(
     norms = 2015
   )
   
-  cohort_mean_rit_to_npr(
-    measurementscale, 
-    as_cgp[2, ]$start_grade, 
-    as_cgp[2, ]$start_fallwinterspring,
-    as_cgp[2, ]$start_mean_rit
-  )
-  
   as_cgp$start_cohort_status_npr <- NA_integer_
   as_cgp$end_cohort_status_npr <- NA_integer_
   
@@ -119,7 +112,7 @@ alt_cohort_cgp_hist_plot <- function(
     as_cgp$label1_text <- as_cgp$start_mean_rit %>% round(1)
     as_cgp$label2_text <- as_cgp$end_mean_rit %>% round(1)
   }
-
+  
   if(plot_labels == 'NPR') {
     as_cgp$label1_text <- as_cgp$start_cohort_status_npr
     as_cgp$label2_text <- as_cgp$end_cohort_status_npr
@@ -132,10 +125,10 @@ alt_cohort_cgp_hist_plot <- function(
       y = start_cohort_status_npr
     )
   ) +
-  geom_point(
-    aes(
-      x = start_grade_level_season,
-      y = start_cohort_status_npr
+    geom_point(
+      aes(
+        x = start_grade_level_season,
+        y = start_cohort_status_npr
     ),
     shape = 1
   ) +

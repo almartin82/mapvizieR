@@ -1,11 +1,34 @@
 #' @title summary method for \code{mapvizieR} class
 #'
-#' @description
-#'  summarizes growth data from \code{mapvizieR} orbect.
+#' @description produces a summary for all of the objects on the
+#' main mapvizieR object.  specifically returns \code{mapvizieR_growth_summary}
+#' and \code{mapvizieR_cdf_summary}
+#' @param object a \code{mapvizieR} object
+#' @param ... other arguments to be passed to other functions (not currently supported)
+#' @return summary stats as a \code{mapvizier_summary} object.
+#' @rdname summary
+#' @export
+
+summary.mapvizieR <- function(object, ...){
+  
+  out <- list(
+    'growth_summary' = summary(object$growth_df),
+    'cdf_summary' = summary(object$cdf)
+  )
+  
+  class(out) <- c("mapvizieR_summary", class(out))
+  
+  out
+}
+
+#' @title summary method for \code{mapvizieR_growth} class
 #'
-#' @details Creates a \code{mapvizier_summary} object of growth data from a \code{mapvizieR} 
+#' @description
+#'  summarizes growth data from \code{mapvizieR_growth} object.
+#'
+#' @details Creates a \code{mapvizier_growth_summary} object of growth data from a \code{mapvizieR} 
 #' object.  Includes the following summarizations for every growth term available
-#' in the \code{mapvizier} object:
+#' in the \code{mapvizier_growth} object:
 #' \itemize{
 #'  \item number tested in both assessment seasons (i.e., the number of students who 
 #'  too a test in both assessment season and for which we are able to calcualate growth stats).
@@ -22,24 +45,22 @@
 #'  \item Total students with NPR >= 75th percentile in the second assessment season
 #'  \item Percent students with NPR >= 75 percentile in the second assessment season
 #' } 
-
-#' @param object a \code{mapvizieR} object
+#' @param object a \code{mapvizieR_growth} object
 #' @param ... other arguments to be passed to other functions (not currently supported)
-
 #' @return summary stats as a \code{mapvizier_summary} object.
 #' @rdname summary
 #' @export
 
-summary.mapvizieR <- function(object, ...){
-
+summary.mapvizieR_growth <- function(object, ...) {
+  
   #fix for s3 consistency cmd check (http://stackoverflow.com/a/9877719/561698)
   if (!hasArg(digits)) {
     digits <- 2
   } else {
     digits <- list(...)$digits
   }
-
-  df <- as.data.frame(object$growth_df) %>%
+  
+  df <- as.data.frame(object) %>%
     dplyr::filter(complete_obsv) %>%
     dplyr::mutate(cohort_year = end_map_year_academic + 1 + 12 - end_grade) %>%
     dplyr::group_by(
@@ -53,7 +74,7 @@ summary.mapvizieR <- function(object, ...){
       end_fallwinterspring,
       measurementscale
     )
-    
+  
   mapSummary <- df %>% dplyr::summarize(
     n_students = n(),
     n_typical = sum(met_typical_growth, na.rm = TRUE),
@@ -84,7 +105,7 @@ summary.mapvizieR <- function(object, ...){
     end_median_consistent_percentile = round(median(end_consistent_percentile, na.rm = TRUE), digits),
     cgp = calc_cgp(measurementscale, end_grade, growth_window, start_mean_testritscore, end_mean_testritscore)[['results']] %>% round(digits)
   )
-
+  
   mapSummary$start_cohort_status_npr <- NA_integer_
   mapSummary$end_cohort_status_npr <- NA_integer_
   
@@ -103,9 +124,48 @@ summary.mapvizieR <- function(object, ...){
       mapSummary[i, ]$end_mean_testritscore
     )     
   }
-
-  class(mapSummary) <- c("mapvizieR_summary", class(mapSummary))
+  
+  class(mapSummary) <- c("mapvizieR_growth_summary", class(mapSummary))
   
   #return
   mapSummary
+}
+
+
+#' @title summary method for \code{mapvizieR_cdf} class
+#'
+#' @param object 
+#'
+#' @param object a \code{mapvizieR_cdf} object
+#' @param ... other arguments to be passed to other functions (not currently supported)
+
+#' @return summary stats as a \code{mapvizier_cdf_summary} object.
+#' @rdname summary
+#' @export
+
+summary.mapvizieR_cdf <- function(object, ...) {
+  
+  df <- object %>%
+    dplyr::group_by(
+      measurementscale, map_year_academic, fallwinterspring, 
+      termname, schoolname, grade, grade_level_season) %>%
+    dplyr::summarize(
+      mean_testritscore = mean(testritscore, na.rm = TRUE),
+      mean_percentile = mean(consistent_percentile, na.rm = TRUE)
+    ) 
+  
+  df$cohort_status_npr <- NA_integer_
+  
+  for (i in 1:nrow(df)) {
+    df[i, ]$cohort_status_npr <- cohort_mean_rit_to_npr(
+      df[i, ]$measurementscale, 
+      df[i, ]$grade, 
+      df[i, ]$fallwinterspring,
+      df[i, ]$mean_testritscore
+    )
+  }
+
+  class(df) <- c("mapvizieR_cdf_summary", class(df))
+  
+  df
 }

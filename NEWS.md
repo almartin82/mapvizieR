@@ -1,3 +1,11 @@
+# mapvizieR 0.3.0
+
+* reworked summary functions to create new cdf summary method.  note that this is a breaking change for any code that depends on `summary(mapviz)` - you should use `summary(mapviz$growth_df)` instead.  `summary(mapviz)` will now return a named list with summaries of every relevant element of the mapvizieR object. 
+
+# mapvizieR 0.2.8
+
+* added new york linking functions
+
 # mapvizieR 0.2.7
 
 * added grade/class status percentiles to `summary()` method.

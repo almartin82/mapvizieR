@@ -2,25 +2,49 @@
 % Please edit documentation in R/mapvizier_summary.R
 \name{summary.mapvizieR}
 \alias{summary.mapvizieR}
+\alias{summary.mapvizieR_cdf}
+\alias{summary.mapvizieR_growth}
 \title{summary method for \code{mapvizieR} class}
 \usage{
 \method{summary}{mapvizieR}(object, ...)
+
+\method{summary}{mapvizieR_growth}(object, ...)
+
+\method{summary}{mapvizieR_cdf}(object, ...)
 }
 \arguments{
 \item{object}{a \code{mapvizieR} object}
 
 \item{...}{other arguments to be passed to other functions (not currently supported)}
+
+\item{object}{a \code{mapvizieR_growth} object}
+
+\item{...}{other arguments to be passed to other functions (not currently supported)}
+
+\item{object}{}
+
+\item{object}{a \code{mapvizieR_cdf} object}
+
+\item{...}{other arguments to be passed to other functions (not currently supported)}
 }
 \value{
 summary stats as a \code{mapvizier_summary} object.
+
+summary stats as a \code{mapvizier_summary} object.
+
+summary stats as a \code{mapvizier_cdf_summary} object.
 }
 \description{
-summarizes growth data from \code{mapvizieR} orbect.
+produces a summary for all of the objects on the
+main mapvizieR object.  specifically returns \code{mapvizieR_growth_summary}
+and \code{mapvizieR_cdf_summary}
+
+summarizes growth data from \code{mapvizieR_growth} object.
 }
 \details{
-Creates a \code{mapvizier_summary} object of growth data from a \code{mapvizieR} 
+Creates a \code{mapvizier_growth_summary} object of growth data from a \code{mapvizieR} 
 object.  Includes the following summarizations for every growth term available
-in the \code{mapvizier} object:
+in the \code{mapvizier_growth} object:
 \itemize{
  \item number tested in both assessment seasons (i.e., the number of students who 
  too a test in both assessment season and for which we are able to calcualate growth stats).

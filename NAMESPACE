@@ -3,6 +3,8 @@
 S3method(mapvizieR,default)
 S3method(print,mapvizieR)
 S3method(summary,mapvizieR)
+S3method(summary,mapvizieR_cdf)
+S3method(summary,mapvizieR_growth)
 export(abbrev)
 export(add_accelerated_growth)
 export(adhoc_psuedo_quartile)

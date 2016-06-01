@@ -34,7 +34,7 @@ extract_academic_year <- function(x) {
   )
   
   x$fallwinterspring <- prep1[ ,1]
-
+  
   #the academic year of the test date
   prep2 <- do.call(
     what = rbind,
@@ -113,8 +113,8 @@ build_year_in_district <- function(roster) {
 
 abbrev <- function(x, exceptions = NULL){
   x.out <- gsub(pattern = "(\\w)\\w*\\W*", 
-               replacement = "\\1",
-               x = x)
+                replacement = "\\1",
+                x = x)
   
   # pass list of exceptions to the abbrev function
   if (!is.null(exceptions)) {
@@ -308,7 +308,7 @@ standardize_kinder <- function(x, other_codes = NULL){
   
   # cast as integer.vector
   x <- as.integer(x)
-   
+  
   #return 
   x
 }
@@ -328,16 +328,16 @@ standardize_kinder <- function(x, other_codes = NULL){
 fall_spring_me <- function(x) {
   
   #make the df
-    #just the grades
-    gr_spr <- c(0:12)
-    gr_fall <- gr_spr - 0.8
-    gr_wint <- gr_spr - 0.5
-
-    with_k <- c('K', gr_spr[2:13])
-    #just the labels
-    labels_spr <- paste0(with_k, 'S')
-    labels_fall <- paste0(with_k, 'F')
-    labels_wint <- paste0(with_k, 'W')
+  #just the grades
+  gr_spr <- c(0:12)
+  gr_fall <- gr_spr - 0.8
+  gr_wint <- gr_spr - 0.5
+  
+  with_k <- c('K', gr_spr[2:13])
+  #just the labels
+  labels_spr <- paste0(with_k, 'S')
+  labels_fall <- paste0(with_k, 'F')
+  labels_wint <- paste0(with_k, 'W')
   
   labels_df <- data.frame(
     grade_level_season = c(gr_spr, gr_fall, gr_wint),
@@ -430,7 +430,7 @@ is_not_error <- function(x) {
 
 rand_stu <- function(mapvizieR_obj, low = 20, high = 500) {
   sample(mapvizieR_obj[['roster']]$studentid, sample(low:high, 1)) %>% 
-      unique 
+    unique 
 }
 
 
@@ -445,7 +445,7 @@ clean_measurementscale <- function(x) {
   
   x <- ifelse(x == 'Science - General Science', 'General Science', x) 
   x <- ifelse(x == 'Science - Concepts and Processes', 'Concepts and Processes', x) 
-
+  
   return(x)
 }
 
@@ -492,7 +492,7 @@ mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu = 1) {
 }
 
 
-    
+
 #' @title valid_grade_seasons
 #' 
 #' @description a filter on a cdf that restricts the grade_level_season ONLY to 
@@ -575,7 +575,7 @@ mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale) {
   growth_df %>%
     dplyr::filter(
       studentid %in% studentids &
-      measurementscale %in% measurementscale_in
+        measurementscale %in% measurementscale_in
     )  
 }
 
@@ -590,7 +590,7 @@ mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale) {
 #' default is -1, eg off
 
 min_term_filter <- function(cdf, small_n_cutoff = -1) {
-   
+  
   grade_seasons_to_keep <- cdf %>%
     dplyr::group_by(grade_level_season) %>%
     dplyr::summarize(
@@ -606,7 +606,7 @@ min_term_filter <- function(cdf, small_n_cutoff = -1) {
       grade_level_season  
     ) %>%
     as.data.frame()
- 
+  
   cdf %>%
     dplyr::filter(
       grade_level_season %in% as.numeric(grade_seasons_to_keep$grade_level_season)
@@ -634,9 +634,9 @@ min_subgroup_filter <- function(df, subgroup_name, small_n_cutoff = -1) {
   df %>% 
     ensurer::ensure_that(
       subgroup_name %in% names(.) ~ 
-      "the subgroup you specified isn't in the data frame you provided"
+        "the subgroup you specified isn't in the data frame you provided"
     )
-
+  
   #counts and percentages
   to_keep <- df %>%
     dplyr::select_(
@@ -678,7 +678,7 @@ min_subgroup_filter <- function(df, subgroup_name, small_n_cutoff = -1) {
 
 quartile_order <- function(x) { 
   ifelse(x == 2, 1,
-    ifelse(x == 1, 2, x)       
+         ifelse(x == 1, 2, x)       
   )
 }
 
@@ -696,7 +696,7 @@ quartile_order <- function(x) {
 
 time_execution <- function(n, test_function, test_args) {
   timings <- rep(NA, n)
- 
+  
   for (itr in 1:n) {
     start <- Sys.time()
     do.call(
@@ -706,10 +706,10 @@ time_execution <- function(n, test_function, test_args) {
     end <- Sys.time()
     timings[itr] <- end - start
   }
- 
+  
   return(timings)
 }
- 
+
 #' @title n_timings
 #' 
 #' @description a convenience wrapper around timings to record
@@ -745,13 +745,13 @@ n_timings <- function(n, test_function, test_args) {
 ensure_fields <- function(fields_vector, df) {
   
   df %>%
-  ensurer::ensure_that(
-    all(fields_vector %in% names(df)) ~ paste(
-      "this function requires the following fields:",
-      fields_vector[!fields_vector %in% names(df)],
-      "which are missing from your data frame."
+    ensurer::ensure_that(
+      all(fields_vector %in% names(df)) ~ paste(
+        "this function requires the following fields:",
+        fields_vector[!fields_vector %in% names(df)],
+        "which are missing from your data frame."
       )
-  )
+    )
 }
 
 
@@ -793,8 +793,8 @@ ensure_nonzero_students_with_norms <- ensurer::ensures_that(
   nrow(
     subset(., !is.na(typical_growth))
   ) > 0 ~ paste0("Sorry, can't plot that: None of the students in your selection have",
-    " typical growth norms (possibly because they are too old or young and outside",
-    " the NWEA norm study)")
+                 " typical growth norms (possibly because they are too old or young and outside",
+                 " the NWEA norm study)")
 )
 
 
