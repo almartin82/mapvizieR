@@ -60,7 +60,7 @@ summary.mapvizieR_growth <- function(object, ...) {
     digits <- list(...)$digits
   }
   
-  df <- as.data.frame(object$growth_df) %>%
+  df <- as.data.frame(object) %>%
     dplyr::filter(complete_obsv) %>%
     dplyr::mutate(cohort_year = end_map_year_academic + 1 + 12 - end_grade) %>%
     dplyr::group_by(
