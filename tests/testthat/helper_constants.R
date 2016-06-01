@@ -18,9 +18,9 @@ processed_cdf <- process_cdf_long(prepped_cdf)
 studentids_normal_use <- cdf %>%
   dplyr::filter(
     map_year_academic == 2013 & 
-    measurementscale == 'Mathematics' & 
-    fallwinterspring == 'Fall' & 
-    grade == 6
+      measurementscale == 'Mathematics' & 
+      fallwinterspring == 'Fall' & 
+      grade == 6
   ) %>%
   dplyr::select(studentid) %>%
   unlist() %>% unname()
@@ -31,8 +31,8 @@ studentids_random <- sample(ex_CombinedStudentsBySchool$StudentID, 100) %>%
 studentids_subset <- cdf %>%
   dplyr::filter(
     map_year_academic == 2013 & 
-    measurementscale == 'Mathematics' & 
-    fallwinterspring == 'Fall'
+      measurementscale == 'Mathematics' & 
+      fallwinterspring == 'Fall'
   ) %>%
   dplyr::select(studentid) %>%
   unlist() %>% unname()
@@ -40,9 +40,9 @@ studentids_subset <- cdf %>%
 studentids_hs <- cdf %>%
   dplyr::filter(
     map_year_academic == 2013 & 
-    measurementscale == 'Mathematics' & 
-    fallwinterspring == 'Fall' &
-    grade %in% c(10,11)
+      measurementscale == 'Mathematics' & 
+      fallwinterspring == 'Fall' &
+      grade %in% c(10,11)
   ) %>%
   dplyr::select(studentid) %>%
   unlist() %>% unname()

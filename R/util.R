@@ -34,7 +34,7 @@ extract_academic_year <- function(x) {
   )
   
   x$fallwinterspring <- prep1[ ,1]
-
+  
   #the academic year of the test date
   prep2 <- do.call(
     what = rbind,
@@ -113,8 +113,8 @@ build_year_in_district <- function(roster) {
 
 abbrev <- function(x, exceptions = NULL){
   x.out <- gsub(pattern = "(\\w)\\w*\\W*", 
-               replacement = "\\1",
-               x = x)
+                replacement = "\\1",
+                x = x)
   
   # pass list of exceptions to the abbrev function
   if (!is.null(exceptions)) {

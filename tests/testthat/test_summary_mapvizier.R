@@ -1,6 +1,6 @@
 context("mapvizier_summary tests")
 
-ex <- summary(mapviz)
+ex <- summary(mapviz$growth_df)
 
 test_that("summary works as expected", {
   expect_equal(ex$end_pct_75th_pctl %>% sum(na.rm = TRUE), 37.49)
