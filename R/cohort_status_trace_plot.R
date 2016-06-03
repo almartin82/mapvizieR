@@ -87,7 +87,7 @@ cohort_status_trace_plot <- function(
   ) +
   scale_x_continuous(
     breaks = this_sum$grade_level_season %>% unique(),
-    labels = this_sum$grade_level_season %>% 
+    labels = this_sum$grade_level_season %>% unique() %>%
       lapply(fall_spring_me) %>% unlist(),
     limits = c(
       this_sum$grade_level_season %>% unique() %>% min() - .1,

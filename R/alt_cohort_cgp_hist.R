@@ -189,7 +189,7 @@ alt_cohort_cgp_hist_plot <- function(
   ) +
   scale_x_continuous(
     breaks = as_cgp$start_grade_level_season %>% unique(),
-    labels = as_cgp$start_grade_level_season %>% 
+    labels = as_cgp$start_grade_level_season %>% unique() %>%
       lapply(fall_spring_me) %>% unlist(),
     limits = c(
       as_cgp$start_grade_level_season %>% unique() %>% min() - .1,

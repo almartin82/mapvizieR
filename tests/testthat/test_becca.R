@@ -23,7 +23,7 @@ test_that("becca_plot produces proper plot with a grade level of kids", {
 test_that("becca_plot returns expected data with a variety of groupings of kids", {
     
   valid_grades <- c(c(-0.8,4.2), seq(0:13))
-    
+  
   p <- becca_plot(mapviz, studentids_subset, 'Mathematics')
   p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
