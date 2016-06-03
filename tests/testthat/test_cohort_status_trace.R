@@ -10,8 +10,8 @@ p_build <- ggplot2::ggplot_build(p)
 
 test_that("basic tests on cohort status trace plot", {
   expect_is(p, 'ggplot')
-  expect_equal(sum(p_build$data[[1]]$label), 879.9, tolerance = 0.1)
-  expect_equal(sum(p_build$data[[1]]$y), 167L)
+  expect_equal(sum(p_build$data[[1]]$label), 751.9, tolerance = 0.1)
+  expect_equal(sum(p_build$data[[1]]$y), 292L)
 })
 
 
@@ -25,7 +25,7 @@ test_that("cohort status trace plot with alternate parameters", {
   
   p_alt_build <- ggplot2::ggplot_build(p_alt)
   expect_is(p_alt_build, 'list')
-  expect_equal(sum(p_alt_build$data[[1]]$label), 167L)
+  expect_equal(sum(p_alt_build$data[[1]]$label), 292L)
 })
 
 
@@ -40,7 +40,7 @@ test_that("cohort status trace plot, no school collapse", {
   
   p_alt_build <- ggplot2::ggplot_build(p_alt)
   expect_is(p_alt_build, 'list')
-  expect_equal(sum(p_alt_build$data[[1]]$label), 215L)
+  expect_equal(sum(p_alt_build$data[[1]]$label), 292L)
 })
 
 

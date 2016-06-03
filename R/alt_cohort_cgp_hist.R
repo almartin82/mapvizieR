@@ -240,7 +240,6 @@ alt_multi_cohort_cgp_hist_plot <- function(
   plot_labels = 'RIT'
 ) {
   
-  error("This plot is currently broken.  Don't use it :)")
   mv_opening_checks(mapvizieR_obj, studentids, 1)
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
 
