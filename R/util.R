@@ -554,6 +554,8 @@ mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale) {
     ) %>%
     dplyr::tbl_df()
   
+  class(out) <- c("mapvizieR_cdf", class(out))
+  
   return(out)
 }
 
@@ -857,5 +859,5 @@ mv_debugging_vars <- function() {
   min_cohort_size <<- -1
   no_labs <<- FALSE
   plot_labels <<- 'RIT'
-  message('injected common mapvizieR parameter args into your environment as variables.')
+  message('injected common mapvizieR parameter args into your environment.')
 }
