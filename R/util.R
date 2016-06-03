@@ -861,5 +861,6 @@ mv_debugging_vars <- function() {
   plot_labels <<- 'RIT'
   detail_academic_year <<- 2014
   quartile_type <<- 'kipp_quartile'
+  collapse_schools <<- TRUE
   message('injected common mapvizieR parameter args into your environment.')
 }
