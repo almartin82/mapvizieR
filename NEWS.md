@@ -1,3 +1,9 @@
+# mapvizieR 0.3.1
+
+* new viz: `cohort_status_trace_plot()` - uses the 2015 status norms for **grade levels** to show the change in a cohort over time in the **grade level** status space.
+* cleans up warnings on calc_baseline_detail 
+* tidies up `becca_plot()`, with some new parameter checks.
+
 # mapvizieR 0.3.0
 
 * reworked summary functions to create new cdf summary method.  note that this is a breaking change for any code that depends on `summary(mapviz)` - you should use `summary(mapviz$growth_df)` instead.  `summary(mapviz)` will now return a named list with summaries of every relevant element of the mapvizieR object. 
