@@ -280,8 +280,7 @@ test_that("calc_cgp tests with 2015 norms", {
   )[['targets']]
   
   expect_equal(as.character(low_npr_ex$measured_in), c(rep("RIT", 99)))
-  expect_equal(sum(low_npr_ex$growth_target), 1467.182)
-  
+  expect_equal(sum(low_npr_ex$growth_target), 1467.182, tolerance = .01)
 })
 
 

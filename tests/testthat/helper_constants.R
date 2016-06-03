@@ -67,6 +67,17 @@ studentids_gr11 <- cdf %>%
   dplyr::select(studentid) %>%
   unlist() %>% unname()
 
+studentids_one_school <- cdf %>%
+  dplyr::filter(
+    map_year_academic == 2013 & 
+      measurementscale == 'Mathematics' & 
+      fallwinterspring == 'Fall' & 
+      grade == 2 &
+      schoolname == 'Three Sisters Elementary School'
+  ) %>%
+  dplyr::select(studentid) %>%
+  unlist() %>% unname()
+
 mapviz_midyear <- mapvizieR(
   cdf = ex_CombinedAssessmentResults[with(ex_CombinedAssessmentResults, 
                                           TermName != 'Spring 2013-2014'), ], 

@@ -1,7 +1,7 @@
 Package: mapvizieR
 Type: Package
 Title: Visualization and Data Analysis tools for NWEA MAP student data
-Version: 0.3.0
+Version: 0.3.1
 Date: 2015-01-14
 Authors@R: c(
   person("Andrew", "Martin", role = c("aut","cre"), email = "almartin@gmail.com"), 
@@ -10,9 +10,9 @@ Description: mapzivieR is a suite of analytic, visualization, and reporting
     tools for NWEA MAP Data.
 License: file LICENSE
 Depends:
+    ggplot2,
     grid,
     gridExtra (>= 0.9.1),
-    ggplot2,
     magrittr,
     R(>= 2.10.0)
 Suggests:
@@ -21,16 +21,16 @@ Suggests:
 LazyData: true
 VignetteBuilder: knitr
 Imports:
-    dplyr,
-    reshape2,
     assertthat,
-    lubridate,
-    stringr,
+    dplyr,
     ensurer,
-    scales,
-    toOrdinal,
-    RGraphics,
-    gtable,
+    gtable,    
+    lubridate,
     readr,
-    tidyr
+    reshape2,
+    RGraphics,
+    scales,    
+    stringr,
+    tidyr,    
+    toOrdinal
 RoxygenNote: 5.0.1

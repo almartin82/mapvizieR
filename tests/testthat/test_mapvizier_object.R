@@ -22,7 +22,7 @@ test_that("grade_level_ify correctly processes CDF", {
     dplyr::mutate(termname=paste(termname,".xxx"))
   
   ex_cdf_termname_missing$grades <- grade_levelify_cdf(ex_cdf_termname_missing, 
-                                      ex_roster_termname_missing)
+                                                       ex_roster_termname_missing)
   
   
   expect_equal(length(ex_cdf$grades), 9091)
@@ -55,7 +55,7 @@ test_that("grade_season_factors return correct order", {
       grade_season_label = fall_spring_me(grade_level_season)
     ) %>%
     grade_season_factors()
-    
+  
   expect_true(all(c("ordered", "factor") %in% class(with_factors$grade_season_label)))
   
   label_order <- levels(with_factors$grade_season_label)
@@ -78,7 +78,7 @@ test_that("mapvizieR S3 class methods work", {
   
   expect_equal(length(mv), 4)
   expect_equal(names(mv), c("cdf", "roster", "growth_df", "goals"))
-  expect_output(mv, "714 students")
+  expect_output(print.mapvizieR(mv), "714 students")
   expect_output(print.mapvizieR(mv), "SY2012 to SY2013")
   expect_true(is.mapvizieR(mv))
   expect_false(is.mapvizieR(ex_CombinedAssessmentResults))

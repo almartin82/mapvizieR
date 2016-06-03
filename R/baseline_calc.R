@@ -36,7 +36,7 @@ calc_baseline_detail <- function(
   
   #term 1
   munge <- dplyr::left_join(
-    x = data.frame(studentid = studentids),
+    x = data.frame(studentid = studentids, stringsAsFactors = FALSE),
     y = minimal_cdf,
     by = "studentid"
   )  

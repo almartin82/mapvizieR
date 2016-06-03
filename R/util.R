@@ -554,6 +554,8 @@ mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale) {
     ) %>%
     dplyr::tbl_df()
   
+  class(out) <- c("mapvizieR_cdf", class(out))
+  
   return(out)
 }
 
@@ -588,6 +590,8 @@ mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale) {
 #' @param cdf conforming cdf
 #' @param small_n_cutoff anything below this percent will get filtered out.  
 #' default is -1, eg off
+#' 
+#' @export
 
 min_term_filter <- function(cdf, small_n_cutoff = -1) {
   
@@ -607,10 +611,32 @@ min_term_filter <- function(cdf, small_n_cutoff = -1) {
     ) %>%
     as.data.frame()
   
-  cdf %>%
+  out <- cdf %>%
     dplyr::filter(
       grade_level_season %in% as.numeric(grade_seasons_to_keep$grade_level_season)
     )  
+
+  class(out) <- c("mapvizieR_cdf", class(out))
+  
+  return(out)
+}
+
+
+#' cdf collapse by grade
+#'
+#' @description strips out term and year info so that summary.mapvizieR_cdf will cleanly group students by grade_level_season, school
+#' and measurementscale
+#' @param cdf 
+#'
+#' @return data frame 
+#' @export
+
+cdf_collapse_by_grade <- function(cdf) {
+  
+  cdf$termname <- NA
+  cdf$map_year_academic <- NA
+  
+  cdf
 }
 
 
@@ -857,5 +883,8 @@ mv_debugging_vars <- function() {
   min_cohort_size <<- -1
   no_labs <<- FALSE
   plot_labels <<- 'RIT'
-  message('injected common mapvizieR parameter args into your environment as variables.')
+  detail_academic_year <<- 2014
+  quartile_type <<- 'kipp_quartile'
+  collapse_schools <<- TRUE
+  message('injected common mapvizieR parameter args into your environment.')
 }
