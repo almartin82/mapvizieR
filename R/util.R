@@ -590,6 +590,8 @@ mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale) {
 #' @param cdf conforming cdf
 #' @param small_n_cutoff anything below this percent will get filtered out.  
 #' default is -1, eg off
+#' 
+#' @export
 
 min_term_filter <- function(cdf, small_n_cutoff = -1) {
   
