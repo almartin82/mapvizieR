@@ -207,11 +207,11 @@ becca_plot <- function(
   legend_labels = c('1st', '2nd', '3rd', '4th')
   
   #color style?
-  if (color_scheme == 'KIPP Report Card') {
+  if ('KIPP Report Card' %in% color_scheme) {
     p <- p + scale_fill_manual(
       values = kipp_4col, labels = legend_labels, name = 'Quartiles' 
     )
-  } else if (color_scheme == 'NYS') {
+  } else if ('NYS' %in% color_scheme) {
     p <- p + scale_fill_manual(
       values = kipp_4col, labels = c('1', '2', '3', '4'), name = 'Perf Level'
     )
