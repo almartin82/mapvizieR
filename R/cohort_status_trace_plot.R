@@ -41,7 +41,7 @@ cohort_status_trace_plot <- function(
   entry_grade_seasons = c(-0.8, 4.2),
   collapse_schools = TRUE,
   retention_strategy = 'collapse',
-  small_n_cutoff = 0.5,
+  small_n_cutoff = -1,
   plot_labels = 'RIT'
 ) {
   
@@ -62,9 +62,8 @@ cohort_status_trace_plot <- function(
   #as unique terms
   if (retention_strategy == 'collapse') {
     this_cdf <- cdf_collapse_by_grade(this_cdf)
-  } else if (retention_strategy == 'filter_small') {
-    this_cdf <- min_term_filter(this_cdf, small_n_cutoff)
-  }
+  } 
+  
   
   #summary groups by school.  if you want transfers in prior years to show as one unit, you want to collapse schools.
   if (collapse_schools) {
@@ -73,7 +72,11 @@ cohort_status_trace_plot <- function(
     
   #cdf summary
   this_sum <- summary(this_cdf)
-  
+
+  if (retention_strategy == 'filter_small') {
+    this_sum <- this_sum[this_sum$n_students >= small_n_cutoff * max(this_sum$n_students), ]
+  }
+
   if(plot_labels == 'RIT') {
     this_sum$label_text <- this_sum$mean_testritscore %>% round(1)
   }
