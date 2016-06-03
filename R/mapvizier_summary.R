@@ -151,7 +151,8 @@ summary.mapvizieR_cdf <- function(object, ...) {
       termname, schoolname, grade, grade_level_season) %>%
     dplyr::summarize(
       mean_testritscore = mean(testritscore, na.rm = TRUE),
-      mean_percentile = mean(consistent_percentile, na.rm = TRUE)
+      mean_percentile = mean(consistent_percentile, na.rm = TRUE),
+      n_students = n()
     ) 
   
   df$cohort_status_npr <- NA_integer_
