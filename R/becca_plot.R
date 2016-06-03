@@ -38,6 +38,14 @@ becca_plot <- function(
   #data validation
   mv_opening_checks(mapvizieR_obj, studentids, 1)
 
+  valid_color_schemes <- c('KIPP Report Card', 'NYS')
+  color_scheme %>% ensurer::ensure_that(
+    any(. %in% valid_color_schemes | length(.) == 4L) ~
+      paste0("color scheme should be either one of: ", 
+             paste(valid_color_schemes, collapse = ', '), 
+             " or a length 4 vector of colors")
+  )
+  
   #TRANSFORMATION 1 - DATA PROCESSING
   #unpack the mapvizieR object and limit to desired students
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
@@ -92,8 +100,8 @@ becca_plot <- function(
           
   
   prepped <- dplyr::left_join(
-      quartile_totals, 
-      term_totals[, c(2,3)],
+      x = quartile_totals, 
+      y = term_totals[, c(2,3)],
       by = "grade_level_season"
     ) %>%
     dplyr::mutate(
@@ -136,23 +144,23 @@ becca_plot <- function(
       aes(
         x = grade_level_season,
         y = pct,
-        fill = factor(quartile),
-        order = order
+        fill = factor(quartile)
       ),
       stat = "identity"
     ) +
-    #bottom half of NPR plots
+  #bottom half of NPR plots, supressing silly warning that happens when you have negative ys
     geom_bar(
       data = npr_below,
       aes(
         x = grade_level_season,
         y = pct,
-        fill = factor(quartile),
-        order = order
+        fill = factor(quartile)
       ),
       stat = "identity"
-    ) +
-    #labels above
+    ) 
+  
+  #labels above
+  p <- p +
     geom_text(
       data = npr_above,
       aes(
@@ -216,6 +224,5 @@ becca_plot <- function(
   p <- p + guides(fill = guide_legend(reverse = TRUE))
   
   # return
-  p
-  
+  p 
 }

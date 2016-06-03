@@ -14,9 +14,8 @@ test_that("becca_plot produces proper plot with a grade level of kids", {
   p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 6)
-  expect_equal(ncol(p_build$data[[2]]), 14)
+  expect_equal(ncol(p_build$data[[2]]), 13)
   expect_equal(sum(p_build$data[[3]][, 2]), 133.871, tolerance = .001)
-
 })
 
 
@@ -34,8 +33,8 @@ test_that("becca_plot returns expected data with a variety of groupings of kids"
   p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 12)
-  expect_equal(ncol(p_build$data[[1]]), 14)
-  expect_equal(sum(p_build$data[[2]][, 3]), -269.1622, tolerance = .001)
+  expect_equal(ncol(p_build$data[[1]]), 13)
+  expect_equal(sum(p_build$data[[2]][, 3]), -398.8634, tolerance = .001)
   expect_equal(sum(p_build$data[[3]][, 2]), 358.9267, tolerance = .001)
 
   p <- becca_plot(mapviz, studentids_subset, 'Mathematics', first_and_spring_only=TRUE,
@@ -43,38 +42,45 @@ test_that("becca_plot returns expected data with a variety of groupings of kids"
   p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 16)
-  expect_equal(ncol(p_build$data[[1]]), 14)
-  expect_equal(sum(p_build$data[[2]][, 3]), -429.7291, tolerance = .001)
+  expect_equal(ncol(p_build$data[[1]]), 13)
+  expect_equal(sum(p_build$data[[2]][, 3]), -648.1719, tolerance = .001)
   expect_equal(sum(p_build$data[[3]][, 2]),  456.7542, tolerance = .001)
 
   p <- becca_plot(mapviz, studentids_normal_use, 'Mathematics', detail_academic_year=2016)
   p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 2)
-  expect_equal(ncol(p_build$data[[1]]), 14)
-  expect_equal(sum(p_build$data[[2]][, 3]), -76.34409, tolerance = .001)
+  expect_equal(ncol(p_build$data[[1]]), 13)
+  expect_equal(sum(p_build$data[[2]][, 3]), -110.7527, tolerance = .001)
   expect_equal(sum(p_build$data[[3]][, 2]), 46.77419, tolerance = .001)
   
   p <- becca_plot(mapviz, studentids_normal_use, 'Mathematics', first_and_spring_only=FALSE)
   p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 6)
-  expect_equal(ncol(p_build$data[[1]]), 14)
-  expect_equal(sum(p_build$data[[2]][, 3]), -256.9892, tolerance = .001)
+  expect_equal(ncol(p_build$data[[1]]), 13)
+  expect_equal(sum(p_build$data[[2]][, 3]), -330.1075, tolerance = .001)
   expect_equal(sum(p_build$data[[3]][, 2]), 133.871, tolerance = .001)
   
   #alt colors
-  p <- becca_plot(mapviz, studentids_subset, 'Mathematics', color_scheme='Sequential Blues')
+  p <- becca_plot(mapviz, studentids_subset, 'Mathematics', color_scheme = 'NYS')
   p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 8)
 
   p <- becca_plot(mapviz, studentids_subset, 'Mathematics', 
-    color_scheme=c('gray30', 'gray50', 'hotpink', 'dodgerblue'))
+    color_scheme = c('gray30', 'gray50', 'hotpink', 'dodgerblue'))
   p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 8)
-  
+})
+
+
+test_that("becca plot with bad color scheme should error in an informative way", {
+  expect_error(
+    becca_plot(mapviz, studentids_subset, 'Mathematics', color_scheme = 'pretty'),
+    "color scheme should be either one of" 
+  )
 })
 
 
