@@ -859,5 +859,7 @@ mv_debugging_vars <- function() {
   min_cohort_size <<- -1
   no_labs <<- FALSE
   plot_labels <<- 'RIT'
+  detail_academic_year <<- 2014
+  quartile_type <<- 'kipp_quartile'
   message('injected common mapvizieR parameter args into your environment.')
 }
