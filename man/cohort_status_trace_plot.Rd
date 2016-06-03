@@ -7,6 +7,7 @@
 cohort_status_trace_plot(mapvizieR_obj, studentids, measurementscale,
   match_method = "no matching", first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2), collapse_schools = TRUE,
+  retention_strategy = "collapse", small_n_cutoff = 0.5,
   plot_labels = "RIT")
 }
 \arguments{
@@ -30,6 +31,8 @@ default is TRUE.}
 
 \item{collapse_schools}{treats all students as part of the same 'school' for purposes of plotting, so that one trajectory is shown.
 default is TRUE.  if FALSE will separate lines by school and show a lengend.}
+
+\item{retention_strategy}{}
 
 \item{plot_labels}{c('RIT', 'NPR').  'RIT' is default.}
 

@@ -72,8 +72,8 @@ studentids_one_school <- cdf %>%
     map_year_academic == 2013 & 
       measurementscale == 'Mathematics' & 
       fallwinterspring == 'Fall' & 
-      grade == 6 &
-      schoolname == 'Mt. Bachelor Middle School'
+      grade == 2 &
+      schoolname == 'Three Sisters Elementary School'
   ) %>%
   dplyr::select(studentid) %>%
   unlist() %>% unname()

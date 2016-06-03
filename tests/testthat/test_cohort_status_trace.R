@@ -28,6 +28,7 @@ test_that("cohort status trace plot with alternate parameters", {
   expect_equal(sum(p_alt_build$data[[1]]$label), 167L)
 })
 
+
 test_that("cohort status trace plot, no school collapse", {
   p_alt <- cohort_status_trace_plot(
     mapvizieR_obj = mapviz,
@@ -40,4 +41,20 @@ test_that("cohort status trace plot, no school collapse", {
   p_alt_build <- ggplot2::ggplot_build(p_alt)
   expect_is(p_alt_build, 'list')
   expect_equal(sum(p_alt_build$data[[1]]$label), 215L)
+})
+
+
+test_that("cohort status trace plot with alternate retention strategies", {
+  p_alt <- cohort_status_trace_plot(
+    mapvizieR_obj = mapviz,
+    studentids = studentids_one_school,
+    measurementscale = 'Mathematics',
+    plot_labels = 'NPR',
+    collapse_schools = TRUE,
+    retention_strategy = 'filter_small'
+  )
+  
+  p_alt_build <- ggplot2::ggplot_build(p_alt)
+  expect_is(p_alt_build, 'list')
+  expect_equal(sum(p_alt_build$data[[1]]$label), 292L)
 })

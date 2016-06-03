@@ -14,6 +14,7 @@
 #' @param entry_grade_seasons which grade_level_seasons are entry grades?
 #' @param collapse_schools treats all students as part of the same 'school' for purposes of plotting, so that one trajectory is shown.
 #' default is TRUE.  if FALSE will separate lines by school and show a lengend.
+#' @param retention_strategy 
 #' @param plot_labels c('RIT', 'NPR').  'RIT' is default.
 #'
 #' @return a ggplot object
@@ -39,12 +40,31 @@ cohort_status_trace_plot <- function(
   first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2),
   collapse_schools = TRUE,
+  retention_strategy = 'collapse',
+  small_n_cutoff = 0.5,
   plot_labels = 'RIT'
 ) {
   
-  #opening
+  #opening parameter checks
+  valid_retention <- c('collapse', 'filter_small')
+  retention_strategy %>% ensurer::ensure_that(
+    . %in% valid_retention ~
+      paste0("retention_strategy should be either one of: ", paste(valid_retention, collapse = ', '))
+  )
+  
+  #mv consistency checks
   mv_opening_checks(mapvizieR_obj, studentids, 1)
+  
+  #limit
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
+  
+  #prep the internal cdf for summary().  zero out map_year_academic and termname to prevent retained students from showing 
+  #as unique terms
+  if (retention_strategy == 'collapse') {
+    this_cdf <- cdf_collapse_by_grade(this_cdf)
+  } else if (retention_strategy == 'filter_small') {
+    this_cdf <- min_term_filter(this_cdf, small_n_cutoff)
+  }
   
   #summary groups by school.  if you want transfers in prior years to show as one unit, you want to collapse schools.
   if (collapse_schools) {
