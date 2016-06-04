@@ -54,14 +54,11 @@ test_that("quealy_subgroups with complete_obsv and title", {
   expect_is(samp_nyt, 'gDesc')
   
   expect_equal(length(samp_nyt), 2)
-  expect_equal(names(samp_nyt), c("grobs", "layout",
-                                  "widths", "heights", "respect",
-                                  "rownames", 
-                                  "colnames", "name",
-                                  "gp", "vp"))
-  
-  #expect_equal(dimnames(summary(samp_nyt[[4]]))[[2]], c("Length", "Class", "Mode"))
-  #expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
+  expect_equal(
+    names(samp_nyt), 
+    c("grobs", "layout", "widths", "heights", "respect", "rownames", 
+      "colnames", "name", "gp", "vp", "children", "childrenOrder")
+  )
 })
 
 
