@@ -28,8 +28,8 @@ test_that("quealy_subgroups produces proper plot with a grade level of kids", {
   expect_equal(length(samp_nyt), 2)
   expect_equal(
     names(samp_nyt), 
-    c("grobs", "layout", "widths", "heights", "respect",
-      "rownames", "colnames", "name", "gp", "vp")
+    c("grobs", "layout", "widths", "heights", "respect", "rownames", 
+      "colnames", "name", "gp", "vp", "children", "childrenOrder")
   )
 })
 
