@@ -56,6 +56,6 @@ test_that("historic recap report detail produces valid plot", {
   expect_equal(
     p[[1]][[6]] %>% names(),
     c("grobs", "layout", "widths", "heights", "respect", "rownames", 
-      "colnames", "name", "gp", "vp")
+      "colnames", "name", "gp", "vp", "children", "childrenOrder")
   )
 })
