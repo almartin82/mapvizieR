@@ -1,3 +1,8 @@
+# mapvizieR 0.3.2
+
+* test fixes, mostly causes by changes to `ggplot2` output or changes to our `summary()` methods.
+* some housekeeping on function documentation
+
 # mapvizieR 0.3.1
 
 * new viz: `cohort_status_trace_plot()` - uses the 2015 status norms for **grade levels** to show the change in a cohort over time in the **grade level** status space.
