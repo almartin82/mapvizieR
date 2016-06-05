@@ -12,7 +12,9 @@ roster_to_cdf(target_df, mapvizieR_obj, roster_cols,
 
 \item{mapvizieR_obj}{a conforming mapvizieR object}
 
-\item{roster_cols}{roster column names you want to move over.}
+\item{roster_cols}{roster column names you want to move over. to move 'studentgender', pass 
+the character string.  to move multiple columns, pass as
+a vector: c('studentgender', 'studentethnicgroup')}
 
 \item{by_measurementscale}{boolean, when you have student demographics that are specific to a 
 particular assessment - eg course enrollment, but the match is specific to student AND

@@ -7,7 +7,7 @@
 cohort_status_trace_plot(mapvizieR_obj, studentids, measurementscale,
   match_method = "no matching", first_and_spring_only = TRUE,
   entry_grade_seasons = c(-0.8, 4.2), collapse_schools = TRUE,
-  retention_strategy = "collapse", small_n_cutoff = 0.5,
+  retention_strategy = "collapse", small_n_cutoff = -1,
   plot_labels = "RIT")
 }
 \arguments{
