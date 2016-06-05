@@ -14,6 +14,20 @@ test_that("roster_to_cdf tests", {
 })
 
 
+test_that("roster_to_cdf tests with mult columns", {
+  
+  ex <- roster_to_cdf(
+    target_df = mapviz$cdf,
+    mapvizieR_obj = mapviz,
+    roster_cols = c('studentgender', 'studentethnicgroup')
+  )
+  expect_equal(nrow(ex), nrow(mapviz$cdf))
+  expect_true('studentgender' %in% names(ex))
+  expect_true('studentethnicgroup' %in% names(ex))
+  expect_equal(table(ex$studentgender)[1] %>% unname(), 4283)
+  expect_equal(table(ex$studentgender)[2] %>% unname(), 4268)
+})
+
 
 test_that("roster_to_cdf tests with matching roster col", {
 
