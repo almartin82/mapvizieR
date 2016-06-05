@@ -81,14 +81,11 @@ test_that("quealy_subgroups with no CGP", {
   expect_is(samp_nyt, 'gDesc')
   
   expect_equal(length(samp_nyt), 3)
-  expect_equal(names(samp_nyt), c("grobs", "layout",
-                                  "widths", "heights", "respect",
-                                  "rownames", 
-                                  "colnames", "name",
-                                  "gp", "vp"))
-  
-  #expect_equal(dimnames(summary(samp_nyt[[4]]))[[2]], c("Length", "Class", "Mode"))
-  #expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
+  expect_equal(
+    names(samp_nyt), 
+    c("grobs", "layout", "widths", "heights", "respect", "rownames", 
+      "colnames", "name", "gp", "vp", "children", "childrenOrder")
+  )
 })
 
 
@@ -111,14 +108,11 @@ test_that("quealy_subgroups with no school growth study", {
   expect_is(samp_nyt, 'gDesc')
   
   expect_equal(length(samp_nyt), 3)
-  expect_equal(names(samp_nyt), c("grobs", "layout",
-                                  "widths", "heights", "respect",
-                                  "rownames", 
-                                  "colnames", "name",
-                                  "gp", "vp"))
-  
-  #expect_equal(dimnames(summary(samp_nyt[[4]]))[[2]], c("Length", "Class", "Mode"))
-  #expect_equal(unname(summary(samp_nyt[[4]])[1, ]), c("6", "frame", "list"))
+  expect_equal(
+    names(samp_nyt),
+    c("grobs", "layout", "widths", "heights", "respect", "rownames", 
+      "colnames", "name", "gp", "vp", "children", "childrenOrder")
+  )
 })
 
 
@@ -142,14 +136,11 @@ test_that("quealy_subgroups with multiple growth windows", {
   expect_is(auto_growth, 'gDesc')
   
   expect_equal(length(auto_growth), 3)
-  expect_equal(names(auto_growth), c("grobs", "layout",
-                                  "widths", "heights", "respect",
-                                  "rownames", 
-                                  "colnames", "name",
-                                  "gp", "vp"))
-  
-  #expect_equal(dimnames(summary(auto_growth[[4]]))[[2]], c("Length", "Class", "Mode"))
-  #expect_equal(unname(summary(auto_growth[[4]])[1, ]), c("6", "frame", "list"))
+  expect_equal(
+    names(auto_growth), 
+    c("grobs", "layout", "widths", "heights", "respect", "rownames", 
+      "colnames", "name", "gp", "vp", "children", "childrenOrder")
+  )
 })
 
 
@@ -176,9 +167,9 @@ test_that("quealy_subgroups with starting_quartile magic subgroup", {
   expect_equal(length(magic_quartiles), 3)
   expect_equal(
     names(magic_quartiles), 
-    c("grobs", "layout", "widths", "heights", "respect",
-      "rownames", "colnames", "name", "gp", "vp")
-    )
+    c("grobs", "layout", "widths", "heights", "respect", "rownames", 
+      "colnames", "name", "gp", "vp", "children", "childrenOrder")
+  )
 })
 
 
@@ -227,8 +218,8 @@ test_that("quealy_subgroups with small_n filter", {
   expect_equal(length(small_n), 2)
   expect_equal(
     names(small_n), 
-    c("grobs", "layout", "widths", "heights", "respect",
-      "rownames", "colnames", "name", "gp", "vp")
+    c("grobs", "layout", "widths", "heights", "respect", "rownames", 
+      "colnames", "name", "gp", "vp", "children", "childrenOrder")
   )
 })
 
@@ -257,8 +248,8 @@ test_that("quealy_subgroups with auto growth window", {
   expect_equal(length(auto_window), 2)
   expect_equal(
     names(auto_window), 
-    c("grobs", "layout", "widths", "heights", "respect",
-      "rownames", "colnames", "name", "gp", "vp")
+    c("grobs", "layout", "widths", "heights", "respect", "rownames", 
+      "colnames", "name", "gp", "vp", "children", "childrenOrder")
     )
 })
 
