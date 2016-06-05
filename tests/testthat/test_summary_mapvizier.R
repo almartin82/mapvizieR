@@ -7,7 +7,7 @@ test_that("summary works as expected on growth df", {
   expect_equal(nrow(ex), 149)
   expect_equal(sum(ex$cgp, na.rm = TRUE), 7344.26)
   
-  ex2 <- summary(mapviz, digits = 3)
+  ex2 <- summary(mapviz$growth_df, digits = 3)
   expect_equal(ex2$end_pct_75th_pctl %>% sum(na.rm = TRUE), 37.462)
 })
 

@@ -229,12 +229,10 @@ test_that("timing functions", {
   gls <- unique(processed_cdf$grade_level_season)
   for_test <- base::sample(gls, 100000, replace = TRUE)
 
-  msg <- capture.output(
-    n_timings(n=20, test_function="fall_spring_me", test_args=list(x=for_test))
+  expect_output(
+    n_timings(n=20, test_function="fall_spring_me", test_args=list(x=for_test)), 
+    "20 trials of fall_spring_me with mean time"
   )
-
-  expect_output(msg, "20 trials of fall_spring_me with mean time")
-
 })
 
 

@@ -212,7 +212,6 @@ multi_cohort_cgp_hist_plot <- function(
   facet_dir = 'wide'
 ) {
   
-  error("this plot is currently not functioning.  check back later :)")
   mv_opening_checks(mapvizieR_obj, studentids, 1)
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
 

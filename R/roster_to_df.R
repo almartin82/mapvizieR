@@ -5,7 +5,9 @@
 #' 
 #' @param target_df the df you want to put stuff on
 #' @param mapvizieR_obj a conforming mapvizieR object
-#' @param roster_cols roster column names you want to move over.
+#' @param roster_cols roster column names you want to move over. to move 'studentgender', pass 
+#' the character string.  to move multiple columns, pass as
+#' a vector: c('studentgender', 'studentethnicgroup')
 #' @param by_measurementscale boolean, when you have student demographics that are specific to a 
 #' particular assessment - eg course enrollment, but the match is specific to student AND
 #' measurementscale, not just student.  if TRUE your roster object must contain a field
