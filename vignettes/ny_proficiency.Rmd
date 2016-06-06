@@ -910,18 +910,21 @@ ny_predicted_proficiency <- dplyr::bind_rows(
   ny_read_spr_g6_l1, ny_read_spr_g6_l2, ny_read_spr_g6_l3, ny_read_spr_g6_l4,
   ny_read_spr_g7_l1, ny_read_spr_g7_l2, ny_read_spr_g7_l3, ny_read_spr_g7_l4,
   ny_read_spr_g8_l1, ny_read_spr_g8_l2, ny_read_spr_g8_l3, ny_read_spr_g8_l4,
+  
   ny_math_spr_g3_l1, ny_math_spr_g3_l2, ny_math_spr_g3_l3, ny_math_spr_g3_l4,
   ny_math_spr_g4_l1, ny_math_spr_g4_l2, ny_math_spr_g4_l3, ny_math_spr_g4_l4,
   ny_math_spr_g5_l1, ny_math_spr_g5_l2, ny_math_spr_g5_l3, ny_math_spr_g5_l4,
   ny_math_spr_g6_l1, ny_math_spr_g6_l2, ny_math_spr_g6_l3, ny_math_spr_g6_l4,
   ny_math_spr_g7_l1, ny_math_spr_g7_l2, ny_math_spr_g7_l3, ny_math_spr_g7_l4,
-  ny_math_win_g8_l1, ny_math_win_g8_l2, ny_math_win_g8_l3, ny_math_win_g8_l4,
+  ny_math_spr_g8_l1, ny_math_spr_g8_l2, ny_math_spr_g8_l3, ny_math_spr_g8_l4,
+  
   ny_read_win_g3_l1, ny_read_win_g3_l2, ny_read_win_g3_l3, ny_read_win_g3_l4,
   ny_read_win_g4_l1, ny_read_win_g4_l2, ny_read_win_g4_l3, ny_read_win_g4_l4,
   ny_read_win_g5_l1, ny_read_win_g5_l2, ny_read_win_g5_l3, ny_read_win_g5_l4,
   ny_read_win_g6_l1, ny_read_win_g6_l2, ny_read_win_g6_l3, ny_read_win_g6_l4,
   ny_read_win_g7_l1, ny_read_win_g7_l2, ny_read_win_g7_l3, ny_read_win_g7_l4,
   ny_read_win_g8_l1, ny_read_win_g8_l2, ny_read_win_g8_l3, ny_read_win_g8_l4,
+  
   ny_math_win_g3_l1, ny_math_win_g3_l2, ny_math_win_g3_l3, ny_math_win_g3_l4,
   ny_math_win_g4_l1, ny_math_win_g4_l2, ny_math_win_g4_l3, ny_math_win_g4_l4,
   ny_math_win_g5_l1, ny_math_win_g5_l2, ny_math_win_g5_l3, ny_math_win_g5_l4,

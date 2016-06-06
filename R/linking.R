@@ -12,6 +12,14 @@
 
 ny_linking <- function(measurementscale, current_grade, season, RIT, returns = 'perf_level') {
  
+  valid_returns <- c('perf_level', 'proficient')
+  returns %>% ensurer::ensure_that(
+    . %in% valid_returns ~ 
+      paste0("returns should be one of: ", 
+        paste(valid_returns, collapse = ', ')
+      )
+  )
+  
   out <- ny_predicted_proficiency %>%
     dplyr::filter(
       ny_subj == measurementscale,
@@ -21,7 +29,11 @@ ny_linking <- function(measurementscale, current_grade, season, RIT, returns = '
     )
   
   if (nrow(out)==0) {
-    out <- NA
+    if (returns == 'perf_level') {
+      out <- NA_character_  
+    } else if (returns == 'proficient') {
+      out <- NA
+    }
   } else {
     out <- out[, returns] %>% unlist %>% unname()  
   }
