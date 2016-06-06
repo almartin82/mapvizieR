@@ -20,3 +20,13 @@ test_that('NYS linking returns known performance levels', {
   expect_equal(ny_linking('Mathematics', 7, 'Winter', 253), 'Level 4')
   
 })
+
+
+test_that('NYS linking row that was misbehaving and returning two results', {
+  expect_equal(ny_linking('Mathematics', 8, 'Winter', 249, 'proficient'), TRUE)
+})
+
+
+test_that('NYS linking returns NA for uncovered assessments', {
+  expect_equal(ny_linking('Mathematics', 1, 'Winter', 195), NA)
+})

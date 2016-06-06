@@ -12,7 +12,7 @@ ny_linking(measurementscale, current_grade, season, RIT,
 
 \item{current_grade}{grade level}
 
-\item{season}{c('fall', 'winter', 'spring')}
+\item{season}{c('Fall', 'Winter', 'Spring')}
 
 \item{RIT}{rit score}
 
