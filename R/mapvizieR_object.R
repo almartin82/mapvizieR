@@ -54,7 +54,13 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
   
   #headline growth df
   if (verbose) print('calculating growth scores for students...')
-  growth_df <- generate_growth_dfs(processed_cdf, ...)$headline
+  
+  if (norms == 2015) {
+    norms_long <- norms_students_wide_to_long(student_growth_norms_2015)
+  } else if (norms == 2011) {
+    norms_long <- norms_students_wide_to_long(student_growth_norms_2011)
+  }
+  growth_df <- generate_growth_dfs(processed_cdf, norm_df_long = norms_long, ...)$headline
   
   #TODO: goal growth df
   

@@ -1,3 +1,7 @@
+# mapvizieR 0.3.3
+
+* fixed a bug that was preventing the mapvizieR object from correctly using the 2011 growth norms for the `growth_df`.
+
 # mapvizieR 0.3.2
 
 * test fixes, mostly causes by changes to `ggplot2` output or changes to our `summary()` methods.
