@@ -117,4 +117,8 @@ test_that("mapvizieR object works with different norms",{
     roster = ex_CombinedStudentsBySchool,
     norms = 2011
   )
+  
+  expect_equal(sum(mv_2011$growth_df$reported_growth, na.rm = TRUE), 47050L)
+  expect_equal(sum(mapviz$growth_df$reported_growth, na.rm = TRUE), 53164L)
+
 })
