@@ -122,18 +122,18 @@ goal_strand_summary_plot <- function(
   
   m_goal_scores <- .data %>%
     dplyr::select(studentid, testid, measurementscale, schoolname, cohort, termname, fallwinterspring, map_year_academic, grade,
-           matches("(goal)[0-9]ritscore"))
+           dplyr::matches("(goal)[0-9]ritscore"))
   
   m_goal_stderr <- .data %>%
     dplyr::select(studentid, testid, measurementscale, schoolname, cohort, termname, fallwinterspring, map_year_academic, grade,
-           matches("(goal)[0-9]stderr"))
+           dplyr::matches("(goal)[0-9]stderr"))
   
   m_goal_names <- .data %>%
     dplyr::select(studentid, testid, measurementscale, schoolname, cohort, termname, fallwinterspring, map_year_academic, grade,
-           matches("(goal)[0-9](name)")) 
+           dplyr::matches("(goal)[0-9](name)")) 
   m_goal_range <- .data %>%
     dplyr::select(studentid, testid, measurementscale, schoolname, cohort, termname, fallwinterspring, map_year_academic, grade,
-           matches("(goal)[0-9](range)"))
+           dplyr::matches("(goal)[0-9](range)"))
   
   # time to gather
   

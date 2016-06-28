@@ -71,7 +71,7 @@ cohort_longitudinal_npr_plot <- function(
   grouped$studentid <- 'Cohort'
   grouped$short_name <- 'Cohort'
   
-  final_cdf <- rbind(
+  final_cdf <- dplyr::bind_rows(
     grouped,
     this_cdf %>% 
       dplyr::select(

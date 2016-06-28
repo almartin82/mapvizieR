@@ -94,7 +94,7 @@ goal_strand_plot <- function(
                               testritscore,
                               testpercentile,
                               testquartile,
-                              matches("(goal)[0-9]ritscore")
+                              dplyr::matches("(goal)[0-9]ritscore")
   )
   
   
@@ -109,7 +109,7 @@ goal_strand_plot <- function(
                              testritscore,
                              testpercentile,
                              testquartile,
-                             matches("(goal)[0-9]name")
+                             dplyr::matches("(goal)[0-9]name")
   )
   
   
@@ -167,7 +167,7 @@ goal_strand_plot <- function(
                             color = testquartile
                             ), 
                         size = 1.5, 
-                        show_guide = T
+                        show.legend = T
                         ) + 
     ggplot2::scale_fill_gradient("Deviation from\nOverall RIT",
                                  low = "red", 

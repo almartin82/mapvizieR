@@ -28,5 +28,5 @@ test_that('NYS linking row that was misbehaving and returning two results', {
 
 
 test_that('NYS linking returns NA for uncovered assessments', {
-  expect_equal(ny_linking('Mathematics', 1, 'Winter', 195), NA)
+  expect_equal(ny_linking('Mathematics', 1, 'Winter', 195), NA_character_)
 })

@@ -64,7 +64,7 @@ rit_height_weight_npr <- function(
   placeholder2$grade_level_season <- min(e$norms_dense$grade_level_season) - 2
   placeholder2$grade <- min(e$norms_dense$grade_level_season) - 2
   
-  e$norms_dense <- rbind(e$norms_dense, placeholder1, placeholder2)
+  e$norms_dense <- dplyr::bind_rows(e$norms_dense, placeholder1, placeholder2)
   
   #only one per percentile
   bottom <- e$norms_dense %>%

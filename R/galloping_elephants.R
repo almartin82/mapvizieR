@@ -47,11 +47,16 @@ galloping_elephants <- function(mapvizieR_obj,
     dplyr::mutate(grade_season_label = droplevels(grade_season_label))
   
   #a dummy plot, just to get heights of the density graphs
-  dummy <- ggplot(data = munge,
-                  aes(x = testritscore,
-                      group = grade_season_label,
-                      label = grade_season_label)) +
-    geom_density()
+  dummy <- ggplot(
+    data = munge,
+    aes(
+      x = testritscore,
+      group = grade_season_label,
+      label = grade_season_label
+    )
+  ) +
+  geom_density()
+  
   points <- ggplot_build(dummy)
   
   #just get the data
@@ -77,8 +82,7 @@ galloping_elephants <- function(mapvizieR_obj,
     )
   
   #cbind in the factor names (ie the group names)
-  full_max <-
-    cbind(full_max, grade_labels = term_counts$grade_season_label)
+  full_max <- dplyr::bind_cols(full_max, data.frame(grade_labels = term_counts$grade_season_label, stringsAsFactors = FALSE))
   
   #make and return the plot
   p <- ggplot(

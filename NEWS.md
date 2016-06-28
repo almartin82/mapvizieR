@@ -1,3 +1,12 @@
+# mapvizieR 0.3.5
+
+* various hotfixes on plots that were breaking.  most issues appear to be related to upstream changes in `dplyr`. in particular:
+
+- `base::rbind()` replaced with `dplyr::bind_rows()`.  `rbind` seems confused by `dplyr` output.  see [issue 293](https://github.com/almartin82/mapvizieR/issues/293) for detail.
+
+- `dplyr::select` needed references to `matches` explicitly prefixed with `dplyr::`.  Something about the scoping of those `dplyr::select()` statements appears to have changed with dplyr 0.5.0.
+
+
 # mapvizieR 0.3.4
 
 * an upstream change to `dplyr` broke `roster_to_growth_df`.

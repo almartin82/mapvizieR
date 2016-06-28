@@ -61,7 +61,7 @@ strands_list_plot <- function(mapvizier_obj,
                   testritscore,
                   consistent_percentile,
                   testquartile,
-                  matches("(goal)[0-9]ritscore")
+                  dplyr::matches("(goal)[0-9]ritscore")
     )
   
   
@@ -75,7 +75,7 @@ strands_list_plot <- function(mapvizier_obj,
                   testritscore,
                   consistent_percentile,
                   testquartile,
-                  matches("(goal)[0-9]name")
+                  dplyr::matches("(goal)[0-9]name")
     )
   
   # melt scores
