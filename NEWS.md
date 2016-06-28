@@ -1,3 +1,7 @@
+# mapvizieR 0.3.4
+
+* an upstream change to `dplyr` broke `roster_to_growth_df`.
+
 # mapvizieR 0.3.3
 
 * fixed a bug that was preventing the mapvizieR object from correctly using the 2011 growth norms for the `growth_df`.

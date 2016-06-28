@@ -170,7 +170,7 @@ roster_to_growth_df <- function(
   }
   
   #NOW JOIN AND RETURN
-  slim <- slim %>% dplyr::select(one_of(cols)) %>%
+  slim <- slim %>% dplyr::select(dplyr::one_of(cols)) %>%
     dplyr::select(-year_sort)
   
   if (by_measurementscale) {
