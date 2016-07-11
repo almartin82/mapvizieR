@@ -31,10 +31,10 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
     
     processed_cdf <- cdf
     
-    if (verbose) {print('your CDF is ready to go!')}
+    if (verbose) print('your CDF is ready to go!')
   } else {
     
-    if (verbose) {print('preparing and processing your CDF...')}
+    if (verbose) print('preparing and processing your CDF...')
     
     #FIRST, prep the cdf and the roster
     prepped_cdf <- prep_cdf_long(cdf)
@@ -44,9 +44,8 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
     #SECOND, given a roster and cdf, grade level-ify the cdf
     prepped_cdf$grade <- grade_levelify_cdf(prepped_cdf, roster)
     
-    #THIRD, process the cdf and give it a class
+    #THIRD, process the cdf
     processed_cdf <- process_cdf_long(prepped_cdf, norms = norms)
-    class(processed_cdf) <- c("mapvizieR_cdf", class(processed_cdf))
     
     #check to see that result conforms
     assertthat::assert_that(check_processed_cdf(processed_cdf)$boolean)  
@@ -60,19 +59,16 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
   } else if (norms == 2011) {
     norms_long <- norms_students_wide_to_long(student_growth_norms_2011)
   }
-  growth_df <- generate_growth_dfs(processed_cdf, norm_df_long = norms_long, ...)$headline
-  
-  #TODO: goal growth df
+  growth_df <- generate_growth_dfs(processed_cdf, norm_df_long = norms_long, ...)
   
   #make a list and return it
   mapviz <-  list(
     'cdf' = processed_cdf,
     'roster' = roster,
     'growth_df' = growth_df
-    #todo: also return a goal/strand df
-    #todo: add some analytics about matched/unmatched kids
+    #TODO: also return a goal/strand df
+    #TODO: add some analytics about matched/unmatched kids
   )
-  
   class(mapviz) <- "mapvizieR"
   
   # the next step runs the accelerated growth calculations with the
@@ -80,7 +76,8 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
   # class assignement since add_accelerated_growth can only be run 
   # on a mapvizieR class object by design (simplifies code and can be
   # run after creating a mapvizieR object to increase goal objects attached).
-  
+
+  if (verbose) print('calculating accelerated growth goals and results...')
   mapviz <- mapviz %>% 
     add_accelerated_growth(
       goal_function = goal_kipp_tiered,  
@@ -88,8 +85,7 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
       update_growth_df = TRUE
   )
   
-  mapviz[['growth_df']] <- determine_growth_status(mapviz[['growth_df']])
-  class(mapviz$growth_df) <- c("mapvizieR_growth", class(mapviz$growth_df))
+  mapviz$growth_df <- determine_growth_status(mapviz$growth_df)
   
   return(mapviz)
 }
@@ -114,9 +110,11 @@ is.mapvizieR <- function(x) inherits(x, "mapvizieR")
 #' @param . dot-placeholder, per ensurer doc.
 
 ensure_is_mapvizieR <- ensurer::ensures_that(
-  is.mapvizieR(.) ~ paste0("The object you passed is not a conforming mapvizieR object.\n",
-                           "Look at the examples in the mapvizieR() to see more about generating\n",
-                           "a valid mapvizieR object.")
+  is.mapvizieR(.) ~ paste0(
+    "The object you passed is not a conforming mapvizieR object.\n",
+    "Look at the examples in the mapvizieR() to see more about generating\n",
+    "a valid mapvizieR object."
+  )
 )
 
 
@@ -213,5 +211,3 @@ grade_levelify_cdf <- function(prepped_cdf, roster) {
   
   return(matched_cdf$grade)
 }
-
-

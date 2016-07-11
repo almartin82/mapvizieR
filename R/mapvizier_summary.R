@@ -60,53 +60,54 @@ summary.mapvizieR_growth <- function(object, ...) {
     digits <- list(...)$digits
   }
   
-  df <- object %>%
+  #summary.mapvizieR_cdf requires grouping vars on the cdf
+  #process_cdf_long sets them as part of construction of the mv object
+  #if there are NO grouping vars, this will set them by default
+  if (is.null(attr(object, 'vars'))) {
+    object <- object %>%
+      dplyr::group_by(
+        end_map_year_academic, cohort_year, growth_window, end_schoolname,
+        start_grade, end_grade,
+        start_fallwinterspring, end_fallwinterspring,
+        measurementscale
+      )      
+  }
+  
+  mapSummary <- object %>% 
     dplyr::filter(complete_obsv) %>%
-    dplyr::mutate(cohort_year = end_map_year_academic + 1 + 12 - end_grade) %>%
-    dplyr::group_by(
-      end_map_year_academic, 
-      cohort_year,
-      growth_window, 
-      end_schoolname,
-      start_grade,
-      end_grade,
-      start_fallwinterspring,
-      end_fallwinterspring,
-      measurementscale,
-      add = TRUE
+    dplyr::summarize(
+      n_students = n(),
+      n_typical = sum(met_typical_growth, na.rm = TRUE),
+      pct_typical = round(n_typical/n_students, digits),
+      n_accel_growth = sum(met_accel_growth, na.rm = TRUE),
+      pct_accel_growth = round(n_accel_growth/n_students,digits),
+      n_negative = sum(growth_status == "Negative", na.rm = TRUE),
+      pct_negative = round(n_negative/n_students, digits),
+      start_n_50th_pctl = sum(start_testpercentile >= 50, na.rm = TRUE),
+      start_pct_50th_pctl = round(start_n_50th_pctl / n_students, digits),
+      end_n_50th_pctl = sum(end_testpercentile >= 50, na.rm = TRUE),
+      end_pct_50th_pctl = round(end_n_50th_pctl / n_students,digits),
+      start_n_75th_pctl = sum(start_testpercentile >= 75, na.rm = TRUE),
+      start_pct_75th_pctl = round(start_n_75th_pctl/n_students,digits),
+      end_n_75th_pctl = sum(start_testpercentile >= 75, na.rm = TRUE),
+      end_pct_75th_pctl = round(end_n_75th_pctl / n_students,digits),
+      start_mean_testritscore = round(mean(start_testritscore, na.rm = TRUE), digits),
+      end_mean_testritscore = round(mean(end_testritscore, na.rm = TRUE), digits),
+      mean_rit_growth = round(mean(rit_growth, na.rm = TRUE), digits),
+      mean_cgi = round(mean(cgi, na.rm = TRUE), digits),
+      mean_sgp = pnorm(mean_cgi),
+      start_median_testritscore = round(median(start_testritscore, na.rm = TRUE), digits),
+      end_median_testritscore = round(median(end_testritscore, na.rm = TRUE), digits),
+      median_rit_growth = round(median(rit_growth, na.rm = TRUE), digits),
+      median_cgi = round(median(cgi, na.rm = TRUE), digits),
+      median_sgp = round(median(sgp, na.rm = TRUE), digits),
+      start_median_consistent_percentile = round(median(start_consistent_percentile, na.rm = TRUE), digits),
+      end_median_consistent_percentile = round(median(end_consistent_percentile, na.rm = TRUE), digits),
+      cgp = calc_cgp(
+        measurementscale, end_grade, growth_window, start_mean_testritscore, end_mean_testritscore
+      )[['results']] %>% round(digits)
     )
-  
-  mapSummary <- df %>% dplyr::summarize(
-    n_students = n(),
-    n_typical = sum(met_typical_growth, na.rm = TRUE),
-    pct_typical = round(n_typical/n_students, digits),
-    n_accel_growth = sum(met_accel_growth, na.rm = TRUE),
-    pct_accel_growth = round(n_accel_growth/n_students,digits),
-    n_negative = sum(growth_status == "Negative", na.rm = TRUE),
-    pct_negative = round(n_negative/n_students, digits),
-    start_n_50th_pctl = sum(start_testpercentile >= 50, na.rm = TRUE),
-    start_pct_50th_pctl = round(start_n_50th_pctl / n_students, digits),
-    end_n_50th_pctl = sum(end_testpercentile >= 50, na.rm = TRUE),
-    end_pct_50th_pctl = round(end_n_50th_pctl / n_students,digits),
-    start_n_75th_pctl = sum(start_testpercentile >= 75, na.rm = TRUE),
-    start_pct_75th_pctl = round(start_n_75th_pctl/n_students,digits),
-    end_n_75th_pctl = sum(start_testpercentile >= 75, na.rm = TRUE),
-    end_pct_75th_pctl = round(end_n_75th_pctl / n_students,digits),
-    start_mean_testritscore = round(mean(start_testritscore, na.rm = TRUE), digits),
-    end_mean_testritscore = round(mean(end_testritscore, na.rm = TRUE), digits),
-    mean_rit_growth = round(mean(rit_growth, na.rm = TRUE), digits),
-    mean_cgi = round(mean(cgi, na.rm = TRUE), digits),
-    mean_sgp = pnorm(mean_cgi),
-    start_median_testritscore = round(median(start_testritscore, na.rm = TRUE), digits),
-    end_median_testritscore = round(median(end_testritscore, na.rm = TRUE), digits),
-    median_rit_growth = round(median(rit_growth, na.rm = TRUE), digits),
-    median_cgi = round(median(cgi, na.rm = TRUE), digits),
-    median_sgp = round(median(sgp, na.rm = TRUE), digits),
-    start_median_consistent_percentile = round(median(start_consistent_percentile, na.rm = TRUE), digits),
-    end_median_consistent_percentile = round(median(end_consistent_percentile, na.rm = TRUE), digits),
-    cgp = calc_cgp(measurementscale, end_grade, growth_window, start_mean_testritscore, end_mean_testritscore)[['results']] %>% round(digits)
-  )
-  
+    
   mapSummary$start_cohort_status_npr <- NA_integer_
   mapSummary$end_cohort_status_npr <- NA_integer_
   
@@ -146,10 +147,17 @@ summary.mapvizieR_growth <- function(object, ...) {
 
 summary.mapvizieR_cdf <- function(object, ...) {
   
+  #summary.mapvizieR_cdf requires grouping vars on the cdf
+  #process_cdf_long sets them as part of construction of the mv object
+  #if there are NO grouping vars, this will set them by default
+  if (is.null(attr(object, 'vars'))) {
+    object <- object %>%
+      dplyr::group_by(
+        measurementscale, map_year_academic, fallwinterspring, 
+        termname, schoolname, grade, grade_level_season)      
+  }
+    
   df <- object %>%
-    dplyr::group_by(
-      measurementscale, map_year_academic, fallwinterspring, 
-      termname, schoolname, grade, grade_level_season) %>%
     dplyr::summarize(
       mean_testritscore = mean(testritscore, na.rm = TRUE),
       mean_percentile = mean(consistent_percentile, na.rm = TRUE),
