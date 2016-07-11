@@ -59,6 +59,7 @@ goal_strand_plot <- function(
   #data processing ----------------------------------------------------------
   #just desired terms
   .data <- mapvizieR_obj$cdf %>%
+    dplyr::ungroup() %>%
     dplyr::filter(
       fallwinterspring == fws,
       map_year_academic == year,

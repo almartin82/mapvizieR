@@ -26,7 +26,8 @@ strand_boxes <- function(
   mv_opening_checks(mapvizieR_obj, studentids, 1)
 
   #unpack the mapvizieR object and limit to desired students
-  goal_df <- mapvizieR_obj[['cdf']] %>%
+  goal_df <- mapvizieR_obj$cdf %>%
+    dplyr::ungroup() %>%
     dplyr::filter(
       measurementscale == measurementscale_in & studentid %in% studentids
     ) %>%

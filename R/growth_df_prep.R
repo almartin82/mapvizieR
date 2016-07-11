@@ -101,7 +101,7 @@ student_scaffold <- function(
   cols <- c("studentid", "measurementscale", "testid",
     "map_year_academic", "fallwinterspring", "grade", "grade_level_season", "schoolname"
   )
-  simple <- processed_cdf[ ,cols] %>% as.data.frame()
+  simple <- processed_cdf[ ,cols]
   simple$hash <- with(simple,
     paste(studentid, measurementscale, fallwinterspring, map_year_academic, sep='_')
   )
@@ -216,7 +216,7 @@ student_scaffold <- function(
   #reorder
   final <- final[ , target_cols]
 
-  return(as.data.frame(final))
+  return(final)
 }
 
 
@@ -373,8 +373,7 @@ calc_rit_growth_metrics <- function(normed_df){
       change_testpercentile = end_testpercentile - start_testpercentile,
       cgi = (rit_growth-reported_growth) / std_dev_of_expectation,
       sgp = pnorm(cgi)
-    ) %>%
-    as.data.frame
+    ) 
 
   return(out)
 }

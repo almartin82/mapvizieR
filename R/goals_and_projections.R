@@ -32,7 +32,6 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
   if(!"iter" %in% names(growth_df)) growth_df$iter <- 0 # add and set iterator
   
   out <- growth_df %>%
-    as.data.frame %>%
     dplyr::select(
       studentid, 
       measurementscale, 
@@ -66,8 +65,7 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
       end_fallwinterspring, 
       accel_growth, 
       met_accel_growth, 
-      iter) %>%
-    as.data.frame
+      iter) 
   
   if(iterations > 1){
     while(out$iter <= iterations){
@@ -190,8 +188,7 @@ add_accelerated_growth <- function(
      return_cols <- names(new_growth_df)[!grepl("\\.y",names(new_growth_df))]
      
      new_growth_df <- new_growth_df[,return_cols] %>%
-       dplyr::select(-iter) %>%
-       as.data.frame
+       dplyr::select(-iter)
      
      mapvizier_object$growth_df <- new_growth_df
    }
