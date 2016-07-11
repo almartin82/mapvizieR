@@ -37,7 +37,7 @@ test_that("student_npr_two_term_plot produces proper plot with a grade level of 
 test_that("fuzz test student_npr_two_term_plot plot", {
   results <- fuzz_test_plot(
     'student_npr_two_term_plot', 
-    n = 5,
+    n = 2,
     additional_args = list(
       'measurementscale' = "Reading", 
       'term_first' = "Spring 2012-2013", 

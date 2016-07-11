@@ -69,8 +69,8 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
     #TODO: also return a goal/strand df
     #TODO: add some analytics about matched/unmatched kids
   )
-  class(mapviz) <- "mapvizieR"
-  
+  class(mapviz) <- c("mapvizieR", class(mapviz))
+
   # the next step runs the accelerated growth calculations with the
   # default of KIPP Tiered growth.  This step must come after the 
   # class assignement since add_accelerated_growth can only be run 
@@ -87,6 +87,7 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
   
   mapviz$growth_df <- determine_growth_status(mapviz$growth_df)
   
+  class(mapviz$growth_df) <- c("mapvizieR_growth", class(mapviz$growth_df))
   return(mapviz)
 }
 
