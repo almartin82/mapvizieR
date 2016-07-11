@@ -53,6 +53,7 @@ strands_list_plot <- function(mapvizier_obj,
                       by = c("studentid", "termname"))
   
   m.sub.scores <- .data %>% 
+    dplyr::ungroup() %>%
     dplyr::select(studentid, 
                   studentfirstname,
                   studentlastname,
@@ -67,6 +68,7 @@ strands_list_plot <- function(mapvizier_obj,
   
   
   m.sub.names<-.data %>% 
+    dplyr::ungroup() %>%
     dplyr::select(studentid, 
                   studentfirstname,
                   studentlastname,
