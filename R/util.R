@@ -529,13 +529,11 @@ mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale) {
   cdf_long <- mapvizieR_obj[['cdf']] 
   #only these kids
   out <- cdf_long %>%
+    dplyr::ungroup() %>%
     dplyr::filter(
       studentid %in% studentids,
       measurementscale == measurementscale_in
-    ) %>%
-    dplyr::tbl_df()
-  
-  class(out) <- c("mapvizieR_cdf", class(out))
+    )
   
   return(out)
 }
@@ -556,6 +554,7 @@ mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale) {
   growth_df <- mapvizieR_obj[['growth_df']]
   #only these kids
   growth_df %>%
+    dplyr::ungroup() %>%
     dplyr::filter(
       studentid %in% studentids &
         measurementscale %in% measurementscale_in
@@ -589,16 +588,13 @@ min_term_filter <- function(cdf, small_n_cutoff = -1) {
     ) %>%
     dplyr::select(
       grade_level_season  
-    ) %>%
-    as.data.frame()
+    )
   
   out <- cdf %>%
     dplyr::filter(
       grade_level_season %in% as.numeric(grade_seasons_to_keep$grade_level_season)
     )  
 
-  class(out) <- c("mapvizieR_cdf", class(out))
-  
   return(out)
 }
 

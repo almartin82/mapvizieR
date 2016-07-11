@@ -956,19 +956,21 @@ build_student_1year_goal_plot <- function(
   growth_window_in <- growth_window
   
   #get the growth df data
-  stu_growth <- mapvizieR_obj$growth_df %>% dplyr::filter(
-    studentid == studentid_in & 
-    measurementscale == measurementscale_in &
-    start_grade == start_grade_in &
-    growth_window == growth_window_in
-  ) %>%
-  dplyr::arrange(desc(start_teststartdate))
+  stu_growth <- mapvizieR_obj$growth_df %>%
+    dplyr::ungroup() %>%
+    dplyr::filter(
+      studentid == studentid_in & 
+      measurementscale == measurementscale_in &
+      start_grade == start_grade_in &
+      growth_window == growth_window_in
+    ) %>%
+    dplyr::arrange(desc(start_teststartdate))
 
-  stu_baseline <- stu_growth[1, 'start_testritscore', drop = TRUE]
-  typ_growth <- stu_growth[1, 'typical_growth', drop = TRUE]
-  rep_growth <- stu_growth[1, 'reported_growth', drop = TRUE]  
-  sd_growth <- stu_growth[1, 'std_dev_of_expectation', drop = TRUE]
-  accel_growth <- stu_growth[1, 'accel_growth', drop = TRUE]  
+  stu_baseline <- stu_growth[1, ]$start_testritscore
+  typ_growth <- stu_growth[1, ]$typical_growth
+  rep_growth <- stu_growth[1, ]$reported_growth
+  sd_growth <- stu_growth[1, ]$std_dev_of_expectation
+  accel_growth <- stu_growth[1, ]$accel_growth
   
   #CHART - GOALS
   cgps <- data.frame(

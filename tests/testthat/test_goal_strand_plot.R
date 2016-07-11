@@ -12,8 +12,8 @@ test_that("goal_strand_plot errors when handed an improper mapviz object", {
 test_that("goal_strand_plot produces proper plot with a grade level of kids", {
 
   p <- goal_strand_plot(
-    mapviz,
-    studentids_normal_use,
+    mapvizieR_obj = mapviz,
+    studentids = studentids_normal_use,
     measurementscale = "Mathematics", 
     fws = "Spring", 
     year = 2013
