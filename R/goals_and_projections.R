@@ -32,6 +32,7 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
   if(!"iter" %in% names(growth_df)) growth_df$iter <- 0 # add and set iterator
   
   out <- growth_df %>%
+    dplyr::ungroup() %>%
     dplyr::select(
       studentid, 
       measurementscale, 
@@ -144,23 +145,23 @@ goal_kipp_tiered <- function(mapvizier_object, iterations=1){
 add_accelerated_growth <- function(
   mapvizier_object, 
   goal_function = goal_kipp_tiered, 
-  goal_function_args = list(iterations=1),
-  update_growth_df = FALSE){
+  goal_function_args = list(iterations = 1),
+  update_growth_df = FALSE
+) {
   # this should be run in the mapvizier method after the mapvizier class
   # is assigned.  That way it can be used in the constructor method or
   # outside of it for adding new growth to the 
    
-   goal_function_args$mapvizier_object <- ensure_is_mapvizieR(mapvizier_object)
+  goal_function_args$mapvizier_object <- ensure_is_mapvizieR(mapvizier_object)
    
-   goals_obj <- do.call(goal_function, goal_function_args) %>%
+  goals_obj <- do.call(goal_function, goal_function_args) %>%
      ensure_goals_obj
    
-  
-   mapvizier_object$goals[[goals_obj$slot_name]] <- goals_obj
+  mapvizier_object$goals[[goals_obj$slot_name]] <- goals_obj
    
-   if(update_growth_df){
-     new_growth_df<-
-       mapvizier_object$growth_df %>%
+   if (update_growth_df){
+     new_growth_df <- mapvizier_object$growth_df %>%
+       dplyr::ungroup() %>%
        dplyr::inner_join(
          goals_obj$goals,
          by = goals_obj$join_by_fields
@@ -185,10 +186,16 @@ add_accelerated_growth <- function(
      names(new_growth_df) <- gsub("\\.x","", names(new_growth_df))
      
      #eliminate .y colums
-     return_cols <- names(new_growth_df)[!grepl("\\.y",names(new_growth_df))]
+     return_cols <- names(new_growth_df)[!grepl("\\.y", names(new_growth_df))]
      
      new_growth_df <- new_growth_df[,return_cols] %>%
-       dplyr::select(-iter)
+       dplyr::select(-iter) %>%
+       dplyr::group_by(
+         end_map_year_academic, cohort_year, growth_window, end_schoolname,
+         start_grade, end_grade,
+         start_fallwinterspring, end_fallwinterspring,
+         measurementscale
+       )
      
      mapvizier_object$growth_df <- new_growth_df
    }
