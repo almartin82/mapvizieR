@@ -56,8 +56,8 @@ check_processed_cdf <- function(processed_cdf) {
       
   result_vector <- c(basic_result, names_result)
   results <- list(
-    boolean=all(result_vector),
-    descriptive=paste0("passed ", length(result_vector[result_vector==TRUE]), " tests!")
+    boolean = all(result_vector),
+    descriptive = paste0("passed ", length(result_vector[result_vector==TRUE]), " tests!")
   )
   
   return(results)

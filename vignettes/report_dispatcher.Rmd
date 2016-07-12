@@ -75,11 +75,11 @@ We hand those lists to report dispatcher, along with the name of the function an
 require(ggplot2)
 
 sch_gender <- report_dispatcher(
-  mapvizieR_obj=mapviz
- ,cut_list=cut_list
- ,call_list=call_list
- ,func_to_call="galloping_elephants"
- ,arg_list=list('measurementscale'='Mathematics')
+  mapvizieR_obj=mapviz,
+  cut_list=cut_list,
+  call_list=call_list,
+  func_to_call="galloping_elephants",
+  arg_list=list('measurementscale'='Mathematics')
 )
 
 ```
@@ -118,10 +118,8 @@ You'll notice that I have been throwing some somewhat esoteric cuts at `report_d
 Well, the sample data set that we have from NWEA is kind of weird.  Namely, there's only one student enrolled at Three Sisters Elementary in the first grade 
 
 ```{r roster_weirdness}
-mapviz[['roster']] %>%
-  filter(
-    schoolname=='Three Sisters Elementary School' & grade==1
-  )
+mapviz$roster %>%
+  dplyr::filter(schoolname=='Three Sisters Elementary School' & grade==1)
 ```
 
 Go figure.  But given a sufficiently large school district, well, you're going to see some weird edge cases - either dirty data, or just weird one-off situations.
@@ -134,11 +132,11 @@ cut_list <- list('schoolname', 'studentgender')
 call_list <- list(FALSE, TRUE)
 
 sch_grade <- report_dispatcher(
-  mapvizieR_obj=mapviz
- ,cut_list=cut_list
- ,call_list=call_list
- ,func_to_call="galloping_elephants"
- ,arg_list=list('measurementscale'='Mathematics')
+  mapvizieR_obj=mapviz,
+  cut_list=cut_list,
+  call_list=call_list,
+  func_to_call="galloping_elephants",
+  arg_list=list('measurementscale'='Mathematics')
 )
 
 print(sch_grade)
@@ -152,12 +150,12 @@ Don't like this behavior?  Roll your own post-processor!
 all_the_things <- function(x) {x}
 
 sch_grade_redux <- report_dispatcher(
-  mapvizieR_obj=mapviz
- ,cut_list=c('schoolname', 'grade')
- ,call_list=call_list
- ,func_to_call="galloping_elephants"
- ,arg_list=list('measurementscale'='Mathematics')
- ,post_process="all_the_things"
+  mapvizieR_obj=mapviz,
+  cut_list=c('schoolname', 'grade'),
+  call_list=call_list,
+  func_to_call="galloping_elephants",
+  arg_list=list('measurementscale'='Mathematics'),
+  post_process="all_the_things"
 )
 
 print(sch_grade_redux)

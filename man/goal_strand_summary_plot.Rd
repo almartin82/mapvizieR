@@ -23,7 +23,7 @@ goal_strand_summary_plot(mapvizieR_obj, studentids, measurementscale,
 is not FALSE then `year` is ignored}
 
 \item{spring_is_first}{logical indicating whether spring is in the given 
-acadmeic year or from the year prior.}
+academic year or from the year prior.}
 
 \item{filter_args}{a list of character vectors to filter `mapvizieR_obj$cdf` 
 by that is passed to \code{\link[dplyr]{filter}}}

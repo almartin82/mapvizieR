@@ -106,4 +106,4 @@ test_that("fall goals page 1", {
   expect_true("grob" %in% class(fg_test))
   expect_true("gtable" %in% class(fg_test))
   
-})  
+})

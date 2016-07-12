@@ -1,9 +1,3 @@
-utils::globalVariables(
-  c("%>%", "mutate", "end_testritscore", "start_testritscore",
-  "rit_growth", "reported_growth", "end_testpercentile",
-  "start_testpercentile", "std_dev_of_expectation", "cgi")
-)
-
 #' @title generate_growth_df
 #'
 #' @description
@@ -53,17 +47,25 @@ generate_growth_dfs <- function(
   #look up norms and add growth metrics
   with_norms <- growth_norm_lookup(
     with_scores, processed_cdf, norm_df_long, include_unsanctioned_windows
-    ) %>%
-    calc_rit_growth_metrics
+  ) %>%
+  calc_rit_growth_metrics()
 
-  #todo: GOAL scores here
-
-  growth_dfs <- list(
-    headline = with_norms
-    #TODO: return goal scores df here
+  #add cohort year
+  with_norms <- with_norms %>% 
+    dplyr::mutate(cohort_year = end_map_year_academic + 1 + 12 - end_grade) 
+  
+  #group the growth_df (for use by the summary method)
+  with_norms <- with_norms %>%
+  dplyr::group_by(
+    end_map_year_academic, cohort_year, growth_window, end_schoolname,
+    start_grade, end_grade,
+    start_fallwinterspring, end_fallwinterspring,
+    measurementscale
   )
-
-  return(growth_dfs)
+  
+  class(with_norms) <- c("mapvizieR_growth", class(with_norms))
+  
+  return(with_norms)
 }
 
 
@@ -99,7 +101,7 @@ student_scaffold <- function(
   cols <- c("studentid", "measurementscale", "testid",
     "map_year_academic", "fallwinterspring", "grade", "grade_level_season", "schoolname"
   )
-  simple <- processed_cdf[ ,cols] %>% as.data.frame()
+  simple <- processed_cdf[ ,cols]
   simple$hash <- with(simple,
     paste(studentid, measurementscale, fallwinterspring, map_year_academic, sep='_')
   )
@@ -214,7 +216,7 @@ student_scaffold <- function(
   #reorder
   final <- final[ , target_cols]
 
-  return(as.data.frame(final))
+  return(final)
 }
 
 
@@ -371,8 +373,7 @@ calc_rit_growth_metrics <- function(normed_df){
       change_testpercentile = end_testpercentile - start_testpercentile,
       cgi = (rit_growth-reported_growth) / std_dev_of_expectation,
       sgp = pnorm(cgi)
-    ) %>%
-    as.data.frame
+    ) 
 
   return(out)
 }

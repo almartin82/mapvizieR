@@ -53,6 +53,7 @@ becca_plot <- function(
   #detect entry grade seasons
   if (entry_grade_seasons[1] == 'detect') {
     entry_grade_seasons <- min_term_filter(this_cdf, small_n_cutoff) %>% 
+      dplyr::ungroup() %>%
       dplyr::select(grade_level_season) %>%
       min()
   }
@@ -72,6 +73,7 @@ becca_plot <- function(
   #SUBJECT    GRADE_LEVEL_SEASON     QUARTILE      PCT
   
   term_totals <- munge %>%
+    dplyr::ungroup() %>%
     dplyr::select(
       measurementscale, grade_level_season, quartile
     ) %>%

@@ -53,12 +53,14 @@ haid_plot <- function(
   #data processing ----------------------------------------------------------
   #just desired terms
   df <- growth_df %>%
+    dplyr::ungroup() %>%
     dplyr::filter(
       start_map_year_academic == start_academic_year,
       start_fallwinterspring == start_fws,
       end_map_year_academic == end_academic_year,
       end_fallwinterspring == end_fws
-    )
+    ) %>%
+    as.data.frame(stringsAsFactors = FALSE)
 
   #get student name onto growth df
   minimal_roster <- mapvizieR_obj[['roster']]
@@ -101,11 +103,11 @@ haid_plot <- function(
   #make a psuedo-axis by ordering based on one variable
   #need to allow for holdovers
   #make a fake ranking value that is quartile in thousands value, plus rit
-  df$for_ranking <- (as.numeric(df[,'start_testquartile']) * 1000) + df[ , sort_column]
+  df$for_ranking <- (as.numeric(df$start_testquartile) * 1000) + df[ , sort_column]
   
   df$y_order <- rank(
-    x = df[ , 'for_ranking'], ties.method = "first", na.last = FALSE
-  )
+    x = df$for_ranking, ties.method = "first", na.last = FALSE
+  ) %>% unlist() %>% unname()
 
   #make growth status an ordered factor
   df$growth_status = factor(
@@ -127,7 +129,7 @@ haid_plot <- function(
   df$student_name_format <- ifelse(
     df$neg_flag == 1,
     df$studentfirstlast,
-    paste0(df$studentfirstlast, " ", df$start_testritscore, " ", "(", df$start_consistent_perce, ") ")
+    paste0(df$studentfirstlast, " ", df$start_testritscore, " ", "(", df$start_consistent_percentile, ") ")
   )
 
   #NAs
@@ -244,7 +246,7 @@ haid_plot <- function(
   #typical and college ready goal labels
   p <- p +
   geom_text(
-    data = df[df$student_name_format != ' ', ],
+    data = df %>% dplyr::filter(student_name_format != ' '),
     aes(
       x = start_testritscore + reported_growth,
       label = start_testritscore + reported_growth
@@ -256,7 +258,7 @@ haid_plot <- function(
     alpha = p_alpha
   ) +
   geom_text(
-    data = df[df$student_name_format != ' ', ],
+    data = df %>% dplyr::filter(student_name_format != ' '),
     aes(
       x = start_testritscore + accel_growth,
       label = start_testritscore + accel_growth
@@ -285,7 +287,8 @@ haid_plot <- function(
     #add RIT text
     p <- p +
       geom_text(
-        data = df[!is.na(df$end_testritscore) & df$student_name_format != ' ', ],
+        data = df %>% 
+          dplyr::filter(!is.na(end_testritscore) & student_name_format != ' '),
         aes(
           x = end_testritscore + rit_xoffset,
           group = endpoint_color,
@@ -300,7 +303,7 @@ haid_plot <- function(
   #add name labels
   p <- p +
     geom_text(
-      data = df[df$student_name_format != ' ', ],
+      data = df %>% dplyr::filter(student_name_format != ' '),
       aes(
         x = name_x,
         label = student_name_format,
@@ -312,9 +315,10 @@ haid_plot <- function(
     )
 
   #negative students start rit is not part of name string.  print to right of baseline
-  if (nrow(df[df$neg_flag == 1 & !is.na(df$neg_flag), ]) > 0) {
+  if (nrow(df %>% dplyr::filter(neg_flag == 1 & !is.na(neg_flag))) > 0) {
     p <- p + geom_text(
-      data = df[df$neg_flag == 1 & !is.na(df$neg_flag) & df$student_name_format != ' ', ],
+      data = df %>%
+        dplyr::filter(neg_flag == 1 & !is.na(neg_flag) & student_name_format != ' '),
       aes(
         x = start_testritscore + 0.4 * name_offset,
         label = start_testritscore,

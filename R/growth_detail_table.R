@@ -61,6 +61,7 @@ stu_growth_detail <- function(
   this_cdf <- this_cdf %>%
     dplyr::left_join(
       mapvizieR_obj$growth_df %>%
+        dplyr::ungroup() %>%
         dplyr::select(
           studentid, start_testid, end_testid, growth_window,
           rit_growth, cgi, sgp, met_typical_growth, met_accel_growth
