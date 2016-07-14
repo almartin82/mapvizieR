@@ -49,9 +49,9 @@ growth_status_scatter <- function(
     )
   
   annotation_df <- data.frame(
-    lab_x = c(33/2, 50, 66 + 33/2, 33/2, 50, 66 + 33/2)
-   ,lab_y = c(75, 75, 75, 25, 25, 25)
-   ,lab_text = c(
+    lab_x = c(33/2, 50, 66 + 33/2, 33/2, 50, 66 + 33/2),
+    lab_y = c(75, 75, 75, 25, 25, 25),
+    lab_text = c(
      'Low Growth\nAbove Gr. Lev.', 'Avg Growth\nAbove Gr. Lev.',
      'High Growth\nAbove Gr. Lev.', 'Low Growth\nBelow Gr. Lev.',
      'Avg Growth\nBelow Gr. Lev.', 'High Growth\nBelow Gr. Lev.'
