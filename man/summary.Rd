@@ -21,8 +21,6 @@
 
 \item{...}{other arguments to be passed to other functions (not currently supported)}
 
-\item{object}{}
-
 \item{object}{a \code{mapvizieR_cdf} object}
 
 \item{...}{other arguments to be passed to other functions (not currently supported)}

@@ -34,28 +34,12 @@ default is TRUE.  if FALSE will separate lines by school and show a lengend.}
 
 \item{retention_strategy}{}
 
+\item{small_n_cutoff}{numeric, drop observations that are smaller than X% of the
+cohort maximum.}
+
 \item{plot_labels}{c('RIT', 'NPR').  'RIT' is default.}
-
-\item{mapvizieR_obj}{mapvizieR object}
-
-\item{studentids}{target students}
-
-\item{measurementscale}{target subject}
-
-\item{match_method}{do we limit to matched students, and if so, how?
-no matching = any student record in the studentids.}
-
-\item{first_and_spring_only}{show all terms, or only entry & spring?  default is TRUE.}
-
-\item{entry_grade_seasons}{which grade_level_seasons are entry grades?}
-
-\item{collapse_schools}{logical - for prior year data, drop school grouping?}
-
-\item{plot_labels}{c('RIT', 'NPR') - show  labels as RIT or NPR?}
 }
 \value{
-a ggplot object
-
 a ggplot object
 }
 \description{

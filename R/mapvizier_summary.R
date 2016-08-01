@@ -136,7 +136,6 @@ summary.mapvizieR_growth <- function(object, ...) {
 
 #' @title summary method for \code{mapvizieR_cdf} class
 #'
-#' @param object 
 #'
 #' @param object a \code{mapvizieR_cdf} object
 #' @param ... other arguments to be passed to other functions (not currently supported)

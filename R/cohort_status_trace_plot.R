@@ -14,21 +14,12 @@
 #' @param entry_grade_seasons which grade_level_seasons are entry grades?
 #' @param collapse_schools treats all students as part of the same 'school' for purposes of plotting, so that one trajectory is shown.
 #' default is TRUE.  if FALSE will separate lines by school and show a lengend.
-#' @param retention_strategy 
+#' @param small_n_cutoff numeric, drop observations that are smaller than X% of the
+#' cohort maximum.
+#' @param retention_strategy c('collapse', 'filter_small') retained students show up as cohorts of 1 student.  
+#' collapse will run `collapse_by_grade` to merge those students into existing cohorts.  `filter_small` will drop
+#' them from this visualization. 
 #' @param plot_labels c('RIT', 'NPR').  'RIT' is default.
-#'
-#' @return a ggplot object
-#' @export
-
-#' @param mapvizieR_obj mapvizieR object
-#' @param studentids target students
-#' @param measurementscale target subject
-#' @param match_method do we limit to matched students, and if so, how?
-#' no matching = any student record in the studentids.
-#' @param first_and_spring_only show all terms, or only entry & spring?  default is TRUE.
-#' @param entry_grade_seasons which grade_level_seasons are entry grades?
-#' @param collapse_schools logical - for prior year data, drop school grouping?
-#' @param plot_labels c('RIT', 'NPR') - show  labels as RIT or NPR?
 #'
 #' @return a ggplot object
 #' @export
