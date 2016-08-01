@@ -160,7 +160,7 @@ kipp_quartile <- function(x, return_factor = TRUE, proper_quartile = FALSE){
 #'
 #' @description can be used to get becca plot to return predicted performance 
 #' bands, instead of quartile bands 
-#' @param vector to compare (presumably percentile ranks)
+#' @param x vector to compare (presumably percentile ranks)
 #' @param breaks vector of breaks
 #'
 #' @return vector of 'quartiles'
@@ -603,7 +603,7 @@ min_term_filter <- function(cdf, small_n_cutoff = -1) {
 #'
 #' @description strips out term and year info so that summary.mapvizieR_cdf will cleanly group students by grade_level_season, school
 #' and measurementscale
-#' @param cdf 
+#' @param cdf a conforming mapvizieR cdf
 #'
 #' @return data frame 
 #' @export

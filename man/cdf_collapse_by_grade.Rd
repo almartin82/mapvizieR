@@ -7,7 +7,7 @@
 cdf_collapse_by_grade(cdf)
 }
 \arguments{
-\item{cdf}{}
+\item{cdf}{a conforming mapvizieR cdf}
 }
 \value{
 data frame

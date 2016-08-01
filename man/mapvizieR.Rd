@@ -6,7 +6,7 @@
 \alias{mapvizieR-package}
 \title{mapvizieR}
 \usage{
-mapvizieR(cdf, roster, verbose = FALSE, ...)
+mapvizieR(cdf, roster, verbose = FALSE, norms = 2015, ...)
 }
 \arguments{
 \item{cdf}{a NWEA AssessmentResults.csv or CDF}
@@ -15,9 +15,9 @@ mapvizieR(cdf, roster, verbose = FALSE, ...)
 
 \item{verbose}{should mapvizieR print status updates?  default is FALSE.}
 
-\item{...}{additional arguments to pass to constructor functions called by mapvizieR}
-
 \item{norms}{norm study to use. passed through to cdf prep}
+
+\item{...}{additional arguments to pass to constructor functions called by mapvizieR}
 }
 \description{
 mapvizieR

@@ -1,4 +1,5 @@
 #' @title Create a mapvizieR object
+#' @import ggplot2 magrittr
 #' 
 #' @description
 #' \code{mapvizieR} is a workhorse workflow function that
@@ -18,7 +19,7 @@
 #' }
 #' @export
 
-mapvizieR <- function(cdf, roster, verbose = FALSE, ...) UseMethod("mapvizieR")
+mapvizieR <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) UseMethod("mapvizieR")
 
 #' @export
 mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
@@ -122,10 +123,9 @@ ensure_is_mapvizieR <- ensurer::ensures_that(
 
 #' @title print method for \code{mapvizier} class
 #'
-#' @description
-#'  prints to console
+#' @description prints to console
 #'
-#' @details Prints a summary fo the a \code{mapvizier} object. 
+#' @details Prints a summary of the a \code{mapvizier} object. 
 #' 
 #' @param x a \code{mapvizier} object
 #' @param ... additional arguments

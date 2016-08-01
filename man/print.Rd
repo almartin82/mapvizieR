@@ -18,7 +18,7 @@ some details about the object to the console.
 prints to console
 }
 \details{
-Prints a summary fo the a \code{mapvizier} object.
+Prints a summary of the a \code{mapvizier} object.
 }
 \examples{
 \dontrun{

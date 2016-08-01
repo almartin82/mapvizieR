@@ -27,6 +27,9 @@ becca_plot(mapvizieR_obj, studentids, measurementscale,
 
 \item{color_scheme}{color scheme for the stacked bars.  options are 'KIPP Report Card', 
 'Sequential Blues', or a vector of 4 colors.}
+
+\item{quartile_type}{c('KIPP Report Card', 'NYS') KIPP Report Card = traditional quartiles.  NYS = predicted
+perf level on NYS test.}
 }
 \value{
 prints a ggplot object

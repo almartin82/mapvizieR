@@ -36,21 +36,22 @@ default is TRUE.  if FALSE will separate lines by school and show a lengend.}
 
 \item{plot_labels}{c('RIT', 'NPR').  'RIT' is default.}
 
-\item{mapvizieR_obj}{}
+\item{mapvizieR_obj}{mapvizieR object}
 
-\item{studentids}{}
+\item{studentids}{target students}
 
-\item{measurementscale}{}
+\item{measurementscale}{target subject}
 
-\item{match_method}{}
+\item{match_method}{do we limit to matched students, and if so, how?
+no matching = any student record in the studentids.}
 
-\item{first_and_spring_only}{}
+\item{first_and_spring_only}{show all terms, or only entry & spring?  default is TRUE.}
 
-\item{entry_grade_seasons}{}
+\item{entry_grade_seasons}{which grade_level_seasons are entry grades?}
 
-\item{collapse_schools}{}
+\item{collapse_schools}{logical - for prior year data, drop school grouping?}
 
-\item{plot_labels}{}
+\item{plot_labels}{c('RIT', 'NPR') - show  labels as RIT or NPR?}
 }
 \value{
 a ggplot object

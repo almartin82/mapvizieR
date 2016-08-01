@@ -18,6 +18,8 @@
 #' (useful when dealing with weird cohort histories)
 #' @param color_scheme color scheme for the stacked bars.  options are 'KIPP Report Card', 
 #' 'Sequential Blues', or a vector of 4 colors.
+#' @param quartile_type c('KIPP Report Card', 'NYS') KIPP Report Card = traditional quartiles.  NYS = predicted
+#' perf level on NYS test.
 #' 
 #' @return prints a ggplot object
 #' 
