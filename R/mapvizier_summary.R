@@ -3,8 +3,10 @@
 #' @description produces a summary for all of the objects on the
 #' main mapvizieR object.  specifically returns \code{mapvizieR_growth_summary}
 #' and \code{mapvizieR_cdf_summary}
+#' 
 #' @param object a \code{mapvizieR} object
 #' @param ... other arguments to be passed to other functions (not currently supported)
+#' 
 #' @return summary stats as a \code{mapvizier_summary} object.
 #' @rdname summary
 #' @export

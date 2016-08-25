@@ -213,7 +213,7 @@ becca_plot <- function(
   #color style?
   if ('KIPP Report Card' %in% color_scheme) {
     p <- p + scale_fill_manual(
-      values = kipp_4col, labels = legend_labels, name = 'Quartiles' 
+      values = kipp_4col, labels = legend_labels, name = 'Quartiles'
     )
   } else if ('NYS' %in% color_scheme) {
     p <- p + scale_fill_manual(
