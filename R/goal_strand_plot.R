@@ -159,7 +159,7 @@ goal_strand_plot <- function(
                       ) +
     ggplot2::geom_point(ggplot2::aes(fill = value - testritscore), 
                         shape = 21,
-                        color = NA
+                        stroke = 0
                       ) + 
     ggplot2::geom_vline(ggplot2::aes(xintercept = mean(testritscore)), 
                         color = "gray") + 
