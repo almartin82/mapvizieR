@@ -21,6 +21,8 @@ default is 'solid'.}
 \item{spring_only}{fall norms show a 'summer slump' effect; this can be
 visually distracting.  spring_only won't include those points in the reference
 lines.}
+
+\item{school}{if TRUE, shows school norms, not *student* norms}
 }
 \description{
 shows the norm space across grade levels or a given subject
