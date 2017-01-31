@@ -1,0 +1,17 @@
+# NYS Proficiency
+
+There is a clear relationship between achievement on the Spring MAP assessment and achieving proficiency on the NYS exam.  This chart shows the percentage of PPN students who attained proficiency on the 2016 assessment as a function of their Spring RIT.
+
+```{r fig.width = 8, fig.height = 4.5}
+
+params$linking_chart
+
+pass_50 <- params$linking_data %>%
+  dplyr::filter(dist_50_rank == 1)
+pass_75 <- params$linking_data %>%
+  dplyr::filter(dist_75_rank == 1)
+```
+
+The MAP RIT score needed to have a 50% likelihood of achieving proficiency on last year's state assessment was **`r pass_50$testritscore`**.  The MAP RIT score needed to have a 75% likelihood of achieving proficiency on last year's state assessment was **`r pass_75$testritscore`**.
+
+The precise relationship between performance on the MAP is, of course, dependent on a number of environmental factors - the stability of the state test scale from year to year; the alignment of PPN's curriculum and the effectiveness of our test prep unit.  They are guideposts, not a crystal ball.  Indeed, over time, we would hope to see RIT score needed to attain proficiency move downward - that would suggest that our test prep unit was helping students at the cusp of proficiency.
