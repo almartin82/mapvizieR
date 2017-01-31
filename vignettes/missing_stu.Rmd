@@ -1,0 +1,7 @@
+The `r num_missing` students with missing baseline scores have these studentids:
+
+```{r}
+
+params$studentids[!valid_mask]
+
+```
