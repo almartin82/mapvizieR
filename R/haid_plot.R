@@ -368,7 +368,7 @@ haid_plot <- function(
   p <- p +
   facet_grid(
     formula(start_testquartile_format ~ .),
-    scale="free_y",
+    scales = "free_y",
     space = "free_y",
     shrink = FALSE,
     as.table = FALSE
