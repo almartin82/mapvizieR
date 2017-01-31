@@ -10,6 +10,7 @@
 #' @param spring_only fall norms show a 'summer slump' effect; this can be
 #' visually distracting.  spring_only won't include those points in the reference
 #' lines.
+#' @param school if TRUE, shows school norms, not *student* norms
 #' 
 #' @export
 
