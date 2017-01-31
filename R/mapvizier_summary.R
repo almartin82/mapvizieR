@@ -8,7 +8,6 @@
 #' @param ... other arguments to be passed to other functions (not currently supported)
 #' 
 #' @return summary stats as a \code{mapvizier_summary} object.
-#' @rdname summary
 #' @export
 
 summary.mapvizieR <- function(object, ...){
@@ -47,10 +46,11 @@ summary.mapvizieR <- function(object, ...){
 #'  \item Total students with NPR >= 75th percentile in the second assessment season
 #'  \item Percent students with NPR >= 75 percentile in the second assessment season
 #' } 
+
 #' @param object a \code{mapvizieR_growth} object
 #' @param ... other arguments to be passed to other functions (not currently supported)
 #' @return summary stats as a \code{mapvizier_summary} object.
-#' @rdname summary
+
 #' @export
 
 summary.mapvizieR_growth <- function(object, ...) {
@@ -143,7 +143,7 @@ summary.mapvizieR_growth <- function(object, ...) {
 #' @param ... other arguments to be passed to other functions (not currently supported)
 
 #' @return summary stats as a \code{mapvizier_cdf_summary} object.
-#' @rdname summary
+
 #' @export
 
 summary.mapvizieR_cdf <- function(object, ...) {
@@ -165,17 +165,19 @@ summary.mapvizieR_cdf <- function(object, ...) {
       n_students = n()
     ) 
   
-  df$cohort_status_npr <- NA_integer_
+  df$cohort_status_npr <- rep(NA_integer_, nrow(df))
   
-  for (i in 1:nrow(df)) {
-    df[i, ]$cohort_status_npr <- cohort_mean_rit_to_npr(
-      df[i, ]$measurementscale, 
-      df[i, ]$grade, 
-      df[i, ]$fallwinterspring,
-      df[i, ]$mean_testritscore
-    )
+  if (nrow(df) > 0) {
+    for (i in 1:nrow(df)) {
+      df[i, ]$cohort_status_npr <- cohort_mean_rit_to_npr(
+        df[i, ]$measurementscale, 
+        df[i, ]$grade, 
+        df[i, ]$fallwinterspring,
+        df[i, ]$mean_testritscore
+      )
+    }    
   }
-
+  
   class(df) <- c("mapvizieR_cdf_summary", class(df))
   
   df
