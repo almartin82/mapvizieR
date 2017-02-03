@@ -14,8 +14,8 @@ test_that("npr templates generate correctly", {
   expect_is(math_npr, 'list')
   expect_is(read_npr, 'list')
   
-  expect_equal(names(math_npr), c('data', 'panel', 'plot'))
-  expect_equal(names(read_npr), c('data', 'panel', 'plot'))
+  expect_equal(names(math_npr), c('data', 'layout', 'plot'))
+  expect_equal(names(read_npr), c('data', 'layout', 'plot'))
   
   expect_equal(
     names(math_npr[['plot']]), 
