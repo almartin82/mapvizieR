@@ -81,16 +81,16 @@ wrapper_class_orderer <- function(all_classes) {
 #' @return data.frame
 #' @export
 
-ungroup_.mapvizieR_data <- function(df, ...) {
+ungroup.mapvizieR_data <- function(df, ...) {
   
   #store the incoming class info
   old_classes <- class(df)
   
   #strip mavpvizieR_data class so that method dispatch doesn't lead to 
-  #infinite calls back to group_by_.mapvizieR_data
+  #infinite calls
   class(df) <- old_classes[!old_classes == 'mapvizieR_data']
   
-  #call normal group_by (should go to dplyr)
+  #call normal ungroup (should go to dplyr)
   out <- dplyr::ungroup(df, ...)
   
   #restore class info

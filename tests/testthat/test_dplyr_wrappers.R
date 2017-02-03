@@ -11,9 +11,17 @@ select_ex <- mapviz$cdf %>%
 
 test_that("group_by preserves class info", {
   expect_is(group_by_ex, 'mapvizieR_data')
+  expect_is(group_by_ex, 'mapvizieR_cdf')
 })
 
 test_that("ungroup preserves class info", {
   expect_is(ungroup_ex, 'mapvizieR_data')
+  expect_is(ungroup_ex, 'mapvizieR_cdf')
 })
+
+test_that("select preserves class info", {
+  expect_is(select_ex, 'mapvizieR_data')
+  expect_is(select_ex, 'mapvizieR_cdf')
+})
+
 
