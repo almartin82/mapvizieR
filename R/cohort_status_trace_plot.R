@@ -68,8 +68,12 @@ cohort_status_trace_plot <- function(
       color = schoolname
     )
   ) +
-  geom_point() +
   geom_line() +
+  geom_point(
+    size = 8,
+    shape = 16,
+    color = 'white'
+  ) +
   geom_text()
   
   p <- p +
