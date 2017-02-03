@@ -47,7 +47,7 @@ fuzz_test_plot <- function(
       build_p <- try(ggplot_build(p))
       tests <- all(
         is.list(build_p),
-        all(c("data", "panel", "plot") %in% names(build_p))
+        all(c("data", "layout", "plot") %in% names(build_p))
       )
       results[[i]] <- tests      
     #known errors are passed tests
