@@ -14,6 +14,7 @@ Depends:
     grid,
     gridExtra (>= 0.9.1),
     magrittr,
+    purrr,
     R(>= 2.10.0)
 Suggests:
     testthat,
@@ -27,7 +28,6 @@ Imports:
     gtable,   
     janitor,
     lubridate,
-    purrr,
     readr,
     reshape2,
     RGraphics,
