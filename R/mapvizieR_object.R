@@ -40,7 +40,7 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
     #FIRST, prep the cdf and the roster
     prepped_cdf <- prep_cdf_long(cdf)
     roster <- prep_roster(roster)
-    class(roster) <- c(c("mapvizieR_data", "mapvizieR_roster"), class(roster))
+    class(roster) <- c("mapvizieR_roster", class(roster))
     
     #SECOND, given a roster and cdf, grade level-ify the cdf
     prepped_cdf$grade <- grade_levelify_cdf(prepped_cdf, roster)
@@ -88,7 +88,11 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
   
   mapviz$growth_df <- determine_growth_status(mapviz$growth_df)
   
-  class(mapviz$growth_df) <- c(c("mapvizieR_data", "mapvizieR_growth"), class(mapviz$growth_df))
+  class(mapviz$growth_df) <- c("mapvizieR_growth", class(mapviz$growth_df))
+  
+  #make all the dfs a mapvizieR_data object
+  mapviz$cdf <- mapvizieR_data(mapviz$cdf)
+  mapviz$roster <- mapvizieR_data(mapviz$roster)
   
   return(mapviz)
 }
