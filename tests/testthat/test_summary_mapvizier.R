@@ -68,6 +68,6 @@ test_that("cdf summary method with custom group_by", {
   
   custom_cdf_sum <- summary(ex_cdf)
   
-  expect_is(custom_group_sum, 'mapvizieR_cdf_summary')  
+  expect_is(custom_cdf_sum, 'mapvizieR_cdf_summary')  
   
 })
