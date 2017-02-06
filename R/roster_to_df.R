@@ -148,9 +148,12 @@ roster_to_growth_df <- function(
   slim <- roster[, names(roster) %in% cols]
   
   #disambiguation - add rn tags by last, first
+  slim <- slim %>%
+    unique() %>%
+    dplyr::tbl_df()
   
   if (by_measurementscale) {
-    slim <- slim %>%
+    slim <- slim
       dplyr::group_by(studentid, measurementscale)
   } else {
     slim <- slim %>%
@@ -158,7 +161,6 @@ roster_to_growth_df <- function(
   }
   
   slim <- slim %>%
-    unique() %>%
     dplyr::mutate(
       last_rn = rank(year_sort),
       first_rn = rank(-year_sort)
