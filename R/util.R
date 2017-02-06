@@ -529,7 +529,6 @@ mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale) {
   cdf_long <- mapvizieR_obj[['cdf']] 
   #only these kids
   out <- cdf_long %>%
-    dplyr::ungroup() %>%
     dplyr::filter(
       studentid %in% studentids,
       measurementscale == measurementscale_in
