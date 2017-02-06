@@ -12,7 +12,7 @@ test_that("stu_growth_detail should return valid data frame", {
   expect_is(ex, 'data.frame')
   expect_is(ex, 'tbl_df')
   expect_equal(
-    ex$first_rit %>% sum(), 20186
+    ex$first_rit %>% sum(), 20271
   )
   
 })

@@ -63,7 +63,7 @@ growth_status_scatter <- function(
      aes(
        x = sgp * 100,
        y = end_testpercentile,
-       label = studentfirstlast
+       label = studentlastfirst
      )
    ) +
    #need a layer
