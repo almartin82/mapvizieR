@@ -89,7 +89,7 @@ summary.mapvizieR_growth <- function(object, ...) {
   
   if (!all(required_test)) {
     all_groups <- c(required, existing_groups) %>% unique()
-    object <- object %>% dplyr::tbl_df() %>% dplyr::group_by_(.dots = all_groups)
+    object <- object %>% dplyr::group_by_(.dots = all_groups)
   }
   
   mapSummary <- object %>% 
