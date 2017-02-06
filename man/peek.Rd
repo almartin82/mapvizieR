@@ -15,4 +15,3 @@ just the head of the data frame, all columns visible
 \description{
 peek
 }
-

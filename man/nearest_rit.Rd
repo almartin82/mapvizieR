@@ -24,4 +24,3 @@ nearest_rit(mapvizieR_obj, studentid, measurementscale, target_date,
 Given studentid, measurementscale, and a target_date, the function will return 
 the closest RIT score.
 }
-

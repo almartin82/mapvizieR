@@ -39,4 +39,3 @@ grob, with plots arranged
 looks back across multiple cohorts.  
 summarizes growth and and attainment
 }
-

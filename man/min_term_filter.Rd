@@ -16,4 +16,3 @@ default is -1, eg off}
 returns only grade_season data where the number of students represented is at
 least N% of the total
 }
-

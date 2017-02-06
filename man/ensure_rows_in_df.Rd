@@ -12,4 +12,3 @@ ensure_rows_in_df(.)
 \description{
 a contract that verifies that a data set isn't length zero
 }
-

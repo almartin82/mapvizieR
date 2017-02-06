@@ -15,4 +15,3 @@ a vector of integers, representing the sequential group number
 \description{
 Utility function to identify groups/runs when imputing
 }
-

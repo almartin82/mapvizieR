@@ -24,4 +24,3 @@ vector of 'quartiles'
 \description{
 ny state psuedo-quartiles
 }
-

@@ -23,4 +23,3 @@ a ggplot object
 \description{
 a plot that shows multiple goal scores as boxplots
 }
-

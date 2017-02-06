@@ -24,4 +24,3 @@ calculates longitudinal / summary growth stats for many students,
 allowing analysis like 'who grew the most'? and 'who had the largest average 
 conditional growth percentile'?
 }
-

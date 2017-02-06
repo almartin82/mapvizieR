@@ -16,4 +16,3 @@ a helper function for \code{generate_growth_df}
 given a scaffold of student/season growth windows, finds the
 matching test data in the cdf
 }
-

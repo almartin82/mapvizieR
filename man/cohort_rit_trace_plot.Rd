@@ -44,4 +44,3 @@ a ggplot2 object
 \description{
 Cohort RIT trace plot
 }
-

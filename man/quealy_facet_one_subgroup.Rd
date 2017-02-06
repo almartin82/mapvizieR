@@ -28,4 +28,3 @@ a data frame
 the plot called by quealy subgroups for each subgroup.  used
 to be internal to the function, has been extracted.
 }
-

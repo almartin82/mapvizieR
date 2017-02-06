@@ -15,4 +15,3 @@ cdf with predicted pass and predicted level
 \description{
 calculate new york pass probability
 }
-

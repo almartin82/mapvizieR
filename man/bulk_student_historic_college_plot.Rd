@@ -43,4 +43,3 @@ a list of ggplot objects
 \description{
 Bulk generates student historic college plots
 }
-

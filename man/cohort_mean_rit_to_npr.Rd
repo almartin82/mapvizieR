@@ -23,4 +23,3 @@ given a mean RIT score for a cohort, return the best
  match percentile rank.  (assumes the subject is grade/cohort, not a student.)
 only supports 2015 norms.
 }
-

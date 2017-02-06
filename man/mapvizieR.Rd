@@ -4,6 +4,7 @@
 \name{mapvizieR}
 \alias{mapvizieR}
 \alias{mapvizieR-package}
+\alias{mapvizieR}
 \title{mapvizieR}
 \usage{
 mapvizieR(cdf, roster, verbose = FALSE, norms = 2015, ...)
@@ -33,4 +34,3 @@ cdf_mv <- mapvizieR(ex_CombinedAssessmentResults,
 is.mapvizieR(cdf_mv)                     
 }
 }
-

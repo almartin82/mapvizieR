@@ -14,4 +14,3 @@
 \value{
 summary stats as a \code{mapvizier_cdf_summary} object.
 }
-

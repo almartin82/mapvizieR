@@ -66,4 +66,3 @@ in the general population vs change in specific subgroups: http://nyti.ms/1tQrOI
 re: obamacare.
 let's do the same thing for change in RIT score.
 }
-

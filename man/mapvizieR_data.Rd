@@ -12,4 +12,3 @@ mapvizieR_data(df)
 \description{
 I have absolutely no idea what I am doing.gif
 }
-

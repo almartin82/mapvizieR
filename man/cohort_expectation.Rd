@@ -26,4 +26,3 @@ of the 2012 school growth study}
 \description{
 wrapper function to get cohort growth expectations for the lookup method
 }
-

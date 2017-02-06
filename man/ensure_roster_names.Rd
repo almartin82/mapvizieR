@@ -12,4 +12,3 @@ ensure_roster_names(.)
 \description{
 does the roster have a studentid and grade field?
 }
-

@@ -43,4 +43,3 @@ a ggplot object
 similar to the existing two pager, but attempts to auto-set fall-spring vs 
 spring/spring
 }
-

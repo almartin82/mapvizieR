@@ -19,4 +19,3 @@ a grob with the footer content
 Adds a simple footer to a report page at 1/20th the height of the existing
 content
 }
-

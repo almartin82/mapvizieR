@@ -12,4 +12,3 @@ clean_measurementscale(x)
 \description{
 add any logic about cleaning measurementscales to this function
 }
-

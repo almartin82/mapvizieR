@@ -29,4 +29,3 @@ a ggplot object
 a scatterplot comparing student growth percentile, and attainment
 (or status) percentile
 }
-

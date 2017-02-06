@@ -28,4 +28,3 @@ a ggplot object.
 \code{galloping_elephants} returns ggplot density distributions that show change
  in RIT over time
 }
-

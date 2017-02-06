@@ -47,4 +47,3 @@ a ggplot object
 \description{
 Cohort Status Trace Plot
 }
-

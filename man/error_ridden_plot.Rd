@@ -14,4 +14,3 @@ error_ridden_plot(mapvizieR_obj, studentids)
 \description{
 a plot that is definitely going to break
 }
-

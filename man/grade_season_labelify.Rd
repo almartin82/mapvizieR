@@ -17,4 +17,3 @@ a data frame with a grade_season_labels
 \code{grade_season_labelify} returns an abbreviated label ('5S') that is useful when
 labelling charts
 }
-

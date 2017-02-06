@@ -16,4 +16,3 @@ boolean, does the cdf pass?
 \description{
 \code{check_cdf_names} tests a prepped cdf's names to see if they conform
 }
-

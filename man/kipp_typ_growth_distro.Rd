@@ -39,4 +39,3 @@ a ggplot chart
 \description{
 shows your school relative to KIPP schools nationwide (if you have that dataset :))
 }
-

@@ -18,4 +18,3 @@ rit change, npr start/end, npr change
 looks at a CDF, takes first/last event by stu/subj, reports
 change in RIT and NPR
 }
-

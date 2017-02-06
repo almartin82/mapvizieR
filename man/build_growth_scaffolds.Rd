@@ -13,4 +13,3 @@ build_growth_scaffolds(processed_cdf)
 a helper function for \code{generate_growth_df}.
 finds all the student/season growth windows.
 }
-

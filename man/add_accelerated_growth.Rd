@@ -64,4 +64,3 @@ new_mv <- add_accelerated_growth(
 str(new_mv)                                
 }
 }
-

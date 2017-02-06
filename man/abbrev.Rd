@@ -38,4 +38,3 @@ altnames<-list(old=c("KAPS", "KBCP", "KOA"),
 
 abbrev(x, exceptions=altnames)
 }
-

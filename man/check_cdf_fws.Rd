@@ -17,4 +17,3 @@ boolean, does the cdf pass?
 \code{check_cdf_fws} tests the fallwinterspring column of a prepped cdf to
 see if it conforms
 }
-

@@ -25,4 +25,3 @@ grob, output of arrangeGrob
 \description{
 col 1: (1 x 1), col 2: 1, col 3: (1 x 1)
 }
-

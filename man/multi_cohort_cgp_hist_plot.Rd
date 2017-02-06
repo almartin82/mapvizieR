@@ -46,4 +46,3 @@ a list of ggplotGrobs
 see cohort_cgp_hist_plot for use.  Pass a vector of studentids
 of *all* desired cohorts.  Plot will facet one plot per cohort.
 }
-

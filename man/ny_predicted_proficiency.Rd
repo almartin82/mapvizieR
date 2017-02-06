@@ -22,4 +22,3 @@ ny_predicted_proficiency
 data from implied regression models in the NWEA nyc linking study
 }
 \keyword{datasets}
-

@@ -36,4 +36,3 @@ a ggplot object
 Combines a template and a mapvizieR object to create a student goal plot
 with college labels
 }
-

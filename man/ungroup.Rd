@@ -17,4 +17,3 @@ data.frame
 \description{
 wrapper for ungroup that preserves classes of data frames
 }
-

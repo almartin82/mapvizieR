@@ -38,37 +38,11 @@ group_by_.mapvizieR_data <- function(df, ...) {
   out <- dplyr::group_by_(df, ...)
   
   #restore class info
-  new_classes <- class(out)
-  all_classes <- c(new_classes, old_classes) %>% unique() %>% sort()
-  sorted_classes <- wrapper_class_orderer(all_classes)
-  class(out) <- sorted_classes
+  class(out) <- old_classes
   
   out
 }
 
-
-
-#' class orderer for dplyr wrappers
-#'
-#' @param all_classes character vector of class names
-#'
-#' @return character vector of classes with anything `mapviz` sorted first
-#' @export
-
-wrapper_class_orderer <- function(all_classes) {
-
-  #force mapviz classes first
-  is_mapviz <- grepl('mapviz', all_classes) 
-  
-  #starting position
-  sort_order <- seq(1:length(all_classes))
-  sort_order <- sort_order + 1000
-  sort_order[is_mapviz] <- sort_order[is_mapviz] - 50
-  
-  sorted_classes <- all_classes[rank(sort_order)]
-  
-  sorted_classes
-}
 
 
 #' ungroup wrapper
@@ -94,10 +68,7 @@ ungroup.mapvizieR_data <- function(df, ...) {
   out <- dplyr::ungroup(df, ...)
   
   #restore class info
-  new_classes <- class(out)
-  all_classes <- c(new_classes, old_classes) %>% unique() %>% sort()
-  sorted_classes <- wrapper_class_orderer(all_classes)
-  class(out) <- sorted_classes
+  class(out) <- old_classes
   
   out
 }
@@ -126,10 +97,122 @@ select_.mapvizieR_data <- function(df, ...) {
   out <- dplyr::select_(df, ...)
   
   #restore class info
-  new_classes <- class(out)
-  all_classes <- c(new_classes, old_classes) %>% unique() %>% sort()
-  sorted_classes <- wrapper_class_orderer(all_classes)
-  class(out) <- sorted_classes
+  class(out) <- old_classes
+  
+  out
+}
+
+
+#' filter wrapper
+#'
+#' @description wrapper for filter that preserves classes of data frames
+#' @param df data.frame
+#' @param ... additional args
+#' @rdname filter
+#' 
+#' @return data.frame
+#' @export
+
+filter_.mapvizieR_data <- function(df, ...) {
+  
+  #store the incoming class info
+  old_classes <- class(df)
+  
+  #strip mavpvizieR_data class so that method dispatch doesn't lead to infinite calls
+  class(df) <- old_classes[!old_classes == 'mapvizieR_data']
+  
+  #call normal (should go to dplyr)
+  out <- dplyr::filter_(df, ...)
+  
+  #restore class info
+  class(out) <- old_classes
+  
+  out
+}
+
+
+
+#' arrange wrapper
+#'
+#' @description wrapper for arrange that preserves classes of data frames
+#' @param df data.frame
+#' @param ... additional args
+#' @rdname arrange
+#' 
+#' @return data.frame
+#' @export
+
+arrange_.mapvizieR_data <- function(df, ...) {
+  
+  #store the incoming class info
+  old_classes <- class(df)
+  
+  #strip mavpvizieR_data class so that method dispatch doesn't lead to infinite calls
+  class(df) <- old_classes[!old_classes == 'mapvizieR_data']
+  
+  #call normal (should go to dplyr)
+  out <- dplyr::arrange_(df, ...)
+  
+  #restore class info
+  class(out) <- old_classes
+  
+  out
+}
+
+
+
+#' mutate wrapper
+#'
+#' @description wrapper for mutate that preserves classes of data frames
+#' @param df data.frame
+#' @param ... additional args
+#' @rdname mutate
+#' 
+#' @return data.frame
+#' @export
+
+mutate_.mapvizieR_data <- function(df, ...) {
+  
+  #store the incoming class info
+  old_classes <- class(df)
+  
+  #strip mavpvizieR_data class so that method dispatch doesn't lead to infinite calls
+  class(df) <- old_classes[!old_classes == 'mapvizieR_data']
+  
+  #call normal (should go to dplyr)
+  out <- dplyr::mutate_(df, ...)
+  
+  #restore class info
+  class(out) <- old_classes
+  
+  out
+}
+
+
+
+#' summarize wrapper
+#'
+#' @description wrapper for summarize that preserves classes of data frames
+#' @param df data.frame
+#' @param ... additional args
+#' @rdname summarize
+#' 
+#' @return data.frame
+#' @export
+
+summarize_.mapvizieR_data <- function(df, ...) {
+  
+  #store the incoming class info
+  old_classes <- class(df)
+  
+  #strip mavpvizieR_data class so that method dispatch doesn't lead to infinite calls
+  class(df) <- old_classes[!old_classes == 'mapvizieR_data']
+  
+  #call normal (should go to dplyr)
+  out <- dplyr::summarize_(df, ...)
+  
+  #restore class info
+  class(out) <- old_classes
   
   out
 }

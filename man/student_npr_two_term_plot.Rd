@@ -58,4 +58,3 @@ student_npr_two_term_plot(
   min_n = 5)
 }
 }
-

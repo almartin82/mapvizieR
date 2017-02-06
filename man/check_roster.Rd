@@ -18,4 +18,3 @@ has a more descriptive string describing what happened.
 \code{check_roster} a wrapper around a bunch of individual tests
 that see if a roster data frame conforms to mapvizieR expectations
 }
-

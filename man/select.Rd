@@ -17,4 +17,3 @@ data.frame
 \description{
 wrapper for select that preserves classes of data frames
 }
-

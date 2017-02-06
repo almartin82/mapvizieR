@@ -52,4 +52,3 @@ for a group of students
 This function builds and prints a graphic that plots MAP performance
 over one or two seasons. RIT scores are color coded by percentile.
 }
-

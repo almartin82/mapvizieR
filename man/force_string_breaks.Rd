@@ -14,4 +14,3 @@ force_string_breaks(string, n_char)
 \description{
 a text processing function to insert a \\n break every x characters
 }
-

@@ -24,4 +24,3 @@ one_cgp_step(measurementscale, start_rit, end_grade, cgp,
 \description{
 helps simulate what happens if a cohort grows at a constant CGP.
 }
-

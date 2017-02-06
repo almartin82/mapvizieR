@@ -30,4 +30,3 @@ CAO Amy Pouba, who came up with the idea.  This visualizaiton is nice in that it
 a quick overview of the distribution of growth statuses while simultaneously providing
 student-level information (student name, end RIT score, and gorwth status).
 }
-

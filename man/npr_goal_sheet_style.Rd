@@ -15,4 +15,3 @@ a ggplot template
 \description{
 Wrapper to make student percentile rank goal sheet templates KIPP NJ style
 }
-

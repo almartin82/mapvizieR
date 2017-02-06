@@ -16,4 +16,3 @@ h_var(text, size, gp = grid::gpar(fontsize = size, fontface = "bold"))
 \description{
 utility function to make a text grob of desired size
 }
-

@@ -25,4 +25,3 @@ description.}
 called by \code{generate_growth_df} to return
 growth norms for growth data frames in process
 }
-

@@ -24,4 +24,3 @@ a named list, with grades and rits
 \description{
 simulate school growth at a constant CGP
 }
-

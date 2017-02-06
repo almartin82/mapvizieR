@@ -15,4 +15,3 @@ data frame with disambiguated termname and map_year_academic
 \description{
 \code{extract_academic_year} break up the termname field into year and fallwinterspring
 }
-

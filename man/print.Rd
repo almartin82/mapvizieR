@@ -31,4 +31,3 @@ cdf_mv <- mapvizieR(ex_CombinedAssessmentResults,
 cdf_mv
 }
 }
-

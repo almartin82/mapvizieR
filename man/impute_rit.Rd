@@ -25,4 +25,3 @@ a cdf object, with imputed rows
 \description{
 Impute missing RIT scores
 }
-

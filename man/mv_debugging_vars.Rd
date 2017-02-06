@@ -12,4 +12,3 @@ injects some variables into your environment to ease function debugging
 \description{
 mv_debugging_vars
 }
-

@@ -30,4 +30,3 @@ cdf_mv <- mapvizieR(ex_CombinedAssessmentResults,
 goals<-goal_kipp_tiered(cdf_mv)                     
 }
 }
-

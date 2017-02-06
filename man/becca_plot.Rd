@@ -42,4 +42,3 @@ This function builds and prints a bar graph with 4 bins per bar show MAP data
 binned by quartile (National Percentile Rank).  Bars are centered at 50th percentile 
 horizonatally
 }
-

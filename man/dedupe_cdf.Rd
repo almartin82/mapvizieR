@@ -18,4 +18,3 @@ a data frame with one row per kid
 \description{
 \code{dedupe_cdf} makes sure that the cdf only contains one row student/subject/term
 }
-

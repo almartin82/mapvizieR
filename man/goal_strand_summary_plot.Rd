@@ -62,4 +62,3 @@ goal_strand_summary_plot(map_mv,
    )
 }
 }
-

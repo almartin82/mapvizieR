@@ -14,4 +14,3 @@ silly_plot(mapvizieR_obj, studentids)
 \description{
 just a dead simple plot that we can use to test the fuzz_test function
 }
-

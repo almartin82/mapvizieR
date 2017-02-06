@@ -19,4 +19,3 @@ a cdf, with rows for imputation
 \description{
 Build out the base scaffold of possible terms for every student.
 }
-

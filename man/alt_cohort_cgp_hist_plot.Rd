@@ -47,4 +47,3 @@ a ggplot object
 Shows a cohort's progress over time.  Similar to cohort_cgp_hist,
 but uses the 2015 school grade level attainment/status norms.
 }
-

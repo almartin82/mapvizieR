@@ -14,4 +14,3 @@ a contract that ensures that a goal object's has the proper
 elements and that the \code{goals} element data frame has columns names
 \code{accel_growth} and \code{met_acc}
 }
-

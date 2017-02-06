@@ -42,4 +42,3 @@ a list of grid graphics objects
 KNJ style 'two pager' report that shows the progress of a grade 
 or cohort
 }
-

@@ -52,4 +52,3 @@ a multipage report, represented as a list of grobs.
 \description{
 Fall Goals Report
 }
-

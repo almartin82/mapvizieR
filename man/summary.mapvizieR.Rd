@@ -19,4 +19,3 @@ produces a summary for all of the objects on the
 main mapvizieR object.  specifically returns \code{mapvizieR_growth_summary}
 and \code{mapvizieR_cdf_summary}
 }
-

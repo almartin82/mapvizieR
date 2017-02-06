@@ -56,4 +56,3 @@ and end score. default is FALSE.}
 a simple bar chart that shows the percentage of a cohort at different goal
 states (met / didn't meet)
 }
-

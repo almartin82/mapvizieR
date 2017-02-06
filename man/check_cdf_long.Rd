@@ -18,4 +18,3 @@ has a more descriptive string describing what happened.
 \code{check_cdf_long} a wrapper around a bunch of individual tests
 that see if a CDF data frame conforms to mapvizieR conventions
 }
-

@@ -38,4 +38,3 @@ in the \code{mapvizier_growth} object:
  \item Percent students with NPR >= 75 percentile in the second assessment season
 }
 }
-

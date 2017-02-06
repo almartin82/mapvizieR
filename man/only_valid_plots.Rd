@@ -12,4 +12,3 @@ only_valid_plots(x)
 \description{
 a post-processor for report_dispatcher
 }
-

@@ -16,4 +16,3 @@ data frame
 strips out term and year info so that summary.mapvizieR_cdf will cleanly group students by grade_level_season, school
 and measurementscale
 }
-

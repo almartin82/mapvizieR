@@ -31,4 +31,3 @@ a ggplot geom_text object with college labels
 \description{
 this was non-trivial, so it gets its own little function.
 }
-

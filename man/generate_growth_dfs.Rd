@@ -35,4 +35,3 @@ Given a mapvizieR processed cdf, this function will return a a growth
 data frame, with one row per student per test per valid 'growth_window',
 eg 'Fall to Spring'.
 }
-

@@ -24,4 +24,3 @@ a ggplot object
 \description{
 Expectation distribution
 }
-

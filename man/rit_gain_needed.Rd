@@ -16,4 +16,3 @@ rit_gain_needed(percentile, sd_gain, mean_gain)
 \description{
 rit gain needed to reach given percentile
 }
-

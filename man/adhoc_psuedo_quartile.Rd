@@ -18,4 +18,3 @@ vector of 'quartiles'
 can be used to get becca plot to return predicted performance 
 bands, instead of quartile bands
 }
-
