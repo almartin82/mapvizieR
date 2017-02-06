@@ -44,7 +44,7 @@ cohort_status_trace_plot <- function(
   }
     
   #cdf summary
-  this_sum <- summary.mapvizieR_cdf(this_cdf)
+  this_sum <- summary(this_cdf)
 
   if (retention_strategy == 'filter_small') {
     this_sum <- this_sum[this_sum$n_students >= small_n_cutoff * max(this_sum$n_students), ]
