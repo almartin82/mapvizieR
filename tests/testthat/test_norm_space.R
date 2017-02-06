@@ -23,5 +23,5 @@ test_that("empty norm grade space with SCHOOL attainment norms", {
   p_build <- ggplot2::ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 429)
-  expect_equal(p_build$data[[2]]$y %>% sum(), 29521)
+  expect_equal(p_build$data[[2]]$y %>% sum(), 29551)
 })  
