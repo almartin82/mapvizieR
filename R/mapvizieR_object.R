@@ -93,7 +93,8 @@ mapvizieR.default <- function(cdf, roster, verbose = FALSE, norms = 2015, ...) {
   #make all the dfs a mapvizieR_data object
   mapviz$cdf <- mapvizieR_data(mapviz$cdf)
   mapviz$roster <- mapvizieR_data(mapviz$roster)
-  
+  mapviz$growth_df <- mapvizieR_data(mapviz$growth_df)
+
   return(mapviz)
 }
 
