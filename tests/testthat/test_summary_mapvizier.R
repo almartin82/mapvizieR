@@ -56,6 +56,18 @@ test_that("growth summary method with custom group_by", {
     
   custom_group_sum <- summary(ex_growth)
 
-  expect_is(custom_group_sum, 'mapvizieR_growth')  
+  expect_is(custom_group_sum, 'mapvizieR_growth_summary')  
+  
+})
+
+
+test_that("cdf summary method with custom group_by", {
+  
+  ex_cdf <- mapviz$cdf %>%
+    dplyr::group_by(map_year_academic, fallwinterspring)
+  
+  custom_cdf_sum <- summary(ex_cdf)
+  
+  expect_is(custom_group_sum, 'mapvizieR_cdf_summary')  
   
 })

@@ -79,12 +79,17 @@ summary.mapvizieR_growth <- function(object, ...) {
   
   #but there are some minimal fields needed to make the CGP calcs go (issue #317)
   #force these
-  required <- c('measurementscale',  'start_grade', 'start_fallwinterspring', 'end_map_year_academic', 'end_grade', 'growth_window')
+  required <- c(
+    'measurementscale',  
+    'start_map_year_academic', 'start_grade', 'start_fallwinterspring', 
+    'end_map_year_academic', 'end_grade', 'end_fallwinterspring', 
+    'growth_window'
+  )
   required_test <- required %in% existing_groups
   
   if (!all(required_test)) {
     all_groups <- c(required, existing_groups) %>% unique()
-    object <- object %>% dplyr::tbl_df() %>% dplyr::group_by_(all_groups)
+    object <- object %>% dplyr::tbl_df() %>% dplyr::group_by_(.dots = all_groups)
   }
   
   mapSummary <- object %>% 
@@ -125,8 +130,6 @@ summary.mapvizieR_growth <- function(object, ...) {
   mapSummary$start_cohort_status_npr <- NA_integer_
   mapSummary$end_cohort_status_npr <- NA_integer_
   
-  print.AsIs(mapSummary) 
-  
   for (i in 1:nrow(mapSummary)) {
     mapSummary[i, ]$start_cohort_status_npr <- cohort_mean_rit_to_npr(
       mapSummary[i, ]$measurementscale, 
@@ -165,13 +168,29 @@ summary.mapvizieR_cdf <- function(object, ...) {
   #summary.mapvizieR_cdf requires grouping vars on the cdf
   #process_cdf_long sets them as part of construction of the mv object
   #if there are NO grouping vars, this will set them by default
-  if (is.null(attr(object, 'vars'))) {
+  existing_groups <- attr(object, 'vars') %>% as.character()
+  
+  if (is.null(existing_groups)) {
     object <- object %>%
       dplyr::group_by(
         measurementscale, map_year_academic, fallwinterspring, 
         termname, schoolname, grade, grade_level_season)      
   }
     
+  #but there are some minimal fields needed to make the CGP calcs go (issue #317)
+  #force these
+  required <- c(
+    'measurementscale',  
+    'map_year_academic', 'fallwinterspring', 'termname', 
+    'grade', 'grade_level_season'
+  )
+  required_test <- required %in% existing_groups
+  
+  if (!all(required_test)) {
+    all_groups <- c(required, existing_groups) %>% unique()
+    object <- object %>% dplyr::tbl_df() %>% dplyr::group_by_(.dots = all_groups)
+  }
+  
   df <- object %>%
     dplyr::summarize(
       mean_testritscore = mean(testritscore, na.rm = TRUE),
