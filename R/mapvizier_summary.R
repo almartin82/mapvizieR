@@ -121,12 +121,17 @@ summary.mapvizieR_growth <- function(object, ...) {
       median_cgi = round(median(cgi, na.rm = TRUE), digits),
       median_sgp = round(median(sgp, na.rm = TRUE), digits),
       start_median_consistent_percentile = round(median(start_consistent_percentile, na.rm = TRUE), digits),
-      end_median_consistent_percentile = round(median(end_consistent_percentile, na.rm = TRUE), digits),
+      end_median_consistent_percentile = round(median(end_consistent_percentile, na.rm = TRUE), digits)
+    )
+  
+  mapSummary <- mapSummary %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(
       cgp = calc_cgp(
         measurementscale, end_grade, growth_window, start_mean_testritscore, end_mean_testritscore
       )[['results']] %>% round(digits)
     )
-    
+
   mapSummary$start_cohort_status_npr <- NA_integer_
   mapSummary$end_cohort_status_npr <- NA_integer_
   
