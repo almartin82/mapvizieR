@@ -157,7 +157,7 @@ goal_strand_plot <- function(
     strip.text.y = element_text(angle = 0), 
     axis.text.y = element_text(size = 5)
   )
-  
+
   # return
   p
 }
