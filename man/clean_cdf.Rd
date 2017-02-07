@@ -27,4 +27,3 @@ the bad references with good ones.
 ultimately you'll want to push these changes upstream to the NWEA site, but in a
 pinch, clean_cdf can help
 }
-

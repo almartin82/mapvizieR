@@ -20,4 +20,3 @@ one row data frame.
 helper function for \code{generate_growth_df}. given a test id,
 returns df with all the scores.
 }
-

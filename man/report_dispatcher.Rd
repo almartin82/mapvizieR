@@ -45,4 +45,3 @@ a list of output from the function you called
 \description{
 \code{report_dispatcher} applies a mapvizieR over the unique 'org units' in a roster object.
 }
-

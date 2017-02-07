@@ -73,7 +73,7 @@ test_that("only_valid_plots correctly handles a list of ggplot", {
   realistic_build <- sapply(more_realistic, ggplot_build)
   expect_equal(length(realistic_build), 51)
   expect_equal(summary(realistic_build[1,])[,1] %>% unname(), c(rep('3', 17)))
-  expect_equal(rownames(summary(realistic_build[,1])), c('data', 'panel', 'plot'))
+  expect_equal(rownames(summary(realistic_build[,1])), c('data', 'layout', 'plot'))
   
 })  
 
@@ -134,8 +134,8 @@ test_that("report dispatcher shows n per group if verbose", {
     verbose = TRUE
   ))
   
-  expect_equal(diaz_ex[[18]], "1       Mt. Bachelor Middle School     6   395")
-  expect_equal(diaz_ex[[19]], "2       Mt. Bachelor Middle School     7   480")
+  expect_equal(diaz_ex[[36]], "$`schoolname: Mt. Bachelor Middle School | grade: 6`")
+  expect_equal(diaz_ex[[60]], "$`schoolname: Three Sisters Elementary School | grade: 5`")
 })  
 
 

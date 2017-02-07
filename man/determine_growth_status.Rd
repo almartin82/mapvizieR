@@ -12,4 +12,3 @@ determine_growth_status(df)
 \description{
 last thing that runs after accelerated growth is calculated
 }
-

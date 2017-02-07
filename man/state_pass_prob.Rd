@@ -17,4 +17,3 @@ a cdf with predicted pass and predicted level
 \description{
 state pass probability
 }
-

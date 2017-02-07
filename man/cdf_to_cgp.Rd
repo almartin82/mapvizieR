@@ -22,4 +22,3 @@ a data frame with summary start/end rit, and cgps
 \description{
 CDF to CGP summary
 }
-

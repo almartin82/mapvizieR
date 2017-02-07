@@ -28,4 +28,3 @@ a cdf data frame with the roster objects
 when you need to put a roster object onto a cdf.  reasonably easy because this is 
 point in time data.
 }
-

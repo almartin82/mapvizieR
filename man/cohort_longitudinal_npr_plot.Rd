@@ -35,4 +35,3 @@ a ggplot object
 shows the progress of students, and cohort average, against
 the NPR space.
 }
-

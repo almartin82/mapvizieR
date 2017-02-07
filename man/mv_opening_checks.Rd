@@ -16,4 +16,3 @@ mv_opening_checks(mapvizieR_obj, studentids, min_stu = 1)
 \description{
 common beginning checks when building a plot.  DRY, right?
 }
-

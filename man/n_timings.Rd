@@ -18,4 +18,3 @@ to do.call}
 a convenience wrapper around timings to record
 the results of timing a function's execution
 }
-

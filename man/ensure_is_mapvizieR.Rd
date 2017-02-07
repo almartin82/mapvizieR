@@ -12,4 +12,3 @@ ensure_is_mapvizieR(.)
 \description{
 a contract that ensures that an object is a mapvizieR object at runtime.
 }
-

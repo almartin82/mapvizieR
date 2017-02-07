@@ -24,4 +24,3 @@ in group (relative to total students), and the total count of students.
 \code{get_group_stats} calculates counts and percentages used in
 \code{haid_plot}
 }
-

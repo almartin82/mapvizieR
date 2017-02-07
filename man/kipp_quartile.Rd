@@ -33,4 +33,3 @@ kipp_quartile(x)
 kipp_quartile(x, proper_quartile=TRUE)
 kipp_quartile(x, proper_quartile=TRUE, return_factor=FALSE)
 }
-

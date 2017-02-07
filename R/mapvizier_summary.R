@@ -3,10 +3,11 @@
 #' @description produces a summary for all of the objects on the
 #' main mapvizieR object.  specifically returns \code{mapvizieR_growth_summary}
 #' and \code{mapvizieR_cdf_summary}
+#' 
 #' @param object a \code{mapvizieR} object
 #' @param ... other arguments to be passed to other functions (not currently supported)
+#' 
 #' @return summary stats as a \code{mapvizier_summary} object.
-#' @rdname summary
 #' @export
 
 summary.mapvizieR <- function(object, ...){
@@ -45,10 +46,11 @@ summary.mapvizieR <- function(object, ...){
 #'  \item Total students with NPR >= 75th percentile in the second assessment season
 #'  \item Percent students with NPR >= 75 percentile in the second assessment season
 #' } 
+
 #' @param object a \code{mapvizieR_growth} object
 #' @param ... other arguments to be passed to other functions (not currently supported)
 #' @return summary stats as a \code{mapvizier_summary} object.
-#' @rdname summary
+
 #' @export
 
 summary.mapvizieR_growth <- function(object, ...) {
@@ -60,52 +62,76 @@ summary.mapvizieR_growth <- function(object, ...) {
     digits <- list(...)$digits
   }
   
-  df <- as.data.frame(object) %>%
+  #summary.mapvizieR_cdf requires grouping vars on the cdf
+  #process_cdf_long sets them as part of construction of the mv object
+  #if there are NO grouping vars, this will set them by default
+  existing_groups <- attr(object, 'vars') %>% as.character()
+  
+  if (is.null(existing_groups)) {
+    object <- object %>%
+      dplyr::group_by(
+        end_map_year_academic, cohort_year, growth_window, end_schoolname,
+        start_grade, end_grade,
+        start_fallwinterspring, end_fallwinterspring,
+        measurementscale
+      )      
+  }
+  
+  #but there are some minimal fields needed to make the CGP calcs go (issue #317)
+  #force these
+  required <- c(
+    'measurementscale',  
+    'start_map_year_academic', 'start_grade', 'start_fallwinterspring', 
+    'end_map_year_academic', 'end_grade', 'end_fallwinterspring', 
+    'growth_window'
+  )
+  required_test <- required %in% existing_groups
+  
+  if (!all(required_test)) {
+    all_groups <- c(required, existing_groups) %>% unique()
+    object <- object %>% dplyr::group_by_(.dots = all_groups)
+  }
+  
+  mapSummary <- object %>% 
     dplyr::filter(complete_obsv) %>%
-    dplyr::mutate(cohort_year = end_map_year_academic + 1 + 12 - end_grade) %>%
-    dplyr::group_by(
-      end_map_year_academic, 
-      cohort_year,
-      growth_window, 
-      end_schoolname,
-      start_grade,
-      end_grade,
-      start_fallwinterspring,
-      end_fallwinterspring,
-      measurementscale
+    dplyr::summarize(
+      n_students = n(),
+      n_typical = sum(met_typical_growth, na.rm = TRUE),
+      pct_typical = round(n_typical/n_students, digits),
+      n_accel_growth = sum(met_accel_growth, na.rm = TRUE),
+      pct_accel_growth = round(n_accel_growth/n_students,digits),
+      n_negative = sum(growth_status == "Negative", na.rm = TRUE),
+      pct_negative = round(n_negative/n_students, digits),
+      start_n_50th_pctl = sum(start_testpercentile >= 50, na.rm = TRUE),
+      start_pct_50th_pctl = round(start_n_50th_pctl / n_students, digits),
+      end_n_50th_pctl = sum(end_testpercentile >= 50, na.rm = TRUE),
+      end_pct_50th_pctl = round(end_n_50th_pctl / n_students,digits),
+      start_n_75th_pctl = sum(start_testpercentile >= 75, na.rm = TRUE),
+      start_pct_75th_pctl = round(start_n_75th_pctl/n_students,digits),
+      end_n_75th_pctl = sum(start_testpercentile >= 75, na.rm = TRUE),
+      end_pct_75th_pctl = round(end_n_75th_pctl / n_students,digits),
+      start_mean_testritscore = round(mean(start_testritscore, na.rm = TRUE), digits),
+      end_mean_testritscore = round(mean(end_testritscore, na.rm = TRUE), digits),
+      mean_rit_growth = round(mean(rit_growth, na.rm = TRUE), digits),
+      mean_cgi = round(mean(cgi, na.rm = TRUE), digits),
+      mean_sgp = pnorm(mean_cgi),
+      start_median_testritscore = round(median(start_testritscore, na.rm = TRUE), digits),
+      end_median_testritscore = round(median(end_testritscore, na.rm = TRUE), digits),
+      median_rit_growth = round(median(rit_growth, na.rm = TRUE), digits),
+      median_cgi = round(median(cgi, na.rm = TRUE), digits),
+      median_sgp = round(median(sgp, na.rm = TRUE), digits),
+      start_median_consistent_percentile = round(median(start_consistent_percentile, na.rm = TRUE), digits),
+      end_median_consistent_percentile = round(median(end_consistent_percentile, na.rm = TRUE), digits)
     )
   
-  mapSummary <- df %>% dplyr::summarize(
-    n_students = n(),
-    n_typical = sum(met_typical_growth, na.rm = TRUE),
-    pct_typical = round(n_typical/n_students, digits),
-    n_accel_growth = sum(met_accel_growth, na.rm = TRUE),
-    pct_accel_growth = round(n_accel_growth/n_students,digits),
-    n_negative = sum(growth_status == "Negative", na.rm = TRUE),
-    pct_negative = round(n_negative/n_students, digits),
-    start_n_50th_pctl = sum(start_testpercentile >= 50, na.rm = TRUE),
-    start_pct_50th_pctl = round(start_n_50th_pctl / n_students, digits),
-    end_n_50th_pctl = sum(end_testpercentile >= 50, na.rm = TRUE),
-    end_pct_50th_pctl = round(end_n_50th_pctl / n_students,digits),
-    start_n_75th_pctl = sum(start_testpercentile >= 75, na.rm = TRUE),
-    start_pct_75th_pctl = round(start_n_75th_pctl/n_students,digits),
-    end_n_75th_pctl = sum(start_testpercentile >= 75, na.rm = TRUE),
-    end_pct_75th_pctl = round(end_n_75th_pctl / n_students,digits),
-    start_mean_testritscore = round(mean(start_testritscore, na.rm = TRUE), digits),
-    end_mean_testritscore = round(mean(end_testritscore, na.rm = TRUE), digits),
-    mean_rit_growth = round(mean(rit_growth, na.rm = TRUE), digits),
-    mean_cgi = round(mean(cgi, na.rm = TRUE), digits),
-    mean_sgp = pnorm(mean_cgi),
-    start_median_testritscore = round(median(start_testritscore, na.rm = TRUE), digits),
-    end_median_testritscore = round(median(end_testritscore, na.rm = TRUE), digits),
-    median_rit_growth = round(median(rit_growth, na.rm = TRUE), digits),
-    median_cgi = round(median(cgi, na.rm = TRUE), digits),
-    median_sgp = round(median(sgp, na.rm = TRUE), digits),
-    start_median_consistent_percentile = round(median(start_consistent_percentile, na.rm = TRUE), digits),
-    end_median_consistent_percentile = round(median(end_consistent_percentile, na.rm = TRUE), digits),
-    cgp = calc_cgp(measurementscale, end_grade, growth_window, start_mean_testritscore, end_mean_testritscore)[['results']] %>% round(digits)
-  )
-  
+  mapSummary <- mapSummary %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(
+      cgp = calc_cgp(
+        measurementscale, end_grade, growth_window, start_mean_testritscore, end_mean_testritscore
+      )[['results']] %>% round(digits)
+    )
+
   mapSummary$start_cohort_status_npr <- NA_integer_
   mapSummary$end_cohort_status_npr <- NA_integer_
   
@@ -134,38 +160,62 @@ summary.mapvizieR_growth <- function(object, ...) {
 
 #' @title summary method for \code{mapvizieR_cdf} class
 #'
-#' @param object 
 #'
 #' @param object a \code{mapvizieR_cdf} object
 #' @param ... other arguments to be passed to other functions (not currently supported)
 
 #' @return summary stats as a \code{mapvizier_cdf_summary} object.
-#' @rdname summary
+
 #' @export
 
 summary.mapvizieR_cdf <- function(object, ...) {
   
+  #summary.mapvizieR_cdf requires grouping vars on the cdf
+  #process_cdf_long sets them as part of construction of the mv object
+  #if there are NO grouping vars, this will set them by default
+  existing_groups <- attr(object, 'vars') %>% as.character()
+  
+  if (is.null(existing_groups)) {
+    object <- object %>%
+      dplyr::group_by(
+        measurementscale, map_year_academic, fallwinterspring, 
+        termname, schoolname, grade, grade_level_season)      
+  }
+    
+  #but there are some minimal fields needed to make the CGP calcs go (issue #317)
+  #force these
+  required <- c(
+    'measurementscale',  
+    'map_year_academic', 'fallwinterspring', 'termname', 
+    'grade', 'grade_level_season'
+  )
+  required_test <- required %in% existing_groups
+  
+  if (!all(required_test)) {
+    all_groups <- c(required, existing_groups) %>% unique()
+    object <- object %>% dplyr::tbl_df() %>% dplyr::group_by_(.dots = all_groups)
+  }
+  
   df <- object %>%
-    dplyr::group_by(
-      measurementscale, map_year_academic, fallwinterspring, 
-      termname, schoolname, grade, grade_level_season) %>%
     dplyr::summarize(
       mean_testritscore = mean(testritscore, na.rm = TRUE),
       mean_percentile = mean(consistent_percentile, na.rm = TRUE),
       n_students = n()
     ) 
   
-  df$cohort_status_npr <- NA_integer_
+  df$cohort_status_npr <- rep(NA_integer_, nrow(df))
   
-  for (i in 1:nrow(df)) {
-    df[i, ]$cohort_status_npr <- cohort_mean_rit_to_npr(
-      df[i, ]$measurementscale, 
-      df[i, ]$grade, 
-      df[i, ]$fallwinterspring,
-      df[i, ]$mean_testritscore
-    )
+  if (nrow(df) > 0) {
+    for (i in 1:nrow(df)) {
+      df[i, ]$cohort_status_npr <- cohort_mean_rit_to_npr(
+        df[i, ]$measurementscale, 
+        df[i, ]$grade, 
+        df[i, ]$fallwinterspring,
+        df[i, ]$mean_testritscore
+      )
+    }    
   }
-
+  
   class(df) <- c("mapvizieR_cdf_summary", class(df))
   
   df

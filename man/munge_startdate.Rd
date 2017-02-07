@@ -12,4 +12,3 @@ munge_startdate(x)
 \description{
 helper function to convert a variety of date formats cleanly
 }
-

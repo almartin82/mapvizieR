@@ -25,4 +25,3 @@ a numeric vector length 2 with the xy coord of the centroid
 \description{
 Finds the centroid of a triangle
 }
-

@@ -49,4 +49,3 @@ strands_list_plot(map_mv,
                  2013)
 }
 }
-

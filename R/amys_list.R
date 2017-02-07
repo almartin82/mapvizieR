@@ -53,7 +53,7 @@ amys_lists <- function(
     )
 
   #need to be at least one row with valid data
-  ensure_rows_in_df(this_growth[!is.na(this_growth$sgp), ])
+  ensure_rows_in_df(this_growth[!is.na(this_growth$rit_growth), ])
 
   this_growth2 <- this_growth %>%
     dplyr::mutate(growth_status = ifelse(growth_status == "Positive", "Not Typical", growth_status)) %>%
@@ -89,7 +89,8 @@ amys_lists <- function(
 
 
   p <- ggplot2::ggplot(
-    data = this_growth2,
+    data = this_growth2 %>%
+      dplyr::filter(!is.na(end_grade)),
     aes(x = growth_status2, y = growth_status_rank)
   ) +
   #student names

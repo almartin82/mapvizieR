@@ -12,4 +12,3 @@ norms_students_wide_to_long(norms = student_growth_norms_2015)
 \description{
 takes the wide norms_students object and makes it long
 }
-

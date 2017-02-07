@@ -12,4 +12,3 @@ is_not_error(x)
 \description{
 utility function, test if an object is NOT a try-error
 }
-

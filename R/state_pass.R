@@ -31,7 +31,7 @@ ny_pass_prob <- function(mapvizieR_obj) {
 state_pass_prob <- function(mapvizieR_obj, state_test = 'NY') {
  
   valid_state_tests <- c('NY')
-  valid_state_tests %>% ensurer::ensure_that(
+  state_test %>% ensurer::ensure_that(
     . %in% valid_state_tests ~ 
       paste0("currently supported state tests are: ", 
              paste(valid_state_tests, collapse = ', '),

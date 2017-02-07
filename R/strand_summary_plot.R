@@ -15,7 +15,7 @@
 #' @param cohort cohort year to plot as integer or FALSE (the default).  If `cohort`
 #' is not FALSE then `year` is ignored
 #' @param spring_is_first logical indicating whether spring is in the given 
-#' acadmeic year or from the year prior. 
+#' academic year or from the year prior. 
 #' @param filter_args a list of character vectors to filter `mapvizieR_obj$cdf` 
 #' by that is passed to \code{\link[dplyr]{filter}}
 #' 
@@ -67,7 +67,7 @@ goal_strand_summary_plot <- function(
   .data <- mapvizieR_obj$cdf %>%
     dplyr::mutate(cohort = map_year_academic + 1 + 12 - grade) 
   
-  if(cohort) {
+  if (cohort) {
     .data <- .data %>% 
       dplyr::filter(
         fallwinterspring %in% fws,
@@ -76,7 +76,7 @@ goal_strand_summary_plot <- function(
         cohort == cohort_year
       )
   } else {
-    if(spring_is_first){
+    if (spring_is_first){
       .data_not_spring <- .data %>%
         dplyr::filter(
           fallwinterspring %in% dplyr::setdiff(fws, "Spring"),
@@ -109,34 +109,32 @@ goal_strand_summary_plot <- function(
   }
   
   # other filter arguments
-  
-  
-    if(!missing(filter_args)) {
+  if (!missing(filter_args)) {
     filter_args$.data <- .data
     .data <- do.call(dplyr::filter_, filter_args)
-    }
+  }
     
-      
-  
-  
-  
   m_goal_scores <- .data %>%
+    dplyr::ungroup() %>%
     dplyr::select(studentid, testid, measurementscale, schoolname, cohort, termname, fallwinterspring, map_year_academic, grade,
            dplyr::matches("(goal)[0-9]ritscore"))
   
   m_goal_stderr <- .data %>%
+    dplyr::ungroup() %>%  
     dplyr::select(studentid, testid, measurementscale, schoolname, cohort, termname, fallwinterspring, map_year_academic, grade,
            dplyr::matches("(goal)[0-9]stderr"))
   
   m_goal_names <- .data %>%
+    dplyr::ungroup() %>%    
     dplyr::select(studentid, testid, measurementscale, schoolname, cohort, termname, fallwinterspring, map_year_academic, grade,
            dplyr::matches("(goal)[0-9](name)")) 
+  
   m_goal_range <- .data %>%
+    dplyr::ungroup() %>%    
     dplyr::select(studentid, testid, measurementscale, schoolname, cohort, termname, fallwinterspring, map_year_academic, grade,
            dplyr::matches("(goal)[0-9](range)"))
   
   # time to gather
-  
   m_goal_names_long <- m_goal_names %>%
     tidyr::gather(key = variable, value = goal_name, goal1name:goal8name) %>%
     dplyr::mutate(goal_name = ifelse(goal_name == "", NA, goal_name))
@@ -163,7 +161,6 @@ goal_strand_summary_plot <- function(
     dplyr::filter(!is.na(goal_name))
   
   # summarize those suckers!
-  
   goals_summary_by_school <- m_goals %>%
     dplyr::group_by(goal_name, cohort, grade, fallwinterspring, map_year_academic, schoolname) %>%
     dplyr::summarize(mean_score = mean(goal_score),
@@ -174,8 +171,7 @@ goal_strand_summary_plot <- function(
     dplyr::ungroup() %>%
     dplyr::filter(n_students>20)
   
-  if(spring_is_first & any(cohort==FALSE)) {
-    
+  if (spring_is_first & any(cohort == FALSE)) {
     goals_summary_by_school <- goals_summary_by_school %>%
       dplyr::mutate(
         fws = ifelse(fallwinterspring=="Spring", 

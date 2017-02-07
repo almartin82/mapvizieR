@@ -30,4 +30,3 @@ cgp_table(mapvizieR_obj, studentids, measurementscale, start_fws,
 \description{
 a printable table that shows CGP data
 }
-

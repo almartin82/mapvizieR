@@ -10,6 +10,7 @@
 #' @param spring_only fall norms show a 'summer slump' effect; this can be
 #' visually distracting.  spring_only won't include those points in the reference
 #' lines.
+#' @param school if TRUE, shows school norms, not *student* norms
 #' 
 #' @export
 
@@ -18,34 +19,43 @@ empty_norm_grade_space <- function(
   trace_lines = c(5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95),
   norms = 2015,
   norm_linetype = 'solid',
-  spring_only = FALSE
+  spring_only = FALSE,
+  school = FALSE
 )  {
 
   if (norms == 2011) {
     active_norms <- student_status_norms_2011_dense_extended
   } else if (norms == 2015) {
     active_norms <- student_status_norms_2015_dense_extended
-  }  
+  } 
+  
+  if (school) {
+    active_norms <- school_status_norms_2015_dense_extended
+    active_norms$active_percentile <- active_norms$school_percentile
+  } else {
+    active_norms$active_percentile <- active_norms$student_percentile
+  }
+  
   this_norms <- active_norms %>%
     dplyr::filter(
       measurementscale == get("measurementscale") &
-      student_percentile %in% trace_lines
+      active_percentile %in% trace_lines
     )
   this_norms <- grade_level_seasonify(this_norms)
   #low and high
-  below_50 <- this_norms %>% dplyr::filter(student_percentile < 50)
-  above_50 <- this_norms %>% dplyr::filter(student_percentile >= 50)
+  below_50 <- this_norms %>% dplyr::filter(active_percentile < 50)
+  above_50 <- this_norms %>% dplyr::filter(active_percentile >= 50)
   below_50 <- below_50 %>% 
     dplyr::group_by(
       measurementscale, fallwinterspring, grade, 
-      grade_level_season, student_percentile
+      grade_level_season, active_percentile
     ) %>%
     dplyr::summarize(
       RIT = max(RIT) 
     )
   above_50 <- above_50 %>% 
     dplyr::group_by(
-      measurementscale, fallwinterspring, grade, grade_level_season, student_percentile
+      measurementscale, fallwinterspring, grade, grade_level_season, active_percentile
     ) %>%
     dplyr::summarize(
       RIT = min(RIT) 
@@ -67,7 +77,7 @@ empty_norm_grade_space <- function(
     aes(
       x = grade_level_season,
       y = RIT,
-      group = student_percentile,
+      group = active_percentile,
       order = 1
     ),
     alpha = 0.3,
@@ -79,7 +89,7 @@ empty_norm_grade_space <- function(
     aes(
       x = grade_level_season,
       y = RIT,
-      label = student_percentile
+      label = active_percentile
     ),
     color = 'gray30',
     alpha = 0.3,

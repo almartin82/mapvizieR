@@ -58,78 +58,46 @@ goal_strand_plot <- function(
 
   #data processing ----------------------------------------------------------
   #just desired terms
-  .data <- mapvizieR_obj$cdf %>%
+  df <- mapvizieR_obj$cdf %>%
+    dplyr::ungroup() %>%
     dplyr::filter(
       fallwinterspring == fws,
       map_year_academic == year,
       measurementscale == measurementscale_in,
       studentid %in% studentids
-    ) %>%
-    dplyr::inner_join(mapvizieR_obj$roster %>%
-                        dplyr::filter(fallwinterspring == fws,
-                                      map_year_academic == year,
-                                      studentid %in% studentids
-                                      ) %>%
-                        dplyr::select(studentid, 
-                                      map_year_academic, 
-                                      fallwinterspring, 
-                                      studentfirstlast,
-                                      studentlastfirst,
-                                      grade
-                                      ), 
-                      by = c("studentid", 
-                             "fallwinterspring", 
-                             "map_year_academic",
-                             "grade"
-                             )
-                      )
-
+    ) 
   
-  m_sub_scores <- dplyr::select(.data, 
-                              studentid,
-                              studentfirstlast,
-                              schoolname,
-                              grade,
-                              measurementscale,
-                              testritscore,
-                              testpercentile,
-                              testquartile,
-                              dplyr::matches("(goal)[0-9]ritscore")
+  df <- roster_to_cdf(
+    target_df = df, 
+    mapvizieR_obj = mapvizieR_obj, 
+    roster_cols = c('studentfirstlast')
   )
   
-  
-  
-  
-  m_sub_names <- dplyr::select(.data, 
-                             studentid,
-                             studentfirstlast,
-                             schoolname,
-                             grade,
-                             measurementscale,
-                             testritscore,
-                             testpercentile,
-                             testquartile,
-                             dplyr::matches("(goal)[0-9]name")
+  m_sub_scores <- df %>% dplyr::select(
+    studentid, studentfirstlast, schoolname, grade, measurementscale,
+    testritscore, testpercentile, testquartile, dplyr::matches("(goal)[0-9]ritscore")
   )
   
+  m_sub_names <- df %>% dplyr::select(
+    studentid, studentfirstlast, schoolname, grade, measurementscale,
+    testritscore, testpercentile, testquartile, dplyr::matches("(goal)[0-9]name")
+  )
   
   # melt scores
-  m_melt_scores <- reshape2::melt(m_sub_scores, 
-                               id.vars = names(m_sub_scores)[1:8], 
-                               measure.vars = names(m_sub_scores)[-c(1:8)]
+  m_melt_scores <- reshape2::melt(
+    m_sub_scores, 
+    id.vars = names(m_sub_scores)[1:8], 
+    measure.vars = names(m_sub_scores)[-c(1:8)]
   ) %>% 
-    dplyr::mutate(value = as.numeric(value))
+  dplyr::mutate(value = as.numeric(value))
   
-  m_melt_names <- reshape2::melt(m_sub_names, 
-                              id.vars = names(m_sub_names)[1:8],
-                              measure.vars = names(m_sub_names)[-c(1:8)]
+  m_melt_names <- reshape2::melt(
+    m_sub_names, 
+    id.vars = names(m_sub_names)[1:8],
+    measure.vars = names(m_sub_names)[-c(1:8)]
   )
   
- assertthat::assert_that(nrow(m_melt_scores) == nrow(m_melt_names))
-  
-  
-  # m.melt.scores2<-left_join(m.melt.scores, homerooms, by="StudentID")
-  #  assert_that(nrow(m.melt.scores)==nrow(m.melt.scores2))
+  assertthat::assert_that(nrow(m_melt_scores) == nrow(m_melt_names))
   
   m_long <- m_melt_scores
   
@@ -144,44 +112,52 @@ goal_strand_plot <- function(
   
   m_plot <- m_long_2 %>% 
     dplyr::mutate(rank = rank(testritscore, ties.method = "first")) %>%
-    dplyr::group_by(schoolname, 
-             grade,
-             measurementscale) %>%
+    dplyr::group_by(schoolname, grade, measurementscale) %>%
     dplyr::mutate(
-      student_display_name = factor(studentfirstlast, 
-                                levels = unique(studentfirstlast)[order(rank,decreasing = TRUE)])  
+      student_display_name = factor(
+        studentfirstlast, 
+        levels = unique(studentfirstlast)[order(rank,decreasing = TRUE)])  
     )
   
-  p <- ggplot2::ggplot(data = m_plot, 
-                       ggplot2::aes(y = goal_name, 
-                                    x = value
-                                    )
-                      ) +
-    ggplot2::geom_point(ggplot2::aes(fill = value - testritscore), 
-                        shape = 21,
-                        stroke = 0
-                      ) + 
-    ggplot2::geom_vline(ggplot2::aes(xintercept = mean(testritscore)), 
-                        color = "gray") + 
-    ggplot2::geom_vline(ggplot2::aes(xintercept = testritscore, 
-                            color = testquartile
-                            ), 
-                        size = 1.5, 
-                        show.legend = T
-                        ) + 
-    ggplot2::scale_fill_gradient("Deviation from\nOverall RIT",
-                                 low = "red", 
-                                 high = "green") +
-    ggplot2::scale_color_discrete("Overall RIT Score\nQuartile") +
-    ggplot2::xlab("RIT Score") + 
-    ggplot2::ylab("Strand Name") +
-    ggplot2::facet_grid(student_display_name ~ .) + 
-    ggplot2::theme_bw() +
-    ggplot2::theme(strip.text.y = ggplot2::element_text(angle = 0), 
-                 axis.text.y = ggplot2::element_text(size = 5)
-                 )
-  
+  p <- ggplot(
+    data = m_plot, 
+    aes(
+      y = goal_name, 
+      x = value
+    )
+  ) +
+  geom_point(
+    aes(fill = value - testritscore), 
+    shape = 21,
+    color = NA
+  ) + 
+  geom_vline(
+    aes(xintercept = mean(testritscore)), 
+    color = "gray"
+  ) + 
+  geom_vline(
+    aes(
+      xintercept = testritscore, 
+      color = testquartile
+    ), 
+    size = 1.5, 
+    show.legend = T
+  ) + 
+  scale_fill_gradient(
+    "Deviation from\nOverall RIT",
+    low = "red", 
+    high = "green"
+  ) +
+  scale_color_discrete("Overall RIT Score\nQuartile") +
+  xlab("RIT Score") + 
+  ylab("Strand Name") +
+  facet_grid(student_display_name ~ .) + 
+  theme_bw() +
+  theme(
+    strip.text.y = element_text(angle = 0), 
+    axis.text.y = element_text(size = 5)
+  )
+
   # return
   p
-  
 }

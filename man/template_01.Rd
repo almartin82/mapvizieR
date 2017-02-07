@@ -17,4 +17,3 @@ grob, output of arrangeGrob
 \description{
 (1 x 1) columns
 }
-

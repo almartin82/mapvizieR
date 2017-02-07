@@ -31,4 +31,3 @@ returns a ggplot object
 \description{
 \code{growth_histogram} a simple visualization of the distribution of student growth percentiles.
 }
-

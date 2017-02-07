@@ -15,4 +15,3 @@ the cdf, with a repaired fallwinterspring column
 \description{
 fixes the season column of a cdf after imputation
 }
-

@@ -59,6 +59,7 @@ student_npr_two_term_plot <- function(
   .data <- mapvizieR_obj$cdf
 
   .data <- .data %>%
+    dplyr::ungroup() %>%
     dplyr::filter(
       termname %in% c(term_first, term_second), 
       studentid %in% studentids,
@@ -75,8 +76,7 @@ student_npr_two_term_plot <- function(
              "map_year_academic", "grade")
     )
   
-  .data_joined <- 
-    dplyr::inner_join(
+  .data_joined <- dplyr::inner_join(
       x = dplyr::filter(.data, termname == term_first), 
       y = dplyr::filter(.data, termname == term_second),
         by = c("studentid", "measurementscale")

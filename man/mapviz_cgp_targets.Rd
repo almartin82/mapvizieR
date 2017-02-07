@@ -44,4 +44,3 @@ data frame of cgp targets
 given an explicit window, or a composite baseline, will calculate
 CGP targets
 }
-

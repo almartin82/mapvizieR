@@ -12,4 +12,3 @@ ensure_roster_types(.)
 \description{
 checks if certain roster fields are of the correct type
 }
-

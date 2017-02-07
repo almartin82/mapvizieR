@@ -32,4 +32,3 @@ a ggplot object, to be used as a template for other plots
 Makes the base template that shows the RIT space and corresponding
 ACT lines using the original NWEA MAP ACT linking study
 }
-

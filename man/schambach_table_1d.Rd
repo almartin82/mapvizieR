@@ -36,4 +36,3 @@ Table includes average ending RIT, percent started in top 75%, percented ended i
 percentile growth, percent meeting "Keep Up", percent meeting "Rutgers Ready", and the number of 
 students in each subgroup. Named after Lindsay Schambach, who provided initial table.
 }
-

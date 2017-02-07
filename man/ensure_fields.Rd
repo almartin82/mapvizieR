@@ -15,4 +15,3 @@ ensure_fields(fields_vector, df)
 a simple wrapper around ensurer to check for necessary fields
 used by a function
 }
-

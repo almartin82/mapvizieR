@@ -23,4 +23,3 @@ student/test/seasons to calculate growth records on
 \description{
 which student/test/season rows have valid data?
 }
-

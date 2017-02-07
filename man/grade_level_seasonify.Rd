@@ -17,4 +17,3 @@ a data frame with a 'grade_level_season' column
 \code{grade_level_seasonify} turns grade level into a simplified continuous scale, 
 using consistent offsets for MAP 'seasons'
 }
-

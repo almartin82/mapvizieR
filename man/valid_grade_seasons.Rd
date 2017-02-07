@@ -21,4 +21,3 @@ this year.}
 a filter on a cdf that restricts the grade_level_season ONLY to 
 spring data, and fall of 'entry' grades
 }
-

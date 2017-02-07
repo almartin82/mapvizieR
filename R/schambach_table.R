@@ -62,28 +62,6 @@ schambach_table_1d <- function(
       )
   }
   
-  group_summary <- function(grouped_df) {
-    
-    df <- grouped_df %>%
-      dplyr::summarize(
-        end_rit = round(mean(end_testritscore, na.rm = TRUE), digits = 1),
-        start_top75 = (sum(start_testpercentile >= 75, na.rm = TRUE) /
-             sum(!is.null(start_testpercentile))) %>% round(0),
-        end_top75 = (sum(end_testpercentile >= 75, na.rm = TRUE) /
-                       sum(!is.null(end_testpercentile))) %>% round(0),
-        avg_pg = mean((end_testpercentile - start_testpercentile), na.rm = TRUE) %>% round(1),
-        p_ku = (sum(met_typical_growth, na.rm = TRUE) / sum(!is.null(met_typical_growth))) %>% round(0),
-        p_rr = (sum(met_accel_growth, na.rm = TRUE) / sum(!is.null(met_accel_growth))) %>% round(0),
-        n = n()
-      ) %>% 
-      as.data.frame
-    
-    for (c in 2:ncol(df)) {
-      df[, c] <- as.numeric(df[, c])
-    }
-    df
-  }
-  
   tables <- list()
   for (i in 1:length(subgroup_cols)) {
     subgroup <- subgroup_cols[i]
@@ -97,30 +75,41 @@ schambach_table_1d <- function(
       join_by = 'end'
     )
     
+    schambach_pipe <- . %>%
+      dplyr::summarize(
+        end_rit = mean(end_testritscore, na.rm = TRUE) %>% round(1),
+        pct_start_75 = mean(start_testpercentile >= 75, na.rm = TRUE) %>% multiply_by(100) %>% round(0),
+        pct_end_75 = mean(end_testpercentile >= 75, na.rm = TRUE) %>% multiply_by(100) %>% round(0),
+        ptile_change = mean((end_testpercentile - start_testpercentile), na.rm = TRUE) %>% round(1),
+        pct_typ = mean(met_typical_growth, na.rm = TRUE) %>% multiply_by(100) %>% round(0),
+        pct_accel = mean(met_accel_growth, na.rm = TRUE) %>% multiply_by(100) %>% round(0),
+        n = n()
+      )
+    
     #first row: summary of first cut
-    row1 <- c(
-      paste('All Students'),
-      mean(combined_df$end_testritscore, na.rm = TRUE) %>% round(1),
-      (sum(combined_df$start_testpercentile >= 75, na.rm = TRUE) /
-        sum(!is.null(combined_df$start_testpercentile))) %>% round(0),
-      (sum(combined_df$end_testpercentile >= 75, na.rm = TRUE) /
-         sum(!is.null(combined_df$end_testpercentile))) %>% round(0),
-      mean((combined_df$end_testpercentile - combined_df$start_testpercentile), na.rm = TRUE) %>% round(1),
-      (sum(combined_df$met_typical_growth, na.rm = TRUE) /
-         sum(!is.null(combined_df$met_typical_growth))) %>% round(0),      
-      (sum(combined_df$met_accel_growth, na.rm = TRUE) /
-         sum(!is.null(combined_df$met_accel_growth)))  %>% round(0),      
-      nrow(combined_df)
-    )
+    row1 <- combined_df %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(foo = 'All Students') %>%
+      dplyr::group_by(foo) %>%
+      schambach_pipe()
+    
+    names(row1)[1] <- pretty_names[i]
     
     #now group by subgroup and summarize
-    grouped_df <- dplyr::group_by_(combined_df, subgroup)
-    this_summary <- group_summary(grouped_df)
+    this_summary <- combined_df %>% 
+      dplyr::group_by_(subgroup) %>%
+      schambach_pipe()
+    this_summary[,1] <- as.character(this_summary[[1]])
+    names(this_summary)[1] <- pretty_names[i]
+    
+    this_summary <- dplyr::bind_rows(row1, this_summary)
+    
     names(this_summary) <- c(pretty_names[i], 'Avg. Ending RIT', 'Percent Started in Top 75%',
                              'Percent Ended in Top 75%', 'Avg. Percentile Growth',
                              'Percent Met Typical Growth', 'Percent Met Accel Growth', 'Number of Students')
     
-    tables[[i]] <- rbind(row1, this_summary)
+    tables[[i]] <- this_summary
   }
+  
   tables
 }

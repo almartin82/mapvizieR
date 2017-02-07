@@ -34,4 +34,3 @@ a list with inferred start season and year
 \description{
 utility function to determine the best growth window from the data presented
 }
-

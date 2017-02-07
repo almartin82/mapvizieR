@@ -22,4 +22,3 @@ plot needs additional args, pass them here.}
 throws a random subset of students against a plot n times, and reports back
 if a valid ggplot gets returned
 }
-

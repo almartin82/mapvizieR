@@ -14,7 +14,7 @@ prep_cdf_long <- function(cdf_long) {
   
   cdf_long <- cdf_long %>% 
     #names
-    lower_df_names() %>%
+    janitor::clean_names() %>%
     #fallwinterspring, academic_year
     extract_academic_year()
     
@@ -57,6 +57,15 @@ process_cdf_long <- function(prepped_cdf, norms = 2015) {
           munge$teststarttime, sep = '_'),
     munge$testid
   )
+  
+  #group the cdf (for use by the summary method)
+  munge <- munge %>% dplyr::group_by(
+    measurementscale, map_year_academic, fallwinterspring, 
+    termname, schoolname, grade, grade_level_season
+  )
+  
+  #give the cdf a class for method dispatch
+  class(munge) <- c("mapvizieR_cdf", class(munge))
   
   return(munge)
 }

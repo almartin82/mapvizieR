@@ -45,4 +45,3 @@ a list of ggplot objects
 \description{
 Generates a one-term goal plot for one student
 }
-

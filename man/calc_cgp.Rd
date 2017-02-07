@@ -31,4 +31,3 @@ a named list - targets, and results
 \description{
 calculates both cgp targets and cgp results.
 }
-

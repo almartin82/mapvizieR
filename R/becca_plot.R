@@ -18,6 +18,8 @@
 #' (useful when dealing with weird cohort histories)
 #' @param color_scheme color scheme for the stacked bars.  options are 'KIPP Report Card', 
 #' 'Sequential Blues', or a vector of 4 colors.
+#' @param quartile_type c('KIPP Report Card', 'NYS') KIPP Report Card = traditional quartiles.  NYS = predicted
+#' perf level on NYS test.
 #' 
 #' @return prints a ggplot object
 #' 
@@ -53,6 +55,7 @@ becca_plot <- function(
   #detect entry grade seasons
   if (entry_grade_seasons[1] == 'detect') {
     entry_grade_seasons <- min_term_filter(this_cdf, small_n_cutoff) %>% 
+      dplyr::ungroup() %>%
       dplyr::select(grade_level_season) %>%
       min()
   }
@@ -72,6 +75,7 @@ becca_plot <- function(
   #SUBJECT    GRADE_LEVEL_SEASON     QUARTILE      PCT
   
   term_totals <- munge %>%
+    dplyr::ungroup() %>%
     dplyr::select(
       measurementscale, grade_level_season, quartile
     ) %>%
@@ -209,7 +213,7 @@ becca_plot <- function(
   #color style?
   if ('KIPP Report Card' %in% color_scheme) {
     p <- p + scale_fill_manual(
-      values = kipp_4col, labels = legend_labels, name = 'Quartiles' 
+      values = kipp_4col, labels = legend_labels, name = 'Quartiles'
     )
   } else if ('NYS' %in% color_scheme) {
     p <- p + scale_fill_manual(

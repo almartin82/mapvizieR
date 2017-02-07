@@ -18,4 +18,3 @@ a CDF data frame with imputed rows
 \description{
 Use simple averaging to impute missing rows
 }
-

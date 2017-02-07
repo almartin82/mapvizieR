@@ -16,4 +16,3 @@ rand_stu(mapvizieR_obj, low = 20, high = 500)
 \description{
 gives back a random sample of studentids from a mapvizieR object
 }
-

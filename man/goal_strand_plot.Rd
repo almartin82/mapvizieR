@@ -55,4 +55,3 @@ goal_strand_plot(
 )
 }
 }
-

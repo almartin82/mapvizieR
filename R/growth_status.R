@@ -39,19 +39,18 @@ growth_status_scatter <- function(
       (start_map_year_academic == start_academic_year & start_fallwinterspring == start_fws) 
     )
   #add student name
-  goal_df <- goal_df %>%
-    dplyr::left_join(
-      mapvizieR_obj[['roster']] %>%
-        dplyr::select(
-          studentid, studentfirstlast
-        ),
-      by = 'studentid'
-    )
+  
+  goal_df <- roster_to_growth_df(
+    target_df = goal_df,
+    mapvizieR_obj = mapvizieR_obj,
+    roster_cols = 'studentlastfirst',
+    join_by = 'end'
+  )
   
   annotation_df <- data.frame(
-    lab_x = c(33/2, 50, 66 + 33/2, 33/2, 50, 66 + 33/2)
-   ,lab_y = c(75, 75, 75, 25, 25, 25)
-   ,lab_text = c(
+    lab_x = c(33/2, 50, 66 + 33/2, 33/2, 50, 66 + 33/2),
+    lab_y = c(75, 75, 75, 25, 25, 25),
+    lab_text = c(
      'Low Growth\nAbove Gr. Lev.', 'Avg Growth\nAbove Gr. Lev.',
      'High Growth\nAbove Gr. Lev.', 'Low Growth\nBelow Gr. Lev.',
      'Avg Growth\nBelow Gr. Lev.', 'High Growth\nBelow Gr. Lev.'
@@ -64,7 +63,7 @@ growth_status_scatter <- function(
      aes(
        x = sgp * 100,
        y = end_testpercentile,
-       label = studentfirstlast
+       label = studentlastfirst
      )
    ) +
    #need a layer

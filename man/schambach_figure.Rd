@@ -33,4 +33,3 @@ and end score. default is FALSE.}
 \description{
 Produces list of figures from list of data.frames returned by schambach_table_1d
 }
-

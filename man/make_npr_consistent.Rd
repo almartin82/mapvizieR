@@ -18,4 +18,3 @@ join a cdf to a norms study and get the empirical
 percentiles.  protects against longitudinal findings being 
 clouded by changes in the norms.
 }
-

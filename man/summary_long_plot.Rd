@@ -46,4 +46,3 @@ summary_long_plot(mv_summary, metric = "pct_typical",
 growth_window = "Fall to Spring")
 }
 }
-

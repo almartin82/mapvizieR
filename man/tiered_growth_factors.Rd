@@ -24,4 +24,3 @@ Tiered Growth factors (or multipliers, if you prefer).
  KIPP Tired Growth factors.  These factors are multiplied by a students typical 
  (i.e., expected) growth to generate college ready growth.
 }
-

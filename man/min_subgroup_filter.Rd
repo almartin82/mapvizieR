@@ -19,4 +19,3 @@ given a data frame and some arbitrary subgroup,
 return only the rows that are members of subgroups that make up
 at least n % of the total data frame
 }
-

@@ -15,4 +15,3 @@ a data.frame of the Assessment Results table in the post-2015 CDF format
 \description{
 Migrate pre-2015 CDFs  (both client-server nad WBM) to post-2015 specification,
 }
-

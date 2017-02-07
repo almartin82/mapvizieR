@@ -7,9 +7,9 @@
 adhoc_psuedo_quartile(x, breaks)
 }
 \arguments{
-\item{breaks}{vector of breaks}
+\item{x}{vector to compare (presumably percentile ranks)}
 
-\item{vector}{to compare (presumably percentile ranks)}
+\item{breaks}{vector of breaks}
 }
 \value{
 vector of 'quartiles'
@@ -18,4 +18,3 @@ vector of 'quartiles'
 can be used to get becca plot to return predicted performance 
 bands, instead of quartile bands
 }
-

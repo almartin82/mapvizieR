@@ -12,4 +12,3 @@ quartile_order(x)
 \description{
 helper function used by becca plot to put quartiles in correct order
 }
-

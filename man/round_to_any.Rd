@@ -20,4 +20,3 @@ a numeric vector
 \description{
 because we don't want to have to suggest plyr, if we can avoid it.
 }
-

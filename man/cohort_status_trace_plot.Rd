@@ -32,32 +32,18 @@ default is TRUE.}
 \item{collapse_schools}{treats all students as part of the same 'school' for purposes of plotting, so that one trajectory is shown.
 default is TRUE.  if FALSE will separate lines by school and show a lengend.}
 
-\item{retention_strategy}{}
+\item{retention_strategy}{c('collapse', 'filter_small') retained students show up as cohorts of 1 student.
+collapse will run `collapse_by_grade` to merge those students into existing cohorts.  `filter_small` will drop
+them from this visualization.}
+
+\item{small_n_cutoff}{numeric, drop observations that are smaller than X% of the
+cohort maximum.}
 
 \item{plot_labels}{c('RIT', 'NPR').  'RIT' is default.}
-
-\item{mapvizieR_obj}{}
-
-\item{studentids}{}
-
-\item{measurementscale}{}
-
-\item{match_method}{}
-
-\item{first_and_spring_only}{}
-
-\item{entry_grade_seasons}{}
-
-\item{collapse_schools}{}
-
-\item{plot_labels}{}
 }
 \value{
-a ggplot object
-
 a ggplot object
 }
 \description{
 Cohort Status Trace Plot
 }
-

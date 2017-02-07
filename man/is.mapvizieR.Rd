@@ -12,4 +12,3 @@ is.mapvizieR(x)
 \description{
 Reports whether x is a mapvizier object
 }
-

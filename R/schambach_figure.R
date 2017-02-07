@@ -44,7 +44,7 @@ schambach_figure <- function(
   
   formatter <- function(df) {
     for (i in 3:7) {
-      df[, i] <- paste0(df[, i], '%')
+      df[, i] <- paste0(df[[i]], '%')
     }
     df
   }

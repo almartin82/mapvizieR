@@ -19,4 +19,3 @@ a list of calculations
 \description{
 helper function to calculate plot elements per-student for college plots
 }
-

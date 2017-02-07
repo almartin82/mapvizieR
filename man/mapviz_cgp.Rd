@@ -32,4 +32,3 @@ beginning and ending score for the term being evaluated?}
 \description{
 given an explicit growth term (start/end), will calculate CGP
 }
-

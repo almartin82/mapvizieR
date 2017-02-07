@@ -22,4 +22,3 @@ id_cdf_type(ex_CombinedAssessmentResults)
 data(ex_CombinedAssessmentResults_pre_2015)
 id_cdf_type(ex_CombinedAssessmentResults_pre_2015)
 }
-

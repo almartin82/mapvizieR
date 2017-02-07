@@ -31,4 +31,3 @@ a ggplot object
 \description{
 Percent of students above a given percentile, by cohort
 }
-

@@ -46,4 +46,3 @@ a ggplot object
 \description{
 Shows a cohort's progress over time, in percentile space.
 }
-

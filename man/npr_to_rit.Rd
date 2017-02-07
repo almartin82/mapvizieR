@@ -25,4 +25,3 @@ a integer vector length one
 given a percentile rank, return the best match RIT
 (assumes the subject is a student, not a school/cohort.)
 }
-

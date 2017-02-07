@@ -18,4 +18,3 @@ a vector of grades
 \code{grade_levelify_cdf} adds a student's grade level at test time to
 the cdf.  grade level is required for a variety of growth calculations.
 }
-

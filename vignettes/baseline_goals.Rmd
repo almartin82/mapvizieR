@@ -1,0 +1,273 @@
+---
+output: 
+  word_document:
+    reference_docx: "../inst/report_templates/slim_template.docx"
+params:
+   mv: !r NA
+   studentids: !r NA
+   grade: !r NA
+   growth_percentile_target: 80
+   measurementscale: 'Reading'
+   baseline: 'Spring 2015-2016'
+   endpoint: 'Spring 2016-2017'
+   linking_chart: !r NA
+   linking_data: !r NA
+---
+
+---
+title: `r paste(params$measurementscale, 'MAP Class Growth Goals')`
+---
+
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  error = FALSE,
+  dpi = 300
+)
+```
+
+```{r libraries}
+
+library(gridExtra)
+
+```
+
+```{r data1}
+
+baseline_cdf <- mapvizieR::mv_limit_cdf(
+  mapvizieR_obj = params$mv,
+  studentids = params$studentids,
+  measurementscale = params$measurementscale
+) %>%
+dplyr::filter(
+  termname == params$baseline
+)
+
+#hacky holdover hotfixes
+constant_grade <- baseline_cdf$grade %>% table() %>% sort(TRUE) %>% names() %>% extract(1) %>% as.numeric()
+baseline_cdf$grade <- constant_grade
+
+baseline_cdf <- baseline_cdf %>% 
+  dplyr::group_by(
+    measurementscale, map_year_academic, 
+    fallwinterspring, termname, grade
+  )
+
+baseline_rit <- mean(baseline_cdf$testritscore, na.rm = TRUE) 
+baseline_sum <- mapvizieR::summary.mapvizieR_cdf(baseline_cdf)
+
+num_students <- length(params$studentids %>% unique())
+valid_mask <- params$studentids %in% baseline_cdf[!is.na(baseline_cdf$testritscore), ]$studentid
+missing_ids <- params$studentids[!valid_mask] %>% unique()
+num_missing <- length(missing_ids)
+missing_logical <- num_missing > 0
+nys_logical <- params$grade >= 3
+```
+
+```{r cgp1}
+
+start_season <- gsub(" .*$", "", params$baseline)
+end_season <- gsub(" .*$", "", params$endpoint)
+
+cgp_slim <- calc_cgp(
+  measurementscale = params$measurementscale,
+  end_grade = params$grade,
+  growth_window = paste0(start_season, ' to ', end_season),
+  baseline_avg_rit = baseline_sum$mean_testritscore,
+  calc_for = c(1, 5, 20, 50, 80, 95, 99)
+)
+
+```
+
+```{r cgp2}
+
+cgp_targets <- cgp_slim$targets
+
+goal_growth <- cgp_targets[cgp_targets$cgp == params$growth_percentile_target, ]$growth_target
+goal_endpoint_rit <- baseline_rit + goal_growth
+goal_halfway_rit <- baseline_rit + (goal_growth / 2)
+
+goal_endpoint_cohort_status_npr <- cohort_mean_rit_to_npr(
+  params$measurementscale, 
+  params$grade, 
+  end_season,
+  goal_endpoint_rit
+)
+```
+
+
+```{r plots1}
+
+p_cgp_targets <- cgp_target_spread_plot(
+  cgp_prep = cgp_slim
+)
+
+```
+
+```{r plots2}
+#shitty holdover logic
+temp_mv <- params$mv
+
+if (start_season == 'Spring') {
+  temp_mv$cdf <- temp_mv$cdf %>%
+    dplyr::filter(
+      grade_level_season <= params$grade - 1
+    )
+}
+
+#make plots
+rit_trace_simple <- cohort_rit_trace_plot(
+  mapvizieR_obj = temp_mv,
+  studentids = params$studentids,
+  measurementscale = params$measurementscale,
+  match_method = 'no matching',
+  first_and_spring_only = FALSE,
+  entry_grade_seasons = c(-99),
+  collapse_schools = TRUE,
+  retention_strategy = 'collapse',
+  small_n_cutoff = -1
+)
+
+status_trace_rit <- cohort_status_trace_plot(
+  mapvizieR_obj = temp_mv,
+  studentids = params$studentids,
+  measurementscale = params$measurementscale,
+  match_method = 'no matching',
+  first_and_spring_only = TRUE,
+  entry_grade_seasons = c(-99),
+  collapse_schools = TRUE,
+  retention_strategy = 'collapse',
+  small_n_cutoff = -1,
+  plot_labels = 'RIT'
+)
+
+status_trace_npr <- cohort_status_trace_plot(
+  mapvizieR_obj = temp_mv,
+  studentids = params$studentids,
+  measurementscale = params$measurementscale,
+  match_method = 'no matching',
+  first_and_spring_only = TRUE,
+  entry_grade_seasons = c(-99),
+  collapse_schools = TRUE,
+  retention_strategy = 'collapse',
+  small_n_cutoff = -1,
+  plot_labels = 'NPR'
+)
+
+```
+
+
+# About these students
+
+There are `r num_students` students in this group.  **`r length(missing_ids)`** of them do not yet have a baseline MAP score.
+
+```{r child1, eval=missing_logical, child = 'missing_stu.Rmd'}
+
+```
+
+
+# `r params$measurementscale` Prior Achievement
+
+Here is the historical class average RIT for these students.  (This plot shows all historical data for all `r num_students` students - it is _not_ limited to continuously enrolled students.  It does, however, exclude students who have transferred out of the school and are no longer part of the presently enrolled `r num_students`-student group.)
+
+```{r rit_trace, fig.width = 8, fig.height = 4}
+
+rit_trace_simple
+
+```
+
+The background reference lines on the plot above show the  _grade/class/cohort **attainment**_ percentiles.  Another way to visualize the historical data is to track the **attainment percentile** of this group, rather than the RIT.  To be clear: this is still the same data, derived from the same underlying RIT scores.  We're simply showing this data as an mean attainment percentile, instead of using the RIT scale.  
+
+```{r status_trace, fig.width = 8, fig.height = 4}
+
+status_trace_npr
+
+```
+
+The intuition for this plot is very straighforward - where the line is flat, it means that the class made exactly typical growth for that time period.  When the line moves up, it means that growth was _faster_ than peer grade/classes group.  If the line slopes down, it means that growth was _slower_. 
+
+# Baseline Achievement
+
+The `r num_students` students in this group have a baseline (`r params$baseline`) average RIT of **`r baseline_rit %>% round(1)`**.
+
+For **grade `r params$grade` students**, that baseline puts this class at the **`r baseline_sum$cohort_status_npr %>% round(0) %>% toOrdinal::toOrdinal()`** _attainment_ percentile.  That means that this class's absolute achievement is higher than **`r baseline_sum$cohort_status_npr %>% round(0)`%** of other _classes_ in the country.
+
+# 2016-17 Goals
+
+Our network goal is for each class to grow at the **`r params$growth_percentile_target %>% toOrdinal::toOrdinal()`** percentile.  That's means our **growth** would be in the top **`r 100 - params$growth_percentile_target`** percent of classrooms nationally!
+
+To reach that goal by **`r params$endpoint`**, your students will need to make **`r goal_growth %>% round(1)`** points of RIT growth on average.  That means growing from an average RIT of **`r baseline_rit %>% round(1)`** to an average RIT of **`r goal_endpoint_rit %>% round(1)`**.
+
+If your students grew to an average RIT of **`r goal_endpoint_rit %>% round(1)`** by this Spring, they would be in the **`r goal_endpoint_cohort_status_npr %>% round(0) %>% toOrdinal::toOrdinal()`** attainment percentile.
+
+The chart below shows how much growth is needed to hit other cohort growth benchmarks.
+
+# More growth scenarios
+
+```{r scens}
+p_cgp_targets
+
+```
+
+```{r linking, eval=nys_logical, child = 'nys.Rmd'}
+
+```
+
+# Progress monitoring
+
+When we test students again in the Winter, the target is for students to be **halfway** toward their Spring goal.  If the average RIT score for these students is at or above **`r goal_halfway_rit  %>% round(1)`**, that will indicate that your students are on track to reach the growth goal. 
+
+# Student detail
+
+The tables below shows the baseline achievement data for each of the `r num_students` in this report.
+
+## Quartile 1 (1st percentile - 24th percentile) Students
+
+```{r q1}
+
+baseline_cdf <- roster_to_cdf(baseline_cdf, params$mv, 'studentfirstlast')
+
+cdf_cols_pipe <- . %>%
+  dplyr::ungroup() %>%
+  dplyr::select(
+    studentfirstlast, studentid, testritscore, testpercentile
+  ) %>% 
+  knitr::kable()
+
+baseline_cdf %>%
+  dplyr::filter(testquartile == 1)  %>%
+  cdf_cols_pipe
+
+```
+
+## Quartile 2 (25th percentile - 49th percentile) Students
+
+```{r q2}
+
+baseline_cdf %>%
+  dplyr::filter(testquartile == 2)  %>%
+  cdf_cols_pipe
+
+```
+
+## Quartile 3 (50th percentile - 74th percentile) Students
+
+```{r q3}
+
+baseline_cdf %>%
+  dplyr::filter(testquartile == 3)  %>%
+  cdf_cols_pipe
+
+```
+
+## Quartile 4 (75th percentile - 99th percentile) Students
+
+```{r q4}
+
+baseline_cdf %>%
+  dplyr::filter(testquartile == 4)  %>%
+  cdf_cols_pipe
+
+```

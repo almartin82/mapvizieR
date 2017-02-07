@@ -17,4 +17,3 @@ to do.call}
 \description{
 times how long it takes to execute a function
 }
-

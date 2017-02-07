@@ -27,4 +27,3 @@ estimate_rit(mapvizieR_obj, studentid, measurementscale, target_date,
 Given studentid, measurementscale, and a target_date, the 
 function will return an estimated score based on selected method
 }
-

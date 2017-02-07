@@ -41,23 +41,23 @@ read_cdf <- function(
  
   
   class_files <- dir(path = path, 
-                       pattern = "ClassAssignments",
-                       ignore.case = TRUE,
-                       recursive = TRUE,
-                       full.names = TRUE)
-  
-  accommodation_files <- dir(path = path, 
-                     pattern = "AccommodationAssignment",
+                     pattern = "ClassAssignments",
                      ignore.case = TRUE,
                      recursive = TRUE,
                      full.names = TRUE)
   
- 
-  program_files <- dir(path = path, 
-                             pattern = "ProgramAssignments",
+  accommodation_files <- dir(path = path, 
+                             pattern = "AccommodationAssignment",
                              ignore.case = TRUE,
                              recursive = TRUE,
                              full.names = TRUE)
+  
+ 
+  program_files <- dir(path = path, 
+                       pattern = "ProgramAssignments",
+                       ignore.case = TRUE,
+                       recursive = TRUE,
+                       full.names = TRUE)
    
   
   # Write files to list objects

@@ -12,4 +12,3 @@ is_error(x)
 \description{
 utility function, test if an object is a try-error
 }
-

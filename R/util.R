@@ -1,22 +1,3 @@
-#' @title lower_df_names
-#'
-#' @description
-#' \code{lower_df_names} a utility function to take a data frame and return it with 
-#' lowercase names
-#'
-#' @param x a data frame
-#' 
-#' @return data frame with modified names
-
-lower_df_names <- function(x) {
-  
-  names(x) <- tolower(names(x))
-  
-  return(x)
-}
-
-
-
 #' @title extract_academic_year
 #'
 #' @description
@@ -179,7 +160,7 @@ kipp_quartile <- function(x, return_factor = TRUE, proper_quartile = FALSE){
 #'
 #' @description can be used to get becca plot to return predicted performance 
 #' bands, instead of quartile bands 
-#' @param vector to compare (presumably percentile ranks)
+#' @param x vector to compare (presumably percentile ranks)
 #' @param breaks vector of breaks
 #'
 #' @return vector of 'quartiles'
@@ -551,10 +532,7 @@ mv_limit_cdf <- function(mapvizieR_obj, studentids, measurementscale) {
     dplyr::filter(
       studentid %in% studentids,
       measurementscale == measurementscale_in
-    ) %>%
-    dplyr::tbl_df()
-  
-  class(out) <- c("mapvizieR_cdf", class(out))
+    )
   
   return(out)
 }
@@ -575,6 +553,7 @@ mv_limit_growth <- function(mapvizieR_obj, studentids, measurementscale) {
   growth_df <- mapvizieR_obj[['growth_df']]
   #only these kids
   growth_df %>%
+    dplyr::ungroup() %>%
     dplyr::filter(
       studentid %in% studentids &
         measurementscale %in% measurementscale_in
@@ -608,16 +587,13 @@ min_term_filter <- function(cdf, small_n_cutoff = -1) {
     ) %>%
     dplyr::select(
       grade_level_season  
-    ) %>%
-    as.data.frame()
+    )
   
   out <- cdf %>%
     dplyr::filter(
       grade_level_season %in% as.numeric(grade_seasons_to_keep$grade_level_season)
     )  
 
-  class(out) <- c("mapvizieR_cdf", class(out))
-  
   return(out)
 }
 
@@ -626,7 +602,7 @@ min_term_filter <- function(cdf, small_n_cutoff = -1) {
 #'
 #' @description strips out term and year info so that summary.mapvizieR_cdf will cleanly group students by grade_level_season, school
 #' and measurementscale
-#' @param cdf 
+#' @param cdf a conforming mapvizieR cdf
 #'
 #' @return data frame 
 #' @export

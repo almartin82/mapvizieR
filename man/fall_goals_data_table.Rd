@@ -39,4 +39,3 @@ gridArrange object of grobs
 \description{
 Basline and Goals, for printing reports
 }
-

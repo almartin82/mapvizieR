@@ -36,4 +36,3 @@ standardize_kinder(x2)
 x3 <- ifelse(x=="K", "Kinder", x)
 standardize_kinder(x2, other_codes="Kinder")
 }
-

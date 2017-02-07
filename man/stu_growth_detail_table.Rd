@@ -33,4 +33,3 @@ a tableGrob
 growth detail in printable format.  wrapper around 
 student_growth_detail
 }
-

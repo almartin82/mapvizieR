@@ -22,4 +22,3 @@ sch_growth_lookup(measurementscale, end_grade, growth_window, baseline_avg_rit,
 \description{
 get cohort growth expectations via lookup from growth study
 }
-

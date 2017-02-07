@@ -189,14 +189,15 @@ test_that("missing q1 START example", {
 test_that("fuzz test haid_plot", {
   results <- fuzz_test_plot(
     'haid_plot', 
-    n=10,
+    n = 2,
     additional_args=list(
       'measurementscale' = 'Reading',
       'start_fws' = 'Fall',
       'start_academic_year' = 2013,
       'end_fws' = 'Spring',
       'end_academic_year' = 2013
-    )
+    ),
+    mapvizieR_obj = mapviz
   )
   expect_true(all(unlist(results))) 
 })

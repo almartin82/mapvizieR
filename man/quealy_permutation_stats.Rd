@@ -20,4 +20,3 @@ a data frame
 calculates group stats for all the permutations of a subroup.  used 
 to be internal to quealy_subgroups, has been extracted.
 }
-

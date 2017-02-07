@@ -17,4 +17,3 @@ a processed cdf file
 \description{
 \code{process_cdf_long} the second step in cdf processing
 }
-

@@ -51,4 +51,3 @@ a list of ggplot objects
 \description{
 Bulk generates student goal plots
 }
-

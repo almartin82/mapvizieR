@@ -15,4 +15,3 @@ a grob, suitable for arrangeGrob on a report layout
 \description{
 tg "to grob" helper function
 }
-

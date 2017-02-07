@@ -218,3 +218,20 @@
 #' }
 #' @source NWEA MAP partner support team (thanks!)
 "ex_CombinedStudentsBySchool"
+
+
+#' ny predicted proficiency 
+#'
+#' data from implied regression models in the NWEA nyc linking study
+#' 
+#' @format
+#' \describe{
+#' \item{ny_subj}{ny_subj}
+#' \item{ny_grade}{ny_grade}
+#' \item{ny_season}{ny_season}
+#' \item{ny_rit}{ny_rit}
+#' \item{perf_level}{perf_level}
+#' \item{proficient}{proficient}
+#' }
+#' @source ny_proficiency.Rmd
+"ny_predicted_proficiency"

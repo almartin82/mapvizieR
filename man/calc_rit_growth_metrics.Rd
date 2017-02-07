@@ -18,4 +18,3 @@ a data frame the same as growth_df, with additional calcs
 a helper function  for \code{generate_growth_df}
 which adds columns to a growth CDF for variuos growth statistics.
 }
-

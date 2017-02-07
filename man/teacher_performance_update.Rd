@@ -34,4 +34,3 @@ prints a ggplot object
 a wrapper around several plots that helps show key teacher 
 performance statistics
 }
-

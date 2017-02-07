@@ -29,4 +29,3 @@ also has a fallback option - for instance, imagine you
 were using a prior Spring score as baseline, but if a student was a new admit
 in the fall, you wanted to roll them into the baseline.
 }
-

@@ -62,7 +62,8 @@ roster_to_cdf <- function(
       by = basic_cols
     )
   
-  #target_df %>% peek() %>% print()
+  class(target_df) <- c("mapvizieR_cdf", class(target_df))
+
   return(target_df)
 }
 
@@ -109,6 +110,7 @@ roster_to_growth_df <- function(
   
   #what student year season pairs are in the target df?
   pairs <- target_df %>%
+    dplyr::ungroup() %>%
     dplyr::select(
       studentid, start_map_year_academic, start_fallwinterspring,
       end_map_year_academic, end_fallwinterspring
@@ -146,9 +148,12 @@ roster_to_growth_df <- function(
   slim <- roster[, names(roster) %in% cols]
   
   #disambiguation - add rn tags by last, first
+  slim <- slim %>%
+    unique() %>%
+    dplyr::tbl_df()
   
   if (by_measurementscale) {
-    slim <- slim %>%
+    slim <- slim
       dplyr::group_by(studentid, measurementscale)
   } else {
     slim <- slim %>%
@@ -156,7 +161,6 @@ roster_to_growth_df <- function(
   }
   
   slim <- slim %>%
-    unique() %>%
     dplyr::mutate(
       last_rn = rank(year_sort),
       first_rn = rank(-year_sort)
@@ -186,6 +190,8 @@ roster_to_growth_df <- function(
         by = c('studentid')
       )
   }
+  
+  class(out) <- c("mapvizieR_growth", class(out)) %>% unique()
   
   return(out)
   

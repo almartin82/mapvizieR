@@ -12,4 +12,3 @@ a vector of colors
 \description{
 creates vector of rainbow colors for student plots
 }
-

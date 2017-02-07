@@ -20,4 +20,3 @@ a filtered mapvizieR object
 \description{
 filter a mapvizieR object by academic year, or any variable in the roster.
 }
-

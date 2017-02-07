@@ -15,4 +15,3 @@ a labeled string
 \description{
 \code{fall_spring_me} tranforms grade levels into labels for charts; eg 4.2 -> F5
 }
-

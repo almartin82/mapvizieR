@@ -60,7 +60,7 @@ test_that("scores_by_testid correctly looks up test events", {
 
 test_that("generate_growth_df builds scaffold and finds growth scores", {
   
-  growth_df <- generate_growth_dfs(processed_cdf)$headline
+  growth_df <- generate_growth_dfs(processed_cdf)
   expect_equal(nrow(growth_df), 25754)
   expect_equal(sum(as.numeric(growth_df$start_testritscore), na.rm=TRUE), 3295979)
   expect_equal(sum(as.numeric(growth_df$end_testritscore), na.rm=TRUE), 4190977)

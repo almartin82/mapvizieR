@@ -15,4 +15,3 @@ a vector of numeric offsets
 \description{
 tranforms fall, winter, spring into a numeric offset so things sort the right way
 }
-

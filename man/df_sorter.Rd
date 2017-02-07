@@ -18,4 +18,3 @@ df_sorter(x, by = 1, decreasing = FALSE, ...)
 \description{
 helper function used by report_dispatcher
 }
-

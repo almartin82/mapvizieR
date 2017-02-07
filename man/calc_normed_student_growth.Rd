@@ -24,4 +24,3 @@ calc_normed_student_growth(.75, 5, 2)
 calc_normed_student_growth(75, 5, 2) 
 
 }
-
