@@ -96,32 +96,47 @@ summary.mapvizieR_growth <- function(object, ...) {
     dplyr::filter(complete_obsv) %>%
     dplyr::summarize(
       n_students = n(),
+      
       n_typical = sum(met_typical_growth, na.rm = TRUE),
       pct_typical = round(n_typical/n_students, digits),
+      
       n_accel_growth = sum(met_accel_growth, na.rm = TRUE),
       pct_accel_growth = round(n_accel_growth/n_students,digits),
+      
       n_negative = sum(growth_status == "Negative", na.rm = TRUE),
       pct_negative = round(n_negative/n_students, digits),
+      
       start_n_50th_pctl = sum(start_testpercentile >= 50, na.rm = TRUE),
       start_pct_50th_pctl = round(start_n_50th_pctl / n_students, digits),
+      
       end_n_50th_pctl = sum(end_testpercentile >= 50, na.rm = TRUE),
       end_pct_50th_pctl = round(end_n_50th_pctl / n_students,digits),
+      
       start_n_75th_pctl = sum(start_testpercentile >= 75, na.rm = TRUE),
       start_pct_75th_pctl = round(start_n_75th_pctl/n_students,digits),
+      
       end_n_75th_pctl = sum(start_testpercentile >= 75, na.rm = TRUE),
       end_pct_75th_pctl = round(end_n_75th_pctl / n_students,digits),
+      
       start_mean_testritscore = round(mean(start_testritscore, na.rm = TRUE), digits),
       end_mean_testritscore = round(mean(end_testritscore, na.rm = TRUE), digits),
+      
       mean_rit_growth = round(mean(rit_growth, na.rm = TRUE), digits),
       mean_cgi = round(mean(cgi, na.rm = TRUE), digits),
       mean_sgp = pnorm(mean_cgi),
+      
       start_median_testritscore = round(median(start_testritscore, na.rm = TRUE), digits),
       end_median_testritscore = round(median(end_testritscore, na.rm = TRUE), digits),
+      
       median_rit_growth = round(median(rit_growth, na.rm = TRUE), digits),
       median_cgi = round(median(cgi, na.rm = TRUE), digits),
       median_sgp = round(median(sgp, na.rm = TRUE), digits),
+      
       start_median_consistent_percentile = round(median(start_consistent_percentile, na.rm = TRUE), digits),
-      end_median_consistent_percentile = round(median(end_consistent_percentile, na.rm = TRUE), digits)
+      end_median_consistent_percentile = round(median(end_consistent_percentile, na.rm = TRUE), digits),
+      
+      start_mean_consistent_percentile = round(mean(start_consistent_percentile, na.rm = TRUE), digits),
+      end_mean_consistent_percentile = round(mean(end_consistent_percentile, na.rm = TRUE), digits)
     )
   
   mapSummary <- mapSummary %>%
@@ -200,6 +215,8 @@ summary.mapvizieR_cdf <- function(object, ...) {
     dplyr::summarize(
       mean_testritscore = mean(testritscore, na.rm = TRUE),
       mean_percentile = mean(consistent_percentile, na.rm = TRUE),
+      pct_50_or_above = mean(consistent_percentile >= 50, na.rm = TRUE),
+      pct_75_or_above = mean(consistent_percentile >= 75, na.rm = TRUE),
       n_students = n()
     ) 
   
