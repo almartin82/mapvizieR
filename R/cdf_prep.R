@@ -103,8 +103,8 @@ dedupe_cdf <- function(prepped_cdf, method="NWEA") {
   
   #pull the method off the list
   use_method <- rank_methods[[method]]
-  do_call_rank_with_method <- paste0("do.call(rank, list(", use_method, "))")  
-  
+  do_call_rank_with_method <- paste0("do.call(rank, list(", use_method, ", ties.method = 'first'))")
+
   #dedupe using dplyr mutate
   dupe_tagged <- prepped_cdf %>%
     dplyr::group_by(studentid, measurementscale, map_year_academic, fallwinterspring) %>%
