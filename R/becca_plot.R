@@ -148,7 +148,7 @@ becca_plot <- function(
       aes(
         x = grade_level_season,
         y = pct,
-        fill = factor(quartile)
+        fill = factor(quartile, levels = c(4, 3))
       ),
       stat = "identity"
     ) +
