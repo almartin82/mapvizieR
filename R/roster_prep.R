@@ -17,7 +17,7 @@ prep_roster <- function(students_by_school, kinder_codes=NULL) {
   
   #df names
   roster <- students_by_school %>%
-    janitor::clean_names()
+    janitor::clean_names("old_janitor")
   
   #year prep stuff
   roster <- extract_academic_year(roster)
