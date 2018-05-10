@@ -14,7 +14,7 @@ prep_cdf_long <- function(cdf_long) {
   
   cdf_long <- cdf_long %>% 
     #names
-    janitor::clean_names() %>%
+    janitor::clean_names("old_janitor") %>%
     #fallwinterspring, academic_year
     extract_academic_year()
     
