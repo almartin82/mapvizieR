@@ -35,7 +35,7 @@ student_growth_norms_2015 <- stu_2015_corrected %>%
   arrange(Subject, Grade, StartRIT) %>%
   rename(StartGrade = Grade)
 
-student_growth_norms_2015 %>% View
+#student_growth_norms_2015 %>% View
 
 
 

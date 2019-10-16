@@ -23,6 +23,7 @@ studentids_normal_use <- cdf %>%
       grade == 6
   ) %>%
   dplyr::ungroup() %>%
+  as.data.frame() %>%
   dplyr::select(studentid) %>%
   unlist() %>% unname()
 
@@ -36,6 +37,7 @@ studentids_subset <- cdf %>%
       fallwinterspring == 'Fall'
   ) %>%
   dplyr::ungroup() %>%
+  as.data.frame() %>%
   dplyr::select(studentid) %>%
   unlist() %>% unname()
 
@@ -47,6 +49,7 @@ studentids_hs <- cdf %>%
       grade %in% c(10,11)
   ) %>%
   dplyr::ungroup() %>%
+  as.data.frame() %>%
   dplyr::select(studentid) %>%
   unlist() %>% unname()
 
@@ -58,6 +61,7 @@ studentids_ms <- cdf %>%
       grade %in% c(5,6,7,8)
   ) %>%
   dplyr::ungroup() %>%
+  as.data.frame() %>%
   dplyr::select(studentid) %>%
   unlist() %>% unname()
 
@@ -69,6 +73,7 @@ studentids_gr11 <- cdf %>%
       grade == 11
   ) %>%
   dplyr::ungroup() %>%
+  as.data.frame() %>%
   dplyr::select(studentid) %>%
   unlist() %>% unname()
 
@@ -81,6 +86,7 @@ studentids_one_school <- cdf %>%
       schoolname == 'Three Sisters Elementary School'
   ) %>%
   dplyr::ungroup() %>%
+  as.data.frame() %>%
   dplyr::select(studentid) %>%
   unlist() %>% unname()
 
