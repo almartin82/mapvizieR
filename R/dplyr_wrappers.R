@@ -144,10 +144,10 @@ filter_.mapvizieR_data <- function(df, ...) {
 #' @rdname arrange
 #' 
 #' @return data.frame
-#' @export arrange_.mapvizieR_data
+#' @export arrange.mapvizieR_data
 #' @export
 
-arrange_.mapvizieR_data <- function(df, ...) {
+arrange.mapvizieR_data <- function(df, ...) {
   
   #store the incoming class info
   old_classes <- class(df)
