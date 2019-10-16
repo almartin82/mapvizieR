@@ -6,8 +6,8 @@
 \usage{
 cohort_longitudinal_npr_plot(mapvizieR_obj, studentids, measurementscale,
   first_and_spring_only = TRUE, entry_grade_seasons = c(-0.8, 4.2),
-  name_annotations = FALSE, student_alpha = 0.1, trace_lines = c(1, 10,
-  20, 30, 40, 50, 60, 70, 80, 90, 99))
+  name_annotations = FALSE, student_alpha = 0.1, trace_lines = c(1,
+  10, 20, 30, 40, 50, 60, 70, 80, 90, 99))
 }
 \arguments{
 \item{mapvizieR_obj}{a conforming mapvizieR object}

@@ -4,9 +4,10 @@
 \alias{fall_goals_data_table}
 \title{Basline and Goals, for printing reports}
 \usage{
-fall_goals_data_table(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_year_offset, end_fws, end_academic_year, end_grade,
-  start_fws_prefer = NA, calc_for = 80, output = "both", font_size = 20)
+fall_goals_data_table(mapvizieR_obj, studentids, measurementscale,
+  start_fws, start_year_offset, end_fws, end_academic_year, end_grade,
+  start_fws_prefer = NA, calc_for = 80, output = "both",
+  font_size = 20)
 }
 \arguments{
 \item{mapvizieR_obj}{a valid mapvizieR object}

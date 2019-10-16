@@ -4,8 +4,9 @@
 \alias{roster_to_growth_df}
 \title{roster_to_growth_df}
 \usage{
-roster_to_growth_df(target_df, mapvizieR_obj, roster_cols, join_by = "end",
-  disambiguation_method = "last", by_measurementscale = FALSE)
+roster_to_growth_df(target_df, mapvizieR_obj, roster_cols,
+  join_by = "end", disambiguation_method = "last",
+  by_measurementscale = FALSE)
 }
 \arguments{
 \item{target_df}{the df you want to put stuff on}

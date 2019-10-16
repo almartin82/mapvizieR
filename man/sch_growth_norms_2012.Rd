@@ -3,7 +3,6 @@
 \docType{data}
 \name{sch_growth_norms_2012}
 \alias{sch_growth_norms_2012}
-\alias{sch_growth_norms_2012}
 \title{school growth norms 2012 study}
 \format{\describe{
 \item{end_grade}{END grade, eg grade 2 spring to spring is grade 1 TO grade 2}
@@ -27,7 +26,5 @@ sch_growth_norms_2012
 \description{
 school / cohort growth norms published by NWEA 
 these are scraped out of the published PDF tables
-
-school growth norms 2012
 }
 \keyword{datasets}

@@ -6,8 +6,8 @@
 percentile rank lines.}
 \usage{
 rit_height_weight_npr(measurementscale, color_list = rainbow_colors(),
-  ribbon_alpha = 0.35, annotation_style = "points", line_style = "none",
-  spring_only = TRUE, norms = 2015)
+  ribbon_alpha = 0.35, annotation_style = "points",
+  line_style = "none", spring_only = TRUE, norms = 2015)
 }
 \arguments{
 \item{measurementscale}{c('Reading', 'Mathematics') - there is no linking

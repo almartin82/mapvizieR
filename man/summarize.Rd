@@ -4,7 +4,7 @@
 \alias{summarize_.mapvizieR_data}
 \title{summarize wrapper}
 \usage{
-summarize_.mapvizieR_data(df, ...)
+\method{summarize_}{mapvizieR_data}(df, ...)
 }
 \arguments{
 \item{df}{data.frame}

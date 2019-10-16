@@ -6,10 +6,10 @@
 \usage{
 quealy_subgroups(mapvizieR_obj, studentids, measurementscale,
   subgroup_cols = c("starting_quartile"),
-  pretty_names = c("Starting Quartile"), magic_subgroups = TRUE, start_fws,
-  start_year_offset, end_fws, end_academic_year, start_fws_prefer = NA,
-  report_title = NA, complete_obsv = TRUE, drop_NA_groups = TRUE,
-  include_all = TRUE, small_n_cutoff = -1,
+  pretty_names = c("Starting Quartile"), magic_subgroups = TRUE,
+  start_fws, start_year_offset, end_fws, end_academic_year,
+  start_fws_prefer = NA, report_title = NA, complete_obsv = TRUE,
+  drop_NA_groups = TRUE, include_all = TRUE, small_n_cutoff = -1,
   join_by_measurementscale = FALSE, school_growth_norms = 2015)
 }
 \arguments{

@@ -5,7 +5,8 @@
 \title{Creates lists of students names stacked by rank in each of a given 
 MAP assessments goal strands}
 \usage{
-strands_list_plot(mapvizier_obj, studentids, measurement_scale, season, year)
+strands_list_plot(mapvizier_obj, studentids, measurement_scale, season,
+  year)
 }
 \arguments{
 \item{mapvizier_obj}{a \code{\link{mapvizieR}} object}

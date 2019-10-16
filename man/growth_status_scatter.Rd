@@ -4,8 +4,8 @@
 \alias{growth_status_scatter}
 \title{growth status scatter}
 \usage{
-growth_status_scatter(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_academic_year, end_fws, end_academic_year)
+growth_status_scatter(mapvizieR_obj, studentids, measurementscale,
+  start_fws, start_academic_year, end_fws, end_academic_year)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

@@ -4,8 +4,8 @@
 \alias{sch_growth_lookup}
 \title{sch_growth_lookup}
 \usage{
-sch_growth_lookup(measurementscale, end_grade, growth_window, baseline_avg_rit,
-  norms = 2015)
+sch_growth_lookup(measurementscale, end_grade, growth_window,
+  baseline_avg_rit, norms = 2015)
 }
 \arguments{
 \item{measurementscale}{MAP subject}

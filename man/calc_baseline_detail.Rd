@@ -4,8 +4,9 @@
 \alias{calc_baseline_detail}
 \title{calc_baseline_detail}
 \usage{
-calc_baseline_detail(mapvizieR_obj, studentids, measurementscale, primary_fws,
-  primary_academic_year, fallback_fws = NA, fallback_academic_year = NA)
+calc_baseline_detail(mapvizieR_obj, studentids, measurementscale,
+  primary_fws, primary_academic_year, fallback_fws = NA,
+  fallback_academic_year = NA)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

@@ -5,9 +5,10 @@
 \title{two-pager, KNJ style}
 \usage{
 knj_two_pager(mapvizieR_obj, studentids, measurementscale, end_fws,
-  end_academic_year, detail_academic_year, candidate_start_fws = c("Fall",
-  "Spring"), start_year_offsets = c(0, -1), prefer_fws = "Spring",
-  national_data_frame = NA, title_text = "", ...)
+  end_academic_year, detail_academic_year,
+  candidate_start_fws = c("Fall", "Spring"), start_year_offsets = c(0,
+  -1), prefer_fws = "Spring", national_data_frame = NA,
+  title_text = "", ...)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

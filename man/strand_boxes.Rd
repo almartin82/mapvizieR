@@ -4,7 +4,8 @@
 \alias{strand_boxes}
 \title{goal strand boxes}
 \usage{
-strand_boxes(mapvizieR_obj, studentids, measurementscale, fws, academic_year)
+strand_boxes(mapvizieR_obj, studentids, measurementscale, fws,
+  academic_year)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

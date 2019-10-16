@@ -5,9 +5,9 @@
 \title{KIPP Percent Making Typ Growth Network Distribution}
 \usage{
 kipp_typ_growth_distro(nat_results_df, measurementscale, academic_year,
-  grade_level, start_fws, end_fws, comparison_name, comparison_pct_typ_growth,
-  replace_nat_results_match = FALSE, de_kippify_names = TRUE,
-  de_schoolify_names = TRUE)
+  grade_level, start_fws, end_fws, comparison_name,
+  comparison_pct_typ_growth, replace_nat_results_match = FALSE,
+  de_kippify_names = TRUE, de_schoolify_names = TRUE)
 }
 \arguments{
 \item{nat_results_df}{KIPP results nationwide.  Ask R&E for the raw data file - same as the data 

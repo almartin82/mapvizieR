@@ -4,7 +4,8 @@
 \alias{cgp_sim}
 \title{simulate school growth at a constant CGP}
 \usage{
-cgp_sim(measurementscale, start_rit, cgp, sim_over = "MS", norms = 2015)
+cgp_sim(measurementscale, start_rit, cgp, sim_over = "MS",
+  norms = 2015)
 }
 \arguments{
 \item{measurementscale}{target subject}

@@ -7,8 +7,9 @@
 fall_goals_report_p1(mapvizieR_obj, studentids, measurementscale, context,
   small_n_cutoff = 0, start_fws = "Spring", start_year_offset = -1,
   end_fws = "Spring", end_academic_year = 2015,
-  entry_grade_seasons = c(-0.8, 4.2), exclude_prior_year_holdover = TRUE,
-  detail_academic_year = 9999, goal_cgp = 80, school_type = "MS",
+  entry_grade_seasons = c(-0.8, 4.2),
+  exclude_prior_year_holdover = TRUE, detail_academic_year = 9999,
+  goal_cgp = 80, school_type = "MS",
   localization = localize("Newark"))
 }
 \arguments{

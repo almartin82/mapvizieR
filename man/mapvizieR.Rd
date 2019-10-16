@@ -4,7 +4,6 @@
 \name{mapvizieR}
 \alias{mapvizieR}
 \alias{mapvizieR-package}
-\alias{mapvizieR}
 \title{mapvizieR}
 \usage{
 mapvizieR(cdf, roster, verbose = FALSE, norms = 2015, ...)
@@ -21,8 +20,6 @@ mapvizieR(cdf, roster, verbose = FALSE, norms = 2015, ...)
 \item{...}{additional arguments to pass to constructor functions called by mapvizieR}
 }
 \description{
-mapvizieR
-
 \code{mapvizieR} is a workhorse workflow function that
 calls a sequence of cdf and roster prep functions, given a cdf and roster
 }

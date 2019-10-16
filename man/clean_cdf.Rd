@@ -4,8 +4,9 @@
 \alias{clean_cdf}
 \title{replace known bad studentids with good ones}
 \usage{
-clean_cdf(cdf_list, ids_df = data.frame(bad_id = c("INCORRECT STUDENTID #1"),
-  good_id = c("CORRECTED STUDENTID #1")), verbose = TRUE)
+clean_cdf(cdf_list, ids_df = data.frame(bad_id =
+  c("INCORRECT STUDENTID #1"), good_id = c("CORRECTED STUDENTID #1")),
+  verbose = TRUE)
 }
 \arguments{
 \item{cdf_list}{the output of read cdf}
