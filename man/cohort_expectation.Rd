@@ -4,8 +4,8 @@
 \alias{cohort_expectation}
 \title{cohort_expectation}
 \usage{
-cohort_expectation(measurementscale, end_grade, growth_window, baseline_avg_rit,
-  calc_for, norms = 2015)
+cohort_expectation(measurementscale, end_grade, growth_window,
+  baseline_avg_rit, calc_for, norms = 2015)
 }
 \arguments{
 \item{measurementscale}{a MAP subject}

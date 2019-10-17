@@ -4,8 +4,8 @@
 \alias{empty_norm_grade_space}
 \title{empty norm grade space}
 \usage{
-empty_norm_grade_space(measurementscale, trace_lines = c(5, 10, 20, 30, 40,
-  50, 60, 70, 80, 90, 95), norms = 2015, norm_linetype = "solid",
+empty_norm_grade_space(measurementscale, trace_lines = c(5, 10, 20, 30,
+  40, 50, 60, 70, 80, 90, 95), norms = 2015, norm_linetype = "solid",
   spring_only = FALSE, school = FALSE)
 }
 \arguments{

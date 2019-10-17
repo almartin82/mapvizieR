@@ -166,12 +166,11 @@ if(grepl("^pct_", metric) | all(dplyr::between(x[[metric]], 0, 1))) {
   
   # let's prettify some known titles. 
   
-  y_lab <- switch(metric,
-         "pct_typical" = "% M/E Typical Growth",
+  y_lab <- switch(metric, "pct_typical" = "% M/E Typical Growth",
          "pct_accel_growth" = "% M/E College Ready Growth",
          "pct_negative" = "% Pct Negative Change in RIT",
-         "end_pct_50th_pctl" = "% ≥ 50th Percentile (End Season)",
-         "end_pct_75th_pctl" = "% ≥ 75th Percentile (End Season)")
+         "end_pct_50th_pctl" = "% >= 50th Percentile (End Season)",
+         "end_pct_75th_pctl" = "% >= 75th Percentile (End Season)")
   
   if(is.null(y_lab)) {
     if(grepl("testritscore", metric)) y_lab <- "RIT Score"

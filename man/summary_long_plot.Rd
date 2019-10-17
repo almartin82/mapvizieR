@@ -5,8 +5,8 @@
 \title{Plots mapvizieR summary object metrics longitudinally}
 \usage{
 summary_long_plot(mapvizieR_summary, growth_window = c("Fall to Spring"),
-  by = "grade", metric = "pct_typical", school_col = "end_schoolname",
-  n_cutoff = 30)
+  by = "grade", metric = "pct_typical",
+  school_col = "end_schoolname", n_cutoff = 30)
 }
 \arguments{
 \item{mapvizieR_summary}{a \code{mapvizieR_summary} summary object.}

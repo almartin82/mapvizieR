@@ -14,3 +14,6 @@
 \value{
 summary stats as a \code{mapvizier_cdf_summary} object.
 }
+\description{
+summary method for \code{mapvizieR_cdf} class
+}

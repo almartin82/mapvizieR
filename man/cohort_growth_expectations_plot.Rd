@@ -5,7 +5,8 @@
 \title{Expectation distribution}
 \usage{
 cohort_growth_expectations_plot(expectations_df, num_sd = 3,
-  ref_lines = c(0.01, 0.05, 0.2, 0.5, 0.8, 0.95, 0.99), highlight = 0.8)
+  ref_lines = c(0.01, 0.05, 0.2, 0.5, 0.8, 0.95, 0.99),
+  highlight = 0.8)
 }
 \arguments{
 \item{expectations_df}{output of mapviz_cgp_targets - the expectations

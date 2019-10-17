@@ -6,8 +6,8 @@
 \usage{
 two_pager(mapvizieR_obj, studentids, measurementscale, start_fws,
   start_academic_year, end_fws, end_academic_year, detail_academic_year,
-  national_data_frame = NA, title_text = "", entry_grade_seasons = c(-0.8,
-  4.2), ...)
+  national_data_frame = NA, title_text = "",
+  entry_grade_seasons = c(-0.8, 4.2), ...)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

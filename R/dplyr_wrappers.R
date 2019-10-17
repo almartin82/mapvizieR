@@ -53,6 +53,7 @@ group_by_.mapvizieR_data <- function(df, ...) {
 #' @rdname ungroup
 #' 
 #' @return data.frame
+#' @export ungroup.mapvizieR_data
 #' @export
 
 ungroup.mapvizieR_data <- function(df, ...) {

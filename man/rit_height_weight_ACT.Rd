@@ -6,8 +6,8 @@
 ACT lines using the original NWEA MAP ACT linking study}
 \usage{
 rit_height_weight_ACT(measurementscale, color_list = rainbow_colors(),
-  annotation_style = "points", line_style = "none", school_type = "MS",
-  localization = localize("Newark"))
+  annotation_style = "points", line_style = "none",
+  school_type = "MS", localization = localize("Newark"))
 }
 \arguments{
 \item{measurementscale}{c('Reading', 'Mathematics') - there is no linking
