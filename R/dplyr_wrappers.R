@@ -23,7 +23,7 @@ mapvizieR_data.default <- function(df) {
 #' @rdname group_by
 #' 
 #' @return data.frame
-#' @export
+#' @export group_by_.mapvizieR_data
 
 group_by_.mapvizieR_data <- function(df, ...) {
   
@@ -54,7 +54,7 @@ group_by_.mapvizieR_data <- function(df, ...) {
 #' 
 #' @return data.frame
 #' @export ungroup.mapvizieR_data
-#' @export
+
 
 ungroup.mapvizieR_data <- function(df, ...) {
   
@@ -83,7 +83,7 @@ ungroup.mapvizieR_data <- function(df, ...) {
 #' @rdname select
 #' 
 #' @return data.frame
-#' @export
+#' @export select_.mapvizieR_data
 
 select_.mapvizieR_data <- function(df, ...) {
   
@@ -112,7 +112,7 @@ select_.mapvizieR_data <- function(df, ...) {
 #' @rdname filter
 #' 
 #' @return data.frame
-#' @export
+#' @export filter_.mapvizieR_data
 
 filter_.mapvizieR_data <- function(df, ...) {
   
@@ -141,7 +141,7 @@ filter_.mapvizieR_data <- function(df, ...) {
 #' @rdname arrange
 #' 
 #' @return data.frame
-#' @export
+#' @export arrange_.mapvizieR_data
 
 arrange_.mapvizieR_data <- function(df, ...) {
   
@@ -170,7 +170,7 @@ arrange_.mapvizieR_data <- function(df, ...) {
 #' @rdname mutate
 #' 
 #' @return data.frame
-#' @export
+#' @export mutate_.mapvizieR_data
 
 mutate_.mapvizieR_data <- function(df, ...) {
   
@@ -199,7 +199,7 @@ mutate_.mapvizieR_data <- function(df, ...) {
 #' @rdname summarize
 #' 
 #' @return data.frame
-#' @export
+#' @export summarize_.mapvizieR_data
 
 summarize_.mapvizieR_data <- function(df, ...) {
   
