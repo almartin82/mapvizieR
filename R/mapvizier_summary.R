@@ -65,7 +65,7 @@ summary.mapvizieR_growth <- function(object, ...) {
   #summary.mapvizieR_cdf requires grouping vars on the cdf
   #process_cdf_long sets them as part of construction of the mv object
   #if there are NO grouping vars, this will set them by default
-  existing_groups <- dplyr::group_vars(object)
+  existing_groups <- dplyr::groups(object) %>% as.character()
   
   if (is.null(existing_groups)) {
     object <- object %>%
@@ -173,7 +173,7 @@ summary.mapvizieR_cdf <- function(object, ...) {
   #summary.mapvizieR_cdf requires grouping vars on the cdf
   #process_cdf_long sets them as part of construction of the mv object
   #if there are NO grouping vars, this will set them by default
-  existing_groups <- dplyr::group_vars(object)
+  existing_groups <- dplyr::groups(object) %>% as.character()
   
   if (is.null(existing_groups)) {
     object <- object %>%
@@ -200,7 +200,9 @@ summary.mapvizieR_cdf <- function(object, ...) {
     dplyr::summarize(
       mean_testritscore = mean(testritscore, na.rm = TRUE),
       mean_percentile = mean(consistent_percentile, na.rm = TRUE),
-      n_students = n()
+      n_students = n(),
+      pct_50th = sum(consistent_percentile >= 50)/n_students,
+      pct_75th = sum(consistent_percentile >= 75)/n_students
     ) 
   
   df$cohort_status_npr <- rep(NA_integer_, nrow(df))
