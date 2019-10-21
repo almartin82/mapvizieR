@@ -173,7 +173,7 @@ summary.mapvizieR_cdf <- function(object, ...) {
   #summary.mapvizieR_cdf requires grouping vars on the cdf
   #process_cdf_long sets them as part of construction of the mv object
   #if there are NO grouping vars, this will set them by default
-  existing_groups <- attr(object, 'vars') %>% as.character()
+  existing_groups <- groups(object) %>% as.character()
   
   if (is.null(existing_groups)) {
     object <- object %>%
