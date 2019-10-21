@@ -201,8 +201,8 @@ summary.mapvizieR_cdf <- function(object, ...) {
       mean_testritscore = mean(testritscore, na.rm = TRUE),
       mean_percentile = mean(consistent_percentile, na.rm = TRUE),
       n_students = n(),
-      pct_50th_pctl = sum(consistent_percentile >= 50)/n(),
-      pct_75th_pctl = sum(consistent_percentile >= 75)/n()
+      pct_50th_pctl = round(sum(consistent_percentile >= 50)/n(),2),
+      pct_75th_pctl = round(sum(consistent_percentile >= 75)/n(),2)
     ) 
   
   df$cohort_status_npr <- rep(NA_integer_, nrow(df))
