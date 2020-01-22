@@ -108,7 +108,7 @@ summary.mapvizieR_growth <- function(object, ...) {
       end_pct_50th_pctl = round(end_n_50th_pctl / n_students,digits),
       start_n_75th_pctl = sum(start_testpercentile >= 75, na.rm = TRUE),
       start_pct_75th_pctl = round(start_n_75th_pctl/n_students,digits),
-      end_n_75th_pctl = sum(start_testpercentile >= 75, na.rm = TRUE),
+      end_n_75th_pctl = sum(end_testpercentile >= 75, na.rm = TRUE),
       end_pct_75th_pctl = round(end_n_75th_pctl / n_students,digits),
       start_mean_testritscore = round(mean(start_testritscore, na.rm = TRUE), digits),
       end_mean_testritscore = round(mean(end_testritscore, na.rm = TRUE), digits),
