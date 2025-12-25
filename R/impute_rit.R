@@ -152,8 +152,8 @@ impute_rit_simple_average <- function(cdf, interpolate_only = TRUE) {
     dplyr::arrange(studentid, measurementscale, grade_level_season) %>%
     dplyr::group_by(studentid, measurementscale) %>%
     dplyr::mutate(
-      lag = lag(row_number, 1),
-      lead = lead(row_number, 1),
+      lag = dplyr::lag(row_number, 1),
+      lead = dplyr::lead(row_number, 1),
       na_flag = ifelse(is.na(testritscore), TRUE, FALSE)
     )
   

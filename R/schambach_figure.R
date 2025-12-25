@@ -60,7 +60,7 @@ schambach_figure <- function(
       t <- gridExtra::tableGrob(
         df,
         cols = col_names,
-        theme = ttheme_default(
+        theme = gridExtra::ttheme_default(
           core = list(
             fg_params = list(fontsize = 9, just = "center"),
             bg_params = list(alpha = c(.5,1), fill = 'lightgreen')),

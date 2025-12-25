@@ -561,10 +561,10 @@ cdf_to_cgp <- function(
       !!rlang::sym(grouping), measurementscale
     ) %>%
     dplyr::mutate(
-      end_fallwinterspring = lead(fallwinterspring),
-      end_grade = lead(grade),
-      end_map_year_academic = lead(map_year_academic),
-      end_grade_level_season = lead(grade_level_season)
+      end_fallwinterspring = dplyr::lead(fallwinterspring),
+      end_grade = dplyr::lead(grade),
+      end_map_year_academic = dplyr::lead(map_year_academic),
+      end_grade_level_season = dplyr::lead(grade_level_season)
     ) %>%
     dplyr::rename(
       start_fallwinterspring = fallwinterspring,

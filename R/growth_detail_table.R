@@ -34,7 +34,7 @@ stu_growth_detail <- function(
     dplyr::arrange(studentid, measurementscale, join_id) %>%
     dplyr::group_by(studentid, measurementscale) %>%
     dplyr::mutate(
-      next_id = lead(join_id)
+      next_id = dplyr::lead(join_id)
     )
   
   for_join <- this_cdf %>%
