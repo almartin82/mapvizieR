@@ -242,31 +242,33 @@ calc_normed_student_growth <- function(percentile,
 
 # ensures ####
 #' @title ensure_goals_names
-#' 
-#' @description a contract that ensures that a goal object's has the 
-#' proper elements. 
-#' 
-#' @param . dot-placeholder, per ensurer doc.
-ensure_goals_names <- ensurer::ensures_that(
-  all(
-    c("goals", "join_by_fields", "slot_name") %in% 
-      names(.)) ~ 
-    paste0("Your goals function must create a list ", 
-           "with slots for 'goals', 'join_by_fields', ",  
-           "and 'slot_name'.")
-)
+#'
+#' @description a contract that ensures that a goal object's has the
+#' proper elements.
+#'
+#' @param x object to check
+ensure_goals_names <- function(x) {
+  if (!all(c("goals", "join_by_fields", "slot_name") %in% names(x))) {
+    cli::cli_abort(paste0("Your goals function must create a list ",
+           "with slots for 'goals', 'join_by_fields', ",
+           "and 'slot_name'."))
+  }
+  invisible(x)
+}
 
 #' @title ensure_goals_obj
-#' 
-#' @description a contract that ensures that a goal object's has the proper  
+#'
+#' @description a contract that ensures that a goal object's has the proper
 #' elements and that the \code{goals} element data frame has columns names
 #' \code{accel_growth} and \code{met_acc}
-#' 
-#' @param . dot-placeholder, per ensurer doc.
-ensure_goals_obj <- ensurer::ensures_that(+ensure_goals_names,
-  all(
-    c("accel_growth",  "met_accel_growth") %in% names(.$goals)) ~
-              paste0("Your goals function's goals data frame ", "
-                     must have accel_growth and met_accel_growth fields.")
-    )
+#'
+#' @param x object to check
+ensure_goals_obj <- function(x) {
+  ensure_goals_names(x)
+  if (!all(c("accel_growth", "met_accel_growth") %in% names(x$goals))) {
+    cli::cli_abort(paste0("Your goals function's goals data frame ",
+                     "must have accel_growth and met_accel_growth fields."))
+  }
+  invisible(x)
+}
 

@@ -26,20 +26,21 @@ mapvizieR_data.default <- function(df) {
 #' @export group_by_.mapvizieR_data
 
 group_by_.mapvizieR_data <- function(df, ...) {
-  
+
   #store the incoming class info
   old_classes <- class(df)
-  
-  #strip mavpvizieR_data class so that method dispatch doesn't lead to 
+
+  #strip mavpvizieR_data class so that method dispatch doesn't lead to
   #infinite calls back to group_by_.mapvizieR_data
   class(df) <- old_classes[!old_classes == 'mapvizieR_data']
-  
+
   #call normal group_by (should go to dplyr)
-  out <- dplyr::group_by_(df, ...)
-  
-  #restore class info
-  class(out) <- old_classes
-  
+  out <- dplyr::group_by(df, ...)
+
+  #restore class info - prepend mapvizieR_data but keep dplyr classes
+  new_classes <- class(out)
+  class(out) <- c('mapvizieR_data', new_classes[!new_classes == 'mapvizieR_data'])
+
   out
 }
 
@@ -57,20 +58,21 @@ group_by_.mapvizieR_data <- function(df, ...) {
 
 
 ungroup.mapvizieR_data <- function(df, ...) {
-  
+
   #store the incoming class info
   old_classes <- class(df)
-  
-  #strip mavpvizieR_data class so that method dispatch doesn't lead to 
+
+  #strip mavpvizieR_data class so that method dispatch doesn't lead to
   #infinite calls
   class(df) <- old_classes[!old_classes == 'mapvizieR_data']
-  
+
   #call normal ungroup (should go to dplyr)
   out <- dplyr::ungroup(df, ...)
-  
-  #restore class info
-  class(out) <- old_classes
-  
+
+  #restore class info - prepend mapvizieR_data but keep dplyr classes
+  new_classes <- class(out)
+  class(out) <- c('mapvizieR_data', new_classes[!new_classes == 'mapvizieR_data'])
+
   out
 }
 
@@ -86,20 +88,21 @@ ungroup.mapvizieR_data <- function(df, ...) {
 #' @export select_.mapvizieR_data
 
 select_.mapvizieR_data <- function(df, ...) {
-  
+
   #store the incoming class info
   old_classes <- class(df)
-  
-  #strip mavpvizieR_data class so that method dispatch doesn't lead to 
-  #infinite calls back to group_by_.mapvizieR_data
+
+  #strip mavpvizieR_data class so that method dispatch doesn't lead to
+  #infinite calls back to select_.mapvizieR_data
   class(df) <- old_classes[!old_classes == 'mapvizieR_data']
-  
-  #call normal group_by (should go to dplyr)
-  out <- dplyr::select_(df, ...)
-  
-  #restore class info
-  class(out) <- old_classes
-  
+
+  #call normal select (should go to dplyr)
+  out <- dplyr::select(df, ...)
+
+  #restore class info - prepend mapvizieR_data but keep dplyr classes
+  new_classes <- class(out)
+  class(out) <- c('mapvizieR_data', new_classes[!new_classes == 'mapvizieR_data'])
+
   out
 }
 
@@ -115,19 +118,20 @@ select_.mapvizieR_data <- function(df, ...) {
 #' @export filter_.mapvizieR_data
 
 filter_.mapvizieR_data <- function(df, ...) {
-  
+
   #store the incoming class info
   old_classes <- class(df)
-  
+
   #strip mavpvizieR_data class so that method dispatch doesn't lead to infinite calls
   class(df) <- old_classes[!old_classes == 'mapvizieR_data']
-  
-  #call normal (should go to dplyr)
-  out <- dplyr::filter_(df, ...)
-  
-  #restore class info
-  class(out) <- old_classes
-  
+
+  #call normal filter (should go to dplyr)
+  out <- dplyr::filter(df, ...)
+
+  #restore class info - prepend mapvizieR_data but keep dplyr classes
+  new_classes <- class(out)
+  class(out) <- c('mapvizieR_data', new_classes[!new_classes == 'mapvizieR_data'])
+
   out
 }
 
@@ -144,19 +148,20 @@ filter_.mapvizieR_data <- function(df, ...) {
 #' @export arrange_.mapvizieR_data
 
 arrange_.mapvizieR_data <- function(df, ...) {
-  
+
   #store the incoming class info
   old_classes <- class(df)
-  
+
   #strip mavpvizieR_data class so that method dispatch doesn't lead to infinite calls
   class(df) <- old_classes[!old_classes == 'mapvizieR_data']
-  
-  #call normal (should go to dplyr)
-  out <- dplyr::arrange_(df, ...)
-  
-  #restore class info
-  class(out) <- old_classes
-  
+
+  #call normal arrange (should go to dplyr)
+  out <- dplyr::arrange(df, ...)
+
+  #restore class info - prepend mapvizieR_data but keep dplyr classes
+  new_classes <- class(out)
+  class(out) <- c('mapvizieR_data', new_classes[!new_classes == 'mapvizieR_data'])
+
   out
 }
 
@@ -173,19 +178,20 @@ arrange_.mapvizieR_data <- function(df, ...) {
 #' @export mutate_.mapvizieR_data
 
 mutate_.mapvizieR_data <- function(df, ...) {
-  
+
   #store the incoming class info
   old_classes <- class(df)
-  
+
   #strip mavpvizieR_data class so that method dispatch doesn't lead to infinite calls
   class(df) <- old_classes[!old_classes == 'mapvizieR_data']
-  
-  #call normal (should go to dplyr)
-  out <- dplyr::mutate_(df, ...)
-  
-  #restore class info
-  class(out) <- old_classes
-  
+
+  #call normal mutate (should go to dplyr)
+  out <- dplyr::mutate(df, ...)
+
+  #restore class info - prepend mapvizieR_data but keep dplyr classes
+  new_classes <- class(out)
+  class(out) <- c('mapvizieR_data', new_classes[!new_classes == 'mapvizieR_data'])
+
   out
 }
 
@@ -202,18 +208,19 @@ mutate_.mapvizieR_data <- function(df, ...) {
 #' @export summarize_.mapvizieR_data
 
 summarize_.mapvizieR_data <- function(df, ...) {
-  
+
   #store the incoming class info
   old_classes <- class(df)
-  
+
   #strip mavpvizieR_data class so that method dispatch doesn't lead to infinite calls
   class(df) <- old_classes[!old_classes == 'mapvizieR_data']
-  
-  #call normal (should go to dplyr)
-  out <- dplyr::summarize_(df, ...)
-  
-  #restore class info
-  class(out) <- old_classes
-  
+
+  #call normal summarize (should go to dplyr)
+  out <- dplyr::summarize(df, ...)
+
+  #restore class info - prepend mapvizieR_data but keep dplyr classes
+  new_classes <- class(out)
+  class(out) <- c('mapvizieR_data', new_classes[!new_classes == 'mapvizieR_data'])
+
   out
 }

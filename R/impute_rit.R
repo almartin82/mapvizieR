@@ -27,7 +27,7 @@ impute_rit <- function(
   
   #unpack the mapvizieR object and limit to desired students
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale) %>%
-    dplyr::tbl_df()
+    tibble::as_tibble()
 
   if (impute_method == 'simple_average') {
     out <- impute_rit_simple_average(this_cdf, interpolate_only)
@@ -95,7 +95,7 @@ imputation_scaffold <- function(cdf, interpolate_only = TRUE) {
     dplyr::arrange(
       studentid, measurementscale, grade_level_season
     ) %>%
-    dplyr::tbl_df()
+    tibble::as_tibble()
   
   #test if all rows for a stu/subject paring are NA.  drop if so.
   stu_subj <- scaffold %>%
@@ -173,7 +173,7 @@ impute_rit_simple_average <- function(cdf, interpolate_only = TRUE) {
       max_extent = max(lead, na.rm = TRUE),
       min_grade = min(grade_level_season, na.rm = TRUE),
       max_grade = max(grade_level_season, na.rm = TRUE),
-      count = n()
+      count = dplyr::n()
     )
   
   #add min and max extent RIT

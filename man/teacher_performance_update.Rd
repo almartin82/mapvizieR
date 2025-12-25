@@ -4,9 +4,17 @@
 \alias{teacher_performance_update}
 \title{Teacher Performance Update}
 \usage{
-teacher_performance_update(mapvizieR_obj, studentids, measurementscale,
-  start_fws, start_academic_year, end_fws, end_academic_year,
-  title_text = "", ...)
+teacher_performance_update(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  start_fws,
+  start_academic_year,
+  end_fws,
+  end_academic_year,
+  title_text = "",
+  ...
+)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

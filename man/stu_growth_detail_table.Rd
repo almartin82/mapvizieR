@@ -4,9 +4,16 @@
 \alias{stu_growth_detail_table}
 \title{Student Growth Detail Table}
 \usage{
-stu_growth_detail_table(mapvizieR_obj, studentids, measurementscale,
-  high_or_low_growth = "high", num_stu = 5,
-  entry_grade_seasons = c(-0.8, 4.2), title = "", ...)
+stu_growth_detail_table(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  high_or_low_growth = "high",
+  num_stu = 5,
+  entry_grade_seasons = c(-0.8, 4.2),
+  title = "",
+  ...
+)
 }
 \arguments{
 \item{mapvizieR_obj}{a conforming mapvizieR object}

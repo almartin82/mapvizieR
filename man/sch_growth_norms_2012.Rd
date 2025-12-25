@@ -4,7 +4,8 @@
 \name{sch_growth_norms_2012}
 \alias{sch_growth_norms_2012}
 \title{school growth norms 2012 study}
-\format{\describe{
+\format{
+\describe{
 \item{end_grade}{END grade, eg grade 2 spring to spring is grade 1 TO grade 2}
 \item{measurementscale}{measurementscale}
 \item{growth_window}{growth_window}
@@ -12,7 +13,19 @@
 \item{end_fallwinterspring}{end_fallwinterspring}
 \item{typical_cohort_growth}{typical_cohort_growth}
 \item{sd_of_expectation}{sd_of_expectation}
-}}
+}
+
+\describe{
+\item{grade}{grade}
+\item{measurementscale}{measurementscale}
+\item{growth_window}{growth_window}
+\item{start_fallwinterspring}{start_fallwinterspring}
+\item{end_fallwinterspring}{end_fallwinterspring}
+\item{rit}{rit}
+\item{typical_cohort_growth}{typical_cohort_growth}
+\item{sd_of_expectation}{sd_of_expectation}
+}
+}
 \source{
 NWEA 2012 school growth study (PDF)
 

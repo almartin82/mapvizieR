@@ -4,10 +4,17 @@
 \alias{auto_growth_window}
 \title{Extract likely growth window}
 \usage{
-auto_growth_window(mapvizieR_obj, studentids, measurementscale, end_fws,
-  end_academic_year, candidate_start_fws = c("Fall", "Spring"),
-  candidate_year_offsets = c(0, -1), candidate_prefer = "Spring",
-  window_tolerance = 0.5)
+auto_growth_window(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  end_fws,
+  end_academic_year,
+  candidate_start_fws = c("Fall", "Spring"),
+  candidate_year_offsets = c(0, -1),
+  candidate_prefer = "Spring",
+  window_tolerance = 0.5
+)
 }
 \arguments{
 \item{mapvizieR_obj}{a mapvizier object}

@@ -4,7 +4,7 @@
 \alias{filter_.mapvizieR_data}
 \title{filter wrapper}
 \usage{
-\method{filter_}{mapvizieR_data}(df, ...)
+filter_.mapvizieR_data(df, ...)
 }
 \arguments{
 \item{df}{data.frame}

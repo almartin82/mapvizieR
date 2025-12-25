@@ -27,13 +27,9 @@ calc_cgp <- function(
   verbose = TRUE
 ) {
   #cant have a calc_for value 0 or below, or above 100 - those aren't valid growth %iles.
-  calc_for %>%
-    ensurer::ensure_that(
-      min(.) > 0, max(.) < 100,
-      fail_with = function(...) {
-        stop("valid calc_for values are between 1 and 99", call. = FALSE)
-      }
-    )
+  if (min(calc_for) <= 0 || max(calc_for) >= 100) {
+    cli::cli_abort("valid calc_for values are between 1 and 99")
+  }
   
   if (norms == 2012) {
     active_norms <- sch_growth_norms_2012
@@ -418,7 +414,7 @@ mapviz_cgp <- function(
       avg_npr_change = mean(end_consistent_percentile - start_consistent_percentile, na.rm = TRUE),
       n_typ_true = sum(met_typical_growth, na.rm = TRUE),
       n_typ_false = sum(!met_typical_growth, na.rm = TRUE),
-      n = n(),
+      n = dplyr::n(),
       approx_grade = round(mean(end_grade, na.rm = TRUE), 0) 
       ) %>%       
     dplyr::mutate(
@@ -549,20 +545,20 @@ cdf_to_cgp <- function(
   
   cgp_scaffold <- cdf %>%
     dplyr::ungroup() %>%
-    dplyr::select_(
-      grouping, quote(measurementscale), 
-      quote(fallwinterspring),
-      quote(grade_level_season),
-      quote(grade),
-      quote(map_year_academic)
+    dplyr::select(
+      !!rlang::sym(grouping), measurementscale,
+      fallwinterspring,
+      grade_level_season,
+      grade,
+      map_year_academic
     ) %>%
-    dplyr::arrange_(
-      grouping, quote(measurementscale), 
-      quote(grade_level_season), quote(map_year_academic)
+    dplyr::arrange(
+      !!rlang::sym(grouping), measurementscale,
+      grade_level_season, map_year_academic
     ) %>%
     unique() %>%
-    dplyr::group_by_(
-      grouping, quote(measurementscale)
+    dplyr::group_by(
+      !!rlang::sym(grouping), measurementscale
     ) %>%
     dplyr::mutate(
       end_fallwinterspring = lead(fallwinterspring),

@@ -4,13 +4,15 @@
 \name{ny_predicted_pass}
 \alias{ny_predicted_pass}
 \title{New York predicted pass rate}
-\format{\describe{
+\format{
+\describe{
 \item{grade}{student's grade level}
 \item{measurementscale}{NWEA measurementscale}
 \item{fallwinterspring}{season}
 \item{percentile}{percentile, 2015 norms}
 \item{pass_probability}{probability of achieving a level 3 or level 4}
-}}
+}
+}
 \source{
 NWEA New York linking study
 }

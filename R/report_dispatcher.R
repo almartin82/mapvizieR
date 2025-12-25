@@ -86,12 +86,12 @@ report_dispatcher <- function(
       #for display (includes N students)
       if (verbose) {
         perm_disp[[counter]] <- roster[, names(roster) %in% this_headers, drop = FALSE] %>%
-          #syntax is kinda bonkers: http://stackoverflow.com/a/28182288/561698
-          dplyr::group_by_(
-            .dots = lapply(this_headers, as.symbol)
+          dplyr::group_by(
+            !!!rlang::syms(this_headers)
           ) %>%
           dplyr::summarize(
-            n = n()
+            n = dplyr::n(),
+            .groups = 'drop'
           )
       }
       counter <- counter + 1

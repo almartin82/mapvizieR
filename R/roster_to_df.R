@@ -23,14 +23,12 @@ roster_to_cdf <- function(
   by_measurementscale = FALSE
 ) {
   #opening checks
-  target_df %>% ensurer::ensure_that(
-    !'end_fallwinterspring' %in% names(.) ~ 
-      "you provided a growth df, but this function is designed for the cdf. try roster_to_growth_df()"
-  )
-  target_df %>% ensurer::ensure_that(
-    c('studentid', 'map_year_academic', 'fallwinterspring') %in% names(.) %>% all() ~ 
-      "c(studentid, map_year_academic, fallwinterspring) are minimum requirements for roster_to_cdf"
-  )  
+  if ('end_fallwinterspring' %in% names(target_df)) {
+    cli::cli_abort("you provided a growth df, but this function is designed for the cdf. try roster_to_growth_df()")
+  }
+  if (!all(c('studentid', 'map_year_academic', 'fallwinterspring') %in% names(target_df))) {
+    cli::cli_abort("c(studentid, map_year_academic, fallwinterspring) are minimum requirements for roster_to_cdf")
+  }  
   
   #get the roster
   roster <- mapvizieR_obj$roster
@@ -100,10 +98,9 @@ roster_to_growth_df <- function(
   by_measurementscale = FALSE
 ) {
   #opening checks
-  target_df %>% ensurer::ensure_that(
-    !'fallwinterspring' %in% names(.) ~ 
-      "you provided a regular cdf, but this function is designed for the growth_df. try roster_to_cdf()"
-  )
+  if ('fallwinterspring' %in% names(target_df)) {
+    cli::cli_abort("you provided a regular cdf, but this function is designed for the growth_df. try roster_to_cdf()")
+  }
   
   #get the roster
   roster <- mapvizieR_obj$roster
@@ -150,7 +147,7 @@ roster_to_growth_df <- function(
   #disambiguation - add rn tags by last, first
   slim <- slim %>%
     unique() %>%
-    dplyr::tbl_df()
+    tibble::as_tibble()
   
   if (by_measurementscale) {
     slim <- slim

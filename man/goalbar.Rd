@@ -4,20 +4,28 @@
 \alias{goalbar}
 \title{goal_bar}
 \usage{
-goalbar(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_academic_year, end_fws, end_academic_year,
-  goal_labels = c(accel_growth = "Made Accel Growth", typ_growth =
-  "Made Typ Growth", positive_but_not_typ = "Below Typ Growth",
-  negative_growth = "Negative Growth", no_start =
-  sprintf("Untested: \%s \%s", start_fws, start_academic_year), no_end =
-  sprintf("Untested: \%s \%s", end_fws, end_academic_year)),
-  goal_colors = c("#CC00FFFF", "#0066FFFF", "#CCFF00FF", "#FF0000FF",
-  "#FFFFFF", "#F0FFFF"), ontrack_prorater = NA, ontrack_fws = NA,
-  ontrack_academic_year = NA, ontrack_labels = c(ontrack_accel =
-  "On Track for Accel Growth", ontrack_typ = "On Track for Typ Growth",
-  offtrack_typ = "Off Track for Typ Growth"),
+goalbar(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  start_fws,
+  start_academic_year,
+  end_fws,
+  end_academic_year,
+  goal_labels = c(accel_growth = "Made Accel Growth", typ_growth = "Made Typ Growth",
+    positive_but_not_typ = "Below Typ Growth", negative_growth = "Negative Growth",
+    no_start = sprintf("Untested: \%s \%s", start_fws, start_academic_year), no_end =
+    sprintf("Untested: \%s \%s", end_fws, end_academic_year)),
+  goal_colors = c("#CC00FFFF", "#0066FFFF", "#CCFF00FF", "#FF0000FF", "#FFFFFF",
+    "#F0FFFF"),
+  ontrack_prorater = NA,
+  ontrack_fws = NA,
+  ontrack_academic_year = NA,
+  ontrack_labels = c(ontrack_accel = "On Track for Accel Growth", ontrack_typ =
+    "On Track for Typ Growth", offtrack_typ = "Off Track for Typ Growth"),
   ontrack_colors = c("#CC00FFFF", "#0066FFFF", "#CCFF00FF"),
-  complete_obsv = FALSE)
+  complete_obsv = FALSE
+)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

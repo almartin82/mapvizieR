@@ -222,8 +222,7 @@ haid_plot <- function(
     aes(
       x = start_testritscore,
       y = y_order
-    ),
-    environment = .e
+    )
   )
 
   #typical and college ready goal lines (want these behind segments)
@@ -670,7 +669,7 @@ get_group_stats <- function(df, grp, RIT, dummy_y) {
   #a list of args to pass to summarize_
   #(read http://cran.r-project.org/web/packages/dplyr/vignettes/nse.html)
   dots <- list(
-    ~n(),
+    ~dplyr::n(),
     ~mean(dummy_y),
     ~mean(dummy_rit),
     ~dftotal
@@ -679,10 +678,12 @@ get_group_stats <- function(df, grp, RIT, dummy_y) {
   #calc the stats
   group_stats <- dummy %>%
     dplyr::group_by(dummy_group) %>%
-    dplyr::summarize_(
-      .dots = setNames(
-        dots, c('count_students', 'avg_y_dummy', 'avg_rit', 'total_count')
-      )
+    dplyr::summarize(
+      count_students = dplyr::n(),
+      avg_y_dummy = mean(dummy_y),
+      avg_rit = mean(dummy_rit),
+      total_count = dftotal,
+      .groups = 'drop'
     ) %>% as.data.frame()
 
   group_stats$pct_of_total <- group_stats$count_students / group_stats$total_count

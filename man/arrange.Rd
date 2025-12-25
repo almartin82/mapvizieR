@@ -4,7 +4,7 @@
 \alias{arrange_.mapvizieR_data}
 \title{arrange wrapper}
 \usage{
-\method{arrange_}{mapvizieR_data}(df, ...)
+arrange_.mapvizieR_data(df, ...)
 }
 \arguments{
 \item{df}{data.frame}

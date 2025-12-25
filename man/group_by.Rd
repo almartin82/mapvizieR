@@ -4,7 +4,7 @@
 \alias{group_by_.mapvizieR_data}
 \title{group_by wrapper}
 \usage{
-\method{group_by_}{mapvizieR_data}(df, ...)
+group_by_.mapvizieR_data(df, ...)
 }
 \arguments{
 \item{df}{data.frame}

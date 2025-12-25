@@ -4,9 +4,16 @@
 \alias{growth_histogram}
 \title{growth_histogram}
 \usage{
-growth_histogram(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_academic_year, end_fws, end_academic_year, perf_breaks = c(55,
-  45))
+growth_histogram(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  start_fws,
+  start_academic_year,
+  end_fws,
+  end_academic_year,
+  perf_breaks = c(55, 45)
+)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

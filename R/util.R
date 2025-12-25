@@ -41,9 +41,9 @@ extract_academic_year <- function(x) {
 
 build_year_in_district <- function(roster) {
   
-  district_year <- roster %>% 
-    dplyr::select(studentid, map_year_academic, grade) %>% 
-    unique() %>% dplyr::tbl_df() %>%
+  district_year <- roster %>%
+    dplyr::select(studentid, map_year_academic, grade) %>%
+    unique() %>% tibble::as_tibble() %>%
     dplyr::arrange(
       studentid, map_year_academic, grade
     ) %>%
@@ -458,18 +458,16 @@ munge_startdate <- function(x) {
 
 mv_opening_checks <- function(mapvizieR_obj, studentids, min_stu = 1) {
   #has to be a mapvizieR obj
-  mapvizieR_obj %>% ensure_is_mapvizieR()
-  
+  ensure_is_mapvizieR(mapvizieR_obj)
+
   #gotta have this many kids
-  studentids %>% 
-    ensurer::ensure_that(
-      length(.) > min_stu ~ paste("this plot requires at least", min_stu, "student.")
-    )
-  
-  mapvizieR_obj[['cdf']] %>%  
-    ensurer::ensure_that(
-      check_cdf_long(.)$boolean == TRUE ~ "your mapvizieR CDF is not conforming."
-    )
+  if (length(studentids) <= min_stu) {
+    cli::cli_abort(paste("this plot requires at least", min_stu, "student."))
+  }
+
+  if (check_cdf_long(mapvizieR_obj[['cdf']])$boolean != TRUE) {
+    cli::cli_abort("your mapvizieR CDF is not conforming.")
+  }
 }
 
 
@@ -577,7 +575,7 @@ min_term_filter <- function(cdf, small_n_cutoff = -1) {
   grade_seasons_to_keep <- cdf %>%
     dplyr::group_by(grade_level_season) %>%
     dplyr::summarize(
-      n = n()
+      n = dplyr::n()
     ) %>%
     dplyr::mutate(
       include = n >= max(n) * small_n_cutoff
@@ -628,29 +626,28 @@ cdf_collapse_by_grade <- function(cdf) {
 #' default is -1, eg off
 
 min_subgroup_filter <- function(df, subgroup_name, small_n_cutoff = -1) {
-  
+
   #defensive against dplyr output
   df <- as.data.frame(df)
-  
+
   #more assumptions
-  df %>% 
-    ensurer::ensure_that(
-      subgroup_name %in% names(.) ~ 
-        "the subgroup you specified isn't in the data frame you provided"
-    )
+  if (!(subgroup_name %in% names(df))) {
+    cli::cli_abort("the subgroup you specified isn't in the data frame you provided")
+  }
   
   #counts and percentages
   to_keep <- df %>%
-    dplyr::select_(
-      quote(studentid),
-      subgroup_name
+    dplyr::select(
+      studentid,
+      !!rlang::sym(subgroup_name)
     ) %>%
-    dplyr::group_by_(
-      subgroup_name
+    dplyr::group_by(
+      !!rlang::sym(subgroup_name)
     ) %>%
     #how many
     dplyr::summarize(
-      n = n()
+      n = dplyr::n(),
+      .groups = 'drop'
     ) %>%
     #is it bigger than the cutoff
     dplyr::mutate(
@@ -661,8 +658,8 @@ min_subgroup_filter <- function(df, subgroup_name, small_n_cutoff = -1) {
       include == TRUE
     ) %>%
     #only the name of the subgroup
-    dplyr::select_(
-      subgroup_name
+    dplyr::select(
+      !!rlang::sym(subgroup_name)
     ) %>% unlist() %>% unname()
   
   #filter the df and return
@@ -737,23 +734,25 @@ n_timings <- function(n, test_function, test_args) {
 
 
 #' @title ensure_fields
-#' 
-#' @description a simple wrapper around ensurer to check for necessary fields
+#'
+#' @description a simple validation function to check for necessary fields
 #' used by a function
 #' 
 #' @param fields_vector vector of fields that your function needs.
 #' @param df data frame that needs to have the fields
 
 ensure_fields <- function(fields_vector, df) {
-  
-  df %>%
-    ensurer::ensure_that(
-      all(fields_vector %in% names(df)) ~ paste(
-        "this function requires the following fields:",
-        fields_vector[!fields_vector %in% names(df)],
-        "which are missing from your data frame."
-      )
-    )
+
+  missing_fields <- fields_vector[!fields_vector %in% names(df)]
+  if (length(missing_fields) > 0) {
+    cli::cli_abort(paste(
+      "this function requires the following fields:",
+      paste(missing_fields, collapse = ", "),
+      "which are missing from your data frame."
+    ))
+  }
+
+  invisible(df)
 }
 
 
@@ -774,30 +773,34 @@ force_string_breaks <- function(string, n_char) {
 
 
 #' @title ensure_rows_in_df
-#' 
+#'
 #' @description a contract that verifies that a data set isn't length zero
-#' 
-#' @param . dot-placeholder, per ensurer doc.
+#'
+#' @param df data frame to check
 
-ensure_rows_in_df <- ensurer::ensures_that(
-  nrow(.) > 0 ~ "Sorry, can't plot that: a data prep step returned a df of 0 rows."
-)
+ensure_rows_in_df <- function(df) {
+  if (nrow(df) == 0) {
+    cli::cli_abort("Sorry, can't plot that: a data prep step returned a df of 0 rows.")
+  }
+  invisible(df)
+}
 
 
 #' @title ensure_nonzero_students_with_norms
-#' 
+#'
 #' @description a contract that verifies that a growth df has at least one student with
 #' normative data
-#' 
-#' @param . dot-placeholder, per ensurer doc.
+#'
+#' @param df growth data frame to check
 
-ensure_nonzero_students_with_norms <- ensurer::ensures_that(
-  nrow(
-    subset(., !is.na(typical_growth))
-  ) > 0 ~ paste0("Sorry, can't plot that: None of the students in your selection have",
-                 " typical growth norms (possibly because they are too old or young and outside",
-                 " the NWEA norm study)")
-)
+ensure_nonzero_students_with_norms <- function(df) {
+  if (nrow(subset(df, !is.na(typical_growth))) == 0) {
+    cli::cli_abort(paste0("Sorry, can't plot that: None of the students in your selection have",
+                   " typical growth norms (possibly because they are too old or young and outside",
+                   " the NWEA norm study)"))
+  }
+  invisible(df)
+}
 
 
 

@@ -95,8 +95,8 @@ kipp_typ_growth_distro <- function (
   
   nat_plus$Perc_Growth <- as.numeric(nat_plus$Perc_Growth) * 100
   
-  
-  
+
+
   p <- ggplot(
     data = nat_plus,
     aes(
@@ -104,8 +104,7 @@ kipp_typ_growth_distro <- function (
       y = as.numeric(Perc_Growth),
       fill = factor(highlight_me),
       label = paste(School_Display_Name, ' (', round(Perc_Growth,0) , '%)',sep = '')
-    ),
-    environment = e
+    )
   ) + 
   geom_bar(
     stat = "identity"
@@ -141,7 +140,7 @@ kipp_typ_growth_distro <- function (
     axis.ticks.y = element_blank(),
      
     panel.spacing = grid::unit(0, "null"),
-    plot.margin = rep(grid::unit(0, "null"), 4),
+    plot.margin = margin(0, 0, 0, 0),
     #axis.ticks.margin = grid::unit(0, "null")
     axis.text = element_text(margin=margin(0,0,0,0,"pt"))
   ) +

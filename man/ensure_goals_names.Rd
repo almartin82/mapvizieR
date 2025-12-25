@@ -4,12 +4,12 @@
 \alias{ensure_goals_names}
 \title{ensure_goals_names}
 \usage{
-ensure_goals_names(.)
+ensure_goals_names(x)
 }
 \arguments{
-\item{.}{dot-placeholder, per ensurer doc.}
+\item{x}{object to check}
 }
 \description{
-a contract that ensures that a goal object's has the 
+a contract that ensures that a goal object's has the
 proper elements.
 }

@@ -2,8 +2,8 @@
 % Please edit documentation in R/mapvizieR-package.R, R/mapvizieR_object.R
 \docType{package}
 \name{mapvizieR}
-\alias{mapvizieR}
 \alias{mapvizieR-package}
+\alias{mapvizieR}
 \title{mapvizieR}
 \usage{
 mapvizieR(cdf, roster, verbose = FALSE, norms = 2015, ...)
@@ -20,6 +20,8 @@ mapvizieR(cdf, roster, verbose = FALSE, norms = 2015, ...)
 \item{...}{additional arguments to pass to constructor functions called by mapvizieR}
 }
 \description{
+A suite of analytic, visualization, and reporting tools for NWEA MAP Data. Provides functions for creating visualizations of student growth, cohort status, and goal attainment from MAP assessment data. Includes specialized plots like the becca plot, galloping elephants, haid plot, and quealy subgroups visualization.
+
 \code{mapvizieR} is a workhorse workflow function that
 calls a sequence of cdf and roster prep functions, given a cdf and roster
 }
@@ -30,4 +32,22 @@ cdf_mv <- mapvizieR(ex_CombinedAssessmentResults,
                     
 is.mapvizieR(cdf_mv)                     
 }
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/almartin82/mapvizieR}
+  \item \url{https://almartin82.github.io/mapvizieR}
+  \item Report bugs at \url{https://github.com/almartin82/mapvizieR/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Andrew Martin \email{almartin@gmail.com}
+
+Authors:
+\itemize{
+  \item Chris Haid \email{chaid@kippchicago.org}
+}
+
 }

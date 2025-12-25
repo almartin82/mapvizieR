@@ -121,15 +121,15 @@ summary_long_plot <- function(
   
   p <- ggplot(
         x,
-        aes_string(
-          x = x_var,
-          y = metric
+        aes(
+          x = .data[[x_var]],
+          y = .data[[metric]]
         )
-      ) + 
+      ) +
     geom_line(
-      aes_string(
-        color = school_col,
-        group = school_col
+      aes(
+        color = .data[[school_col]],
+        group = .data[[school_col]]
         )
       ) +
     geom_point(
@@ -144,24 +144,24 @@ summary_long_plot <- function(
   
   # if the metric is a pct or between 0 and 1 then adjust to %
 if(grepl("^pct_", metric) | all(dplyr::between(x[[metric]], 0, 1))) {
-    p <- p +    
+    p <- p +
       geom_text(
-        aes_string(
-          label = sprintf("round(%s*100)", metric),
-          color = school_col
+        aes(
+          label = round(.data[[metric]]*100),
+          color = .data[[school_col]]
         ),
         size = 3
       ) +
       scale_y_continuous(labels = scales::percent)
   } else {
-   p <- p +    
+   p <- p +
      geom_text(
-     aes_string(
-       label = sprintf("round(%s)", metric),
-       color = school_col
+     aes(
+       label = round(.data[[metric]]),
+       color = .data[[school_col]]
      ),
      size = 2
-   ) 
+   )
   }
   
   # let's prettify some known titles. 

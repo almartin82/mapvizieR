@@ -1,39 +1,48 @@
 Package: mapvizieR
 Type: Package
-Title: Visualization and Data Analysis tools for NWEA MAP student data
-Version: 0.3.7
-Date: 2015-01-14
+Title: Visualization and Data Analysis Tools for NWEA MAP Student Data
+Version: 0.4.0
 Authors@R: c(
-  person("Andrew", "Martin", role = c("aut","cre"), email = "almartin@gmail.com"), 
-  person("Chris", "Haid", role = "aut", email = "chaid@kippchicago.org"))
-Description: mapzivieR is a suite of analytic, visualization, and reporting
-    tools for NWEA MAP Data.
+    person("Andrew", "Martin", , "almartin@gmail.com", role = c("aut", "cre")),
+    person("Chris", "Haid", , "chaid@kippchicago.org", role = "aut")
+  )
+Description: A suite of analytic, visualization, and reporting tools for
+    NWEA MAP Data. Provides functions for creating visualizations of
+    student growth, cohort status, and goal attainment from MAP
+    assessment data. Includes specialized plots like the becca plot,
+    galloping elephants, haid plot, and quealy subgroups visualization.
 License: file LICENSE
+URL: https://github.com/almartin82/mapvizieR,
+    https://almartin82.github.io/mapvizieR
+BugReports: https://github.com/almartin82/mapvizieR/issues
 Depends:
-    ggplot2,
-    grid,
-    gridExtra (>= 0.9.1),
-    magrittr,
-    purrr,
-    R(>= 2.10.0)
-Suggests:
-    testthat,
-    knitr
-LazyData: true
-VignetteBuilder: knitr
+    R (>= 4.1.0)
 Imports:
-    assertthat,
-    dplyr,
-    ensurer,
-    gtable,   
-    janitor,
-    lubridate,
-    readr,
-    reshape2,
-    RGraphics,
-    scales,    
-    stringr,
-    tidyr,    
+    assertthat (>= 0.2.1),
+    cli (>= 3.0.0),
+    dplyr (>= 1.1.0),
+    ggplot2 (>= 3.4.0),
+    grid,
+    gridExtra (>= 2.3),
+    gtable (>= 0.3.0),
+    janitor (>= 2.0.0),
+    lubridate (>= 1.8.0),
+    magrittr (>= 2.0.0),
+    purrr (>= 1.0.0),
+    readr (>= 2.0.0),
+    rlang (>= 1.0.0),
+    scales (>= 1.2.0),
+    stringr (>= 1.5.0),
+    tidyr (>= 1.3.0),
     toOrdinal
-RoxygenNote: 6.1.1
+Suggests:
+    knitr (>= 1.40),
+    rmarkdown (>= 2.20),
+    testthat (>= 3.0.0),
+    vdiffr (>= 1.0.0)
+VignetteBuilder:
+    knitr
+Config/testthat/edition: 3
 Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.3

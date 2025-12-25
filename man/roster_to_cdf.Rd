@@ -4,8 +4,12 @@
 \alias{roster_to_cdf}
 \title{roster_to_cdf}
 \usage{
-roster_to_cdf(target_df, mapvizieR_obj, roster_cols,
-  by_measurementscale = FALSE)
+roster_to_cdf(
+  target_df,
+  mapvizieR_obj,
+  roster_cols,
+  by_measurementscale = FALSE
+)
 }
 \arguments{
 \item{target_df}{the df you want to put stuff on}
