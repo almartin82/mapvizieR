@@ -10,6 +10,6 @@ test_that("historic nth percentile plot generates ggplot object", {
     'Mathematics'
   )
   
-  expect_is(ex, 'ggplot')
+  expect_s3_class(ex, 'ggplot')
   
 })

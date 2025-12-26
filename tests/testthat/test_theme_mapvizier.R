@@ -5,8 +5,8 @@ test_that("theme_mapvizier returns a valid ggplot2 theme object", {
   theme_obj <- theme_mapvizier()
 
   # Test that it returns a theme object
-  expect_is(theme_obj, "theme")
-  expect_is(theme_obj, "gg")
+  expect_s3_class(theme_obj, "theme")
+  expect_s3_class(theme_obj, "gg")
 
   # Test that it has expected theme elements
   expect_true("panel.grid.major" %in% names(theme_obj))
@@ -23,11 +23,11 @@ test_that("theme_mapvizier accepts custom parameters", {
 
   # Test with custom base_size
   theme_large <- theme_mapvizier(base_size = 14)
-  expect_is(theme_large, "theme")
+  expect_s3_class(theme_large, "theme")
 
   # Test with custom base_family
   theme_custom_font <- theme_mapvizier(base_family = "serif")
-  expect_is(theme_custom_font, "theme")
+  expect_s3_class(theme_custom_font, "theme")
 
   # Test with all custom parameters
   theme_custom <- theme_mapvizier(
@@ -36,7 +36,7 @@ test_that("theme_mapvizier accepts custom parameters", {
     base_line_size = 0.8,
     base_rect_size = 0.8
   )
-  expect_is(theme_custom, "theme")
+  expect_s3_class(theme_custom, "theme")
 })
 
 
@@ -49,7 +49,7 @@ test_that("theme_mapvizier can be used with ggplot2", {
     geom_point() +
     theme_mapvizier()
 
-  expect_is(p, "ggplot")
+  expect_s3_class(p, "ggplot")
 
   # Check that the plot builds without errors
   expect_silent(ggplot_build(p))
@@ -61,7 +61,7 @@ test_that("mapvizier_quartile_colors returns correct color values", {
   colors <- mapvizier_quartile_colors()
 
   # Test that it returns a character vector
-  expect_is(colors, "character")
+  expect_type(colors, "character")
 
   # Test that it returns exactly 4 colors
   expect_equal(length(colors), 4)
@@ -85,7 +85,7 @@ test_that("mapvizier_growth_colors returns correct color values", {
   colors <- mapvizier_growth_colors()
 
   # Test that it returns a character vector
-  expect_is(colors, "character")
+  expect_type(colors, "character")
 
   # Test that it returns exactly 4 colors
   expect_equal(length(colors), 4)
@@ -109,7 +109,7 @@ test_that("mapvizier_kipp_colors returns correct color values", {
   colors <- mapvizier_kipp_colors()
 
   # Test that it returns a character vector
-  expect_is(colors, "character")
+  expect_type(colors, "character")
 
   # Test that it returns exactly 4 colors
   expect_equal(length(colors), 4)
@@ -132,9 +132,9 @@ test_that("scale_fill_quartile returns a valid ggplot2 scale with default palett
   scale_obj <- scale_fill_quartile()
 
   # Test that it returns a scale object
-  expect_is(scale_obj, "ScaleDiscrete")
-  expect_is(scale_obj, "Scale")
-  expect_is(scale_obj, "ggproto")
+  expect_s3_class(scale_obj, "ScaleDiscrete")
+  expect_s3_class(scale_obj, "Scale")
+  expect_s3_class(scale_obj, "ggproto")
 
   # Test that the scale has expected aesthetics
   expect_equal(scale_obj$aesthetics, "fill")
@@ -145,7 +145,7 @@ test_that("scale_fill_quartile returns a valid ggplot2 scale with default palett
     geom_col() +
     scale_fill_quartile()
 
-  expect_is(p, "ggplot")
+  expect_s3_class(p, "ggplot")
   expect_silent(ggplot_build(p))
 })
 
@@ -157,7 +157,7 @@ test_that("scale_fill_quartile works with kipp palette", {
   scale_obj <- scale_fill_quartile(palette = "kipp")
 
   # Test that it returns a scale object
-  expect_is(scale_obj, "ScaleDiscrete")
+  expect_s3_class(scale_obj, "ScaleDiscrete")
 
   # Create a plot using the kipp palette
   df <- data.frame(quartile = factor(1:4), count = c(25, 30, 28, 17))
@@ -165,7 +165,7 @@ test_that("scale_fill_quartile works with kipp palette", {
     geom_col() +
     scale_fill_quartile(palette = "kipp")
 
-  expect_is(p, "ggplot")
+  expect_s3_class(p, "ggplot")
   expect_silent(ggplot_build(p))
 })
 
@@ -176,7 +176,7 @@ test_that("scale_fill_quartile accepts additional arguments", {
 
   # Test with guide argument
   scale_obj <- scale_fill_quartile(guide = "legend")
-  expect_is(scale_obj, "ScaleDiscrete")
+  expect_s3_class(scale_obj, "ScaleDiscrete")
 
   # Test that it works in a plot with additional arguments
   df <- data.frame(quartile = factor(1:4), count = c(25, 30, 28, 17))
@@ -184,7 +184,7 @@ test_that("scale_fill_quartile accepts additional arguments", {
     geom_col() +
     scale_fill_quartile(guide = guide_legend(reverse = TRUE))
 
-  expect_is(p, "ggplot")
+  expect_s3_class(p, "ggplot")
   expect_silent(ggplot_build(p))
 })
 
@@ -196,9 +196,9 @@ test_that("scale_color_quartile returns a valid ggplot2 scale with default palet
   scale_obj <- scale_color_quartile()
 
   # Test that it returns a scale object
-  expect_is(scale_obj, "ScaleDiscrete")
-  expect_is(scale_obj, "Scale")
-  expect_is(scale_obj, "ggproto")
+  expect_s3_class(scale_obj, "ScaleDiscrete")
+  expect_s3_class(scale_obj, "Scale")
+  expect_s3_class(scale_obj, "ggproto")
 
   # Test that the scale has expected aesthetics
   expect_equal(scale_obj$aesthetics, "colour")
@@ -213,7 +213,7 @@ test_that("scale_color_quartile returns a valid ggplot2 scale with default palet
     geom_point() +
     scale_color_quartile()
 
-  expect_is(p, "ggplot")
+  expect_s3_class(p, "ggplot")
   expect_silent(ggplot_build(p))
 })
 
@@ -225,7 +225,7 @@ test_that("scale_color_quartile works with kipp palette", {
   scale_obj <- scale_color_quartile(palette = "kipp")
 
   # Test that it returns a scale object
-  expect_is(scale_obj, "ScaleDiscrete")
+  expect_s3_class(scale_obj, "ScaleDiscrete")
 
   # Create a plot using the kipp palette
   df <- data.frame(
@@ -237,7 +237,7 @@ test_that("scale_color_quartile works with kipp palette", {
     geom_point() +
     scale_color_quartile(palette = "kipp")
 
-  expect_is(p, "ggplot")
+  expect_s3_class(p, "ggplot")
   expect_silent(ggplot_build(p))
 })
 
@@ -248,7 +248,7 @@ test_that("scale_color_quartile accepts additional arguments", {
 
   # Test with guide argument
   scale_obj <- scale_color_quartile(guide = "legend")
-  expect_is(scale_obj, "ScaleDiscrete")
+  expect_s3_class(scale_obj, "ScaleDiscrete")
 
   # Test that it works in a plot with additional arguments
   df <- data.frame(
@@ -260,7 +260,7 @@ test_that("scale_color_quartile accepts additional arguments", {
     geom_point() +
     scale_color_quartile(guide = guide_legend(reverse = TRUE))
 
-  expect_is(p, "ggplot")
+  expect_s3_class(p, "ggplot")
   expect_silent(ggplot_build(p))
 })
 
@@ -272,9 +272,9 @@ test_that("scale_fill_growth returns a valid ggplot2 scale", {
   scale_obj <- scale_fill_growth()
 
   # Test that it returns a scale object
-  expect_is(scale_obj, "ScaleDiscrete")
-  expect_is(scale_obj, "Scale")
-  expect_is(scale_obj, "ggproto")
+  expect_s3_class(scale_obj, "ScaleDiscrete")
+  expect_s3_class(scale_obj, "Scale")
+  expect_s3_class(scale_obj, "ggproto")
 
   # Test that the scale has expected aesthetics
   expect_equal(scale_obj$aesthetics, "fill")
@@ -291,7 +291,7 @@ test_that("scale_fill_growth returns a valid ggplot2 scale", {
     geom_col() +
     scale_fill_growth()
 
-  expect_is(p, "ggplot")
+  expect_s3_class(p, "ggplot")
   expect_silent(ggplot_build(p))
 })
 
@@ -302,7 +302,7 @@ test_that("scale_fill_growth accepts additional arguments", {
 
   # Test with guide argument
   scale_obj <- scale_fill_growth(guide = "legend")
-  expect_is(scale_obj, "ScaleDiscrete")
+  expect_s3_class(scale_obj, "ScaleDiscrete")
 
   # Test that it works in a plot with custom labels
   df <- data.frame(
@@ -316,7 +316,7 @@ test_that("scale_fill_growth accepts additional arguments", {
     geom_col() +
     scale_fill_growth()
 
-  expect_is(p, "ggplot")
+  expect_s3_class(p, "ggplot")
   expect_silent(ggplot_build(p))
 })
 

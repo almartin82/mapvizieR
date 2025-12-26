@@ -10,7 +10,7 @@ test_that("cohort_cgp_hist_plot should return a plot", {
     entry_grade_seasons = c(-0.8, 5.2)
   ) 
   
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
   p <- ggplot_build(p)
   expect_equal(p$data[[2]]$y %>% round(2) %>% sum(na.rm = TRUE), 90.07)
   
@@ -21,7 +21,7 @@ test_that("cohort_cgp_hist_plot should return a plot", {
     entry_grade_seasons = c(-0.8, 5.2)
   )
   
-  expect_is(p2, 'ggplot')
+  expect_s3_class(p2, 'ggplot')
   p2 <- ggplot_build(p2)
   expect_equal(p2$data[[5]][1,1:2] %>% sum(na.rm = TRUE) %>% round(2), 89.68)
   
@@ -39,7 +39,7 @@ test_that("cohort_cgp_hist_plot parameter args", {
     no_labs = TRUE
   ) 
   
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
   p <- ggplot_build(p)
   expect_equal(p$data[[2]]$y %>% round(2) %>% sum(na.rm = TRUE), 90.07)
   
@@ -56,7 +56,7 @@ test_that("mult_cohort_cgp_hist_plot produces valid plot", {
     entry_grade_seasons = c(-0.8, 5.2)
   )
   
-  expect_is(p_mult, 'ggplot')
+  expect_s3_class(p_mult, 'ggplot')
   p_mult <- ggplot_build(p_mult)
   expect_equal(p_mult$data[[1]]$y %>% round(2) %>% sum(na.rm = TRUE), 459.32)
   
@@ -74,7 +74,7 @@ test_that("alt_cohort_cgp_hist_plot should return a plot", {
     entry_grade_seasons = c(-0.8, 5.2)
   ) 
   
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
   p <- ggplot_build(p)
   expect_equal(p$data[[2]]$y %>% round(2) %>% sum(na.rm = TRUE), 78)
   
@@ -91,7 +91,7 @@ test_that("alt_cohort_cgp_hist_plot with NPR labels", {
     plot_labels = 'NPR'
   ) 
   
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
   p <- ggplot_build(p)
   expect_equal(p$data[[2]]$y %>% round(2) %>% sum(na.rm = TRUE), 78)
   
@@ -107,7 +107,7 @@ test_that("alt_multi_cohort_cgp_hist_plot minimal test", {
     entry_grade_seasons = c(-0.8, 5.2)
   ) 
   
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
   p <- ggplot_build(p)
   expect_equal(p$data[[2]]$y %>% round(2) %>% sum(na.rm = TRUE), 73)
   
@@ -125,7 +125,7 @@ test_that("alt_multi_cohort_cgp_hist_plot with NPR labels", {
     plot_labels = 'NPR'
   )
 
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
   p <- ggplot_build(p)
   expect_equal(p$data[[2]]$y %>% round(2) %>% sum(na.rm = TRUE), 73)
 

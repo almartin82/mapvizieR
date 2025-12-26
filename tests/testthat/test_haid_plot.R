@@ -19,8 +19,8 @@ test_that("haid_plot produces proper plot with a grade level of kids", {
     end_academic_year = 2013
   )
   
-  expect_is(samp_haid, 'gg')
-  expect_is(samp_haid, 'ggplot')
+  expect_s3_class(samp_haid, 'gg')
+  expect_s3_class(samp_haid, 'ggplot')
   
   expect_equal(length(samp_haid), 9)
   expect_equal(names(samp_haid), 
@@ -52,8 +52,8 @@ test_that("haid_plot with one season of data", {
     end_academic_year = 2014
   )
   
-  expect_is(one_season, 'gg')
-  expect_is(one_season, 'ggplot')
+  expect_s3_class(one_season, 'gg')
+  expect_s3_class(one_season, 'ggplot')
   
   expect_equal(length(one_season), 9)
   expect_equal(names(one_season), 
@@ -106,8 +106,8 @@ test_that("missing START quartile example", {
     end_academic_year = 2013
   )
   
-  expect_is(quart_haid, 'gg')
-  expect_is(quart_haid, 'ggplot')
+  expect_s3_class(quart_haid, 'gg')
+  expect_s3_class(quart_haid, 'ggplot')
   
   expect_equal(length(quart_haid), 9)
 })
@@ -144,8 +144,8 @@ test_that("missing END quartile example", {
     end_academic_year = 2013
   )
   
-  expect_is(quart_haid, 'gg')
-  expect_is(quart_haid, 'ggplot')
+  expect_s3_class(quart_haid, 'gg')
+  expect_s3_class(quart_haid, 'ggplot')
   
   expect_equal(length(quart_haid), 9)
 })
@@ -179,8 +179,8 @@ test_that("missing q1 START example", {
     end_academic_year = 2013
   )
   
-  expect_is(quart_haid, 'gg')
-  expect_is(quart_haid, 'ggplot')
+  expect_s3_class(quart_haid, 'gg')
+  expect_s3_class(quart_haid, 'ggplot')
   
   expect_equal(length(quart_haid), 9)
 })

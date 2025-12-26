@@ -19,8 +19,8 @@ test_that("growth_histogram produces proper plot with a grade level of kids", {
     end_academic_year = 2013
   )
   
-  expect_is(samp_sgp, 'gg')
-  expect_is(samp_sgp, 'ggplot')
+  expect_s3_class(samp_sgp, 'gg')
+  expect_s3_class(samp_sgp, 'ggplot')
   
   expect_equal(length(samp_sgp), 9)
   expect_equal(names(samp_sgp), 
@@ -58,8 +58,8 @@ test_that("growth_histogram produces proper plot with a grade level of kids", {
     end_academic_year = 2013
   )
   
-  expect_is(sgp_orange, 'gg')
-  expect_is(sgp_orange, 'ggplot')
+  expect_s3_class(sgp_orange, 'gg')
+  expect_s3_class(sgp_orange, 'ggplot')
   
   expect_equal(length(sgp_orange), 9)
   expect_equal(names(sgp_orange), 
@@ -88,8 +88,8 @@ test_that("growth_histogram produces proper plot with a grade level of kids", {
     end_academic_year = 2013
   )
   
-  expect_is(sgp_red, 'gg')
-  expect_is(sgp_red, 'ggplot')
+  expect_s3_class(sgp_red, 'gg')
+  expect_s3_class(sgp_red, 'ggplot')
   
 })
 

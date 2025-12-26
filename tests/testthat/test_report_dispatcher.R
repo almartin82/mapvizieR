@@ -102,9 +102,9 @@ test_that("report dispatcher with two pager", {
     verbose = FALSE
   )
   expect_equal(length(samp_rd), 6)
-  expect_is(samp_rd[[1]][[1]], "grob")
-  expect_is(samp_rd[[1]][[1]], "gtable")
-  expect_is(samp_rd[[1]][[1]], "gDesc")
+  expect_s3_class(samp_rd[[1]][[1]], "grob")
+  expect_s3_class(samp_rd[[1]][[1]], "gtable")
+  expect_s3_class(samp_rd[[1]][[1]], "gDesc")
 
 })
 

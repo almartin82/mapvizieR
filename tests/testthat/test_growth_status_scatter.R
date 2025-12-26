@@ -11,8 +11,8 @@ test_that("growth_status_scatter produces proper plot with a grade level of kids
     end_academic_year = 2013
   )
   
-  expect_is(samp_scatter, 'gg')
-  expect_is(samp_scatter, 'ggplot')
+  expect_s3_class(samp_scatter, 'gg')
+  expect_s3_class(samp_scatter, 'ggplot')
   
   expect_equal(length(samp_scatter), 9)
   expect_equal(names(samp_scatter), 

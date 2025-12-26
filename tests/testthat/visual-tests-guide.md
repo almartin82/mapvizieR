@@ -65,7 +65,7 @@ test_that("my_new_plot visual regression", {
   )
 
   # Verify it's a ggplot
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
 
   # Create visual snapshot
   vdiffr::expect_doppelganger(

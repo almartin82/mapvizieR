@@ -20,7 +20,7 @@ test_that("imputation_scaffold", {
   cs <- imputation_scaffold(processed_cdf)
   
   expect_equal(nrow(cs), 8602)
-  expect_is(cs, 'data.frame')
+  expect_s3_class(cs, 'data.frame')
   expect_equal(sum(cs$grade_level_season), 56325.5)
   
 })

@@ -119,7 +119,7 @@ test_that("becca_plot with ny state 'quartiles'", {
     color_scheme = 'NYS'
   )
   p_build <- ggplot2::ggplot_build(p)
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
   expect_equal(nrow(p_build$data[[1]]), 6)
   expect_equal(ncol(p_build$data[[2]]), 13)
   expect_equal(sum(p_build$data[[3]][, 2]), 88.70968, tolerance = .001)

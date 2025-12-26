@@ -27,7 +27,7 @@ test_that("becca_plot visual regression", {
   )
 
   # Check it's a ggplot
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
 
   # Visual snapshot test
   vdiffr::expect_doppelganger(
@@ -50,7 +50,7 @@ test_that("becca_plot with NYS color scheme visual regression", {
     quartile_type = 'nys_math_3'
   )
 
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
 
   vdiffr::expect_doppelganger(
     title = "becca_plot_nys_color_scheme",
@@ -73,7 +73,7 @@ test_that("haid_plot visual regression", {
     end_academic_year = 2013
   )
 
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
 
   vdiffr::expect_doppelganger(
     title = "haid_plot_reading_fall_to_spring_2013",
@@ -96,7 +96,7 @@ test_that("haid_plot single season visual regression", {
     end_academic_year = 2014
   )
 
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
 
   vdiffr::expect_doppelganger(
     title = "haid_plot_mathematics_single_season",
@@ -119,7 +119,7 @@ test_that("growth_histogram visual regression", {
     end_academic_year = 2013
   )
 
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
 
   vdiffr::expect_doppelganger(
     title = "growth_histogram_reading_fall_to_spring",
@@ -158,7 +158,7 @@ test_that("growth_histogram with alternative student group", {
     end_academic_year = 2013
   )
 
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
 
   vdiffr::expect_doppelganger(
     title = "growth_histogram_grade2_reading",
@@ -191,7 +191,7 @@ test_that("student_npr_history_plot visual regression", {
     title_text = ""
   )
 
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
 
   vdiffr::expect_doppelganger(
     title = "student_npr_history_plot_mathematics_grade8",
@@ -222,7 +222,7 @@ test_that("student_npr_history_plot reading subject", {
     title_text = ""
   )
 
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
 
   vdiffr::expect_doppelganger(
     title = "student_npr_history_plot_reading_grade8",

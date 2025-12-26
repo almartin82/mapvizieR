@@ -9,8 +9,8 @@ test_that("stu_growth_detail should return valid data frame", {
     entry_grade_seasons = c(-0.8, 5.2)
   )
   
-  expect_is(ex, 'data.frame')
-  expect_is(ex, 'tbl_df')
+  expect_s3_class(ex, 'data.frame')
+  expect_s3_class(ex, 'tbl_df')
   expect_equal(
     ex$first_rit %>% sum(), 20271
   )
@@ -26,8 +26,8 @@ test_that("stu_growth_detail_table should return grob", {
     entry_grade_seasons = c(-0.8, 5.2)
   )
   
-  expect_is(ex, 'gtable')
-  expect_is(ex, 'grob')
+  expect_s3_class(ex, 'gtable')
+  expect_s3_class(ex, 'grob')
   expect_equal(
     ex$layout$z %>% sum(), 220
   )

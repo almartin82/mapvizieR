@@ -21,9 +21,9 @@ ex2 <- summary(mapviz)
 
 test_that("new summary method works as expected", {
   
-  expect_is(ex2, 'mapvizieR_summary')
-  expect_is(ex2$growth_summary, 'mapvizieR_growth_summary')
-  expect_is(ex2$cdf_summary, 'mapvizieR_cdf_summary')
+  expect_s3_class(ex2, 'mapvizieR_summary')
+  expect_s3_class(ex2$growth_summary, 'mapvizieR_growth_summary')
+  expect_s3_class(ex2$cdf_summary, 'mapvizieR_cdf_summary')
   
   expect_equal(sum(ex2$cdf_summary$mean_testritscore), 31195.44, tolerance = .01)
 })
@@ -39,7 +39,7 @@ test_that("summary method on cdf works as expected", {
                   "cohort_status_npr")
   )
   
-  expect_is(ex3, 'mapvizieR_cdf_summary')
+  expect_s3_class(ex3, 'mapvizieR_cdf_summary')
 })
 
 
@@ -56,7 +56,7 @@ test_that("growth summary method with custom group_by", {
     
   custom_group_sum <- summary(ex_growth)
 
-  expect_is(custom_group_sum, 'mapvizieR_growth_summary')  
+  expect_s3_class(custom_group_sum, 'mapvizieR_growth_summary')  
   
 })
 
@@ -68,6 +68,6 @@ test_that("cdf summary method with custom group_by", {
   
   custom_cdf_sum <- summary(ex_cdf)
   
-  expect_is(custom_cdf_sum, 'mapvizieR_cdf_summary')  
+  expect_s3_class(custom_cdf_sum, 'mapvizieR_cdf_summary')  
   
 })

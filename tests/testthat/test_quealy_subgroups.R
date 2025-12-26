@@ -21,9 +21,9 @@ test_that("quealy_subgroups produces proper plot with a grade level of kids", {
     end_academic_year = 2013
   )
   
-  expect_is(samp_nyt, 'gtable')
-  expect_is(samp_nyt, 'grob')
-  expect_is(samp_nyt, 'gDesc')
+  expect_s3_class(samp_nyt, 'gtable')
+  expect_s3_class(samp_nyt, 'grob')
+  expect_s3_class(samp_nyt, 'gDesc')
   
   expect_equal(length(samp_nyt), 2)
   expect_equal(
@@ -49,9 +49,9 @@ test_that("quealy_subgroups with complete_obsv and title", {
     report_title = "Reading Fall=Spring 2013"
   )
   
-  expect_is(samp_nyt, 'gtable')
-  expect_is(samp_nyt, 'grob')
-  expect_is(samp_nyt, 'gDesc')
+  expect_s3_class(samp_nyt, 'gtable')
+  expect_s3_class(samp_nyt, 'grob')
+  expect_s3_class(samp_nyt, 'gDesc')
   
   expect_equal(length(samp_nyt), 2)
   expect_equal(
@@ -76,9 +76,9 @@ test_that("quealy_subgroups with no CGP", {
     complete_obsv = TRUE
   )
   
-  expect_is(samp_nyt, 'gtable')
-  expect_is(samp_nyt, 'grob')
-  expect_is(samp_nyt, 'gDesc')
+  expect_s3_class(samp_nyt, 'gtable')
+  expect_s3_class(samp_nyt, 'grob')
+  expect_s3_class(samp_nyt, 'gDesc')
   
   expect_equal(length(samp_nyt), 3)
   expect_equal(
@@ -103,9 +103,9 @@ test_that("quealy_subgroups with no school growth study", {
     complete_obsv = TRUE
   )
   
-  expect_is(samp_nyt, 'gtable')
-  expect_is(samp_nyt, 'grob')
-  expect_is(samp_nyt, 'gDesc')
+  expect_s3_class(samp_nyt, 'gtable')
+  expect_s3_class(samp_nyt, 'grob')
+  expect_s3_class(samp_nyt, 'gDesc')
   
   expect_equal(length(samp_nyt), 3)
   expect_equal(
@@ -131,9 +131,9 @@ test_that("quealy_subgroups with multiple growth windows", {
     complete_obsv = TRUE
   )
 
-  expect_is(auto_growth, 'gtable')
-  expect_is(auto_growth, 'grob')
-  expect_is(auto_growth, 'gDesc')
+  expect_s3_class(auto_growth, 'gtable')
+  expect_s3_class(auto_growth, 'grob')
+  expect_s3_class(auto_growth, 'gDesc')
   
   expect_equal(length(auto_growth), 3)
   expect_equal(
@@ -160,9 +160,9 @@ test_that("quealy_subgroups with starting_quartile magic subgroup", {
     complete_obsv = TRUE
   )
   
-  expect_is(magic_quartiles, 'gtable')
-  expect_is(magic_quartiles, 'grob')
-  expect_is(magic_quartiles, 'gDesc')
+  expect_s3_class(magic_quartiles, 'gtable')
+  expect_s3_class(magic_quartiles, 'grob')
+  expect_s3_class(magic_quartiles, 'gDesc')
   
   expect_equal(length(magic_quartiles), 3)
   expect_equal(
@@ -211,9 +211,9 @@ test_that("quealy_subgroups with small_n filter", {
     small_n_cutoff = 0.2
   )
   
-  expect_is(small_n, 'gtable')
-  expect_is(small_n, 'grob')
-  expect_is(small_n, 'gDesc')
+  expect_s3_class(small_n, 'gtable')
+  expect_s3_class(small_n, 'grob')
+  expect_s3_class(small_n, 'gDesc')
   
   expect_equal(length(small_n), 2)
   expect_equal(
@@ -241,9 +241,9 @@ test_that("quealy_subgroups with auto growth window", {
     small_n_cutoff = 0.2
   )
   
-  expect_is(auto_window, 'gtable')
-  expect_is(auto_window, 'grob')
-  expect_is(auto_window, 'gDesc')
+  expect_s3_class(auto_window, 'gtable')
+  expect_s3_class(auto_window, 'grob')
+  expect_s3_class(auto_window, 'gDesc')
   
   expect_equal(length(auto_window), 2)
   expect_equal(
