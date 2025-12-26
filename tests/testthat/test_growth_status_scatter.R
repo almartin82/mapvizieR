@@ -13,23 +13,18 @@ test_that("growth_status_scatter produces proper plot with a grade level of kids
   
   expect_s3_class(samp_scatter, 'gg')
   expect_s3_class(samp_scatter, 'ggplot')
-  
-  expect_equal(length(samp_scatter), 9)
-  expect_equal(names(samp_scatter), 
-    c("data", "layers", "scales", "mapping", "theme", "coordinates", 
-      "facet", "plot_env", "labels")             
-  )
-  
+
+  # ggplot2 now uses S7 objects - check plot has expected components
+  expect_true(!is.null(samp_scatter$data))
+  expect_true(!is.null(samp_scatter$layers))
+  expect_true(!is.null(samp_scatter$mapping))
+
   p_build <- ggplot_build(samp_scatter)
-  
-  expect_equal(length(p_build), 3)
-  expect_equal(
-    dimnames(p_build[[1]][[2]])[[2]], 
-    c("x", "y", "PANEL", "group", "colour", "size", "angle", "hjust", 
-      "vjust", "alpha", "family", "fontface", "lineheight", "label"
-    )
-  )
-  expect_equal(sum(p_build[[1]][[2]]$x), 298, tolerance = 0.01)
+
+  # Check ggplot_build result has data
+  expect_true(!is.null(p_build$data))
+  expect_true(length(p_build$data) >= 2)
+  expect_equal(sum(p_build$data[[2]]$x), 298, tolerance = 0.01)
   
 })
 

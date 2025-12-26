@@ -21,23 +21,17 @@ test_that("growth_histogram produces proper plot with a grade level of kids", {
   
   expect_s3_class(samp_sgp, 'gg')
   expect_s3_class(samp_sgp, 'ggplot')
-  
-  expect_equal(length(samp_sgp), 9)
-  expect_equal(names(samp_sgp), 
-    c("data", "layers", "scales", "mapping", "theme", "coordinates", 
-      "facet", "plot_env", "labels")             
-  )
-  
+
+  # ggplot2 now uses S7 objects - check plot has expected components
+  expect_true(!is.null(samp_sgp$data))
+  expect_true(!is.null(samp_sgp$layers))
+
   p_build <- ggplot_build(samp_sgp)
-  
-  expect_equal(length(p_build), 3)
-  expect_equal(
-    dimnames(p_build[[1]][[2]])[[2]],
-    c("y", "count", "x", "xmin", "xmax", "density", "ncount", "ndensity", 
-      "PANEL", "group", "ymin", "ymax", "colour", "fill", "size", "linetype", 
-      "alpha")
-  )
-  expect_equal(sum(p_build[[1]][[2]]$density), 0.1, tolerance = 0.01)
+
+  # Check ggplot_build result has data
+  expect_true(!is.null(p_build$data))
+  expect_true(length(p_build$data) >= 2)
+  expect_equal(sum(p_build$data[[2]]$density), 0.1, tolerance = 0.01)
   
 })
 
@@ -60,17 +54,16 @@ test_that("growth_histogram produces proper plot with a grade level of kids", {
   
   expect_s3_class(sgp_orange, 'gg')
   expect_s3_class(sgp_orange, 'ggplot')
-  
-  expect_equal(length(sgp_orange), 9)
-  expect_equal(names(sgp_orange), 
-    c("data", "layers", "scales", "mapping", "theme", "coordinates", 
-      "facet", "plot_env", "labels")             
-  )
-  
+
+  # ggplot2 now uses S7 objects - check plot has expected components
+  expect_true(!is.null(sgp_orange$data))
+  expect_true(!is.null(sgp_orange$layers))
+
   p_build <- ggplot_build(sgp_orange)
-  
-  expect_equal(length(p_build), 3)
-  expect_equal(sum(p_build[[1]][[2]]$density), 0.1, tolerance = 0.01)
+
+  # Check ggplot_build result has data
+  expect_true(!is.null(p_build$data))
+  expect_equal(sum(p_build$data[[2]]$density), 0.1, tolerance = 0.01)
 
   
   #test sgp red
