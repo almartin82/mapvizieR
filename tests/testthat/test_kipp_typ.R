@@ -16,14 +16,15 @@ test_that("growth distribution should return a bar plot", {
   p_build <- ggplot2::ggplot_build(typ_test)
   expect_true(is.ggplot(typ_test))
   expect_equal(nrow(p_build$data[[1]]), 26)
-  expect_equal(ncol(p_build$data[[2]]), 15)
-})  
+  # S7 ggplot2 may have more columns
+  expect_true(ncol(p_build$data[[2]]) >= 15)
+})
 
 
-test_that("growth distribution with big data set", {  
+test_that("growth distribution with big data set", {
   typ_test <- kipp_typ_growth_distro(
     nat_results_df = rbind(fake_kipp_data, fake_kipp_data, fake_kipp_data, fake_kipp_data),
-    measurementscale = 'Mathematics', 
+    measurementscale = 'Mathematics',
     academic_year = 2013,
     grade_level = 1,
     start_fws = 'Fall',
@@ -36,6 +37,7 @@ test_that("growth distribution with big data set", {
   p_build <- ggplot2::ggplot_build(typ_test)
   expect_true(is.ggplot(typ_test))
   expect_equal(nrow(p_build$data[[1]]), 101)
-  expect_equal(ncol(p_build$data[[2]]), 15)
+  # S7 ggplot2 may have more columns
+  expect_true(ncol(p_build$data[[2]]) >= 15)
 })  
 

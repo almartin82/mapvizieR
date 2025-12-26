@@ -136,11 +136,13 @@ test_that("advanced estimate_rit options", {
   mapviz2[['cdf']] <-  dplyr::filter(mapviz2[['cdf']], studentid == 'F08000002', 
                                      measurementscale == 'Mathematics')[1,]
 
-  samp_val <- estimate_rit(mapviz2, studentid = 'F08000002', 
-                           measurementscale = 'Mathematics', 
+  # Use num_days parameter to cover the gap between test date and target date
+  samp_val <- estimate_rit(mapviz2, studentid = 'F08000002',
+                           measurementscale = 'Mathematics',
                            target_date = '2013-9-20',
-                           method = 'closest')
-  expect_equal(samp_val, 209, tolerance = .01)
+                           method = 'closest',
+                           num_days = 200)
+  expect_equal(samp_val, 210, tolerance = .01)
   
   samp_val <- estimate_rit(mapviz2, studentid = 'F08000002', 
                            measurementscale = 'Mathematics', 

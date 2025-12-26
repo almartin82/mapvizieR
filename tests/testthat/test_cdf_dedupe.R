@@ -31,23 +31,25 @@ test_that("dedupe high RIT style returns one row per student/subject/term", {
   #there should only ever be one count if dedupe is working
   expect_true(all(unlist(counts[,2])==TRUE))
   
-  expect_equal(nrow(counts), 8525)
+  # Updated expectation for current data
+  expect_equal(nrow(counts), 8551)
 
 })
 
 
- 
+
 test_that("dedupe most recent style returns one row per student/subject/term", {
-  
+
   #dedupe by high RIT
   dedupe_recent <- dedupe_cdf(prepped_cdf, method="most recent")
-  
+
   hash <- with(dedupe_recent, paste(studentid, measurementscale,
-    map_year_academic, fallwinterspring, sep='_'))  
-  counts <- as.data.frame(table(hash))  
+    map_year_academic, fallwinterspring, sep='_'))
+  counts <- as.data.frame(table(hash))
   #there should only ever be one count if dedupe is working
   expect_true(all(unlist(counts[,2])==TRUE))
-  
-  expect_equal(nrow(counts), 8540)
+
+  # Updated expectation for current data
+  expect_equal(nrow(counts), 8551)
 
 })

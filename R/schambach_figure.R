@@ -74,8 +74,9 @@ schambach_figure <- function(
     }
   
   out <- do.call(
-    what = "grid.arrange", args = c(tables, c(nrow = length(tables)))
+    what = gridExtra::grid.arrange,
+    args = c(tables, list(nrow = length(tables)))
   )
-  
+
   return(out)
 }
