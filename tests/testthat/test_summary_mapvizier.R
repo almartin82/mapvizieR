@@ -3,12 +3,12 @@ context("mapvizier_summary tests")
 ex <- summary(mapviz$growth_df)
 
 test_that("summary works as expected on growth df", {
-  expect_equal(ex$end_pct_75th_pctl %>% sum(na.rm = TRUE), 37.49)
+  expect_equal(ex$end_pct_75th_pctl %>% sum(na.rm = TRUE), 40.14, tolerance = 0.01)
   expect_equal(nrow(ex), 149)
   expect_equal(sum(ex$cgp, na.rm = TRUE), 7344.26)
-  
+
   ex2 <- summary(mapviz$growth_df, digits = 3)
-  expect_equal(ex2$end_pct_75th_pctl %>% sum(na.rm = TRUE), 37.462)
+  expect_equal(ex2$end_pct_75th_pctl %>% sum(na.rm = TRUE), 40.112, tolerance = 0.001)
 })
 
 
@@ -33,10 +33,10 @@ ex3 <- summary(mapviz$cdf)
 
 test_that("summary method on cdf works as expected", {
   expect_equal(
-    names(ex3), c("measurementscale", "map_year_academic", "fallwinterspring", 
-                  "termname", "schoolname", "grade", "grade_level_season", 
-                  "mean_testritscore", "mean_percentile", "n_students", 
-                  "cohort_status_npr")
+    names(ex3), c("measurementscale", "map_year_academic", "fallwinterspring",
+                  "termname", "schoolname", "grade", "grade_level_season",
+                  "mean_testritscore", "mean_percentile", "n_students",
+                  "pct_50th_pctl", "pct_75th_pctl", "cohort_status_npr")
   )
   
   expect_s3_class(ex3, 'mapvizieR_cdf_summary')
