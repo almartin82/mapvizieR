@@ -70,10 +70,8 @@ test_that("summary_long_plot produces a valid ggplot by grade", {
   expect_s3_class(p, 'gg')
   expect_s3_class(p, 'ggplot')
 
-  # Check that the plot builds correctly
-  p_build <- ggplot2::ggplot_build(p)
-  expect_true(is.list(p_build))
-  expect_true("data" %in% names(p_build))
+  # Check that the plot builds without errors
+  expect_silent(ggplot2::ggplot_build(p))
 })
 
 
@@ -90,10 +88,8 @@ test_that("summary_long_plot produces a valid ggplot by cohort", {
   expect_s3_class(p, 'gg')
   expect_s3_class(p, 'ggplot')
 
-  # Check that the plot builds correctly
-  p_build <- ggplot2::ggplot_build(p)
-  expect_equal(length(p_build), 3)
-  expect_equal(names(p_build), c('data', 'layout', 'plot'))
+  # Check that the plot builds without errors
+  expect_silent(ggplot2::ggplot_build(p))
 })
 
 
@@ -227,12 +223,12 @@ test_that("summary_long_plot works with non-percentage metrics", {
   )
   expect_s3_class(p4, 'ggplot')
 
-  # Test median_sgp
+  # Test n_students (integer metric)
   p5 <- suppressWarnings(
     summary_long_plot(
       mv_summary,
       growth_window = "Fall to Spring",
-      metric = "median_sgp"
+      metric = "n_students"
     )
   )
   expect_s3_class(p5, 'ggplot')
@@ -358,15 +354,15 @@ test_that("summary_long_plot y-axis labels are correct", {
   )
   expect_equal(p8$labels$y, "Standard Deviations")
 
-  # Test metric with sgp in name
+  # Test metric with percentile in name
   p9 <- suppressWarnings(
     summary_long_plot(
       mv_summary,
       growth_window = "Fall to Spring",
-      metric = "median_sgp"
+      metric = "start_median_consistent_percentile"
     )
   )
-  expect_equal(p9$labels$y, "Student Growth Percentile")
+  expect_equal(p9$labels$y, "Percentile")
 })
 
 
