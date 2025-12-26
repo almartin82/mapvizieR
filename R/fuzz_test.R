@@ -44,10 +44,13 @@ fuzz_test_plot <- function(
     )
     
     if ('ggplot' %in% class(p)) {
-      build_p <- try(ggplot_build(p))
+      build_p <- try(ggplot_build(p), silent = TRUE)
+      # Check for valid ggplot_build result (works with both S3 list and S7 object)
       tests <- all(
-        is.list(build_p),
-        all(c("data", "layout", "plot") %in% names(build_p))
+        !inherits(build_p, "try-error"),
+        !is.null(build_p$data),
+        !is.null(build_p$layout),
+        !is.null(build_p$plot)
       )
       results[[i]] <- tests      
     #known errors are passed tests

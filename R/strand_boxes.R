@@ -87,9 +87,9 @@ strand_boxes <- function(
   ) +  
   stat_summary(
    aes(
-     label = round(..y..,1)
+     label = round(after_stat(y), 1)
    ),
-   fun.y = mean,
+   fun = mean,
    geom = 'text',
    size = 5
   ) +
