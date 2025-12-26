@@ -24,7 +24,7 @@ test_that("cohort status trace plot with alternate parameters", {
   )
   
   p_alt_build <- ggplot2::ggplot_build(p_alt)
-  expect_type(p_alt_build, 'list')
+  expect_true(!is.null(p_alt_build$data))
   expect_equal(sum(p_alt_build$data[[1]]$label), 292L)
 })
 
@@ -39,7 +39,7 @@ test_that("cohort status trace plot, no school collapse", {
   )
   
   p_alt_build <- ggplot2::ggplot_build(p_alt)
-  expect_type(p_alt_build, 'list')
+  expect_true(!is.null(p_alt_build$data))
   expect_equal(sum(p_alt_build$data[[1]]$label), 292L)
 })
 
@@ -55,6 +55,6 @@ test_that("cohort status trace plot with alternate retention strategies", {
   )
   
   p_alt_build <- ggplot2::ggplot_build(p_alt)
-  expect_type(p_alt_build, 'list')
+  expect_true(!is.null(p_alt_build$data))
   expect_equal(sum(p_alt_build$data[[1]]$label), 292L)
 })

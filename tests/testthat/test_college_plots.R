@@ -10,24 +10,20 @@ test_that("npr templates generate correctly", {
   expect_s3_class(read_npr, 'ggplot')
   
   math_npr <- ggplot2::ggplot_build(math_npr)
-  read_npr <- ggplot2::ggplot_build(read_npr)  
-  expect_type(math_npr, 'list')
-  expect_type(read_npr, 'list')
-  
-  expect_equal(names(math_npr), c('data', 'layout', 'plot'))
-  expect_equal(names(read_npr), c('data', 'layout', 'plot'))
-  
-  expect_equal(
-    names(math_npr[['plot']]), 
-    c("data", "layers", "scales", "mapping", "theme", "coordinates", 
-      "facet", "plot_env", "labels")
-  )
-  
-  expect_equal(
-    names(read_npr[['plot']]), 
-    c("data", "layers", "scales", "mapping", "theme", "coordinates", 
-      "facet", "plot_env", "labels")
-  )
+  read_npr <- ggplot2::ggplot_build(read_npr)
+  # ggplot_build returns S7 objects in newer ggplot2
+  expect_true(!is.null(math_npr$data))
+  expect_true(!is.null(read_npr$data))
+
+  # Check key components are accessible (S7 objects don't have names())
+  expect_true(!is.null(math_npr$layout))
+  expect_true(!is.null(math_npr$plot))
+  expect_true(!is.null(read_npr$layout))
+  expect_true(!is.null(read_npr$plot))
+
+  # Check plot has expected components
+  expect_s3_class(math_npr[['plot']], 'ggplot')
+  expect_s3_class(read_npr[['plot']], 'ggplot')
   
   expect_equal(math_npr$data[[15]]$y %>% sum(), 42906)
   expect_equal(read_npr$data[[15]]$y %>% sum(), 41356)
@@ -43,14 +39,14 @@ test_that("npr template generates correctly with old and new norms", {
   m11 <- rit_height_weight_npr(measurementscale = 'Mathematics', norms = 2011)
   expect_s3_class(m11, 'ggplot')
   m11 <- ggplot_build(m11)
-  expect_type(m11, 'list')
+  expect_true(!is.null(m11$data))
   expect_equal(m11$data[[15]]$y %>% sum(), 43432)
 
   m15 <- rit_height_weight_npr(measurementscale = 'Mathematics', norms = 2015)
   expect_s3_class(m15, 'ggplot')
   m15 <- ggplot_build(m15)
-  expect_type(m15, 'list')
-  expect_equal(m15$data[[15]]$y %>% sum(), 42906)    
+  expect_true(!is.null(m15$data))
+  expect_equal(m15$data[[15]]$y %>% sum(), 42906)
 })
 
 

@@ -606,10 +606,15 @@ min_term_filter <- function(cdf, small_n_cutoff = -1) {
 #' @export
 
 cdf_collapse_by_grade <- function(cdf) {
-  
+  # Preserve custom classes through assignment
+  old_classes <- class(cdf)
+
   cdf$termname <- NA
   cdf$map_year_academic <- NA
-  
+
+  # Restore classes
+  class(cdf) <- old_classes
+
   cdf
 }
 
