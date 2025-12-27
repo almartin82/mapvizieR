@@ -73,14 +73,14 @@ alt_cohort_cgp_hist_plot <- function(
   as_cgp$start_cohort_status_npr <- NA_integer_
   as_cgp$end_cohort_status_npr <- NA_integer_
   
-  for (i in 1:nrow(as_cgp)) {
+  for (i in seq_len(nrow(as_cgp))) {
     as_cgp[i, 'start_cohort_status_npr'] <- cohort_mean_rit_to_npr(
-      measurementscale, 
-      as_cgp[i, ]$start_grade, 
+      measurementscale,
+      as_cgp[i, ]$start_grade,
       as_cgp[i, ]$start_fallwinterspring,
       as_cgp[i, ]$start_mean_rit
     )
-  
+
     as_cgp[i, 'end_cohort_status_npr'] <- cohort_mean_rit_to_npr(
       measurementscale, 
       as_cgp[i, ]$end_grade, 
@@ -267,14 +267,14 @@ alt_multi_cohort_cgp_hist_plot <- function(
   as_cgp$start_cohort_status_npr <- NA_integer_
   as_cgp$end_cohort_status_npr <- NA_integer_
   
-  for (i in 1:nrow(as_cgp)) {
+  for (i in seq_len(nrow(as_cgp))) {
     as_cgp[i, 'start_cohort_status_npr'] <- cohort_mean_rit_to_npr(
-      measurementscale, 
-      as_cgp[i, ]$start_grade, 
+      measurementscale,
+      as_cgp[i, ]$start_grade,
       as_cgp[i, ]$start_fallwinterspring,
       as_cgp[i, ]$start_mean_rit
     )
-    
+
     as_cgp[i, 'end_cohort_status_npr'] <- cohort_mean_rit_to_npr(
       measurementscale, 
       as_cgp[i, ]$end_grade, 

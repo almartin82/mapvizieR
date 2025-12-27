@@ -14,7 +14,7 @@
 mv_filter <- function(mapvizieR_obj, cdf_filter=NA, roster_filter=NA) {
   
   #must pass some kind of filter
-  if (!is.language(cdf_filter) & !is.language(roster_filter)) {
+  if (!is.language(cdf_filter) && !is.language(roster_filter)) {
     stop('at least one type of filter needed (cdf or roster)')
   }
   

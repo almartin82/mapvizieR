@@ -50,7 +50,7 @@ schambach_figure <- function(
   }
   
   tables <- list()
-    for (i in 1:length(schambach_dflist)) {
+    for (i in seq_along(schambach_dflist)) {
       df <- schambach_dflist[[i]]
       df <- formatter(df)
       

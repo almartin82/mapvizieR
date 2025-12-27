@@ -135,7 +135,7 @@ summary.mapvizieR_growth <- function(object, ...) {
   mapSummary$start_cohort_status_npr <- NA_integer_
   mapSummary$end_cohort_status_npr <- NA_integer_
   
-  for (i in 1:nrow(mapSummary)) {
+  for (i in seq_len(nrow(mapSummary))) {
     mapSummary[i, ]$start_cohort_status_npr <- cohort_mean_rit_to_npr(
       mapSummary[i, ]$measurementscale, 
       mapSummary[i, ]$start_grade, 
@@ -208,7 +208,7 @@ summary.mapvizieR_cdf <- function(object, ...) {
   df$cohort_status_npr <- rep(NA_integer_, nrow(df))
   
   if (nrow(df) > 0) {
-    for (i in 1:nrow(df)) {
+    for (i in seq_len(nrow(df))) {
       df[i, ]$cohort_status_npr <- cohort_mean_rit_to_npr(
         df[i, ]$measurementscale, 
         df[i, ]$grade, 

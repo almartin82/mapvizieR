@@ -171,7 +171,7 @@ goal_strand_summary_plot <- function(
     dplyr::ungroup() %>%
     dplyr::filter(n_students>20)
   
-  if (spring_is_first & any(cohort == FALSE)) {
+  if (spring_is_first && any(cohort == FALSE)) {
     goals_summary_by_school <- goals_summary_by_school %>%
       dplyr::mutate(
         fws = ifelse(fallwinterspring=="Spring", 

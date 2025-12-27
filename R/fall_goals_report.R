@@ -322,7 +322,7 @@ fall_goals_report <- function(
   specific_growth <- data.frame(
     grade_seq = specific_growth$grade_seq,
     rit = specific_growth$rit_seq,
-    rowids = c(1:length(specific_growth$rit_seq))
+    rowids = seq_along(specific_growth$rit_seq)
   )
   
   specific_growth <- specific_growth %>%

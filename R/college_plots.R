@@ -172,7 +172,7 @@ rit_height_weight_npr <- function(
       alpha = ribbon_alpha
     )
  
-   for (i in 1:length(e$ribbons)) {
+   for (i in seq_along(e$ribbons)) {
      new_rib_name <- paste('rib', e$ribbons[i], sep = '_')
      #make ribbon
      inner_ribbon <- ggplot2::geom_ribbon(

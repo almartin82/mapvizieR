@@ -224,8 +224,8 @@ calc_normed_student_growth <- function(percentile,
                                        sd_growth) {
   
   # check percentile is in range 0 to 1
-  if(percentile <= 0 | percentile>=100) stop("percentile must be between 0 and 1 (or 0 nad 100)!")
-  if(percentile >=1 & percentile<100) percentile <- percentile/100
+  if(percentile <= 0 || percentile >= 100) stop("percentile must be between 0 and 1 (or 0 nad 100)!")
+  if(percentile >= 1 && percentile < 100) percentile <- percentile / 100
   
   # get z-score (i.e., quantile) form N(0,1) distriubtion
   sigma<-qnorm(percentile)

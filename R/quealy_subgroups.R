@@ -88,7 +88,7 @@ quealy_subgroups <- function(
   
   #4. for each SUBGROUP permutation
   all_sub <- subgroup_cols
-  if (include_all | !is.logical(magic_subgroups)) {
+  if (include_all || !is.logical(magic_subgroups)) {
     #add all_students to df
     df$all_students <- 'All Students'
     #include in subgroups
@@ -289,7 +289,7 @@ quealy_subgroups <- function(
   }
 
   #rest of the subgroups
-  for (i in 1:length(subgroup_cols)) {
+  for (i in seq_along(subgroup_cols)) {
     #the matching permutations
     this_perms <- window_df[window_df$subgroup == subgroup_cols[i], ]
     #recover the logic of which rows based on auto growth windows
@@ -374,7 +374,7 @@ quealy_permutation_stats <- function(df, subgroup, norms = 2015) {
   
   #add cgp
   results$cgp <- NA
-  for (i in 1:nrow(results)) {
+  for (i in seq_len(nrow(results))) {
     results[i, ]$cgp <- calc_cgp(
         measurementscale = results[i, ]$measurementscale,
         end_grade = results[i, ]$approximate_grade,
@@ -435,7 +435,7 @@ quealy_facet_one_subgroup <- function(
   #cgp labeler
   cgp_labeler <- function(n, cgp) {
     if (
-      (unique(sum_df$start_fallwinterspring) == 'Spring' & unique(sum_df$end_fallwinterspring) == 'Winter') |
+      (unique(sum_df$start_fallwinterspring) == 'Spring' && unique(sum_df$end_fallwinterspring) == 'Winter') ||
       all(is.na(sum_df$cgp))
     ) {
       return(paste(n, 'stu')) 

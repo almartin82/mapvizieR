@@ -11,7 +11,7 @@ extract_academic_year <- function(x) {
   
   prep1 <- do.call(
     what = rbind,
-    args = strsplit(x = x$termname, split = " ", fixed = T)
+    args = strsplit(x = x$termname, split = " ", fixed = TRUE)
   )
   
   x$fallwinterspring <- prep1[ ,1]
@@ -19,7 +19,7 @@ extract_academic_year <- function(x) {
   #the academic year of the test date
   prep2 <- do.call(
     what = rbind,
-    args = strsplit(x = prep1[ , 2], split = "-", fixed = T)
+    args = strsplit(x = prep1[ , 2], split = "-", fixed = TRUE)
   )
   
   #coerce to numeric
@@ -168,7 +168,7 @@ kipp_quartile <- function(x, return_factor = TRUE, proper_quartile = FALSE){
 
 adhoc_psuedo_quartile <- function(x, breaks) {
   expanded_long <- expand.grid(x, breaks)
-  expanded_long$group_label <- paste0('group_', seq(1:length(x)))
+  expanded_long$group_label <- paste0('group_', seq_along(x))
   expanded_long$test <- expanded_long$Var1 > expanded_long$Var2
   out <- expanded_long %>%
     dplyr::group_by(group_label) %>%

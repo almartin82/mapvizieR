@@ -122,7 +122,7 @@ imputation_scaffold <- function(cdf, interpolate_only = TRUE) {
 
 imputation_grouper <- function(logicals) {
   runs <- rle(logicals)
-  out <- rep(1:length(runs$values), runs$lengths)
+  out <- rep(seq_along(runs$values), runs$lengths)
   
   return(out)
 }

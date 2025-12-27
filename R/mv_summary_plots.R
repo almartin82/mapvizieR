@@ -143,7 +143,7 @@ summary_long_plot <- function(
           axis.text.x = element_text(size = 8, angle = 45, hjust = 1))
   
   # if the metric is a pct or between 0 and 1 then adjust to %
-if(grepl("^pct_", metric) | all(dplyr::between(x[[metric]], 0, 1))) {
+if(grepl("^pct_", metric) || all(dplyr::between(x[[metric]], 0, 1))) {
     p <- p +
       geom_text(
         aes(

@@ -62,7 +62,7 @@ schambach_table_1d <- function(
   }
   
   tables <- list()
-  for (i in 1:length(subgroup_cols)) {
+  for (i in seq_along(subgroup_cols)) {
     subgroup <- subgroup_cols[i]
     
     minimal_roster <- roster[, c('studentid', 'map_year_academic', 'fallwinterspring', subgroup)]

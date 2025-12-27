@@ -191,13 +191,13 @@ haid_plot <- function(
           insert_point <- 1
         #otherwise insert at max of i-1
         } else {
-          insert_point <- max(df[as.numeric(df$start_testquartile) < i, 'y_order'], na.rm=T) + 1
+          insert_point <- max(df[as.numeric(df$start_testquartile) < i, 'y_order'], na.rm = TRUE) + 1
         }
 
         df[df$y_order >= insert_point, 'y_order'] <- df[df$y_order >= insert_point, 'y_order'] + 1
 
         foo[ , 'y_order'] <- insert_point
-        foo[ , 'start_testritscore'] <- min(df$start_testritscore, na.rm=T)
+        foo[ , 'start_testritscore'] <- min(df$start_testritscore, na.rm = TRUE)
         foo[ , 'student_name_format'] <- ' '
 
         df <- rbind(df, foo)
@@ -506,7 +506,7 @@ haid_plot <- function(
             insert_point <- 1
           #otherwise insert at max of i-1
           } else {
-            insert_point <- max(df[as.numeric(df$start_testquartile) < i, 'y_order'], na.rm=T) + 1
+            insert_point <- max(df[as.numeric(df$start_testquartile) < i, 'y_order'], na.rm = TRUE) + 1
           }
 
           foo[, 'avg_y_dummy'] <- insert_point + 1
@@ -541,7 +541,7 @@ haid_plot <- function(
           #otherwise insert at max of i-1
           } else {
             if (length(df[df$start_testquartile < i, 'y_order']) > 0) {
-              insert_point <- max(df[df$start_testquartile < i, 'y_order'], na.rm=T) + 1
+              insert_point <- max(df[df$start_testquartile < i, 'y_order'], na.rm = TRUE) + 1
             } else {
               insert_point <- 0
             }

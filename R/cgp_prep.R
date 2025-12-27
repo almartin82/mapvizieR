@@ -581,8 +581,8 @@ cdf_to_cgp <- function(
       n = NA_integer_
     ) %>% as.data.frame()
   
-  for (i in 1:nrow(cgp_scaffold)) {
-    
+  for (i in seq_len(nrow(cgp_scaffold))) {
+
     start_fws <- cgp_scaffold[i, 'start_fallwinterspring'] 
     start_year <- cgp_scaffold[i, 'start_map_year_academic'] 
     end_fws <- cgp_scaffold[i, 'end_fallwinterspring'] 
