@@ -1,12 +1,11 @@
 linters: linters_with_defaults(
     line_length_linter(120),
     object_name_linter(styles = c("snake_case", "camelCase", "dotted.case")),
-    commented_code_linter = NULL,
-    cyclocomp_linter = NULL
+    commented_code_linter = NULL
   )
 exclusions: list(
-    "data-raw" = list(linters_to_exclude = "all"),
-    "inst" = list(linters_to_exclude = "all")
+    "data-raw",
+    "inst"
   )
 exclude: "# nolint"
 exclude_start: "# nolint start"
