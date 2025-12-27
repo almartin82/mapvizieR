@@ -147,6 +147,18 @@ mapvizier_growth_colors()
 - [Package website](https://almartin82.github.io/mapvizieR) - Full documentation and vignettes
 - [Function reference](https://almartin82.github.io/mapvizieR/reference/) - Complete API documentation
 
+## For Developers
+
+Internal development documentation and analysis is maintained in a private repository.
+Contributors with repository access can request an invite to
+[mapvizieR-analysis](https://github.com/almartin82/mapvizieR-analysis) for:
+- Architecture documentation
+- Code audits and modernization notes
+- Test regression analysis
+- Implementation planning documents
+
+Contact the maintainers for access.
+
 ## Contributing
 
 Contributions are welcome! Please see our [contributing guidelines](CONTRIBUTING.md) for details.

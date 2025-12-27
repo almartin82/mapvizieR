@@ -54,6 +54,20 @@ If all checks pass:
 
 The push will trigger the pkgdown workflow to rebuild the documentation site.
 
+### 6. Sync Analysis Repository (if changes exist)
+
+If there are changes in the `analysis/` directory:
+
+1. Navigate to analysis: `cd analysis/`
+2. Check for changes: `git status`
+3. If changes exist:
+   - Stage all: `git add -A`
+   - Commit with timestamp: `git commit -m "Sync analysis docs - $(date +%Y-%m-%d)"`
+   - Push: `git push origin main`
+4. Return to root: `cd ..`
+
+Note: The analysis repo is private. Deployment continues even if this step fails.
+
 ## Failure Handling
 
 If any step fails:
