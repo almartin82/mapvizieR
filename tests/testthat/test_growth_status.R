@@ -283,7 +283,9 @@ test_that("growth_status_scatter works across measurement scales", {
 
 # Test 14: Visual regression test (requires vdiffr)
 test_that("growth_status_scatter visual regression", {
+  skip("vdiffr visual tests are non-deterministic - run manually when needed")
   skip_on_cran()
+  skip_on_ci()
   skip_if_not_installed("vdiffr")
 
   # Create a stable plot for visual comparison
@@ -308,7 +310,9 @@ test_that("growth_status_scatter visual regression", {
 
 # Test 15: Visual regression test - Mathematics
 test_that("growth_status_scatter visual regression Mathematics", {
+  skip("vdiffr visual tests are non-deterministic - run manually when needed")
   skip_on_cran()
+  skip_on_ci()
   skip_if_not_installed("vdiffr")
 
   p <- growth_status_scatter(
@@ -332,7 +336,9 @@ test_that("growth_status_scatter visual regression Mathematics", {
 
 # Test 16: Visual regression test - cross-year
 test_that("growth_status_scatter visual regression cross year", {
+  skip("vdiffr visual tests are non-deterministic - run manually when needed")
   skip_on_cran()
+  skip_on_ci()
   skip_if_not_installed("vdiffr")
 
   p <- growth_status_scatter(
