@@ -1,0 +1,39 @@
+# replace known bad studentids with good ones
+
+if you've identified some bad studentids in your map data file, you'll
+want to make sure that they are globally updated to good ones. this
+function takes the output of read cdf and a data frame of studentids to
+change, and updates the bad references with good ones.
+
+ultimately you'll want to push these changes upstream to the NWEA site,
+but in a pinch, clean_cdf can help
+
+## Usage
+
+``` r
+clean_cdf(
+  cdf_list,
+  ids_df = data.frame(bad_id = c("INCORRECT STUDENTID #1"), good_id =
+    c("CORRECTED STUDENTID #1")),
+  verbose = TRUE
+)
+```
+
+## Arguments
+
+- cdf_list:
+
+  the output of read cdf
+
+- ids_df:
+
+  a data frame with the bad studentid, and the good replacement. look at
+  the default parameter value to see how to pass the data.
+
+- verbose:
+
+  default is TRUE
+
+## Value
+
+same output as read_cdf, a list of NWEA MAP data files

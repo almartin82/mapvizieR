@@ -1,0 +1,54 @@
+# roster_to_growth_df
+
+when you need to put a roster object onto a growth data frame. growth
+data frames are tricky, because they cover a time \*span\*, not a single
+point in time. if a student changes school / grade / teacher (common) or
+if any of the other demographic attributes of a student change (IEP
+status / lunch status / gender / etc.) you need to have a consistent
+rule for attribution. roster_to_growth_df implements that.
+
+## Usage
+
+``` r
+roster_to_growth_df(
+  target_df,
+  mapvizieR_obj,
+  roster_cols,
+  join_by = "end",
+  disambiguation_method = "last",
+  by_measurementscale = FALSE
+)
+```
+
+## Arguments
+
+- target_df:
+
+  the df you want to put stuff on
+
+- mapvizieR_obj:
+
+  a conforming mapvizieR object
+
+- roster_cols:
+
+  roster column names you want to move over.
+
+- join_by:
+
+  c('start', 'end', 'both')
+
+- disambiguation_method:
+
+  how to disambiguate? default is 'last'.
+
+- by_measurementscale:
+
+  boolean, when you have student demographics that are specific to a
+  particular assessment - eg course enrollment, but the match is
+  specific to student AND measurementscale, not just student. if TRUE
+  your roster object must contain a field called measurementscale.
+
+## Value
+
+a growth data frame with the roster objects

@@ -1,0 +1,988 @@
+# NY proficiency curves
+
+NWEA publishes probability estimates from 0-1 that a student will pass
+the NY State assessment given a particular RIT/Grade/Season. The
+[pdf](https://www.nwea.org/content/uploads/2016/03/New_York_-Linking_Study_MAR2016.pdf)
+report publishes these estimates in 5 percentile bands. Clearly, there’s
+an underlying logistic regression model that expresses
+`pass likelihood ~ MAP percentile`.
+
+## Data file with predicted pass
+
+``` r
+ny_read_spr_g3_l1 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 3,
+  ny_season = 'Spring',
+  ny_rit = c(100:195),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g3_l2 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 3,
+  ny_season = 'Spring',
+  ny_rit = c(196:207),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g3_l3 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 3,
+  ny_season = 'Spring',
+  ny_rit = c(208:221),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g3_l4 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 3,
+  ny_season = 'Spring',
+  ny_rit = c(222:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_read_spr_g4_l1 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 4,
+  ny_season = 'Spring',
+  ny_rit = c(100:202),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g4_l2 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 4,
+  ny_season = 'Spring',
+  ny_rit = c(203:215),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g4_l3 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 4,
+  ny_season = 'Spring',
+  ny_rit = c(216:223),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g4_l4 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 4,
+  ny_season = 'Spring',
+  ny_rit = c(224:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_read_spr_g5_l1 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 5,
+  ny_season = 'Spring',
+  ny_rit = c(100:209),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g5_l2 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 5,
+  ny_season = 'Spring',
+  ny_rit = c(210:221),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g5_l3 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 5,
+  ny_season = 'Spring',
+  ny_rit = c(222:230),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g5_l4 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 5,
+  ny_season = 'Spring',
+  ny_rit = c(231:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_read_spr_g6_l1 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 6,
+  ny_season = 'Spring',
+  ny_rit = c(100:210),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g6_l2 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 6,
+  ny_season = 'Spring',
+  ny_rit = c(211:224),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g6_l3 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 6,
+  ny_season = 'Spring',
+  ny_rit = c(225:231),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g6_l4 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 6,
+  ny_season = 'Spring',
+  ny_rit = c(232:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_read_spr_g7_l1 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 7,
+  ny_season = 'Spring',
+  ny_rit = c(100:215),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g7_l2 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 7,
+  ny_season = 'Spring',
+  ny_rit = c(216:227),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g7_l3 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 7,
+  ny_season = 'Spring',
+  ny_rit = c(228:238),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g7_l4 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 7,
+  ny_season = 'Spring',
+  ny_rit = c(239:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_read_spr_g8_l1 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 8,
+  ny_season = 'Spring',
+  ny_rit = c(100:218),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g8_l2 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 8,
+  ny_season = 'Spring',
+  ny_rit = c(219:230),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g8_l3 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 8,
+  ny_season = 'Spring',
+  ny_rit = c(231:240),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_read_spr_g8_l4 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 8,
+  ny_season = 'Spring',
+  ny_rit = c(241:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_math_spr_g3_l1 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 3,
+  ny_season = 'Spring',
+  ny_rit = c(100:195),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)  
+ny_math_spr_g3_l2 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 3,
+  ny_season = 'Spring',
+  ny_rit = c(196:205),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g3_l3 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 3,
+  ny_season = 'Spring',
+  ny_rit = c(206:214),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g3_l4 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 3,
+  ny_season = 'Spring',
+  ny_rit = c(215:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_math_spr_g4_l1 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 4,
+  ny_season = 'Spring',
+  ny_rit = c(100:205),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g4_l2 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 4,
+  ny_season = 'Spring',
+  ny_rit = c(206:219),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g4_l3 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 4,
+  ny_season = 'Spring',
+  ny_rit = c(220:233),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g4_l4 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 4,
+  ny_season = 'Spring',
+  ny_rit = c(234:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_math_spr_g5_l1 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 5,
+  ny_season = 'Spring',
+  ny_rit = c(100:218),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g5_l2 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 5,
+  ny_season = 'Spring',
+  ny_rit = c(219:231),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g5_l3 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 5,
+  ny_season = 'Spring',
+  ny_rit = c(232:246),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g5_l4 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 5,
+  ny_season = 'Spring',
+  ny_rit = c(247:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_math_spr_g6_l1 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 6,
+  ny_season = 'Spring',
+  ny_rit = c(100:216),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g6_l2 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 6,
+  ny_season = 'Spring',
+  ny_rit = c(217:231),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g6_l3 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 6,
+  ny_season = 'Spring',
+  ny_rit = c(232:241),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g6_l4 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 6,
+  ny_season = 'Spring',
+  ny_rit = c(242:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_math_spr_g7_l1 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 7,
+  ny_season = 'Spring',
+  ny_rit = c(100:226),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g7_l2 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 7,
+  ny_season = 'Spring',
+  ny_rit = c(227:240),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g7_l3 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 7,
+  ny_season = 'Spring',
+  ny_rit = c(241:254),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g7_l4 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 7,
+  ny_season = 'Spring',
+  ny_rit = c(255:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_math_spr_g8_l1 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 8,
+  ny_season = 'Spring',
+  ny_rit = c(100:226),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g8_l2 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 8,
+  ny_season = 'Spring',
+  ny_rit = c(227:245),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g8_l3 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 8,
+  ny_season = 'Spring',
+  ny_rit = c(246:259),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_math_spr_g8_l4 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 8,
+  ny_season = 'Spring',
+  ny_rit = c(260:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_read_win_g3_l1 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 3,
+  ny_season = 'Winter',
+  ny_rit = c(100:192),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g3_l2 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 3,
+  ny_season = 'Winter',
+  ny_rit = c(193:205),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g3_l3 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 3,
+  ny_season = 'Winter',
+  ny_rit = c(206:220),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g3_l4 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 3,
+  ny_season = 'Winter',
+  ny_rit = c(221:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_read_win_g4_l1 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 4,
+  ny_season = 'Winter',
+  ny_rit = c(100:199),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g4_l2 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 4,
+  ny_season = 'Winter',
+  ny_rit = c(200:213),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g4_l3 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 4,
+  ny_season = 'Winter',
+  ny_rit = c(214:222),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g4_l4 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 4,
+  ny_season = 'Winter',
+  ny_rit = c(223:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_read_win_g5_l1 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 5,
+  ny_season = 'Winter',
+  ny_rit = c(100:207),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g5_l2 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 5,
+  ny_season = 'Winter',
+  ny_rit = c(208:220),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g5_l3 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 5,
+  ny_season = 'Winter',
+  ny_rit = c(221:229),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g5_l4 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 5,
+  ny_season = 'Winter',
+  ny_rit = c(230:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_read_win_g6_l1 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 6,
+  ny_season = 'Winter',
+  ny_rit = c(100:208),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g6_l2 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 6,
+  ny_season = 'Winter',
+  ny_rit = c(209:223),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g6_l3 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 6,
+  ny_season = 'Winter',
+  ny_rit = c(224:230),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g6_l4 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 6,
+  ny_season = 'Winter',
+  ny_rit = c(231:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_read_win_g7_l1 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 7,
+  ny_season = 'Winter',
+  ny_rit = c(100:214),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g7_l2 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 7,
+  ny_season = 'Winter',
+  ny_rit = c(215:226),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g7_l3 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 7,
+  ny_season = 'Winter',
+  ny_rit = c(227:237),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g7_l4 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 7,
+  ny_season = 'Winter',
+  ny_rit = c(238:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_read_win_g8_l1 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 8,
+  ny_season = 'Winter',
+  ny_rit = c(100:217),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g8_l2 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 8,
+  ny_season = 'Winter',
+  ny_rit = c(218:229),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g8_l3 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 8,
+  ny_season = 'Winter',
+  ny_rit = c(230:239),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_read_win_g8_l4 <- data.frame(
+  ny_subj = 'Reading',
+  ny_grade = 8,
+  ny_season = 'Winter',
+  ny_rit = c(240:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_math_win_g3_l1 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 3,
+  ny_season = 'Winter',
+  ny_rit = c(100:190),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)  
+ny_math_win_g3_l2 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 3,
+  ny_season = 'Winter',
+  ny_rit = c(191:200),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g3_l3 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 3,
+  ny_season = 'Winter',
+  ny_rit = c(201:209),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g3_l4 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 3,
+  ny_season = 'Winter',
+  ny_rit = c(210:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_math_win_g4_l1 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 4,
+  ny_season = 'Winter',
+  ny_rit = c(100:200),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g4_l2 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 4,
+  ny_season = 'Winter',
+  ny_rit = c(201:214),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g4_l3 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 4,
+  ny_season = 'Winter',
+  ny_rit = c(215:228),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g4_l4 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 4,
+  ny_season = 'Winter',
+  ny_rit = c(229:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_math_win_g5_l1 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 5,
+  ny_season = 'Winter',
+  ny_rit = c(100:214),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g5_l2 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 5,
+  ny_season = 'Winter',
+  ny_rit = c(215:227),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g5_l3 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 5,
+  ny_season = 'Winter',
+  ny_rit = c(228:242),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g5_l4 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 5,
+  ny_season = 'Winter',
+  ny_rit = c(243:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_math_win_g6_l1 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 6,
+  ny_season = 'Winter',
+  ny_rit = c(100:213),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g6_l2 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 6,
+  ny_season = 'Winter',
+  ny_rit = c(214:228),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g6_l3 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 6,
+  ny_season = 'Winter',
+  ny_rit = c(229:238),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g6_l4 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 6,
+  ny_season = 'Winter',
+  ny_rit = c(239:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_math_win_g7_l1 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 7,
+  ny_season = 'Winter',
+  ny_rit = c(100:224),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g7_l2 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 7,
+  ny_season = 'Winter',
+  ny_rit = c(225:238),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g7_l3 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 7,
+  ny_season = 'Winter',
+  ny_rit = c(239:252),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g7_l4 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 7,
+  ny_season = 'Winter',
+  ny_rit = c(253:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+
+ny_math_win_g8_l1 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 8,
+  ny_season = 'Winter',
+  ny_rit = c(100:224),
+  perf_level = 'Level 1',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g8_l2 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 8,
+  ny_season = 'Winter',
+  ny_rit = c(225:243),
+  perf_level = 'Level 2',
+  proficient = FALSE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g8_l3 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 8,
+  ny_season = 'Winter',
+  ny_rit = c(244:257),
+  perf_level = 'Level 3',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)
+ny_math_win_g8_l4 <- data.frame(
+  ny_subj = 'Mathematics',
+  ny_grade = 8,
+  ny_season = 'Winter',
+  ny_rit = c(258:350),
+  perf_level = 'Level 4',
+  proficient = TRUE,
+  stringsAsFactors = FALSE
+)  
+
+ny_predicted_proficiency <- dplyr::bind_rows(
+  ny_read_spr_g3_l1, ny_read_spr_g3_l2, ny_read_spr_g3_l3, ny_read_spr_g3_l4,
+  ny_read_spr_g4_l1, ny_read_spr_g4_l2, ny_read_spr_g4_l3, ny_read_spr_g4_l4,
+  ny_read_spr_g5_l1, ny_read_spr_g5_l2, ny_read_spr_g5_l3, ny_read_spr_g5_l4,
+  ny_read_spr_g6_l1, ny_read_spr_g6_l2, ny_read_spr_g6_l3, ny_read_spr_g6_l4,
+  ny_read_spr_g7_l1, ny_read_spr_g7_l2, ny_read_spr_g7_l3, ny_read_spr_g7_l4,
+  ny_read_spr_g8_l1, ny_read_spr_g8_l2, ny_read_spr_g8_l3, ny_read_spr_g8_l4,
+  
+  ny_math_spr_g3_l1, ny_math_spr_g3_l2, ny_math_spr_g3_l3, ny_math_spr_g3_l4,
+  ny_math_spr_g4_l1, ny_math_spr_g4_l2, ny_math_spr_g4_l3, ny_math_spr_g4_l4,
+  ny_math_spr_g5_l1, ny_math_spr_g5_l2, ny_math_spr_g5_l3, ny_math_spr_g5_l4,
+  ny_math_spr_g6_l1, ny_math_spr_g6_l2, ny_math_spr_g6_l3, ny_math_spr_g6_l4,
+  ny_math_spr_g7_l1, ny_math_spr_g7_l2, ny_math_spr_g7_l3, ny_math_spr_g7_l4,
+  ny_math_spr_g8_l1, ny_math_spr_g8_l2, ny_math_spr_g8_l3, ny_math_spr_g8_l4,
+  
+  ny_read_win_g3_l1, ny_read_win_g3_l2, ny_read_win_g3_l3, ny_read_win_g3_l4,
+  ny_read_win_g4_l1, ny_read_win_g4_l2, ny_read_win_g4_l3, ny_read_win_g4_l4,
+  ny_read_win_g5_l1, ny_read_win_g5_l2, ny_read_win_g5_l3, ny_read_win_g5_l4,
+  ny_read_win_g6_l1, ny_read_win_g6_l2, ny_read_win_g6_l3, ny_read_win_g6_l4,
+  ny_read_win_g7_l1, ny_read_win_g7_l2, ny_read_win_g7_l3, ny_read_win_g7_l4,
+  ny_read_win_g8_l1, ny_read_win_g8_l2, ny_read_win_g8_l3, ny_read_win_g8_l4,
+  
+  ny_math_win_g3_l1, ny_math_win_g3_l2, ny_math_win_g3_l3, ny_math_win_g3_l4,
+  ny_math_win_g4_l1, ny_math_win_g4_l2, ny_math_win_g4_l3, ny_math_win_g4_l4,
+  ny_math_win_g5_l1, ny_math_win_g5_l2, ny_math_win_g5_l3, ny_math_win_g5_l4,
+  ny_math_win_g6_l1, ny_math_win_g6_l2, ny_math_win_g6_l3, ny_math_win_g6_l4,
+  ny_math_win_g7_l1, ny_math_win_g7_l2, ny_math_win_g7_l3, ny_math_win_g7_l4,
+  ny_math_win_g8_l1, ny_math_win_g8_l2, ny_math_win_g8_l3, ny_math_win_g8_l4    
+)
+
+save(ny_predicted_proficiency, file = file.path('data', 'ny_predicted_proficiency.rda'))
+```
+
+## Read in the raw data
+
+``` r
+ny <- read.csv(
+  file = file.path('data-raw', 'ny_linking_curves_tidy.csv'),
+  stringsAsFactors = FALSE
+)
+
+peek(ny)
+
+unq_models <- ny[, c('Grade', 'Measurementscale', 'Season')] %>% unique()
+```
+
+## Iterate and fit a logistic regression to each data set
+
+``` r
+all_preds <- list()
+
+for (i in 1:nrow(unq_models)) {
+  
+  ids <- unq_models[i, ]
+  
+  this_raw <- ny[ny$Grade == ids$Grade & 
+       ny$Measurementscale == ids$Measurementscale &
+       ny$Season == ids$Season, ]
+  
+  fit <- glm(Probability ~ Percentile, family = binomial, data = this_raw)
+  new_pred <- predict(
+    fit, 
+    newdata = data.frame(Percentile = seq(1, 99, 1)), 
+    type = 'response',
+    interval = 'prediction'
+  ) %>% round(4)
+  
+  pred_df <- data.frame(
+    grade = ids$Grade,
+    measurementscale = ids$Measurementscale,
+    fallwinterspring = ids$Season,
+    percentile = seq(1, 99, 1),
+    pass_probability = new_pred,
+    stringsAsFactors = FALSE
+  )
+  
+  all_preds[[i]] <- pred_df
+}
+
+ny_predicted_pass <- dplyr::rbind_all(all_preds)
+peek(ny_predicted_pass)
+```
+
+Save the data to the package
+
+``` r
+save(ny_predicted_pass, file = file.path('data', 'ny_predicted_pass.rda'))
+```

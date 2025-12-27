@@ -1,0 +1,3 @@
+# License
+
+    contact Chris and Andrew (mapvizieR maintainers) if you are interested in running mapvizieR for your district or school!

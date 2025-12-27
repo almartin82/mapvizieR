@@ -1,0 +1,39 @@
+# quealy_facet_one_subgroup
+
+the plot called by quealy subgroups for each subgroup. used to be
+internal to the function, has been extracted.
+
+## Usage
+
+``` r
+quealy_facet_one_subgroup(sum_df, subgroup, xlims, n_range, ref_lines = NA)
+```
+
+## Arguments
+
+- sum_df:
+
+  output of quealy_permutation_stats. needs to have a header called
+  facet_me. look at quealy_subgroups to see example use.
+
+- subgroup:
+
+  the subgroup to plot. quealy_subgroups calls this plot once per
+  element in subgroup_cols (and once for all students)
+
+- xlims:
+
+  the global xlims for the plot.
+
+- n_range:
+
+  the global range of n values. used to set the width of the lines
+
+- ref_lines:
+
+  if using with all students, the reference lines showing change in
+  all_students
+
+## Value
+
+a data frame
