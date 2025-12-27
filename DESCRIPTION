@@ -29,6 +29,7 @@ Imports:
     lubridate (>= 1.8.0),
     magrittr (>= 2.0.0),
     methods,
+    purrr (>= 1.0.0),
     readr (>= 2.0.0),
     reshape2,
     RGraphics,
