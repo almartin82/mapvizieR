@@ -34,7 +34,7 @@ test_that("becca_plot returns expected data with a variety of groupings of kids"
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 12)
   expect_true(ncol(p_build$data[[1]]) >= 13)  # S7 ggplot2 may have more columns
-  expect_equal(sum(p_build$data[[2]]$x, na.rm=TRUE), 89.4, tolerance = .001)
+  expect_equal(sum(p_build$data[[2]]$y, na.rm=TRUE), -176.1882, tolerance = .001)
   expect_equal(sum(p_build$data[[3]]$y), 358.9267, tolerance = .001)
 
   p <- becca_plot(mapviz, studentids_subset, 'Mathematics', first_and_spring_only=TRUE,
@@ -43,7 +43,7 @@ test_that("becca_plot returns expected data with a variety of groupings of kids"
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 16)
   expect_true(ncol(p_build$data[[1]]) >= 13)  # S7 ggplot2 may have more columns
-  expect_equal(sum(p_build$data[[2]]$x, na.rm=TRUE), 112.4, tolerance = .001)
+  expect_equal(sum(p_build$data[[2]]$y, na.rm=TRUE), -288.8715, tolerance = .001)
   expect_equal(sum(p_build$data[[3]]$y), 456.7542, tolerance = .001)
 
   p <- becca_plot(mapviz, studentids_normal_use, 'Mathematics', detail_academic_year=2016)
@@ -51,7 +51,7 @@ test_that("becca_plot returns expected data with a variety of groupings of kids"
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 2)
   expect_true(ncol(p_build$data[[1]]) >= 13)  # S7 ggplot2 may have more columns
-  expect_equal(sum(p_build$data[[2]]$x, na.rm=TRUE), 12, tolerance = .001)
+  expect_equal(sum(p_build$data[[2]]$y, na.rm=TRUE), -48.3871, tolerance = .001)
   expect_equal(sum(p_build$data[[3]]$y), 46.77419, tolerance = .001)
 
   p <- becca_plot(mapviz, studentids_normal_use, 'Mathematics', first_and_spring_only=FALSE)
@@ -59,7 +59,7 @@ test_that("becca_plot returns expected data with a variety of groupings of kids"
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 6)
   expect_true(ncol(p_build$data[[1]]) >= 13)  # S7 ggplot2 may have more columns
-  expect_equal(sum(p_build$data[[2]]$x, na.rm=TRUE), 33.4, tolerance = .001)
+  expect_equal(sum(p_build$data[[2]]$y, na.rm=TRUE), -134.4086, tolerance = .001)
   expect_equal(sum(p_build$data[[3]]$y), 133.871, tolerance = .001)
   
   #alt colors
