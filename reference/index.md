@@ -5,7 +5,7 @@
 Core functions for creating and working with mapvizieR objects
 
 - [`mapvizieR()`](https://almartin82.github.io/mapvizieR/reference/mapvizieR.md)
-  : mapvizieR
+  : Create a mapvizieR object
 
 - [`is.mapvizieR()`](https://almartin82.github.io/mapvizieR/reference/is.mapvizieR.md)
   : Reports whether x is a mapvizier object
@@ -513,28 +513,28 @@ Internal helper functions (exported for advanced use)
 - [`time_execution()`](https://almartin82.github.io/mapvizieR/reference/time_execution.md)
   : time_execution
 
-- [`arrange.mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/arrange.md)
+- [`arrange(`*`<mapvizieR_data>`*`)`](https://almartin82.github.io/mapvizieR/reference/arrange.md)
   : arrange wrapper
 
 - [`ensure_is_mapvizieR()`](https://almartin82.github.io/mapvizieR/reference/ensure_is_mapvizieR.md)
   : ensure_is_mapvizieR
 
-- [`filter.mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/filter.md)
+- [`filter(`*`<mapvizieR_data>`*`)`](https://almartin82.github.io/mapvizieR/reference/filter.md)
   : filter wrapper
 
-- [`group_by.mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/group_by.md)
+- [`group_by(`*`<mapvizieR_data>`*`)`](https://almartin82.github.io/mapvizieR/reference/group_by.md)
   : group_by wrapper
 
 - [`is.mapvizieR()`](https://almartin82.github.io/mapvizieR/reference/is.mapvizieR.md)
   : Reports whether x is a mapvizier object
 
 - [`mapvizieR()`](https://almartin82.github.io/mapvizieR/reference/mapvizieR.md)
-  : mapvizieR
+  : Create a mapvizieR object
 
 - [`mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/mapvizieR_data.md)
   : makes data a mapvizieR_data object
 
-- [`mutate.mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/mutate.md)
+- [`mutate(`*`<mapvizieR_data>`*`)`](https://almartin82.github.io/mapvizieR/reference/mutate.md)
   : mutate wrapper
 
 - [`print(`*`<mapvizieR>`*`)`](https://almartin82.github.io/mapvizieR/reference/print.md)
@@ -542,10 +542,10 @@ Internal helper functions (exported for advanced use)
 
   print method for `mapvizier` class
 
-- [`select.mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/select.md)
+- [`select(`*`<mapvizieR_data>`*`)`](https://almartin82.github.io/mapvizieR/reference/select.md)
   : select wrapper
 
-- [`summarize.mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/summarize.md)
+- [`summarize(`*`<mapvizieR_data>`*`)`](https://almartin82.github.io/mapvizieR/reference/summarize.md)
   : summarize wrapper
 
 - [`summary(`*`<mapvizieR>`*`)`](https://almartin82.github.io/mapvizieR/reference/summary.mapvizieR.md)
@@ -563,7 +563,7 @@ Internal helper functions (exported for advanced use)
 
   summary method for `mapvizieR_growth` class
 
-- [`ungroup.mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/ungroup.md)
+- [`ungroup(`*`<mapvizieR_data>`*`)`](https://almartin82.github.io/mapvizieR/reference/ungroup.md)
   : ungroup wrapper
 
 - [`alt_cohort_cgp_hist_plot()`](https://almartin82.github.io/mapvizieR/reference/alt_cohort_cgp_hist_plot.md)
@@ -631,19 +631,19 @@ Internal helper functions (exported for advanced use)
 
 S3 methods for dplyr compatibility
 
-- [`filter.mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/filter.md)
+- [`filter(`*`<mapvizieR_data>`*`)`](https://almartin82.github.io/mapvizieR/reference/filter.md)
   : filter wrapper
-- [`group_by.mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/group_by.md)
+- [`group_by(`*`<mapvizieR_data>`*`)`](https://almartin82.github.io/mapvizieR/reference/group_by.md)
   : group_by wrapper
-- [`ungroup.mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/ungroup.md)
+- [`ungroup(`*`<mapvizieR_data>`*`)`](https://almartin82.github.io/mapvizieR/reference/ungroup.md)
   : ungroup wrapper
-- [`select.mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/select.md)
+- [`select(`*`<mapvizieR_data>`*`)`](https://almartin82.github.io/mapvizieR/reference/select.md)
   : select wrapper
-- [`mutate.mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/mutate.md)
+- [`mutate(`*`<mapvizieR_data>`*`)`](https://almartin82.github.io/mapvizieR/reference/mutate.md)
   : mutate wrapper
-- [`arrange.mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/arrange.md)
+- [`arrange(`*`<mapvizieR_data>`*`)`](https://almartin82.github.io/mapvizieR/reference/arrange.md)
   : arrange wrapper
-- [`summarize.mapvizieR_data()`](https://almartin82.github.io/mapvizieR/reference/summarize.md)
+- [`summarize(`*`<mapvizieR_data>`*`)`](https://almartin82.github.io/mapvizieR/reference/summarize.md)
   : summarize wrapper
 
 ## Other Functions

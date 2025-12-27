@@ -9,7 +9,8 @@
 
 - [report
   dispatcher](https://almartin82.github.io/mapvizieR/articles/report_dispatcher.md):
-- [templates](https://almartin82.github.io/mapvizieR/articles/templates.md):
+- [Report
+  Templates](https://almartin82.github.io/mapvizieR/articles/templates.md):
 
 ### State-Specific
 

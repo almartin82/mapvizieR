@@ -5,7 +5,8 @@ wrapper for select that preserves classes of data frames
 ## Usage
 
 ``` r
-select.mapvizieR_data(.data, ...)
+# S3 method for class 'mapvizieR_data'
+select(.data, ...)
 ```
 
 ## Arguments

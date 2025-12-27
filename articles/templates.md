@@ -1,4 +1,4 @@
-# templates
+# Report Templates
 
 This vignette illustrates the available report template layouts in
 `templates.R`.

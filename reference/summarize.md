@@ -5,7 +5,8 @@ wrapper for summarize that preserves classes of data frames
 ## Usage
 
 ``` r
-summarize.mapvizieR_data(.data, ..., .by = NULL, .groups = NULL)
+# S3 method for class 'mapvizieR_data'
+summarize(.data, ..., .by = NULL, .groups = NULL)
 ```
 
 ## Arguments

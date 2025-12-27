@@ -5,7 +5,8 @@ wrapper for ungroup that preserves classes of data frames
 ## Usage
 
 ``` r
-ungroup.mapvizieR_data(x, ...)
+# S3 method for class 'mapvizieR_data'
+ungroup(x, ...)
 ```
 
 ## Arguments

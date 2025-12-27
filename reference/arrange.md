@@ -5,7 +5,8 @@ wrapper for arrange that preserves classes of data frames
 ## Usage
 
 ``` r
-arrange.mapvizieR_data(.data, ..., .by_group = FALSE)
+# S3 method for class 'mapvizieR_data'
+arrange(.data, ..., .by_group = FALSE)
 ```
 
 ## Arguments

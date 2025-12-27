@@ -5,7 +5,8 @@ wrapper for filter that preserves classes of data frames
 ## Usage
 
 ``` r
-filter.mapvizieR_data(.data, ..., .by = NULL, .preserve = FALSE)
+# S3 method for class 'mapvizieR_data'
+filter(.data, ..., .by = NULL, .preserve = FALSE)
 ```
 
 ## Arguments

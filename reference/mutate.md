@@ -5,7 +5,8 @@ wrapper for mutate that preserves classes of data frames
 ## Usage
 
 ``` r
-mutate.mapvizieR_data(.data, ...)
+# S3 method for class 'mapvizieR_data'
+mutate(.data, ...)
 ```
 
 ## Arguments

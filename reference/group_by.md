@@ -5,12 +5,8 @@ wrapper for group_by that preserves classes of data frames
 ## Usage
 
 ``` r
-group_by.mapvizieR_data(
-  .data,
-  ...,
-  .add = FALSE,
-  .drop = dplyr::group_by_drop_default(.data)
-)
+# S3 method for class 'mapvizieR_data'
+group_by(.data, ..., .add = FALSE, .drop = dplyr::group_by_drop_default(.data))
 ```
 
 ## Arguments
