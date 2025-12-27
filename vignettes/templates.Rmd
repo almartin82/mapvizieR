@@ -7,6 +7,8 @@ This vignette illustrates the available report template layouts in `templates.R`
 
 ```{r}
 require(mapvizieR)
+require(grid)
+require(dplyr)
 
 knitr::opts_chunk$set(
   dev = 'svg',
@@ -28,6 +30,9 @@ p04 <- grobTree(
 )
 p05 <- grobTree(
   rectGrob(gp=gpar(fill='red', alpha=0.9)), textGrob('p05')
+)
+p06 <- grobTree(
+  rectGrob(gp=gpar(fill='green', alpha=0.9)), textGrob('p06')
 )
 
 ```
@@ -83,6 +88,6 @@ template_05(p01, p02) %>% grid.draw()
 Template 05 is a 2 column grid.
 ```{r}
 
-template_06(p01, p02, p03, p04, p05) %>% grid.draw()
+template_06(p01, p02, p03, p04, p05, p06) %>% grid.draw()
 
 ```

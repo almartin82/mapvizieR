@@ -128,16 +128,125 @@ reference:
       - round_to_any
       - standardize_kinder
       - numeric_nwea_seasons
+      - starts_with("theme_")
+      - starts_with("rand_")
+      - starts_with("valid_")
+      - starts_with("grade_")
+      - starts_with("check_")
+      - starts_with("ensure_")
+      - ends_with("_ify")
+
+  - title: Sample Data
+    desc: Example datasets for testing and demonstration
+    contents:
+      - starts_with("ex_")
+      - starts_with("fake_")
+      - starts_with("student_")
+
+  - title: Internal Functions
+    desc: Internal helper functions (exported for advanced use)
+    contents:
+      - starts_with("act_")
+      - starts_with("adhoc_")
+      - starts_with("amys_")
+      - starts_with("auto_")
+      - starts_with("build_")
+      - starts_with("calc_")
+      - starts_with("cdf_")
+      - starts_with("centroid")
+      - starts_with("clean_")
+      - starts_with("cohort_mean")
+      - starts_with("college_")
+      - starts_with("determine_")
+      - starts_with("df_")
+      - starts_with("empty_")
+      - starts_with("error_")
+      - starts_with("estimate_")
+      - starts_with("extract_")
+      - starts_with("fall_goals")
+      - starts_with("fuzz_")
+      - starts_with("generate_")
+      - starts_with("get_")
+      - starts_with("growth_")
+      - starts_with("historic_")
+      - starts_with("kipp_")
+      - starts_with("knj_")
+      - starts_with("make_")
+      - starts_with("map_")
+      - starts_with("me_")
+      - starts_with("norms_")
+      - starts_with("nth_")
+      - starts_with("only_")
+      - starts_with("percentile_")
+      - starts_with("processed_")
+      - starts_with("rit_")
+      - starts_with("roster")
+      - starts_with("schambach_")
+      - starts_with("school_")
+      - starts_with("scores_")
+      - starts_with("silly_")
+      - starts_with("stu_")
+      - starts_with("nys_")
+      - starts_with("tg")
+      - starts_with("time_")
+      - matches("mapvizieR")
+      - matches("cgp")
+      - matches("npr")
+      - matches("quartile")
+
+  - title: S3 Methods
+    desc: S3 methods for dplyr compatibility
+    contents:
+      - starts_with("filter.")
+      - starts_with("group_by.")
+      - starts_with("ungroup.")
+      - starts_with("select.")
+      - starts_with("mutate.")
+      - starts_with("arrange.")
+      - starts_with("summarize.")
+      - starts_with("summarise.")
+
+  - title: Other Functions
+    desc: Additional exported functions
+    contents:
+      - starts_with("force_")
+      - starts_with("grob_")
+      - starts_with("h_")
+      - starts_with("id_")
+      - starts_with("impute")
+      - starts_with("imputation_")
+      - starts_with("is_")
+      - starts_with("migrate_")
+      - starts_with("munge_")
+      - starts_with("mv_")
+      - starts_with("n_")
+      - starts_with("nearest_")
+      - starts_with("ny_")
+      - starts_with("ord_")
+      - starts_with("pair_")
+      - starts_with("pctl_")
+      - starts_with("peek")
+      - starts_with("preferred_")
+      - starts_with("prepped_")
+      - starts_with("plot_")
+      - starts_with("quealy_")
+      - starts_with("rainbow_")
+      - starts_with("report_")
+      - starts_with("scale_")
+      - starts_with("sch_")
+      - starts_with("season_")
+      - starts_with("stat_")
+      - starts_with("state_")
+      - starts_with("status_")
+      - starts_with("target_")
+      - starts_with("teacher_")
+      - starts_with("year_in_")
 
 articles:
   - title: Getting Started
     navbar: ~
     contents:
       - mapvizieR_object
-
-  - title: Visualization Guides
-    contents:
-      - baseline_goals
 
   - title: Reporting
     contents:
@@ -147,7 +256,6 @@ articles:
   - title: State-Specific
     contents:
       - ny_proficiency
-      - nys
 
 news:
   releases:
