@@ -132,24 +132,18 @@ summary.mapvizieR_growth <- function(object, ...) {
       )[['results']] %>% round(digits)
     )
 
-  mapSummary$start_cohort_status_npr <- NA_integer_
-  mapSummary$end_cohort_status_npr <- NA_integer_
-  
-  for (i in seq_len(nrow(mapSummary))) {
-    mapSummary[i, ]$start_cohort_status_npr <- cohort_mean_rit_to_npr(
-      mapSummary[i, ]$measurementscale, 
-      mapSummary[i, ]$start_grade, 
-      mapSummary[i, ]$start_fallwinterspring,
-      mapSummary[i, ]$start_mean_testritscore
-    ) 
-    
-    mapSummary[i, ]$end_cohort_status_npr <- cohort_mean_rit_to_npr(
-      mapSummary[i, ]$measurementscale, 
-      mapSummary[i, ]$end_grade, 
-      mapSummary[i, ]$end_fallwinterspring,
-      mapSummary[i, ]$end_mean_testritscore
-    )     
-  }
+  mapSummary <- mapSummary %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(
+      start_cohort_status_npr = purrr::pmap_int(
+        list(measurementscale, start_grade, start_fallwinterspring, start_mean_testritscore),
+        cohort_mean_rit_to_npr
+      ),
+      end_cohort_status_npr = purrr::pmap_int(
+        list(measurementscale, end_grade, end_fallwinterspring, end_mean_testritscore),
+        cohort_mean_rit_to_npr
+      )
+    )
   
   class(mapSummary) <- c("mapvizieR_growth_summary", class(mapSummary))
   
@@ -205,17 +199,17 @@ summary.mapvizieR_cdf <- function(object, ...) {
       pct_75th_pctl = round(sum(consistent_percentile >= 75)/dplyr::n(),2)
     ) 
   
-  df$cohort_status_npr <- rep(NA_integer_, nrow(df))
-  
   if (nrow(df) > 0) {
-    for (i in seq_len(nrow(df))) {
-      df[i, ]$cohort_status_npr <- cohort_mean_rit_to_npr(
-        df[i, ]$measurementscale, 
-        df[i, ]$grade, 
-        df[i, ]$fallwinterspring,
-        df[i, ]$mean_testritscore
+    df <- df %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(
+        cohort_status_npr = purrr::pmap_int(
+          list(measurementscale, grade, fallwinterspring, mean_testritscore),
+          cohort_mean_rit_to_npr
+        )
       )
-    }    
+  } else {
+    df$cohort_status_npr <- integer(0)
   }
   
   class(df) <- c("mapvizieR_cdf_summary", class(df))
