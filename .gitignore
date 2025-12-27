@@ -3,13 +3,20 @@
 .RData
 inst/doc
 
-#ephemeral file created by testing, sometimes
+# R CMD check output
+*.Rcheck/
+..Rcheck/
+
+# Build artifacts
+*.tar.gz
+mapvizieR_*.tar.gz
+src/*.o
+src/*.so
+src/*.dll
+
+# Ephemeral files
 tests/testthat/Rplots.pdf
 *.DS_Store
 
-# Analysis folder
+# Local analysis (tracked in separate private repo)
 analysis/
-
-# R CMD check artifacts
-*.Rcheck/
-mapvizieR_*.tar.gz
