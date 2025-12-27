@@ -4,9 +4,17 @@
 \alias{cgp_table}
 \title{display table for school/cohort growth percentile (CGP)}
 \usage{
-cgp_table(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_academic_year, end_fws, end_academic_year, big_font = 50,
-  norms = 2015)
+cgp_table(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  start_fws,
+  start_academic_year,
+  end_fws,
+  end_academic_year,
+  big_font = 50,
+  norms = 2015
+)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

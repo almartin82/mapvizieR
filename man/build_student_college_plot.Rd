@@ -5,9 +5,15 @@
 \title{Combines a template and a mapvizieR object to create a student goal plot
 with college labels}
 \usage{
-build_student_college_plot(base_plot, mapvizieR_obj, studentid,
-  measurementscale, labels_at_grade, localization = localize("Newark"),
-  aspect_ratio = 1)
+build_student_college_plot(
+  base_plot,
+  mapvizieR_obj,
+  studentid,
+  measurementscale,
+  labels_at_grade,
+  localization = localize("Newark"),
+  aspect_ratio = 1
+)
 }
 \arguments{
 \item{base_plot}{a height/weight template.}

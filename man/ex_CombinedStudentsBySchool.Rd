@@ -4,7 +4,8 @@
 \name{ex_CombinedStudentsBySchool}
 \alias{ex_CombinedStudentsBySchool}
 \title{example ex_CombinedStudentsBySchool file (formerly Comprehensive Data File)}
-\format{\describe{
+\format{
+\describe{
 \item{TermName}{TermName}
 \item{DistrictName}{DistrictName}
 \item{SchoolName}{SchoolName}
@@ -16,7 +17,8 @@
 \item{StudentEthnicGroup}{StudentEthnicGroup}
 \item{StudentGender}{StudentGender}
 \item{Grade}{Grade}
-}}
+}
+}
 \source{
 NWEA MAP partner support team (thanks!)
 }

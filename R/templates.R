@@ -136,7 +136,7 @@ template_05 <- function(p01, p02) {
 #' @export
 
 template_06 <- function(p01, p02, p03, p04, p05, p06) {
-  grid.newpage()
+  grid::grid.newpage()
   
   arrangeGrob(
     grobs = list(

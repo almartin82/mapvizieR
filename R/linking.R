@@ -11,14 +11,13 @@
 #' @export
 
 ny_linking <- function(measurementscale, current_grade, season, RIT, returns = 'perf_level') {
- 
+
   valid_returns <- c('perf_level', 'proficient')
-  returns %>% ensurer::ensure_that(
-    . %in% valid_returns ~ 
-      paste0("returns should be one of: ", 
+  if (!(returns %in% valid_returns)) {
+    cli::cli_abort(paste0("returns should be one of: ",
         paste(valid_returns, collapse = ', ')
-      )
-  )
+      ))
+  }
   
   out <- ny_predicted_proficiency %>%
     dplyr::filter(

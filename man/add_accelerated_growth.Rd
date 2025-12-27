@@ -5,9 +5,12 @@
 \title{Add an accelerated growth object, including projections and 
 simulations, to a mapvizieR object}
 \usage{
-add_accelerated_growth(mapvizier_object,
+add_accelerated_growth(
+  mapvizier_object,
   goal_function = goal_kipp_tiered,
-  goal_function_args = list(iterations = 1), update_growth_df = FALSE)
+  goal_function_args = list(iterations = 1),
+  update_growth_df = FALSE
+)
 }
 \arguments{
 \item{mapvizier_object}{a \code{\link{mapvizieR}} object.}

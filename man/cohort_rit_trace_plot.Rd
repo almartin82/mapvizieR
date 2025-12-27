@@ -4,10 +4,17 @@
 \alias{cohort_rit_trace_plot}
 \title{Cohort RIT trace plot}
 \usage{
-cohort_rit_trace_plot(mapvizieR_obj, studentids, measurementscale,
-  match_method = "no matching", first_and_spring_only = TRUE,
-  entry_grade_seasons = c(-0.8, 4.2), collapse_schools = TRUE,
-  retention_strategy = "collapse", small_n_cutoff = -1)
+cohort_rit_trace_plot(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  match_method = "no matching",
+  first_and_spring_only = TRUE,
+  entry_grade_seasons = c(-0.8, 4.2),
+  collapse_schools = TRUE,
+  retention_strategy = "collapse",
+  small_n_cutoff = -1
+)
 }
 \arguments{
 \item{mapvizieR_obj}{conforming mapvizieR obj}

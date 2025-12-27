@@ -4,9 +4,16 @@
 \alias{goal_strand_summary_plot}
 \title{Plot MAP Goal Strand Summary Info}
 \usage{
-goal_strand_summary_plot(mapvizieR_obj, studentids, measurementscale,
-  fws = c("Fall", "Winter", "Spring"), year, cohort = FALSE,
-  spring_is_first = FALSE, filter_args = NULL)
+goal_strand_summary_plot(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  fws = c("Fall", "Winter", "Spring"),
+  year,
+  cohort = FALSE,
+  spring_is_first = FALSE,
+  filter_args = NULL
+)
 }
 \arguments{
 \item{mapvizieR_obj}{a \code{mapvizieR} object}

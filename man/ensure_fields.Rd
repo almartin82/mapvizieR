@@ -12,6 +12,6 @@ ensure_fields(fields_vector, df)
 \item{df}{data frame that needs to have the fields}
 }
 \description{
-a simple wrapper around ensurer to check for necessary fields
+a simple validation function to check for necessary fields
 used by a function
 }

@@ -20,6 +20,8 @@ test_that("student_npr_two_term_plot produces proper plot with a grade level of 
   p_build <- ggplot_build(p)
   expect_true(is.ggplot(p))
   expect_equal(nrow(p_build$data[[1]]), 279)
-  expect_equal(ncol(p_build$data[[2]]), 14)
-  expect_equal(sum(p_build$data[[2]][, 2]), 59584, tolerance = .001)
+  # S7 ggplot2 may have more columns
+  expect_true(ncol(p_build$data[[2]]) >= 14)
+  # Use named column access instead of numeric index
+  expect_equal(sum(p_build$data[[2]]$x), 59584, tolerance = .001)
 })

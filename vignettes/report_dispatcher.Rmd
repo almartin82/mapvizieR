@@ -47,6 +47,7 @@ let's walk through an example.
 here's what our roster object looks like in our sample data:
 ```{r roster, warning=FALSE, message=FALSE}
 require(mapvizieR)
+require(dplyr)
 
 mapviz <- mapvizieR(
   cdf = ex_CombinedAssessmentResults,

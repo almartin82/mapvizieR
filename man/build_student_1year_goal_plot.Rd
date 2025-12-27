@@ -4,10 +4,18 @@
 \alias{build_student_1year_goal_plot}
 \title{Generates a one-term goal plot for one student}
 \usage{
-build_student_1year_goal_plot(base_plot, mapvizieR_obj, studentid,
-  measurementscale, start_grade, end_grade, labels_at_grade,
+build_student_1year_goal_plot(
+  base_plot,
+  mapvizieR_obj,
+  studentid,
+  measurementscale,
+  start_grade,
+  end_grade,
+  labels_at_grade,
   growth_window = "Spring to Spring",
-  localization = localize("Newark"), aspect_ratio = 1)
+  localization = localize("Newark"),
+  aspect_ratio = 1
+)
 }
 \arguments{
 \item{base_plot}{either the output of rit_height_weight_ACT,

@@ -4,11 +4,18 @@
 \alias{bulk_student_historic_college_plot}
 \title{Bulk generates student historic college plots}
 \usage{
-bulk_student_historic_college_plot(mapvizieR_obj, studentids,
-  measurementscale, localization = localize("default"), labels_at_grade,
-  template = "npr", aspect_ratio = 1,
-  annotation_style = "small numbers", line_style = "gray lines",
-  title_text = paste("1. Where have I been? ", measurementscale, "\\n"))
+bulk_student_historic_college_plot(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  localization = localize("default"),
+  labels_at_grade,
+  template = "npr",
+  aspect_ratio = 1,
+  annotation_style = "small numbers",
+  line_style = "gray lines",
+  title_text = paste("1. Where have I been? ", measurementscale, "\\n")
+)
 }
 \arguments{
 \item{mapvizieR_obj}{a conforming mapvizieR object}

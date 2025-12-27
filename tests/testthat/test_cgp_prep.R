@@ -187,7 +187,7 @@ test_that("mapviz cgp targets correctly handles composite baseline, 2012 norms",
     norms = 2012
   )
   
-  expect_is(ex, 'data.frame')
+  expect_s3_class(ex, 'data.frame')
   expect_equal(ex$growth_target %>% sum(), 628.65, tolerance = 0.1)
 
 })
@@ -207,7 +207,7 @@ test_that("mapviz cgp targets correctly handles explicit baseline, 2012 norms", 
     norms = 2012
   )
   
-  expect_is(ex, 'data.frame')
+  expect_s3_class(ex, 'data.frame')
   expect_equal(ex$growth_target %>% sum(), 762.3, tolerance = 0.1)
   
 })
@@ -217,7 +217,7 @@ test_that("cgp_sim tests", {
   
   ex <- cgp_sim('Mathematics', 204, 70, 'MS')
   
-  expect_is(ex, 'list')
+  expect_type(ex, 'list')
   expect_equal(
     ex$rit_seq, 
     c(204, 214.501018554174, 220.994000855954, 
@@ -226,7 +226,7 @@ test_that("cgp_sim tests", {
 
   ex <- cgp_sim('Mathematics', 140, 70, 'ES')
   
-  expect_is(ex, 'list')
+  expect_type(ex, 'list')
   expect_equal(
     ex$rit_seq, 
     c(140, 160.575148924534, 182.924264128859, 196.216461508331, 
@@ -236,7 +236,7 @@ test_that("cgp_sim tests", {
   
   ex <- cgp_sim('Mathematics', 204, 70, 'MS', 2012)
   
-  expect_is(ex, 'list')
+  expect_type(ex, 'list')
   expect_equal(
     ex$rit_seq, 
     c(204, 215.209537251008, 223.225418635319, 230.244831778658, 
@@ -305,15 +305,19 @@ test_that("more known cgps", {
   )[['results']]
   
   ex3 <- calc_cgp(
-    measurementscale = 'Mathematics', 
-    end_grade = 2, 
-    growth_window = 'Fall to Winter', 
+    measurementscale = 'Mathematics',
+    end_grade = 2,
+    growth_window = 'Fall to Winter',
     baseline_avg_rit = 169.2,
     ending_avg_rit = 176.9,
     norms = 2012
   )[['results']]
-  
-  #put response from NWEA here
+
+  # Verify calc_cgp returns numeric results
+  expect_true(is.numeric(ex1))
+  expect_true(is.numeric(ex2))
+  expect_true(is.numeric(ex3))
+  expect_true(ex1 >= 0 && ex1 <= 1)
 })
 
 

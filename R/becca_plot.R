@@ -41,13 +41,12 @@ becca_plot <- function(
   mv_opening_checks(mapvizieR_obj, studentids, 1)
 
   valid_color_schemes <- c('KIPP Report Card', 'NYS')
-  color_scheme %>% ensurer::ensure_that(
-    any(. %in% valid_color_schemes | length(.) == 4L) ~
-      paste0("color scheme should be either one of: ", 
-             paste(valid_color_schemes, collapse = ', '), 
-             " or a length 4 vector of colors")
-  )
-  
+  if (!(any(color_scheme %in% valid_color_schemes | length(color_scheme) == 4L))) {
+    cli::cli_abort(paste0("color scheme should be either one of: ",
+             paste(valid_color_schemes, collapse = ', '),
+             " or a length 4 vector of colors"))
+  }
+
   #TRANSFORMATION 1 - DATA PROCESSING
   #unpack the mapvizieR object and limit to desired students
   this_cdf <- mv_limit_cdf(mapvizieR_obj, studentids, measurementscale)
@@ -84,7 +83,7 @@ becca_plot <- function(
       measurementscale, grade_level_season  
     ) %>%
     dplyr::summarize(
-      n_total = n()
+      n_total = dplyr::n()
     ) %>%
     as.data.frame()
   
@@ -95,7 +94,7 @@ becca_plot <- function(
     ) %>%
     #include at grade level flag
     dplyr::summarize(
-      n_quartile = n()
+      n_quartile = dplyr::n()
     ) %>%
     dplyr::mutate(
       at_grade_level_dummy = ifelse(quartile %in% c(3, 4), 'Yes', 'No'),
@@ -198,7 +197,7 @@ becca_plot <- function(
       axis.ticks.y = element_blank(),
       axis.text.y = element_blank(),
       axis.title.x = element_text(size = rel(0.9)),
-      plot.margin = rep(grid::unit(0,"null"),4)
+      plot.margin = margin(0, 0, 0, 0)
     ) +
     scale_x_continuous(
       breaks = x_breaks,

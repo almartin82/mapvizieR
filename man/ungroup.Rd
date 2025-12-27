@@ -4,10 +4,10 @@
 \alias{ungroup.mapvizieR_data}
 \title{ungroup wrapper}
 \usage{
-\method{ungroup}{mapvizieR_data}(df, ...)
+\method{ungroup}{mapvizieR_data}(x, ...)
 }
 \arguments{
-\item{df}{data.frame}
+\item{x}{data.frame}
 
 \item{...}{additional args}
 }

@@ -34,8 +34,8 @@ test_that("fall goals data table returns tableGrob", {
     end_grade = 6
   )
   
-  expect_is(fgt_test, 'gtable')
-  expect_is(fgt_test, 'grob')
+  expect_s3_class(fgt_test, 'gtable')
+  expect_s3_class(fgt_test, 'grob')
   
   fgt_test %>% plot()
 })
@@ -58,8 +58,8 @@ test_that("options on fall goals component plots", {
     font_size = 34
   )
   
-  expect_is(ex_table, 'gtable')
-  expect_is(ex_table, 'grob')
+  expect_s3_class(ex_table, 'gtable')
+  expect_s3_class(ex_table, 'grob')
   
 })
 

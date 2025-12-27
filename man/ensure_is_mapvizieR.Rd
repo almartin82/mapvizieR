@@ -4,10 +4,10 @@
 \alias{ensure_is_mapvizieR}
 \title{ensure_is_mapvizieR}
 \usage{
-ensure_is_mapvizieR(.)
+ensure_is_mapvizieR(x)
 }
 \arguments{
-\item{.}{dot-placeholder, per ensurer doc.}
+\item{x}{object to check}
 }
 \description{
 a contract that ensures that an object is a mapvizieR object at runtime.

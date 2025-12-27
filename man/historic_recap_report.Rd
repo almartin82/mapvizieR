@@ -4,10 +4,17 @@
 \alias{historic_recap_report}
 \title{Historic Recap Report}
 \usage{
-historic_recap_report(mapvizieR_obj, studentids, measurementscale,
-  target_percentile = 75, first_and_spring_only = TRUE,
-  entry_grade_seasons = c(-0.8, 4.2), small_n_cutoff = 0.2,
-  min_cohort_size = -1, title_text = "")
+historic_recap_report(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  target_percentile = 75,
+  first_and_spring_only = TRUE,
+  entry_grade_seasons = c(-0.8, 4.2),
+  small_n_cutoff = 0.2,
+  min_cohort_size = -1,
+  title_text = ""
+)
 }
 \arguments{
 \item{mapvizieR_obj}{conforming mapvizieR object}

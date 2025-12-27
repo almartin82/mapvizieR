@@ -4,8 +4,14 @@
 \alias{one_cgp_step}
 \title{wrapper to simplify CGP simulations}
 \usage{
-one_cgp_step(measurementscale, start_rit, end_grade, cgp,
-  growth_window = "Spring to Spring", norms = 2015)
+one_cgp_step(
+  measurementscale,
+  start_rit,
+  end_grade,
+  cgp,
+  growth_window = "Spring to Spring",
+  norms = 2015
+)
 }
 \arguments{
 \item{measurementscale}{target subject}

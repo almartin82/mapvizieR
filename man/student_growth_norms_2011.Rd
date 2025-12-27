@@ -5,7 +5,8 @@
 \alias{student_growth_norms_2011}
 \title{student_growth_norms_2011 NWEA student growth 
 norms data (2011 study)}
-\format{\describe{
+\format{
+\describe{
 \item{Subject}{Measurement Scale, Possible Values: 1 = Mathematics, 2 = Reading, 
 3 = Language Usage, 4 = General science}
 \item{StartGrade}{The RIT score of the test in the first term of the comparison period. Scores are now represented with as many as 14-decimal places, which is clearly overboard.}
@@ -31,7 +32,8 @@ Negative numbers likely due to extrapolation}
 \item{S12}{Standard deviation growth projection for comparison period winter of this grade to spring of this grade}
 \item{MeasurementScale}{Measurement scale in plain English}
 \item{norms_year}{year norms were published, in this case 2011}
-}}
+}
+}
 \source{
 http://support.nwea.org/support/article/rit-scale-norms-study-data-files
 }

@@ -4,7 +4,8 @@
 \name{ex_CombinedAssessmentResults}
 \alias{ex_CombinedAssessmentResults}
 \title{example ex_CombinedAssessmentResults file (formerly Comprehensive Data File)}
-\format{\describe{
+\format{
+\describe{
 \item{TermName}{TermName}
 \item{StudentID}{StudentID}
 \item{SchoolName}{SchoolName}
@@ -111,7 +112,8 @@
 \item{ProjectedProficiencyLevel2}{ProjectedProficiencyLevel2}
 \item{ProjectedProficiencyStudy3}{ProjectedProficiencyStudy3}
 \item{ProjectedProficiencyLevel3}{ProjectedProficiencyLevel3}
-}}
+}
+}
 \source{
 NWEA MAP partner support team (thanks!)
 }

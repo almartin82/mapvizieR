@@ -141,7 +141,7 @@ goal_strand_plot <- function(
       color = testquartile
     ), 
     size = 1.5, 
-    show.legend = T
+    show.legend = TRUE
   ) + 
   scale_fill_gradient(
     "Deviation from\nOverall RIT",

@@ -1,66 +1,192 @@
-# mapvizieR:
-### an R package that generates visualizations and reports for NWEA MAP data.
+# mapvizieR <img src="man/figures/logo.png" align="right" height="139" />
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/almartin82/mapvizieR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/almartin82/mapvizieR/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/almartin82/mapvizieR/branch/master/graph/badge.svg)](https://codecov.io/gh/almartin82/mapvizieR)
+[![CRAN status](https://www.r-pkg.org/badges/version/mapvizieR)](https://CRAN.R-project.org/package=mapvizieR)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+<!-- badges: end -->
 
-[![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)[![codecov.io](https://codecov.io/github/almartin82/mapvizieR/coverage.svg?branch=master)](https://codecov.io/github/almartin82/mapvizieR?branch=master)
+## Overview
 
-...because how else are you going to get a capital 'R' into mapviz?
-<br><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Arolsen_Klebeband_02_327.jpg/255px-Arolsen_Klebeband_02_327.jpg">
+mapvizieR provides a comprehensive suite of visualization and analysis tools for
+[NWEA MAP](https://www.nwea.org/map-growth/) assessment data. It helps educators
+and analysts explore student growth, achievement, and progress through intuitive
+visualizations and data transformations.
 
-# why mapvizieR?
-The [MAP](https://www.nwea.org/assessments/map/) assessment is a computer-adaptive, norm-referenced assessment published by [NWEA](https://www.nwea.org/about/), a not-for-profit organization that specializes in assessment.
-More than **10 million students** take the MAP assessment - including [KIPP](http://www.kipp.org/), the organization where  [Chris](https://www.linkedin.com/in/chrishaid) works, and [Andrew](https://twitter.com/moneywithwings) used to work before he joined [Public Prep](http://publicprep.org).
+## Installation
 
-We'd like mapvizeR to be a home where data scientists [working with MAP data](https://github.com/search?l=r&q=testritscore&type=Code&utf8=%E2%9C%93) can share visualizations and analysis tools, given that we're all working on a common data set.  If you work with MAP data, please reach out!
+```r
+# Install from GitHub (recommended)
+# install.packages("pak")
+pak::pak("almartin82/mapvizieR")
 
-# is mapvizier affiliated with NWEA?
-Nope!  This is an independent community effort.  
+# Or use devtools
+# install.packages("devtools")
+devtools::install_github("almartin82/mapvizieR")
+```
 
-# what's inside?
-mapvizieR is a product of some [lessons learned](https://github.com/almartin82/MAP-visuals) about the promises, and pitfalls, of sharing common analysis code.  Central to our approach here is workflow to create a [mapvizier](https://github.com/almartin82/MAP-visuals/blob/master/R/mapvizier.R) object, so that plots, analysis, and reporting can benefit from clear definitions and data structures.  The basic idea is that if each participating entity can build a data loading pathway into the mapvizieR object, reporting becomes easy scalable.  
+## Quick Start
 
-Take a look at this [this](https://github.com/almartin82/mapvizieR/blob/master/vignettes/mapvizieR_object.Rmd) vignette, which describes the object in detail.
+### 1. Prepare Your Data
 
-### data prep functions
-prep MAP data and create `cdf_long` and `cdf_growth` dataframes.
-along with roster info, those data frames get wrapped up into a `mapvizieR` object, which can be passed to the visualization functions below..
+mapvizieR works with two primary data inputs from NWEA MAP:
 
-### data tests and checks
-test data frames to see if they conform with mapvizieR conventions and expectations.
+- **CDF (Comprehensive Data File)**: Student-level test results
+- **Roster**: Student demographic and enrollment information
 
-### group visualizations
-these plots show MAP scores for a group of students across multiple testing terms.  they expect a `cdf_long` dataframe and return ggplot charts.  some examples:
+```r
+library(mapvizieR)
 
-- `becca_plot()`
-- `galloping_elephants()`
+# Read your MAP data files
+cdf <- read_cdf("path/to/your/cdf_file.csv")
+roster <- read_roster("path/to/your/roster_file.csv")
+```
 
+### 2. Create a mapvizieR Object
 
-### growth visualizations
-unlike the functions above, which can take 1, 2, 3, n... test seasons, a lot of MAP analysis revolves around growth windows.  these visualization functions expect a 'cdf_growth' dataframe.  examples include:
+```r
+# Create the main mapvizieR object
+mapviz <- mapvizieR(
+  cdf = cdf,
+  roster = roster,
+  growth_norms = 2015  # Use 2015 NWEA growth norms
+)
+```
 
-- `quealy_subgroups()`
-- `haid_plot()`
-- `goal_bar()`
+### 3. Explore Your Data
 
-### multiple term student longitudinal visualizations
-_college ready/rutgers ready growth stuff will go here_
+```r
+# Summary statistics
+summary(mapviz)
 
-## development guidelines
+# Get student growth data
+growth_df <- mapviz$growth_df
 
-### style
-- follow the `lintr` conventions https://github.com/jimhester/lintr
-- `.lintr` has configuration options for the lintr bot.
-- read about rstudio code analysis integration [here](https://support.rstudio.com/hc/en-us/articles/205753617-Code-Diagnostics)
+# Filter by specific criteria
+filtered <- mv_filter(
+  mapviz,
+  roster_filter = quote(schoolname == "My School")
+)
+```
 
-### testing
-- write tests & vignettes off of the sample CDF in `data/CombinedAssessmentRsults.csv`
+## Key Visualizations
 
-- did you how it said 'write tests' up there?  write tests!
+mapvizieR includes many visualization functions for exploring MAP data:
 
-- a note on testing: remember that if you are doing something fancy with `do.call`, coveralls/travis might give you the false impression that you have full coverage.  enumerate the types of things the `do.call` step might do, and write test cases for each.  (this bit me [here](https://github.com/almartin82/mapvizieR/blob/7bc5199bb8d7f2100ce809618d61011e509d4bf8/R/cdf_prep.R#L90))
+### Student Growth Plots
 
-- separate data processing functions from visualization functions
+```r
+# Becca Plot: Student-level growth visualization
+becca_plot(
+  mapvizieR_obj = mapviz,
+  studentids = students$studentid,
+  measurementscale = "Mathematics",
+  start_fws = "Fall",
+  start_year = 2023,
+  end_fws = "Spring",
+  end_year = 2024
+)
+```
 
-- use ggplot themes, where possible, to handle formatting stuff (font size, transparency, etc) on plots
+### Cohort Analysis
 
-- there's a tag for `design philosophy` in issues; put down thoughts about how we're thinking about handling data, workflows, etc there.
+```r
+# Galloping Elephants: Distribution over time
+galloping_elephants(
+  mapvizieR_obj = mapviz,
+  studentids = students$studentid,
+  measurementscale = "Reading",
+  first_and_spring_only = FALSE
+)
+```
 
+### Goal Tracking
+
+```r
+# HAID Plot: Historical achievement and growth
+haid_plot(
+  mapvizieR_obj = mapviz,
+  studentids = students$studentid,
+  measurementscale = "Mathematics",
+  start_fws = "Fall",
+  start_year = 2023,
+  end_fws = "Spring",
+  end_year = 2024
+)
+```
+
+## Theming and Colors
+
+mapvizieR 0.4.0 introduces consistent theming for visualizations:
+```r
+library(ggplot2)
+
+# Use the mapvizieR theme
+ggplot(data, aes(x, y)) +
+  geom_point() +
+  theme_mapvizier()
+
+# Quartile color scales
+ggplot(data, aes(x, y, fill = quartile)) +
+  geom_col() +
+  scale_fill_quartile()
+
+# Get color palettes
+mapvizier_quartile_colors()
+mapvizier_growth_colors()
+```
+
+## Requirements
+
+- R >= 4.1.0
+- ggplot2 >= 3.4.0
+- dplyr >= 1.1.0
+
+## Documentation
+
+- [Package website](https://almartin82.github.io/mapvizieR) - Full documentation and vignettes
+- [Function reference](https://almartin82.github.io/mapvizieR/reference/) - Complete API documentation
+
+## For Developers
+
+Internal development documentation and analysis is maintained in a private repository.
+Contributors with repository access can request an invite to
+[mapvizieR-analysis](https://github.com/almartin82/mapvizieR-analysis) for:
+- Architecture documentation
+- Code audits and modernization notes
+- Test regression analysis
+- Implementation planning documents
+
+Contact the maintainers for access.
+
+## Contributing
+
+Contributions are welcome! Please see our [contributing guidelines](CONTRIBUTING.md) for details.
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.
+
+## Citation
+
+If you use mapvizieR in your research or reporting, please cite it:
+
+```
+@software{mapvizieR,
+  author = {Martin, Andrew},
+  title = {mapvizieR: Visualizations and Analysis for NWEA MAP Data},
+  url = {https://github.com/almartin82/mapvizieR},
+  year = {2024}
+}
+```
+
+## Related Projects
+
+- [NWEA MAP Growth](https://www.nwea.org/map-growth/) - The assessment system
+- [tidyverse](https://www.tidyverse.org/) - R packages for data science

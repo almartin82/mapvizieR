@@ -4,8 +4,14 @@
 \alias{nearest_rit}
 \title{find nearest RIT score for a student, by date}
 \usage{
-nearest_rit(mapvizieR_obj, studentid, measurementscale, target_date,
-  num_days = 180, forward = TRUE)
+nearest_rit(
+  mapvizieR_obj,
+  studentid,
+  measurementscale,
+  target_date,
+  num_days = 180,
+  forward = TRUE
+)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

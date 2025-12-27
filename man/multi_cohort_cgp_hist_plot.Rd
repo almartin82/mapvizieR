@@ -4,10 +4,18 @@
 \alias{multi_cohort_cgp_hist_plot}
 \title{Multiple Cohort CGP histories}
 \usage{
-multi_cohort_cgp_hist_plot(mapvizieR_obj, studentids, measurementscale,
-  match_method = "no matching", first_and_spring_only = TRUE,
-  entry_grade_seasons = c(-0.8, 4.2), school_norms = 2015,
-  small_n_cutoff = 0.5, min_cohort_size = -1, facet_dir = "wide")
+multi_cohort_cgp_hist_plot(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  match_method = "no matching",
+  first_and_spring_only = TRUE,
+  entry_grade_seasons = c(-0.8, 4.2),
+  school_norms = 2015,
+  small_n_cutoff = 0.5,
+  min_cohort_size = -1,
+  facet_dir = "wide"
+)
 }
 \arguments{
 \item{mapvizieR_obj}{conforming mapvizieR obj}

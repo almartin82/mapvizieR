@@ -4,13 +4,22 @@
 \alias{haid_plot}
 \title{Chris Haid's Waterfall-Rainbow-Arrow Chart}
 \usage{
-haid_plot(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_academic_year, end_fws, end_academic_year,
-  sort_column = "start_testritscore", p_growth_colors = c("tan4",
-  "snow4", "gold", "red"), p_growth_tiers = c("Positive", "Typical",
-  "College Ready", "Negative"), p_quartile_colors = c("#f3716b",
-  "#79ac41", "#1ebdc2", "#a57eb8"), p_name_size = 3, p_alpha = 1,
-  p_name_offset = 0.04)
+haid_plot(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  start_fws,
+  start_academic_year,
+  end_fws,
+  end_academic_year,
+  sort_column = "start_testritscore",
+  p_growth_colors = c("tan4", "snow4", "gold", "red"),
+  p_growth_tiers = c("Positive", "Typical", "College Ready", "Negative"),
+  p_quartile_colors = c("#f3716b", "#79ac41", "#1ebdc2", "#a57eb8"),
+  p_name_size = 3,
+  p_alpha = 1,
+  p_name_offset = 0.04
+)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

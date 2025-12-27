@@ -49,12 +49,11 @@ schambach_table_1d <- function(
       end_map_year_academic == end_academic_year,
       end_fallwinterspring == end_fws
     )
-  
-  roster %>% 
-    ensurer::ensure_that(
-      all(subgroup_cols %in% names(roster)) ~ "subgroup_cols must match column names in your mapvizieR roster."
-    )
-  
+
+  if (!all(subgroup_cols %in% names(roster))) {
+    cli::cli_abort("subgroup_cols must match column names in your mapvizieR roster.")
+  }
+
   if (complete_obsv == TRUE) {
     this_growth <- this_growth %>%
       dplyr::filter(
@@ -63,7 +62,7 @@ schambach_table_1d <- function(
   }
   
   tables <- list()
-  for (i in 1:length(subgroup_cols)) {
+  for (i in seq_along(subgroup_cols)) {
     subgroup <- subgroup_cols[i]
     
     minimal_roster <- roster[, c('studentid', 'map_year_academic', 'fallwinterspring', subgroup)]
@@ -83,7 +82,7 @@ schambach_table_1d <- function(
         ptile_change = mean((end_testpercentile - start_testpercentile), na.rm = TRUE) %>% round(1),
         pct_typ = mean(met_typical_growth, na.rm = TRUE) %>% multiply_by(100) %>% round(0),
         pct_accel = mean(met_accel_growth, na.rm = TRUE) %>% multiply_by(100) %>% round(0),
-        n = n()
+        n = dplyr::n()
       )
     
     #first row: summary of first cut
@@ -96,8 +95,8 @@ schambach_table_1d <- function(
     names(row1)[1] <- pretty_names[i]
     
     #now group by subgroup and summarize
-    this_summary <- combined_df %>% 
-      dplyr::group_by_(subgroup) %>%
+    this_summary <- combined_df %>%
+      dplyr::group_by(.data[[subgroup]]) %>%
       schambach_pipe()
     this_summary[,1] <- as.character(this_summary[[1]])
     names(this_summary)[1] <- pretty_names[i]

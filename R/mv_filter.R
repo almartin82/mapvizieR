@@ -14,7 +14,7 @@
 mv_filter <- function(mapvizieR_obj, cdf_filter=NA, roster_filter=NA) {
   
   #must pass some kind of filter
-  if (!is.language(cdf_filter) & !is.language(roster_filter)) {
+  if (!is.language(cdf_filter) && !is.language(roster_filter)) {
     stop('at least one type of filter needed (cdf or roster)')
   }
   
@@ -23,8 +23,8 @@ mv_filter <- function(mapvizieR_obj, cdf_filter=NA, roster_filter=NA) {
   #cdf fields
   if (typeof(cdf_filter) == 'language') {
     mapviz[['cdf']] <- mapviz[['cdf']] %>%
-      dplyr::filter_(
-        cdf_filter
+      dplyr::filter(
+        !!cdf_filter
       )
   }
 
@@ -32,8 +32,8 @@ mv_filter <- function(mapvizieR_obj, cdf_filter=NA, roster_filter=NA) {
   if (typeof(roster_filter) == 'language') {
     #filter the roster
     mapviz[['roster']] <- mapviz[['roster']] %>%
-      dplyr::filter_(
-        roster_filter
+      dplyr::filter(
+        !!roster_filter
       )
     
     target_stu <- mapviz[['roster']]$studentid

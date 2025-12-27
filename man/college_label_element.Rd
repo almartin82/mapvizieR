@@ -4,9 +4,14 @@
 \alias{college_label_element}
 \title{abstract out the logic for writing college labels onto a template.}
 \usage{
-college_label_element(xy_lim_list, measurementscale, labels_at_grade = 6,
-  localization = localize("Newark"), aspect_ratio = 1,
-  label_size = 5)
+college_label_element(
+  xy_lim_list,
+  measurementscale,
+  labels_at_grade = 6,
+  localization = localize("Newark"),
+  aspect_ratio = 1,
+  label_size = 5
+)
 }
 \arguments{
 \item{xy_lim_list}{student max/min x and y, from stu_RIT_hist_plot_elements}

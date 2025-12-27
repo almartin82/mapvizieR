@@ -1,13 +1,17 @@
 ---
 title: "NY proficiency curves"
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{NY proficiency curves}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 
 ```{r include=FALSE, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE, cache=FALSE}
-
+# This vignette generates data files and shouldn't be executed during pkgdown build
+knitr::opts_chunk$set(eval = FALSE)
 library(mapvizieR)
-
 ```
 
 NWEA publishes probability estimates from 0-1 that a student will pass the NY State assessment given a particular RIT/Grade/Season.  The [pdf](https://www.nwea.org/content/uploads/2016/03/New_York_-Linking_Study_MAR2016.pdf) report publishes these estimates in 5 percentile bands.  Clearly, there's an underlying logistic regression model that expresses `pass likelihood ~ MAP percentile`.  
@@ -959,7 +963,7 @@ unq_models <- ny[, c('Grade', 'Measurementscale', 'Season')] %>% unique()
 
 all_preds <- list()
 
-for (i in 1:nrow(unq_models)) {
+for (i in seq_len(nrow(unq_models))) {
   
   ids <- unq_models[i, ]
   

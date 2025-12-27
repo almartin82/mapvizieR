@@ -92,28 +92,37 @@ dedupe_cdf <- function(prepped_cdf, method="NWEA") {
     check_cdf_long(prepped_cdf)$boolean
   )
 
-  #reminder: if you want the highest value for an element to rank 1, 
-    #throw a negative sign in front of the variable
-    #if you want the lowest to rank 1, leave as is.
-  rank_methods <- list(
-    "NWEA" = "-growthmeasureyn, teststandarderror",
-    "high RIT" = "-testritscore",
-    "most recent" = "rev(teststartdate)"
-  )
-  
-  #pull the method off the list
-  use_method <- rank_methods[[method]]
-  do_call_rank_with_method <- paste0("do.call(rank, list(", use_method, ", ties.method = 'first'))")
-
-  #dedupe using dplyr mutate
+  #dedupe using dplyr arrange and row_number
+  #the ranking criteria determines which record to keep when there are duplicates
   dupe_tagged <- prepped_cdf %>%
-    dplyr::group_by(studentid, measurementscale, map_year_academic, fallwinterspring) %>%
-    #using mutate_ because we want to hand our function to mutate as a string. 
-    dplyr::mutate_(
-      rn=do_call_rank_with_method
-    )  
-  deduped <- dupe_tagged[dupe_tagged$rn==1, ]
-  
+    dplyr::group_by(studentid, measurementscale, map_year_academic, fallwinterspring)
+
+  #apply the appropriate ranking method
+  if (method == "NWEA") {
+    #NWEA method: prefer growthmeasureyn = "Yes", then lowest standard error
+    dupe_tagged <- dupe_tagged %>%
+      dplyr::arrange(
+        dplyr::desc(.data$growthmeasureyn),
+        .data$teststandarderror,
+        .by_group = TRUE
+      )
+  } else if (method == "high RIT") {
+    #prefer highest RIT score
+    dupe_tagged <- dupe_tagged %>%
+      dplyr::arrange(dplyr::desc(.data$testritscore), .by_group = TRUE)
+  } else if (method == "most recent") {
+    #prefer most recent test date
+    dupe_tagged <- dupe_tagged %>%
+      dplyr::arrange(dplyr::desc(.data$teststartdate), .by_group = TRUE)
+  }
+
+  #assign row number within each group
+  dupe_tagged <- dupe_tagged %>%
+    dplyr::mutate(rn = dplyr::row_number())
+
+  #keep only the first row in each group
+  deduped <- dupe_tagged[dupe_tagged$rn == 1, ]
+
   return(deduped)
 }
 
@@ -131,15 +140,12 @@ dedupe_cdf <- function(prepped_cdf, method="NWEA") {
 #' @return a data frame with a 'grade_level_season' column
 
 grade_level_seasonify <- function(cdf) {
-  
-  #inputs consistency check 
-  cdf %>%
-    ensurer::ensures_that(
-      c('grade', 'fallwinterspring') %in% names() ~ "'grade' 
-        and 'fallwinterspring' must be in in your cdf to 
-        grade_seasonify"
-    )
-  
+
+  #inputs consistency check
+  if (!all(c('grade', 'fallwinterspring') %in% names(cdf))) {
+    cli::cli_abort("'grade' and 'fallwinterspring' must be in in your cdf to grade_seasonify")
+  }
+
   season_offsets <- data.frame(
     season=c('Fall', 'Winter', 'Spring', 'Summer'),
     offset=c(-0.8, -0.5, 0, 0.1),

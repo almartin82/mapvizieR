@@ -4,8 +4,15 @@
 \alias{amys_lists}
 \title{Students' names stacked by category, or a more informative bar graph.}
 \usage{
-amys_lists(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_academic_year, end_fws, end_academic_year)
+amys_lists(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  start_fws,
+  start_academic_year,
+  end_fws,
+  end_academic_year
+)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

@@ -4,9 +4,16 @@
 \alias{calc_cgp}
 \title{calc_cgp}
 \usage{
-calc_cgp(measurementscale, end_grade, growth_window,
-  baseline_avg_rit = NA, ending_avg_rit = NA, norms = 2015,
-  calc_for = c(1:99), verbose = TRUE)
+calc_cgp(
+  measurementscale,
+  end_grade,
+  growth_window,
+  baseline_avg_rit = NA,
+  ending_avg_rit = NA,
+  norms = 2015,
+  calc_for = c(1:99),
+  verbose = TRUE
+)
 }
 \arguments{
 \item{measurementscale}{MAP subject}

@@ -71,8 +71,8 @@ report_dispatcher <- function(
   }
   
   #now get the permutations at each depth
-  for (i in 1:length(cols)) {
-    
+  for (i in seq_along(cols)) {
+
     #if we should call the report at this level, add it to the perm_list
     if (call_list[[i]]) {
     
@@ -86,12 +86,12 @@ report_dispatcher <- function(
       #for display (includes N students)
       if (verbose) {
         perm_disp[[counter]] <- roster[, names(roster) %in% this_headers, drop = FALSE] %>%
-          #syntax is kinda bonkers: http://stackoverflow.com/a/28182288/561698
-          dplyr::group_by_(
-            .dots = lapply(this_headers, as.symbol)
+          dplyr::group_by(
+            !!!rlang::syms(this_headers)
           ) %>%
           dplyr::summarize(
-            n = n()
+            n = dplyr::n(),
+            .groups = 'drop'
           )
       }
       counter <- counter + 1
@@ -113,17 +113,17 @@ report_dispatcher <- function(
   output_list <- list()
   counter <- 1
 
-  for (i in 1:length(perm_list)) {
+  for (i in seq_along(perm_list)) {
     this_depth <- as.data.frame(perm_list[[i]], drop = FALSE)
-    
-    for (j in 1:nrow(this_depth)) {
+
+    for (j in seq_len(nrow(this_depth))) {
       this_perm <- this_depth[j, ,drop = FALSE] 
 
       rd_env <- new.env()
       
       #generic names for depth of tree
       generic_perm <- this_perm
-      names(generic_perm) <- paste0('depth_', seq(1:ncol(this_perm)))
+      names(generic_perm) <- paste0('depth_', seq_len(ncol(this_perm)))
 
       #friendly name string of this depth:
       rd_env$depth_string <- paste(names(this_perm), this_perm[1,], sep = ": ")

@@ -4,8 +4,7 @@
 \alias{quealy_facet_one_subgroup}
 \title{quealy_facet_one_subgroup}
 \usage{
-quealy_facet_one_subgroup(sum_df, subgroup, xlims, n_range,
-  ref_lines = NA)
+quealy_facet_one_subgroup(sum_df, subgroup, xlims, n_range, ref_lines = NA)
 }
 \arguments{
 \item{sum_df}{output of quealy_permutation_stats.  needs to have a header

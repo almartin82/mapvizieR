@@ -10,7 +10,7 @@ test_that("cohort_longitudinal_npr_plot should return valid plot", {
     entry_grade_seasons = c(-0.8, 5.2)
   )
   
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
   p <- ggplot_build(p)
   expect_equal( p$data[[2]]$y %>% sum(), 10354.33, tolerance = 0.1)
   
@@ -28,7 +28,7 @@ test_that("cohort_longitudinal_npr_plot with name annotations", {
     name_annotations = TRUE
   )
   
-  expect_is(p, 'ggplot')
+  expect_s3_class(p, 'ggplot')
   p <- ggplot_build(p)
   expect_equal(p$data[[2]]$y %>% sum(), 6198.022, tolerance = 0.1)
   

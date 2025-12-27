@@ -4,10 +4,10 @@
 \alias{ensure_roster_types}
 \title{ensure_roster_types}
 \usage{
-ensure_roster_types(.)
+ensure_roster_types(roster)
 }
 \arguments{
-\item{.}{dot-placeholder, per ensurer doc.}
+\item{roster}{roster data frame to check}
 }
 \description{
 checks if certain roster fields are of the correct type

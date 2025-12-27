@@ -50,7 +50,7 @@ schambach_figure <- function(
   }
   
   tables <- list()
-    for (i in 1:length(schambach_dflist)) {
+    for (i in seq_along(schambach_dflist)) {
       df <- schambach_dflist[[i]]
       df <- formatter(df)
       
@@ -60,7 +60,7 @@ schambach_figure <- function(
       t <- gridExtra::tableGrob(
         df,
         cols = col_names,
-        theme = ttheme_default(
+        theme = gridExtra::ttheme_default(
           core = list(
             fg_params = list(fontsize = 9, just = "center"),
             bg_params = list(alpha = c(.5,1), fill = 'lightgreen')),
@@ -74,8 +74,9 @@ schambach_figure <- function(
     }
   
   out <- do.call(
-    what = "grid.arrange", args = c(tables, c(nrow = length(tables)))
+    what = gridExtra::grid.arrange,
+    args = c(tables, list(nrow = length(tables)))
   )
-  
+
   return(out)
 }

@@ -1,0 +1,268 @@
+url: https://almartin82.github.io/mapvizieR
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+  bslib:
+    primary: "#0066FF"
+    border-radius: 0.5rem
+
+navbar:
+  structure:
+    left: [intro, reference, articles, news]
+    right: [search, github]
+  components:
+    articles:
+      text: Articles
+      menu:
+        - text: Getting Started
+          href: articles/mapvizieR_object.html
+        - text: Report Generation
+          href: articles/report_dispatcher.html
+        - text: "---"
+        - text: All Articles
+          href: articles/index.html
+
+home:
+  title: mapvizieR - Visualize NWEA MAP Data
+  description: >
+    An R package for visualization and analysis of NWEA MAP assessment data.
+    Create beautiful visualizations of student growth and achievement.
+
+reference:
+  - title: Create mapvizieR Object
+    desc: Core functions for creating and working with mapvizieR objects
+    contents:
+      - mapvizieR
+      - is.mapvizieR
+      - starts_with("print")
+      - starts_with("summary")
+
+  - title: Group Visualizations
+    desc: Visualizations showing performance across groups of students
+    contents:
+      - becca_plot
+      - galloping_elephants
+
+  - title: Growth Visualizations
+    desc: Visualizations focused on student growth
+    contents:
+      - haid_plot
+      - quealy_subgroups
+      - goalbar
+      - growth_histogram
+      - growth_status_scatter
+
+  - title: Cohort Visualizations
+    desc: Track cohorts over time
+    contents:
+      - starts_with("cohort_")
+      - starts_with("alt_cohort")
+      - starts_with("multi_cohort")
+
+  - title: Student-Level Visualizations
+    desc: Individual student visualizations
+    contents:
+      - starts_with("student_")
+      - starts_with("build_student")
+      - starts_with("bulk_student")
+
+  - title: Strand & Goal Visualizations
+    desc: Strand and goal-related plots
+    contents:
+      - strand_boxes
+      - strands_list_plot
+      - goal_strand_plot
+      - goal_strand_summary_plot
+
+  - title: Data Preparation
+    desc: Functions for preparing MAP data
+    contents:
+      - prep_cdf_long
+      - process_cdf_long
+      - prep_roster
+      - read_cdf
+      - clean_cdf
+      - dedupe_cdf
+      - check_cdf_long
+      - check_roster
+
+  - title: Growth Calculations
+    desc: Calculate growth metrics and CGP
+    contents:
+      - generate_growth_dfs
+      - calc_cgp
+      - cdf_to_cgp
+      - calc_normed_student_growth
+      - add_accelerated_growth
+
+  - title: Norms & Goals
+    desc: Work with NWEA norms and growth goals
+    contents:
+      - goal_kipp_tiered
+      - tiered_growth_factors
+      - kipp_quartile
+
+  - title: Filtering & Subsetting
+    desc: Filter and subset mapvizieR data
+    contents:
+      - mv_filter
+      - mv_limit_cdf
+      - mv_limit_growth
+      - starts_with("min_")
+
+  - title: Report Generation
+    desc: Generate reports and templates
+    contents:
+      - report_dispatcher
+      - starts_with("template_")
+      - two_pager
+      - fall_goals_report
+      - historic_recap_report
+
+  - title: Utilities
+    desc: Helper functions
+    contents:
+      - abbrev
+      - fall_spring_me
+      - round_to_any
+      - standardize_kinder
+      - numeric_nwea_seasons
+      - starts_with("theme_")
+      - starts_with("rand_")
+      - starts_with("valid_")
+      - starts_with("grade_")
+      - starts_with("check_")
+      - starts_with("ensure_")
+      - ends_with("_ify")
+
+  - title: Sample Data
+    desc: Example datasets for testing and demonstration
+    contents:
+      - starts_with("ex_")
+      - starts_with("fake_")
+      - starts_with("student_")
+
+  - title: Internal Functions
+    desc: Internal helper functions (exported for advanced use)
+    contents:
+      - starts_with("act_")
+      - starts_with("adhoc_")
+      - starts_with("amys_")
+      - starts_with("auto_")
+      - starts_with("build_")
+      - starts_with("calc_")
+      - starts_with("cdf_")
+      - starts_with("centroid")
+      - starts_with("clean_")
+      - starts_with("cohort_mean")
+      - starts_with("college_")
+      - starts_with("determine_")
+      - starts_with("df_")
+      - starts_with("empty_")
+      - starts_with("error_")
+      - starts_with("estimate_")
+      - starts_with("extract_")
+      - starts_with("fall_goals")
+      - starts_with("fuzz_")
+      - starts_with("generate_")
+      - starts_with("get_")
+      - starts_with("growth_")
+      - starts_with("historic_")
+      - starts_with("kipp_")
+      - starts_with("knj_")
+      - starts_with("make_")
+      - starts_with("map_")
+      - starts_with("me_")
+      - starts_with("norms_")
+      - starts_with("nth_")
+      - starts_with("only_")
+      - starts_with("percentile_")
+      - starts_with("processed_")
+      - starts_with("rit_")
+      - starts_with("roster")
+      - starts_with("schambach_")
+      - starts_with("school_")
+      - starts_with("scores_")
+      - starts_with("silly_")
+      - starts_with("stu_")
+      - starts_with("nys_")
+      - starts_with("tg")
+      - starts_with("time_")
+      - matches("mapvizieR")
+      - matches("cgp")
+      - matches("npr")
+      - matches("quartile")
+
+  - title: S3 Methods
+    desc: S3 methods for dplyr compatibility
+    contents:
+      - starts_with("filter.")
+      - starts_with("group_by.")
+      - starts_with("ungroup.")
+      - starts_with("select.")
+      - starts_with("mutate.")
+      - starts_with("arrange.")
+      - starts_with("summarize.")
+      - starts_with("summarise.")
+
+  - title: Other Functions
+    desc: Additional exported functions
+    contents:
+      - starts_with("force_")
+      - starts_with("grob_")
+      - starts_with("h_")
+      - starts_with("id_")
+      - starts_with("impute")
+      - starts_with("imputation_")
+      - starts_with("is_")
+      - starts_with("migrate_")
+      - starts_with("munge_")
+      - starts_with("mv_")
+      - starts_with("n_")
+      - starts_with("nearest_")
+      - starts_with("ny_")
+      - starts_with("ord_")
+      - starts_with("pair_")
+      - starts_with("pctl_")
+      - starts_with("peek")
+      - starts_with("preferred_")
+      - starts_with("prepped_")
+      - starts_with("plot_")
+      - starts_with("quealy_")
+      - starts_with("rainbow_")
+      - starts_with("report_")
+      - starts_with("scale_")
+      - starts_with("sch_")
+      - starts_with("season_")
+      - starts_with("stat_")
+      - starts_with("state_")
+      - starts_with("status_")
+      - starts_with("target_")
+      - starts_with("teacher_")
+      - starts_with("year_in_")
+
+articles:
+  - title: Getting Started
+    navbar: ~
+    contents:
+      - mapvizieR_object
+
+  - title: Reporting
+    contents:
+      - report_dispatcher
+      - templates
+
+  - title: State-Specific
+    contents:
+      - ny_proficiency
+
+news:
+  releases:
+    - text: "Version 0.4.0"
+      href: news/index.html
+
+footer:
+  structure:
+    left: developed_by
+    right: built_with

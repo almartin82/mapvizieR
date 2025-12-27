@@ -136,7 +136,7 @@ student_scaffold <- function(
   target_cols <- names(target_cols_list)
   
   # empty data.frame
-  empty <- dplyr::as_data_frame(target_cols_list) 
+  empty <- tibble::as_tibble(target_cols_list) 
 
   #if there's no data, don't worry about matching; just return a zero row df
   if (nrow(start) == 0) {

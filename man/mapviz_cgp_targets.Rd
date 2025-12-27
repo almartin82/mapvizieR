@@ -4,10 +4,20 @@
 \alias{mapviz_cgp_targets}
 \title{mapvizieR interface to simplify growth goal calculations}
 \usage{
-mapviz_cgp_targets(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_year_offset, end_fws, end_academic_year, end_grade,
-  start_fws_prefer = NA, calc_for = c(1:99), returns = "targets",
-  norms = 2015)
+mapviz_cgp_targets(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  start_fws,
+  start_year_offset,
+  end_fws,
+  end_academic_year,
+  end_grade,
+  start_fws_prefer = NA,
+  calc_for = c(1:99),
+  returns = "targets",
+  norms = 2015
+)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

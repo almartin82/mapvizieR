@@ -4,7 +4,8 @@
 \name{act_df}
 \alias{act_df}
 \title{ACT linking data frame}
-\format{\describe{
+\format{
+\describe{
 \item{school}{I think this was put into the data to allow for rbinding
 with a different data set.  Can be ignored.}
 \item{cohort}{similar to school, can be ignored.}
@@ -12,7 +13,8 @@ with a different data set.  Can be ignored.}
 \item{rit}{RIT equivalency}
 \item{act}{ACT sub-test equivalency}
 \item{subject}{Mathematics or Reading}
-}}
+}
+}
 \source{
 NWEA linking study
 }

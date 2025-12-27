@@ -71,11 +71,10 @@ quealy_subgroups <- function(
     df <- df %>% dplyr::filter(complete_obsv == TRUE)
   }
   #if there's no students, raise an informative error
-  df %>% 
-    ensurer::ensure_that(
-      nrow(.) > 0 ~ "no matching students for the specified subject/terms."
-    )
-  
+  if (nrow(df) == 0) {
+    cli::cli_abort("no matching students for the specified subject/terms.")
+  }
+
   #3. put SUBGROUPS values from roster onto df
   df <- roster_to_growth_df(
     target_df = df,
@@ -89,7 +88,7 @@ quealy_subgroups <- function(
   
   #4. for each SUBGROUP permutation
   all_sub <- subgroup_cols
-  if (include_all | !is.logical(magic_subgroups)) {
+  if (include_all || !is.logical(magic_subgroups)) {
     #add all_students to df
     df$all_students <- 'All Students'
     #include in subgroups
@@ -154,9 +153,10 @@ quealy_subgroups <- function(
       
       #calc subgroup stats
       perm_stats <- quealy_permutation_stats(this_stu, i, school_growth_norms)
-      perm_stats %>% ensurer::ensure_that(
-        nrow(.) == 1 ~ 'there should only be one group!')
-      
+      if (nrow(perm_stats) != 1) {
+        cli::cli_abort('there should only be one group!')
+      }
+
       #give the group name a consistent variable name
       names(perm_stats)[names(perm_stats) == i] <- 'facet_me'
  
@@ -218,9 +218,10 @@ quealy_subgroups <- function(
         perm_stats <- quealy_permutation_stats(
           this_start_quartile, 'start_testquartile', school_growth_norms
         )
-          perm_stats %>% ensurer::ensure_that(
-            nrow(.) == 1 ~ 'there should only be one group!')
-        
+        if (nrow(perm_stats) != 1) {
+          cli::cli_abort('there should only be one group!')
+        }
+
         #give the group name a consistent variable name
         names(perm_stats)[names(perm_stats) == i] <- 'facet_me'
    
@@ -288,7 +289,7 @@ quealy_subgroups <- function(
   }
 
   #rest of the subgroups
-  for (i in 1:length(subgroup_cols)) {
+  for (i in seq_along(subgroup_cols)) {
     #the matching permutations
     this_perms <- window_df[window_df$subgroup == subgroup_cols[i], ]
     #recover the logic of which rows based on auto growth windows
@@ -354,25 +355,26 @@ quealy_subgroups <- function(
 
 quealy_permutation_stats <- function(df, subgroup, norms = 2015) {
   results <- df %>%
-    dplyr::group_by_(
-      subgroup, quote(measurementscale), 
-      quote(start_fallwinterspring), quote(end_fallwinterspring)
+    dplyr::group_by(
+      .data[[subgroup]], measurementscale,
+      start_fallwinterspring, end_fallwinterspring
     ) %>%
-    dplyr::summarize(    
-      approximate_grade = round(mean(end_grade, na.rm = TRUE), 0), 
+    dplyr::summarize(
+      approximate_grade = round(mean(end_grade, na.rm = TRUE), 0),
       start_rit = mean(start_testritscore, na.rm = TRUE),
       end_rit = mean(end_testritscore, na.rm = TRUE),
       rit_change = mean(rit_growth, na.rm = TRUE),
       start_npr = mean(start_consistent_percentile, na.rm = TRUE),
       end_npr = mean(end_consistent_percentile, na.rm = TRUE),
       npr_change = mean(end_consistent_percentile - start_consistent_percentile, na.rm = TRUE),
-      n = n()
+      n = dplyr::n(),
+      .groups = 'drop'
     ) %>%
     as.data.frame()
   
   #add cgp
   results$cgp <- NA
-  for (i in 1:nrow(results)) {
+  for (i in seq_len(nrow(results))) {
     results[i, ]$cgp <- calc_cgp(
         measurementscale = results[i, ]$measurementscale,
         end_grade = results[i, ]$approximate_grade,
@@ -433,7 +435,7 @@ quealy_facet_one_subgroup <- function(
   #cgp labeler
   cgp_labeler <- function(n, cgp) {
     if (
-      (unique(sum_df$start_fallwinterspring) == 'Spring' & unique(sum_df$end_fallwinterspring) == 'Winter') |
+      (unique(sum_df$start_fallwinterspring) == 'Spring' && unique(sum_df$end_fallwinterspring) == 'Winter') ||
       all(is.na(sum_df$cgp))
     ) {
       return(paste(n, 'stu')) 
@@ -447,11 +449,11 @@ quealy_facet_one_subgroup <- function(
   
   e <- new.env()
   e$xlims <- xlims
-  
+
   sum_df <- sum_df %>%
     dplyr::rowwise() %>%
     dplyr::mutate(
-      cgp_label = cgp_labeler(n, cgp)  
+      cgp_label = cgp_labeler(n, cgp)
     ) %>%
     as.data.frame()
 
@@ -463,8 +465,7 @@ quealy_facet_one_subgroup <- function(
       xend = end_rit,
       y = 1,
       yend = 1
-    ),
-    environment = e
+    )
   )
   
   if (class(ref_lines) == "numeric") {
@@ -488,10 +489,10 @@ quealy_facet_one_subgroup <- function(
     size = 9,
     alpha = 0.4,
     color = 'hotpink'
-  ) +        
+  ) +
   geom_segment(
     aes(
-      size = size_scaled
+      linewidth = size_scaled
     ),
    arrow = grid::arrow(length = grid::unit(0.2 + (0.075 * sum_df$size_scaled), "cm"))
   ) +
@@ -543,11 +544,11 @@ quealy_facet_one_subgroup <- function(
     panel.grid.major.y = element_blank(),
     panel.grid.minor.y = element_blank(),
     panel.border = element_blank(),
-    panel.margin = grid::unit(0, "lines"),
+    panel.spacing = grid::unit(0, "lines"),
     plot.margin = grid::unit(c(1,1,1,1), "mm")
   ) +
   labs(x = 'RIT') +
-  scale_size_identity()
+  scale_linewidth_identity()
 
   #title
   p_title <- grob_justifier(

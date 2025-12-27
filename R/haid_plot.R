@@ -191,13 +191,13 @@ haid_plot <- function(
           insert_point <- 1
         #otherwise insert at max of i-1
         } else {
-          insert_point <- max(df[as.numeric(df$start_testquartile) < i, 'y_order'], na.rm=T) + 1
+          insert_point <- max(df[as.numeric(df$start_testquartile) < i, 'y_order'], na.rm = TRUE) + 1
         }
 
         df[df$y_order >= insert_point, 'y_order'] <- df[df$y_order >= insert_point, 'y_order'] + 1
 
         foo[ , 'y_order'] <- insert_point
-        foo[ , 'start_testritscore'] <- min(df$start_testritscore, na.rm=T)
+        foo[ , 'start_testritscore'] <- min(df$start_testritscore, na.rm = TRUE)
         foo[ , 'student_name_format'] <- ' '
 
         df <- rbind(df, foo)
@@ -222,8 +222,7 @@ haid_plot <- function(
     aes(
       x = start_testritscore,
       y = y_order
-    ),
-    environment = .e
+    )
   )
 
   #typical and college ready goal lines (want these behind segments)
@@ -507,7 +506,7 @@ haid_plot <- function(
             insert_point <- 1
           #otherwise insert at max of i-1
           } else {
-            insert_point <- max(df[as.numeric(df$start_testquartile) < i, 'y_order'], na.rm=T) + 1
+            insert_point <- max(df[as.numeric(df$start_testquartile) < i, 'y_order'], na.rm = TRUE) + 1
           }
 
           foo[, 'avg_y_dummy'] <- insert_point + 1
@@ -542,7 +541,7 @@ haid_plot <- function(
           #otherwise insert at max of i-1
           } else {
             if (length(df[df$start_testquartile < i, 'y_order']) > 0) {
-              insert_point <- max(df[df$start_testquartile < i, 'y_order'], na.rm=T) + 1
+              insert_point <- max(df[df$start_testquartile < i, 'y_order'], na.rm = TRUE) + 1
             } else {
               insert_point <- 0
             }
@@ -670,7 +669,7 @@ get_group_stats <- function(df, grp, RIT, dummy_y) {
   #a list of args to pass to summarize_
   #(read http://cran.r-project.org/web/packages/dplyr/vignettes/nse.html)
   dots <- list(
-    ~n(),
+    ~dplyr::n(),
     ~mean(dummy_y),
     ~mean(dummy_rit),
     ~dftotal
@@ -679,10 +678,12 @@ get_group_stats <- function(df, grp, RIT, dummy_y) {
   #calc the stats
   group_stats <- dummy %>%
     dplyr::group_by(dummy_group) %>%
-    dplyr::summarize_(
-      .dots = setNames(
-        dots, c('count_students', 'avg_y_dummy', 'avg_rit', 'total_count')
-      )
+    dplyr::summarize(
+      count_students = dplyr::n(),
+      avg_y_dummy = mean(dummy_y),
+      avg_rit = mean(dummy_rit),
+      total_count = dftotal,
+      .groups = 'drop'
     ) %>% as.data.frame()
 
   group_stats$pct_of_total <- group_stats$count_students / group_stats$total_count

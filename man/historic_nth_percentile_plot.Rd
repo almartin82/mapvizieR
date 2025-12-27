@@ -4,9 +4,15 @@
 \alias{historic_nth_percentile_plot}
 \title{Percent of students above a given percentile, by cohort}
 \usage{
-historic_nth_percentile_plot(mapvizieR_obj, studentids, measurementscale,
-  target_percentile = 75, first_and_spring_only = TRUE,
-  entry_grade_seasons = c(-0.8, 4.2), small_n_cutoff = 0.5)
+historic_nth_percentile_plot(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  target_percentile = 75,
+  first_and_spring_only = TRUE,
+  entry_grade_seasons = c(-0.8, 4.2),
+  small_n_cutoff = 0.5
+)
 }
 \arguments{
 \item{mapvizieR_obj}{a conforming mapvizieR object}

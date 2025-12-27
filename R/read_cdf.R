@@ -189,7 +189,7 @@ clean_cdf <- function(
     }
   }
   
-  for (i in 1:nrow(ids_df)) {
+  for (i in seq_len(nrow(ids_df))) {
     if (verbose) {
       student <- cdf_list$students_by_school[
         cdf_list$students_by_school$StudentID == ids_df[i, 'bad_id'], 
