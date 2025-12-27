@@ -3,6 +3,19 @@
 .RData
 inst/doc
 
-#ephemeral file created by testing, sometimes
+# R CMD check output
+*.Rcheck/
+..Rcheck/
+
+# Build artifacts
+*.tar.gz
+src/*.o
+src/*.so
+src/*.dll
+
+# Ephemeral files
 tests/testthat/Rplots.pdf
 *.DS_Store
+
+# Local analysis (tracked in separate private repo)
+analysis/
