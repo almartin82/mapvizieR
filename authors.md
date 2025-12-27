@@ -9,7 +9,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/almartin82/mapvizieR/blob/modernization-2025/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/almartin82/mapvizieR/blob/master/DESCRIPTION)
 
 Martin A, Haid C (2025). *mapvizieR: Visualization and Data Analysis
 Tools for NWEA MAP Student Data*. R package version 0.4.0,
