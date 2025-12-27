@@ -12,4 +12,10 @@ analysis/
 
 # R CMD check artifacts
 *.Rcheck/
+..Rcheck/
 mapvizieR_*.tar.gz
+
+# Compiled code
+src/*.o
+src/*.so
+src/*.dll
