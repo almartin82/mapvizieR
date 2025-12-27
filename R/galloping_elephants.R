@@ -35,7 +35,7 @@ galloping_elephants <- function(mapvizieR_obj,
   #b/c geom_density will error on 2 data points.
   term_counts <- munge %>%
     dplyr::group_by(grade_season_label) %>%
-    dplyr::summarize(count = n()) %>%
+    dplyr::summarize(count = dplyr::n()) %>%
     dplyr::filter(count > 2)
   
   #need SOME season with 2 or more rows
@@ -43,6 +43,7 @@ galloping_elephants <- function(mapvizieR_obj,
   
   #filter the cdf by the valid terms above
   munge <- munge %>%
+    dplyr::ungroup() %>%
     dplyr::filter(grade_season_label %in% term_counts$grade_season_label) %>%
     dplyr::mutate(grade_season_label = droplevels(grade_season_label))
   
@@ -97,7 +98,7 @@ galloping_elephants <- function(mapvizieR_obj,
     geom_point(aes(y = 0),
                alpha = 0) +
     geom_density(adjust = 1,
-                 size = 0.5,
+                 linewidth = 0.5,
                  color = 'black') +
     scale_fill_brewer(type = 'seq', palette = 'Blues') +
     scale_alpha_discrete(range = c(0.5, 0.85)) +
@@ -112,7 +113,7 @@ galloping_elephants <- function(mapvizieR_obj,
       legend.position = 'none',
       axis.text.y = element_blank(),
       axis.ticks.y = element_blank(),
-      plot.margin = rep(grid::unit(0,"null"), 4),
+      plot.margin = margin(0, 0, 0, 0),
       axis.title.x = element_blank(),
       axis.title.y = element_blank()
     )

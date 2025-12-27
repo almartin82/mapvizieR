@@ -4,9 +4,15 @@
 \alias{student_npr_two_term_plot}
 \title{A small multiples plot of a set of students' national percentile rank over two terms.}
 \usage{
-student_npr_two_term_plot(mapvizieR_obj, studentids,
-  measurementscale = "Reading", term_first, term_second, n_col = 9,
-  min_n = 10)
+student_npr_two_term_plot(
+  mapvizieR_obj,
+  studentids,
+  measurementscale = "Reading",
+  term_first,
+  term_second,
+  n_col = 9,
+  min_n = 10
+)
 }
 \arguments{
 \item{mapvizieR_obj}{a \code{\link{mapvizieR}} object}

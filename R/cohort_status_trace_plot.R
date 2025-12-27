@@ -18,14 +18,13 @@ cohort_status_trace_plot <- function(
   small_n_cutoff = -1,
   plot_labels = 'RIT'
 ) {
-  
+
   #opening parameter checks
   valid_retention <- c('collapse', 'filter_small')
-  retention_strategy %>% ensurer::ensure_that(
-    . %in% valid_retention ~
-      paste0("retention_strategy should be either one of: ", paste(valid_retention, collapse = ', '))
-  )
-  
+  if (!(retention_strategy %in% valid_retention)) {
+    cli::cli_abort(paste0("retention_strategy should be either one of: ", paste(valid_retention, collapse = ', ')))
+  }
+
   #mv consistency checks
   mv_opening_checks(mapvizieR_obj, studentids, 1)
   
@@ -40,9 +39,12 @@ cohort_status_trace_plot <- function(
   
   #summary groups by school.  if you want transfers in prior years to show as one unit, you want to collapse schools.
   if (collapse_schools) {
+    # Preserve classes through assignment
+    old_classes <- class(this_cdf)
     this_cdf$schoolname <- table(this_cdf$schoolname) %>% sort(decreasing = TRUE) %>% names() %>% magrittr::extract(1)
+    class(this_cdf) <- old_classes
   }
-    
+
   #cdf summary
   this_sum <- summary(this_cdf)
 
@@ -149,11 +151,10 @@ cohort_rit_trace_plot <- function(
 ) {
   #opening parameter checks
   valid_retention <- c('collapse', 'filter_small')
-  retention_strategy %>% ensurer::ensure_that(
-    . %in% valid_retention ~
-      paste0("retention_strategy should be either one of: ", paste(valid_retention, collapse = ', '))
-  )
-  
+  if (!(retention_strategy %in% valid_retention)) {
+    cli::cli_abort(paste0("retention_strategy should be either one of: ", paste(valid_retention, collapse = ', ')))
+  }
+
   #mv consistency checks
   mv_opening_checks(mapvizieR_obj, studentids, 1)
   
@@ -168,11 +169,14 @@ cohort_rit_trace_plot <- function(
   
   #summary groups by school.  if you want transfers in prior years to show as one unit, you want to collapse schools.
   if (collapse_schools) {
+    # Preserve classes through assignment
+    old_classes <- class(this_cdf)
     this_cdf$schoolname <- table(this_cdf$schoolname) %>% sort(decreasing = TRUE) %>% names() %>% magrittr::extract(1)
+    class(this_cdf) <- old_classes
   }
-  
+
   #cdf summary
-  this_sum <- summary.mapvizieR_cdf(this_cdf)
+  this_sum <- summary(this_cdf)
   
   if (retention_strategy == 'filter_small') {
     this_sum <- this_sum[this_sum$n_students >= small_n_cutoff * max(this_sum$n_students), ]

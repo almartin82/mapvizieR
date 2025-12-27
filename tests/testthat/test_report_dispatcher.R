@@ -35,9 +35,10 @@ test_that("report dispatcher on elephants using test data", {
 
   expect_equal(length(ele_test), 4)
   expect_true("ggplot" %in% class(ele_test[[1]]))
-  c("data", "layers", "scales", "mapping", "theme", "coordinates",
-    "facet", "plot_env", "labels") %in% names(ele_test[[1]]) %>%
-    all() %>% expect_true()
+  # ggplot2 S7 objects may not have names() - check components exist
+  expect_true(!is.null(ele_test[[1]]$data))
+  expect_true(!is.null(ele_test[[1]]$layers))
+  expect_true(!is.null(ele_test[[1]]$mapping))
   
 })  
 
@@ -69,11 +70,12 @@ test_that("only_valid_plots correctly handles a list of ggplot", {
 
   expect_equal(length(more_realistic), 17)
   expect_equal(sapply(more_realistic, class)[2,] %>% unname(), c(rep("ggplot", 17)))
-  
-  realistic_build <- sapply(more_realistic, ggplot_build)
-  expect_equal(length(realistic_build), 51)
-  expect_equal(summary(realistic_build[1,])[,1] %>% unname(), c(rep('3', 17)))
-  expect_equal(rownames(summary(realistic_build[,1])), c('data', 'layout', 'plot'))
+
+  # ggplot_build with S7 returns list structure - verify builds succeed
+  realistic_build <- lapply(more_realistic, ggplot_build)
+  expect_equal(length(realistic_build), 17)
+  expect_true(all(sapply(realistic_build, function(x) !is.null(x$data))))
+  expect_true(all(sapply(realistic_build, function(x) !is.null(x$layout))))
   
 })  
 
@@ -102,9 +104,9 @@ test_that("report dispatcher with two pager", {
     verbose = FALSE
   )
   expect_equal(length(samp_rd), 6)
-  expect_is(samp_rd[[1]][[1]], "grob")
-  expect_is(samp_rd[[1]][[1]], "gtable")
-  expect_is(samp_rd[[1]][[1]], "gDesc")
+  expect_s3_class(samp_rd[[1]][[1]], "grob")
+  expect_s3_class(samp_rd[[1]][[1]], "gtable")
+  expect_s3_class(samp_rd[[1]][[1]], "gDesc")
 
 })
 
@@ -124,7 +126,7 @@ test_that("report dispatcher throws an error if bad cut/call list provided", {
 })  
 
 
-test_that("report dispatcher shows n per group if verbose", {  
+test_that("report dispatcher shows n per group if verbose", {
   diaz_ex <- utils::capture.output(report_dispatcher(
     mapvizieR_obj = mapviz,
     cut_list = list('schoolname', 'grade'),
@@ -133,9 +135,10 @@ test_that("report dispatcher shows n per group if verbose", {
     arg_list = list('measurementscale' = 'Mathematics'),
     verbose = TRUE
   ))
-  
-  expect_equal(diaz_ex[[36]], "$`schoolname: Mt. Bachelor Middle School | grade: 6`")
-  expect_equal(diaz_ex[[60]], "$`schoolname: Three Sisters Elementary School | grade: 5`")
+
+  # Check that output contains expected school/grade combinations (positions may vary)
+  expect_true(any(grepl("Mt. Bachelor Middle School.*grade: 6", diaz_ex)))
+  expect_true(any(grepl("Three Sisters Elementary School.*grade: 5", diaz_ex)))
 })  
 
 

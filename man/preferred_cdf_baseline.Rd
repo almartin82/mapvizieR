@@ -4,8 +4,14 @@
 \alias{preferred_cdf_baseline}
 \title{composite / preferred cdf baseline}
 \usage{
-preferred_cdf_baseline(cdf, start_fws, start_year_offset, end_fws,
-  end_academic_year, start_fws_prefer)
+preferred_cdf_baseline(
+  cdf,
+  start_fws,
+  start_year_offset,
+  end_fws,
+  end_academic_year,
+  start_fws_prefer
+)
 }
 \arguments{
 \item{cdf}{conforming cdf}

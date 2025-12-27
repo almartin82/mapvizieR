@@ -65,7 +65,7 @@ amys_lists <- function(
 
   this_growth2_summary <- this_growth2 %>%
     dplyr::group_by(end_grade, measurementscale, growth_status) %>%
-    dplyr::summarise(n = n()) %>%
+    dplyr::summarise(n = dplyr::n()) %>%
     dplyr::mutate(
       tot = sum(n),
       percent = n/tot,

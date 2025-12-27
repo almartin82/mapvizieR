@@ -11,8 +11,8 @@ test_that("historic recap report produces valid plot", {
     first_and_spring_only = FALSE
   ) 
   
-  expect_is(p, 'grob')
-  expect_is(p, 'gtable')
+  expect_s3_class(p, 'grob')
+  expect_s3_class(p, 'gtable')
   expect_equal(length(p), 2)
   
   p <- historic_recap_report(
@@ -23,8 +23,8 @@ test_that("historic recap report produces valid plot", {
     first_and_spring_only = FALSE
   ) 
   
-  expect_is(p, 'grob')
-  expect_is(p, 'gtable')
+  expect_s3_class(p, 'grob')
+  expect_s3_class(p, 'gtable')
 })
 
 test_that("historic recap report detail produces valid plot", {
@@ -42,7 +42,7 @@ test_that("historic recap report detail produces valid plot", {
     entry_grade_seasons = c(-0.8, 5.2)
   ) 
   
-  expect_is(p, 'grob')
-  expect_is(p, 'gtable')
+  expect_s3_class(p, 'grob')
+  expect_s3_class(p, 'gtable')
   expect_equal(length(p), 6)
 })

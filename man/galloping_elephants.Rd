@@ -4,9 +4,14 @@
 \alias{galloping_elephants}
 \title{RIT distribution change (affectionately titled 'Galloping Elephants')}
 \usage{
-galloping_elephants(mapvizieR_obj, studentids, measurementscale,
-  first_and_spring_only = TRUE, detail_academic_year = 2014,
-  entry_grade_seasons = c(-0.8, 4.2))
+galloping_elephants(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  first_and_spring_only = TRUE,
+  detail_academic_year = 2014,
+  entry_grade_seasons = c(-0.8, 4.2)
+)
 }
 \arguments{
 \item{mapvizieR_obj}{a conforming mapvizieR object, which contains a cdf and a roster.}

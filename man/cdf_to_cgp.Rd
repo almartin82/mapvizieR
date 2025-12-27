@@ -4,8 +4,7 @@
 \alias{cdf_to_cgp}
 \title{CDF to CGP summary}
 \usage{
-cdf_to_cgp(mapvizieR_obj, cdf, grouping = "implicit_cohort",
-  norms = 2015)
+cdf_to_cgp(mapvizieR_obj, cdf, grouping = "implicit_cohort", norms = 2015)
 }
 \arguments{
 \item{mapvizieR_obj}{conforming mapvizieR object}

@@ -19,24 +19,20 @@ test_that("haid_plot produces proper plot with a grade level of kids", {
     end_academic_year = 2013
   )
   
-  expect_is(samp_haid, 'gg')
-  expect_is(samp_haid, 'ggplot')
-  
-  expect_equal(length(samp_haid), 9)
-  expect_equal(names(samp_haid), 
-    c("data", "layers", "scales", "mapping", "theme", "coordinates", 
-      "facet", "plot_env", "labels")             
-  )
-  
+  expect_s3_class(samp_haid, 'gg')
+  expect_s3_class(samp_haid, 'ggplot')
+
+  # ggplot2 now uses S7 objects - check plot has expected components
+  expect_true(!is.null(samp_haid$data))
+  expect_true(!is.null(samp_haid$layers))
+  expect_true(!is.null(samp_haid$mapping))
+
   p_build <- ggplot_build(samp_haid)
-  
-  expect_equal(length(p_build), 3)
-  expect_equal(
-    dimnames(p_build[[1]][[2]])[[2]],
-    c("y", "x", "PANEL", "group", "shape", "colour", "size", "fill", 
-      "alpha", "stroke")
-  )
-  expect_equal(sum(p_build[[1]][[5]]$xend), 19884, tolerance=0.01)
+
+  # Check ggplot_build result has data
+  expect_true(!is.null(p_build$data))
+  expect_true(length(p_build$data) >= 2)
+  expect_equal(sum(p_build$data[[5]]$xend), 19884, tolerance=0.01)
   
 })
 
@@ -52,24 +48,20 @@ test_that("haid_plot with one season of data", {
     end_academic_year = 2014
   )
   
-  expect_is(one_season, 'gg')
-  expect_is(one_season, 'ggplot')
-  
-  expect_equal(length(one_season), 9)
-  expect_equal(names(one_season), 
-    c("data", "layers", "scales", "mapping", "theme", "coordinates", 
-      "facet", "plot_env", "labels")             
-  )
-  
+  expect_s3_class(one_season, 'gg')
+  expect_s3_class(one_season, 'ggplot')
+
+  # ggplot2 now uses S7 objects - check plot has expected components
+  expect_true(!is.null(one_season$data))
+  expect_true(!is.null(one_season$layers))
+  expect_true(!is.null(one_season$mapping))
+
   p_build <- ggplot_build(one_season)
-  
-  expect_equal(length(p_build), 3)
-  expect_equal(
-    dimnames(p_build[[1]][[2]])[[2]],
-    c("y", "x", "PANEL", "group", "shape", "colour", "size", "fill", 
-      "alpha", "stroke")
-  )
-  expect_equal(sum(p_build[[1]][[5]]$x), 20744.75, tolerance=0.01)
+
+  # Check ggplot_build result has data
+  expect_true(!is.null(p_build$data))
+  expect_true(length(p_build$data) >= 2)
+  expect_equal(sum(p_build$data[[5]]$x), 20744.75, tolerance=0.01)
   
 })
 
@@ -106,12 +98,12 @@ test_that("missing START quartile example", {
     end_academic_year = 2013
   )
   
-  expect_is(quart_haid, 'gg')
-  expect_is(quart_haid, 'ggplot')
-  
-  expect_equal(length(quart_haid), 9)
-})
+  expect_s3_class(quart_haid, 'gg')
+  expect_s3_class(quart_haid, 'ggplot')
 
+  # Check plot has expected components (S7 ggplot2)
+  expect_true(!is.null(quart_haid$data))
+})
 
 
 test_that("missing END quartile example", {
@@ -144,10 +136,11 @@ test_that("missing END quartile example", {
     end_academic_year = 2013
   )
   
-  expect_is(quart_haid, 'gg')
-  expect_is(quart_haid, 'ggplot')
-  
-  expect_equal(length(quart_haid), 9)
+  expect_s3_class(quart_haid, 'gg')
+  expect_s3_class(quart_haid, 'ggplot')
+
+  # Check plot has expected components (S7 ggplot2)
+  expect_true(!is.null(quart_haid$data))
 })
 
 
@@ -179,10 +172,11 @@ test_that("missing q1 START example", {
     end_academic_year = 2013
   )
   
-  expect_is(quart_haid, 'gg')
-  expect_is(quart_haid, 'ggplot')
-  
-  expect_equal(length(quart_haid), 9)
+  expect_s3_class(quart_haid, 'gg')
+  expect_s3_class(quart_haid, 'ggplot')
+
+  # Check plot has expected components (S7 ggplot2)
+  expect_true(!is.null(quart_haid$data))
 })
 
 

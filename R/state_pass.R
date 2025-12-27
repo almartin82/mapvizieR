@@ -29,15 +29,13 @@ ny_pass_prob <- function(mapvizieR_obj) {
 #' @export
 
 state_pass_prob <- function(mapvizieR_obj, state_test = 'NY') {
- 
+
   valid_state_tests <- c('NY')
-  state_test %>% ensurer::ensure_that(
-    . %in% valid_state_tests ~ 
-      paste0("currently supported state tests are: ", 
+  if (!(state_test %in% valid_state_tests)) {
+    cli::cli_abort(paste0("currently supported state tests are: ",
              paste(valid_state_tests, collapse = ', '),
-             ' file a github issue for your state assessment!'
-      )
-  )
+             ' file a github issue for your state assessment!'))
+  }
   
   do.call(
     paste0(tolower(state_test), '_pass_prob'), list('mapvizieR_obj' = mapvizieR_obj)

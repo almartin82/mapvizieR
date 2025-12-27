@@ -5,8 +5,8 @@ test_that("localization function works as expected", {
   knj <- localize("Newark", verbose = TRUE)
   def <- localize("Toronto", verbose = TRUE)
   
-  expect_is(knj, 'list')
-  expect_is(def, 'list')
+  expect_type(knj, 'list')
+  expect_type(def, 'list')
   
   expect_equal(def$act_cuts, c(11, 16, 18, 22, 25, 29))
   

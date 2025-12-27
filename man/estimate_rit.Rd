@@ -4,9 +4,15 @@
 \alias{estimate_rit}
 \title{estimate RIT score for a student using regression or interpolation}
 \usage{
-estimate_rit(mapvizieR_obj, studentid, measurementscale, target_date,
-  method = c("closest", "lm", "interpolate"), num_days = 180,
-  forward = TRUE)
+estimate_rit(
+  mapvizieR_obj,
+  studentid,
+  measurementscale,
+  target_date,
+  method = c("closest", "lm", "interpolate"),
+  num_days = 180,
+  forward = TRUE
+)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

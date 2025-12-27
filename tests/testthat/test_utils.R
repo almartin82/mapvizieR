@@ -103,7 +103,7 @@ test_that("standardize_kinder translates kinder codes properly", {
     expected_grades_k_kinder
   )
 
-  expect_is(standardize_kinder(grades_k), "integer")
+  expect_type(standardize_kinder(grades_k), "integer")
 
   expect_equal(length(standardize_kinder(roster$grade)), nrow(roster))
 })
@@ -200,7 +200,7 @@ test_that("is_error and is_not_error tags properly", {
 
 
 test_that("rand_stu gets students", {
-  expect_is(rand_stu(mapviz), 'character')
+  expect_type(rand_stu(mapviz), 'character')
 
   expect_true(
     all(rand_stu(mapviz) %in% mapviz[['roster']]$studentid)

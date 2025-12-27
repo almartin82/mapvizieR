@@ -4,8 +4,13 @@
 \alias{growth_norm_lookup}
 \title{growth_norm_lookup}
 \usage{
-growth_norm_lookup(incomplete_growth_df, processed_cdf, norm_df_long,
-  include_unsanctioned_windows, ...)
+growth_norm_lookup(
+  incomplete_growth_df,
+  processed_cdf,
+  norm_df_long,
+  include_unsanctioned_windows,
+  ...
+)
 }
 \arguments{
 \item{incomplete_growth_df}{a growth df in process.  needs to have growth

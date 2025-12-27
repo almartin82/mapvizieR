@@ -4,8 +4,12 @@
 \alias{valid_grade_seasons}
 \title{valid_grade_seasons}
 \usage{
-valid_grade_seasons(cdf, first_and_spring_only = TRUE,
-  entry_grade_seasons = c(-0.8, 4.2), detail_academic_year = 2014)
+valid_grade_seasons(
+  cdf,
+  first_and_spring_only = TRUE,
+  entry_grade_seasons = c(-0.8, 4.2),
+  detail_academic_year = 2014
+)
 }
 \arguments{
 \item{cdf}{a processed cdf}

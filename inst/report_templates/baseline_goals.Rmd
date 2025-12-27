@@ -1,17 +1,17 @@
 ---
-output: 
+output:
   word_document:
     reference_docx: "../inst/report_templates/slim_template.docx"
 params:
-   mv: !r NA
-   studentids: !r NA
-   grade: !r NA
+   mv: NULL
+   studentids: NULL
+   grade: NULL
    growth_percentile_target: 80
    measurementscale: 'Reading'
    baseline: 'Spring 2015-2016'
    endpoint: 'Spring 2016-2017'
-   linking_chart: !r NA
-   linking_data: !r NA
+   linking_chart: NULL
+   linking_data: NULL
 ---
 
 ---

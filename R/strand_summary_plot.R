@@ -136,18 +136,18 @@ goal_strand_summary_plot <- function(
   
   # time to gather
   m_goal_names_long <- m_goal_names %>%
-    tidyr::gather(key = variable, value = goal_name, goal1name:goal8name) %>%
+    tidyr::pivot_longer(cols = goal1name:goal8name, names_to = "variable", values_to = "goal_name") %>%
     dplyr::mutate(goal_name = ifelse(goal_name == "", NA, goal_name))
-  
-  
+
+
   m_goal_scores_long <- m_goal_scores %>%
-    tidyr::gather(key = variable, value = goal_score, goal1ritscore:goal8ritscore)
-  
+    tidyr::pivot_longer(cols = goal1ritscore:goal8ritscore, names_to = "variable", values_to = "goal_score")
+
   m_goal_stderr_long <- m_goal_stderr %>%
-    tidyr::gather(key = variable, value = goal_stderr, goal1stderr:goal8stderr)
-  
+    tidyr::pivot_longer(cols = goal1stderr:goal8stderr, names_to = "variable", values_to = "goal_stderr")
+
   m_goal_range_long <- m_goal_range %>%
-    tidyr::gather(key = variable, value = goal_range, goal1range:goal8range)
+    tidyr::pivot_longer(cols = goal1range:goal8range, names_to = "variable", values_to = "goal_range")
   
   
   m_goals <- m_goal_names_long %>%
@@ -167,11 +167,11 @@ goal_strand_summary_plot <- function(
               mean_stderr = round(sqrt(mean((goal_stderr ^ 2))),1),
               mean_low = mean(goal_low),
               mean_high = mean(goal_high),
-              n_students = n()) %>%
+              n_students = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::filter(n_students>20)
   
-  if (spring_is_first & any(cohort == FALSE)) {
+  if (spring_is_first && any(cohort == FALSE)) {
     goals_summary_by_school <- goals_summary_by_school %>%
       dplyr::mutate(
         fws = ifelse(fallwinterspring=="Spring", 

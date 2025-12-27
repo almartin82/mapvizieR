@@ -4,10 +4,10 @@
 \alias{ensure_roster_names}
 \title{ensure_roster_names}
 \usage{
-ensure_roster_names(.)
+ensure_roster_names(roster)
 }
 \arguments{
-\item{.}{dot-placeholder, per ensurer doc.}
+\item{roster}{roster data frame to check}
 }
 \description{
 does the roster have a studentid and grade field?

@@ -89,13 +89,13 @@ summary.mapvizieR_growth <- function(object, ...) {
   
   if (!all(required_test)) {
     all_groups <- c(required, existing_groups) %>% unique()
-    object <- object %>% dplyr::group_by_(.dots = all_groups)
+    object <- object %>% dplyr::group_by(!!!rlang::syms(all_groups))
   }
   
   mapSummary <- object %>% 
     dplyr::filter(complete_obsv) %>%
     dplyr::summarize(
-      n_students = n(),
+      n_students = dplyr::n(),
       n_typical = sum(met_typical_growth, na.rm = TRUE),
       pct_typical = round(n_typical/n_students, digits),
       n_accel_growth = sum(met_accel_growth, na.rm = TRUE),
@@ -135,7 +135,7 @@ summary.mapvizieR_growth <- function(object, ...) {
   mapSummary$start_cohort_status_npr <- NA_integer_
   mapSummary$end_cohort_status_npr <- NA_integer_
   
-  for (i in 1:nrow(mapSummary)) {
+  for (i in seq_len(nrow(mapSummary))) {
     mapSummary[i, ]$start_cohort_status_npr <- cohort_mean_rit_to_npr(
       mapSummary[i, ]$measurementscale, 
       mapSummary[i, ]$start_grade, 
@@ -193,22 +193,22 @@ summary.mapvizieR_cdf <- function(object, ...) {
   
   if (!all(required_test)) {
     all_groups <- c(required, existing_groups) %>% unique()
-    object <- object %>% dplyr::tbl_df() %>% dplyr::group_by_(.dots = all_groups)
+    object <- object %>% tibble::as_tibble() %>% dplyr::group_by(!!!rlang::syms(all_groups))
   }
   
   df <- object %>%
     dplyr::summarize(
       mean_testritscore = mean(testritscore, na.rm = TRUE),
       mean_percentile = mean(consistent_percentile, na.rm = TRUE),
-      n_students = n(),
-      pct_50th_pctl = round(sum(consistent_percentile >= 50)/n(),2),
-      pct_75th_pctl = round(sum(consistent_percentile >= 75)/n(),2)
+      n_students = dplyr::n(),
+      pct_50th_pctl = round(sum(consistent_percentile >= 50)/dplyr::n(),2),
+      pct_75th_pctl = round(sum(consistent_percentile >= 75)/dplyr::n(),2)
     ) 
   
   df$cohort_status_npr <- rep(NA_integer_, nrow(df))
   
   if (nrow(df) > 0) {
-    for (i in 1:nrow(df)) {
+    for (i in seq_len(nrow(df))) {
       df[i, ]$cohort_status_npr <- cohort_mean_rit_to_npr(
         df[i, ]$measurementscale, 
         df[i, ]$grade, 

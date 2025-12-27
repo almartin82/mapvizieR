@@ -42,7 +42,7 @@ historic_nth_percentile_plot <- function(
   to_keep <- this_cdf %>%
     dplyr::group_by(cohort, grade_level_season) %>%
     dplyr::summarize(
-      n = n()
+      n = dplyr::n()
     ) %>%
     dplyr::group_by(cohort) %>%
     #only per cohort that is above the small n cutoff

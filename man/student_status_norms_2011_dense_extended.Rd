@@ -4,13 +4,15 @@
 \name{student_status_norms_2011_dense_extended}
 \alias{student_status_norms_2011_dense_extended}
 \title{student_status_norms_2011_dense_extended 2011 norm data densified and extended}
-\format{\describe{
+\format{
+\describe{
 \item{measurementscale}{measurementscale}
 \item{fallwinterspring}{fallwinterspring}
 \item{grade}{grade}
 \item{RIT}{RIT}
 \item{student_percentile}{student_percentile}
-}}
+}
+}
 \source{
 http://support.nwea.org/support/article/rit-scale-norms-study-data-files
 }

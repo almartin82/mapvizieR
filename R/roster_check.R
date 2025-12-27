@@ -15,52 +15,60 @@
 
 check_roster <- function(roster) {
   #column/header names
-  all_checks <- is.data.frame(
-    roster %>%
-      ensure_roster_names %>%
-      ensure_roster_types
-  )
-  
+  ensure_roster_names(roster)
+  ensure_roster_types(roster)
+
+  all_checks <- is.data.frame(roster)
+
   return(all_checks)
 }
 
 
 
 #' @title ensure_roster_names
-#' 
+#'
 #' @description does the roster have a studentid and grade field?
-#' 
-#' @inheritParams ensure_is_mapvizieR
+#'
+#' @param roster roster data frame to check
 
-ensure_roster_names <- ensurer::ensures_that(
-    c('studentid') %in% names(.) ~ 
-      "check your roster - it must have a field named studentid.",
-    
-    c('grade') %in% names(.) ~ 
-      "check your roster - it must have a field named grade.",
-    
-    all(c('studentlastname', 'studentfirstname') %in% names(.)) ~
-      "check your roster - it must have fields named 'studentlastname' and 'studentfirstname'.",
-    
-    all(c('studentlastfirst', 'studentfirstlast') %in% names(.)) ~
-      "check your roster - it must have fields named 'studentlastfirst' and 'studentfirstlast'.\n
-       these fields are built by `prep_roster()` if reading from NWEA files.\n
-       if you are generating your own roster file, please include these fields."
-)
+ensure_roster_names <- function(roster) {
+  if (!('studentid' %in% names(roster))) {
+    cli::cli_abort("check your roster - it must have a field named studentid.")
+  }
+
+  if (!('grade' %in% names(roster))) {
+    cli::cli_abort("check your roster - it must have a field named grade.")
+  }
+
+  if (!all(c('studentlastname', 'studentfirstname') %in% names(roster))) {
+    cli::cli_abort("check your roster - it must have fields named 'studentlastname' and 'studentfirstname'.")
+  }
+
+  if (!all(c('studentlastfirst', 'studentfirstlast') %in% names(roster))) {
+    cli::cli_abort("check your roster - it must have fields named 'studentlastfirst' and 'studentfirstlast'.\n       these fields are built by `prep_roster()` if reading from NWEA files.\n       if you are generating your own roster file, please include these fields.")
+  }
+
+  invisible(roster)
+}
 
 
 
 #' @title ensure_roster_types
-#' 
+#'
 #' @description checks if certain roster fields are of the correct type
-#' 
-#' @inheritParams ensure_is_mapvizieR
+#'
+#' @param roster roster data frame to check
 
-ensure_roster_types <- ensurer::ensures_that(  
-  class(.$grade) == "integer" ~ 
-    "check type on grade field, should be integer.",
-  class(.$map_year_academic) == "integer" ~ 
-    "check type on map_year_academic field, should be integer.",
-  class(.$fallwinterspring) == "character" ~ 
-    "check type on fallwinterspring, should be character."
-)
+ensure_roster_types <- function(roster) {
+  if (class(roster$grade) != "integer") {
+    cli::cli_abort("check type on grade field, should be integer.")
+  }
+  if (class(roster$map_year_academic) != "integer") {
+    cli::cli_abort("check type on map_year_academic field, should be integer.")
+  }
+  if (class(roster$fallwinterspring) != "character") {
+    cli::cli_abort("check type on fallwinterspring, should be character.")
+  }
+
+  invisible(roster)
+}

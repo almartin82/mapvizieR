@@ -1,3 +1,78 @@
+# mapvizieR 0.4.0 (2025-12-25)
+
+## Major Changes
+
+This is a major modernization release that updates mapvizieR for compatibility
+with current R package ecosystem standards.
+
+### Breaking Changes
+
+* **Minimum R version increased to 4.1.0** for native pipe support and modern features.
+* **Removed `ensurer` dependency** - the package was archived on CRAN. All validation
+  now uses `cli` and `rlang` for better error messages.
+* **ggplot2 >= 3.4.0 required** - updated all plots to use `linewidth` instead of
+  deprecated `size` parameter for line elements.
+* **dplyr >= 1.1.0 required** - replaced all deprecated scoped verbs (`summarize_()`,
+  `group_by_()`, etc.) with modern equivalents using `.data[[var]]` syntax.
+
+### New Features
+
+* **New `theme_mapvizier()` function** - Provides consistent theming across all
+  mapvizieR visualizations. Use it to match the package's visual style.
+* **New color scale functions**:
+  - `scale_fill_quartile()` - Consistent quartile fill colors
+  - `scale_color_quartile()` - Consistent quartile point/line colors
+  - `scale_fill_growth()` - Growth status colors
+* **New color palette functions**:
+  - `mapvizier_quartile_colors()` - Returns quartile color palette
+  - `mapvizier_growth_colors()` - Returns growth status colors
+  - `mapvizier_kipp_colors()` - Returns KIPP-style quartile colors
+* **GitHub Actions CI/CD** - Package now uses modern GitHub Actions workflows for
+  automated testing, coverage reporting, and pkgdown documentation.
+* **pkgdown documentation site** - Full documentation now available at
+  https://almartin82.github.io/mapvizieR
+
+### Bug Fixes
+
+* Fixed deprecation warnings from ggplot2 3.4+:
+  - `panel.margin` -> `panel.spacing`
+  - `size` -> `linewidth` for line geoms
+  - Removed deprecated `environment` parameter from ggplot() calls
+* Fixed deprecation warnings from dplyr 1.0+:
+  - `summarize_()` -> `summarize()` with `.data` pronoun
+  - `group_by_()` -> `group_by()` with `.data` pronoun
+  - `select_()` -> `select()` with `all_of()`
+  - `tbl_df()` -> removed (tibbles work directly)
+* Fixed margin specification using `margin()` instead of deprecated `unit()` pattern.
+* Improved error messages throughout with actionable guidance.
+
+### Documentation
+
+* Updated README with installation instructions and quick start guide.
+* All exported functions now have complete roxygen2 documentation.
+* Added pkgdown site with organized reference and articles.
+* Updated vignettes to use modern syntax.
+
+### Testing
+
+* Added testthat 3rd edition support.
+* Added infrastructure for vdiffr visual regression tests.
+* Improved test coverage for visualization functions.
+
+### Deprecated
+
+* The `norms = 2011` option is deprecated and will be removed in a future version.
+  Please use `norms = 2015` or update to newer norms when available.
+
+---
+
+# mapvizieR 0.3.7
+
+* Minor maintenance release.
+* Fixed calculation of end_n_75th_pctl in growth_summary.
+* Added rounding improvements.
+* Added new metrics to cdf_summary.
+
 # mapvizieR 0.3.6
 
 * `summary()` methods for `growth_df` and `cdf` now respect incoming `dplyr` groupings.

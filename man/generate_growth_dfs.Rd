@@ -4,9 +4,11 @@
 \alias{generate_growth_dfs}
 \title{generate_growth_df}
 \usage{
-generate_growth_dfs(processed_cdf,
+generate_growth_dfs(
+  processed_cdf,
   norm_df_long = norms_students_wide_to_long(student_growth_norms_2015),
-  include_unsanctioned_windows = FALSE)
+  include_unsanctioned_windows = FALSE
+)
 }
 \arguments{
 \item{processed_cdf}{a conforming processed_cdf data frame}

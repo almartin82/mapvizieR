@@ -5,14 +5,16 @@
 \alias{status_norms_2015}
 \title{status_norms_2015 NWEA student and school status (or, attainment) 
 norms data (2015 study)}
-\format{\describe{
+\format{
+\describe{
 \item{measurementscale}{measurementscale}
 \item{fallwinterspring}{fallwinterspring}
 \item{grade}{grade}
 \item{RIT}{RIT}
 \item{student_percentile}{student_percentile}
 \item{school_percentile}{school_percentile}
-}}
+}
+}
 \source{
 http://support.nwea.org/support/article/rit-scale-norms-study-data-files
 }

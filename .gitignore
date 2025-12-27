@@ -9,6 +9,7 @@ inst/doc
 
 # Build artifacts
 *.tar.gz
+mapvizieR_*.tar.gz
 src/*.o
 src/*.so
 src/*.dll

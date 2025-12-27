@@ -204,7 +204,7 @@ goalbar <- function(
   g_sum <- g_plot %>%
     dplyr::group_by(goal_status, goal_color, status_ordered) %>%
     dplyr::summarize(
-      count = n(),
+      count = dplyr::n(),
       label_disp = paste0('(', round(count / nrow(g_plot) * 100, 0), '%)')
     ) %>%
     #this was tricky!

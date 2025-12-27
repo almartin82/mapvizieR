@@ -4,12 +4,20 @@
 \alias{bulk_student_1year_goal_plot}
 \title{Bulk generates student goal plots}
 \usage{
-bulk_student_1year_goal_plot(mapvizieR_obj, studentids, measurementscale,
-  labels_at_grade, start_grade, end_grade, growth_window,
-  localization = localize("Newark"), aspect_ratio = 1,
-  annotation_style = "small numbers", line_style = "gray lines",
-  title_text = paste("2. What are my 2015-16 goals?", measurementscale,
-  "\\n"))
+bulk_student_1year_goal_plot(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  labels_at_grade,
+  start_grade,
+  end_grade,
+  growth_window,
+  localization = localize("Newark"),
+  aspect_ratio = 1,
+  annotation_style = "small numbers",
+  line_style = "gray lines",
+  title_text = paste("2. What are my 2015-16 goals?", measurementscale, "\\n")
+)
 }
 \arguments{
 \item{mapvizieR_obj}{a conforming mapvizieR object}

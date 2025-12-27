@@ -5,10 +5,18 @@
 \title{Shows a cohort's progress over time.  Similar to cohort_cgp_hist,
 but uses the 2015 school grade level attainment/status norms.}
 \usage{
-alt_cohort_cgp_hist_plot(mapvizieR_obj, studentids, measurementscale,
-  match_method = "no matching", first_and_spring_only = TRUE,
-  entry_grade_seasons = c(-0.8, 4.2), primary_cohort_only = TRUE,
-  small_n_cutoff = 0.5, no_labs = FALSE, plot_labels = "RIT")
+alt_cohort_cgp_hist_plot(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  match_method = "no matching",
+  first_and_spring_only = TRUE,
+  entry_grade_seasons = c(-0.8, 4.2),
+  primary_cohort_only = TRUE,
+  small_n_cutoff = 0.5,
+  no_labs = FALSE,
+  plot_labels = "RIT"
+)
 }
 \arguments{
 \item{mapvizieR_obj}{conforming mapvizieR obj}

@@ -9,7 +9,9 @@ test_that("cgp_table works", {
     start_academic_year = 2013,
     end_fws = 'Spring',
     end_academic_year = 2013
-  )  
+  )
+  # Verify cgp_table returns expected structure
+  expect_true("gtable" %in% class(ex_cgp) || "grob" %in% class(ex_cgp))
 })
 
 

@@ -64,8 +64,7 @@ growth_histogram <- function(
     data = this_growth,
     aes(
       x = sgp * 100
-    ),
-    environment = e
+    )
   ) +
   geom_text(
     data = NULL,

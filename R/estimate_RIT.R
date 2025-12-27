@@ -93,7 +93,7 @@ estimate_rit <- function(
   } else if (method == 'lm') {
     fit <- lm(testritscore~teststartdate,student)
     
-    if (target_date < min(student$teststartdate) | target_date > max(student$teststartdate)) {
+    if (target_date < min(student$teststartdate) || target_date > max(student$teststartdate)) {
       
       warning('estimating score before earliest or after latest teststartdate')
       return(round(predict(fit,newdata = predict_date)))
@@ -104,7 +104,7 @@ estimate_rit <- function(
       
     }
     
-  } else if (method == 'interpolate' & (target_date < min(student$teststartdate) | target_date > max(student$teststartdate))) {
+  } else if (method == 'interpolate' && (target_date < min(student$teststartdate) || target_date > max(student$teststartdate))) {
     
     warning('Cannot interpolate for a date before earliest or after latest teststartdate')
     return(NA)

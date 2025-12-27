@@ -42,7 +42,7 @@ fall_goals_report <- function(
 ) {
   
   #placeholder
-  minimal = rectGrob(gp = gpar(col = "white"))
+  minimal = grid::rectGrob(gp = grid::gpar(col = "white"))
   
   report_list <- list()
   counter <- 1
@@ -322,12 +322,12 @@ fall_goals_report <- function(
   specific_growth <- data.frame(
     grade_seq = specific_growth$grade_seq,
     rit = specific_growth$rit_seq,
-    rowids = c(1:length(specific_growth$rit_seq))
+    rowids = seq_along(specific_growth$rit_seq)
   )
   
   specific_growth <- specific_growth %>%
     dplyr::mutate(
-      next_rit = lead(rit), 
+      next_rit = dplyr::lead(rit), 
       year_y = (rit + next_rit) / 2,
       year_label = end_academic_year + rowids
     )

@@ -4,8 +4,13 @@
 \alias{ny_linking}
 \title{ny linking}
 \usage{
-ny_linking(measurementscale, current_grade, season, RIT,
-  returns = "perf_level")
+ny_linking(
+  measurementscale,
+  current_grade,
+  season,
+  RIT,
+  returns = "perf_level"
+)
 }
 \arguments{
 \item{measurementscale}{MAP subject}

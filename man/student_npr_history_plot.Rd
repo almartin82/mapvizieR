@@ -4,8 +4,12 @@
 \alias{student_npr_history_plot}
 \title{A small multiples plot of a set of students' national percentile rank histories.}
 \usage{
-student_npr_history_plot(mapvizieR_obj, studentids, measurementscale,
-  title_text = "")
+student_npr_history_plot(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  title_text = ""
+)
 }
 \arguments{
 \item{mapvizieR_obj}{a \code{\link{mapvizieR}} object}

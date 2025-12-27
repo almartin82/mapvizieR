@@ -4,10 +4,10 @@
 \alias{ensure_rows_in_df}
 \title{ensure_rows_in_df}
 \usage{
-ensure_rows_in_df(.)
+ensure_rows_in_df(df)
 }
 \arguments{
-\item{.}{dot-placeholder, per ensurer doc.}
+\item{df}{data frame to check}
 }
 \description{
 a contract that verifies that a data set isn't length zero

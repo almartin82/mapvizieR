@@ -4,7 +4,8 @@
 \name{ex_CombinedAssessmentResults_pre_2015}
 \alias{ex_CombinedAssessmentResults_pre_2015}
 \title{example ex_CombinedAssessmentResults_pre_2015 file (formerly Comprehensive Data File)}
-\format{\describe{
+\format{
+\describe{
 \item{TermName}{TermName}
 \item{StudentID}{StudentID}
 \item{SchoolName}{SchoolName}
@@ -69,7 +70,8 @@
 \item{TestStartTime}{TestStartTime}
 \item{PercentCorrect}{PercentCorrect}
 \item{ProjectedProficiency}{ProjectedProficiency}
-}}
+}
+}
 \source{
 NWEA MAP partner support team (thanks!)
 }

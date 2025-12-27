@@ -172,7 +172,7 @@ rit_height_weight_npr <- function(
       alpha = ribbon_alpha
     )
  
-   for (i in 1:length(e$ribbons)) {
+   for (i in seq_along(e$ribbons)) {
      new_rib_name <- paste('rib', e$ribbons[i], sep = '_')
      #make ribbon
      inner_ribbon <- ggplot2::geom_ribbon(
@@ -186,10 +186,9 @@ rit_height_weight_npr <- function(
      assign(new_rib_name, inner_ribbon, envir = e)
    }
  
-  #base ggplot 
+  #base ggplot
   p <- ggplot(
-    data = e$norms_dense %>% dplyr::filter(student_percentile %in% e$nprs), 
-    environment = e
+    data = e$norms_dense %>% dplyr::filter(student_percentile %in% e$nprs)
     )
   
   #annotation style options
@@ -218,13 +217,13 @@ rit_height_weight_npr <- function(
   if (grepl('gray lines', line_style)) {
     npr_lines <- geom_line(
         aes(x = grade_level_season, y = RIT, group = student_percentile),
-        size = 0.5,
+        linewidth = 0.5,
         color = 'gray80'
       )
   } else if (grepl('gray dashed', line_style)) {
      npr_lines <- geom_line(
         aes(x = grade_level_season, y = RIT, group = student_percentile),
-        size = 0.5,
+        linewidth = 0.5,
         color = 'gray80',
         lty = 'dashed'
       ) 
@@ -405,10 +404,9 @@ rit_height_weight_ACT <- function(
       ribbon_names = c(ribbon_names, new_rib_name)
   }
       
-  #base ggplot 
+  #base ggplot
   p <- ggplot(
-    data = act_df[act_df$act %in% localization$act_cuts, ],
-    environment = e
+    data = act_df[act_df$act %in% localization$act_cuts, ]
   ) +
   theme_bw()
   
@@ -458,9 +456,9 @@ rit_height_weight_ACT <- function(
       aes(
         x = grade,
         y = rit,
-        group = act        
+        group = act
       ),
-      size = 0.5,
+      linewidth = 0.5,
       color = 'gray80'
     )
   } else if (grepl('gray dashed', line_style)) {
@@ -469,9 +467,9 @@ rit_height_weight_ACT <- function(
       aes(
         x = grade,
         y = rit,
-        group = act        
+        group = act
       ),
-      size = 0.5,
+      linewidth = 0.5,
       color = 'gray80',
       lty = 'dashed'
     )
@@ -559,12 +557,12 @@ stu_RIT_hist_plot_elements <- function(stu_rit_history, decode_ho = TRUE) {
       y = testritscore
     ),
     data = stu_rit_history,
-    size = 1.5
+    linewidth = 1.5
   )
-  
+
   #line that drops non-entry fall
   stu_rit_history_nofall <- stu_rit_history %>% dplyr::filter(
-    fallwinterspring %in% c('Spring', 'Winter') | 
+    fallwinterspring %in% c('Spring', 'Winter') |
     (fallwinterspring == 'Fall' & grade == min(grade))
   )
 
@@ -574,21 +572,21 @@ stu_RIT_hist_plot_elements <- function(stu_rit_history, decode_ho = TRUE) {
       y = testritscore
     ),
     data = stu_rit_history_nofall,
-    size = 1.5
-  )  
-  
+    linewidth = 1.5
+  )
+
   #line that drops non-entry fall AND winter
   stu_rit_history_nofall_nowinter <- stu_rit_history %>% dplyr::filter(
     fallwinterspring == 'Spring' | (fallwinterspring == 'Fall' & grade == min(grade))
   )
-  
+
   rit_hist_line_nofall_nowinter <- geom_line(
     aes(
       x = grade_level_season,
       y = testritscore
     ),
     data = stu_rit_history_nofall_nowinter,
-    size = 1.5
+    linewidth = 1.5
   )  
 
   #show test events
@@ -1029,7 +1027,7 @@ build_student_1year_goal_plot <- function(
   
   p <- base_plot + college_labels
   
-  p <- p + 
+  p <- p +
     geom_polygon(
       data = whole_triangle,
       aes(x, y),
@@ -1038,41 +1036,41 @@ build_student_1year_goal_plot <- function(
       alpha = sgp_alpha
     ) +
     geom_line(
-      data = data.frame(x = c(x1, x2), y = c(y1, y2)), 
-      aes(x, y), 
-      size = 0.5,
-      lty = tri_lty,
-      color = tri_color,
-      alpha = tri_alpha
-    ) +
-    geom_line(
-      data = data.frame(x = c(x1, x3), y = c(y1, y3)), 
+      data = data.frame(x = c(x1, x2), y = c(y1, y2)),
       aes(x, y),
-      size = 0.5,
+      linewidth = 0.5,
       lty = tri_lty,
       color = tri_color,
       alpha = tri_alpha
     ) +
     geom_line(
-      data = data.frame(x = c(x1, x4), y = c(y1, y4)), 
-      aes(x, y), 
-      size = 0.5,
+      data = data.frame(x = c(x1, x3), y = c(y1, y3)),
+      aes(x, y),
+      linewidth = 0.5,
       lty = tri_lty,
       color = tri_color,
       alpha = tri_alpha
     ) +
     geom_line(
-      data = data.frame(x = c(x1, x5), y = c(y1, y5)), 
-      aes(x, y), 
-      size = 0.5,
+      data = data.frame(x = c(x1, x4), y = c(y1, y4)),
+      aes(x, y),
+      linewidth = 0.5,
       lty = tri_lty,
       color = tri_color,
       alpha = tri_alpha
     ) +
     geom_line(
-      data = data.frame(x = c(x1, x6), y = c(y1, y6)), 
-      aes(x, y), 
-      size = 0.5,
+      data = data.frame(x = c(x1, x5), y = c(y1, y5)),
+      aes(x, y),
+      linewidth = 0.5,
+      lty = tri_lty,
+      color = tri_color,
+      alpha = tri_alpha
+    ) +
+    geom_line(
+      data = data.frame(x = c(x1, x6), y = c(y1, y6)),
+      aes(x, y),
+      linewidth = 0.5,
       lty = tri_lty,
       color = tri_color,
       alpha = tri_alpha

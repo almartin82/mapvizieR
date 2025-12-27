@@ -4,9 +4,17 @@
 \alias{mapviz_cgp}
 \title{mapvizieR interface to simplify CGP calculations, for one target term}
 \usage{
-mapviz_cgp(mapvizieR_obj, studentids, measurementscale, start_fws,
-  start_academic_year, end_fws, end_academic_year, norms = 2015,
-  use_complete_obsv = TRUE)
+mapviz_cgp(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  start_fws,
+  start_academic_year,
+  end_fws,
+  end_academic_year,
+  norms = 2015,
+  use_complete_obsv = TRUE
+)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

@@ -4,9 +4,18 @@
 \alias{schambach_table_1d}
 \title{schambach_table}
 \usage{
-schambach_table_1d(mapvizieR_obj, measurementscale_in, studentids,
-  subgroup_cols = c("grade"), pretty_names = c("Grade"), start_fws,
-  start_academic_year, end_fws, end_academic_year, complete_obsv = FALSE)
+schambach_table_1d(
+  mapvizieR_obj,
+  measurementscale_in,
+  studentids,
+  subgroup_cols = c("grade"),
+  pretty_names = c("Grade"),
+  start_fws,
+  start_academic_year,
+  end_fws,
+  end_academic_year,
+  complete_obsv = FALSE
+)
 }
 \arguments{
 \item{mapvizieR_obj}{mapvizieR object}

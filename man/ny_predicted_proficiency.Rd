@@ -4,14 +4,16 @@
 \name{ny_predicted_proficiency}
 \alias{ny_predicted_proficiency}
 \title{ny predicted proficiency}
-\format{\describe{
+\format{
+\describe{
 \item{ny_subj}{ny_subj}
 \item{ny_grade}{ny_grade}
 \item{ny_season}{ny_season}
 \item{ny_rit}{ny_rit}
 \item{perf_level}{perf_level}
 \item{proficient}{proficient}
-}}
+}
+}
 \source{
 ny_proficiency.Rmd
 }

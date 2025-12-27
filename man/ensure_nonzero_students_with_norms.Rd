@@ -4,10 +4,10 @@
 \alias{ensure_nonzero_students_with_norms}
 \title{ensure_nonzero_students_with_norms}
 \usage{
-ensure_nonzero_students_with_norms(.)
+ensure_nonzero_students_with_norms(df)
 }
 \arguments{
-\item{.}{dot-placeholder, per ensurer doc.}
+\item{df}{growth data frame to check}
 }
 \description{
 a contract that verifies that a growth df has at least one student with

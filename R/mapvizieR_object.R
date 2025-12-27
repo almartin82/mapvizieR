@@ -112,18 +112,21 @@ is.mapvizieR <- function(x) inherits(x, "mapvizieR")
 
 
 #' @title ensure_is_mapvizieR
-#' 
+#'
 #' @description a contract that ensures that an object is a mapvizieR object at runtime.
-#' 
-#' @param . dot-placeholder, per ensurer doc.
+#'
+#' @param x object to check
 
-ensure_is_mapvizieR <- ensurer::ensures_that(
-  is.mapvizieR(.) ~ paste0(
-    "The object you passed is not a conforming mapvizieR object.\n",
-    "Look at the examples in the mapvizieR() to see more about generating\n",
-    "a valid mapvizieR object."
-  )
-)
+ensure_is_mapvizieR <- function(x) {
+  if (!is.mapvizieR(x)) {
+    cli::cli_abort(paste0(
+      "The object you passed is not a conforming mapvizieR object.\n",
+      "Look at the examples in the mapvizieR() to see more about generating\n",
+      "a valid mapvizieR object."
+    ))
+  }
+  invisible(x)
+}
 
 
 

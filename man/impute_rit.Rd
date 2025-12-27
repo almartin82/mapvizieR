@@ -4,8 +4,13 @@
 \alias{impute_rit}
 \title{Impute missing RIT scores}
 \usage{
-impute_rit(mapvizieR_obj, studentids, measurementscale,
-  impute_method = "simple_average", interpolate_only = TRUE)
+impute_rit(
+  mapvizieR_obj,
+  studentids,
+  measurementscale,
+  impute_method = "simple_average",
+  interpolate_only = TRUE
+)
 }
 \arguments{
 \item{mapvizieR_obj}{a mapvizieR object}

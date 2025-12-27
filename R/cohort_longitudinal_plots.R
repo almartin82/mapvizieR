@@ -121,11 +121,11 @@ cohort_longitudinal_npr_plot <- function(
         y = consistent_percentile,
         group = studentid,
         color = type,
-        size = type,
+        linewidth = type,
         alpha = type
       )
-    ) +    
-    scale_size_manual(values = c(3, 1)) +
+    ) +
+    scale_linewidth_manual(values = c(3, 1)) +
     scale_alpha_manual(values = c(1, student_alpha)) +
     scale_color_manual(values = c('red2', 'darkblue')) +
     theme_bw() +
