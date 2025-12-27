@@ -4,7 +4,7 @@
 \alias{arrange.mapvizieR_data}
 \title{arrange wrapper}
 \usage{
-arrange.mapvizieR_data(.data, ..., .by_group = FALSE)
+\method{arrange}{mapvizieR_data}(.data, ..., .by_group = FALSE)
 }
 \arguments{
 \item{.data}{data.frame}

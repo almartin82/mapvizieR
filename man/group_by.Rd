@@ -4,12 +4,7 @@
 \alias{group_by.mapvizieR_data}
 \title{group_by wrapper}
 \usage{
-group_by.mapvizieR_data(
-  .data,
-  ...,
-  .add = FALSE,
-  .drop = dplyr::group_by_drop_default(.data)
-)
+\method{group_by}{mapvizieR_data}(.data, ..., .add = FALSE, .drop = dplyr::group_by_drop_default(.data))
 }
 \arguments{
 \item{.data}{data.frame}

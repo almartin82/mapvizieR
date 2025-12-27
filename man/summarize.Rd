@@ -4,7 +4,7 @@
 \alias{summarize.mapvizieR_data}
 \title{summarize wrapper}
 \usage{
-summarize.mapvizieR_data(.data, ..., .by = NULL, .groups = NULL)
+\method{summarize}{mapvizieR_data}(.data, ..., .by = NULL, .groups = NULL)
 }
 \arguments{
 \item{.data}{data.frame}

@@ -4,7 +4,7 @@
 \alias{filter.mapvizieR_data}
 \title{filter wrapper}
 \usage{
-filter.mapvizieR_data(.data, ..., .by = NULL, .preserve = FALSE)
+\method{filter}{mapvizieR_data}(.data, ..., .by = NULL, .preserve = FALSE)
 }
 \arguments{
 \item{.data}{data.frame}

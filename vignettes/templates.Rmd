@@ -1,6 +1,10 @@
 ---
-title: "templates"
-output: html_document
+title: "Report Templates"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Report Templates}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 This vignette illustrates the available report template layouts in `templates.R`.

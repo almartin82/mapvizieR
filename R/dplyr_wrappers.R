@@ -1,15 +1,13 @@
 #' @title makes data a mapvizieR_data object
-#' 
+#'
 #' @description I have absolutely no idea what I am doing.gif
-#' 
-#' @param df a data frame 
+#'
+#' @param df a data frame
 #' @export
-#' @method group_by mapvizieR_growth
 
 mapvizieR_data <- function(df) UseMethod("mapvizieR_data")
 
 #' @export
-#' @method group_by mapvizieR_growth
 mapvizieR_data.default <- function(df) {
 
   class(df) <- c('mapvizieR_data', class(df))
@@ -28,7 +26,7 @@ mapvizieR_data.default <- function(df) {
 #'
 #' @return data.frame
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method group_by mapvizieR_data
 
 group_by.mapvizieR_data <- function(.data, ..., .add = FALSE, .drop = dplyr::group_by_drop_default(.data)) {
 
@@ -61,7 +59,7 @@ group_by.mapvizieR_data <- function(.data, ..., .add = FALSE, .drop = dplyr::gro
 #'
 #' @return data.frame
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method ungroup mapvizieR_data
 
 ungroup.mapvizieR_data <- function(x, ...) {
 
@@ -93,7 +91,7 @@ ungroup.mapvizieR_data <- function(x, ...) {
 #'
 #' @return data.frame
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method select mapvizieR_data
 
 select.mapvizieR_data <- function(.data, ...) {
 
@@ -127,7 +125,7 @@ select.mapvizieR_data <- function(.data, ...) {
 #'
 #' @return data.frame
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method filter mapvizieR_data
 
 filter.mapvizieR_data <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 
@@ -160,7 +158,7 @@ filter.mapvizieR_data <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 #'
 #' @return data.frame
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method arrange mapvizieR_data
 
 arrange.mapvizieR_data <- function(.data, ..., .by_group = FALSE) {
 
@@ -192,7 +190,7 @@ arrange.mapvizieR_data <- function(.data, ..., .by_group = FALSE) {
 #'
 #' @return data.frame
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method mutate mapvizieR_data
 
 mutate.mapvizieR_data <- function(.data, ...) {
 
@@ -226,7 +224,7 @@ mutate.mapvizieR_data <- function(.data, ...) {
 #'
 #' @return data.frame
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method summarize mapvizieR_data
 
 summarize.mapvizieR_data <- function(.data, ..., .by = NULL, .groups = NULL) {
 
@@ -262,7 +260,7 @@ group_by.mapvizieR_growth <- function(.data, ..., .add = FALSE, .drop = dplyr::g
 }
 
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method group_by mapvizieR_cdf
 group_by.mapvizieR_cdf <- function(.data, ..., .add = FALSE, .drop = dplyr::group_by_drop_default(.data)) {
   old_classes <- class(.data)
   class(.data) <- old_classes[!old_classes %in% c('mapvizieR_cdf', 'mapvizieR_data')]
@@ -273,7 +271,7 @@ group_by.mapvizieR_cdf <- function(.data, ..., .add = FALSE, .drop = dplyr::grou
 }
 
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method ungroup mapvizieR_growth
 ungroup.mapvizieR_growth <- function(x, ...) {
   old_classes <- class(x)
   class(x) <- old_classes[!old_classes %in% c('mapvizieR_growth', 'mapvizieR_data')]
@@ -284,7 +282,7 @@ ungroup.mapvizieR_growth <- function(x, ...) {
 }
 
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method ungroup mapvizieR_cdf
 ungroup.mapvizieR_cdf <- function(x, ...) {
   old_classes <- class(x)
   class(x) <- old_classes[!old_classes %in% c('mapvizieR_cdf', 'mapvizieR_data')]
@@ -295,7 +293,7 @@ ungroup.mapvizieR_cdf <- function(x, ...) {
 }
 
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method select mapvizieR_growth
 select.mapvizieR_growth <- function(.data, ...) {
   old_classes <- class(.data)
   class(.data) <- old_classes[!old_classes %in% c('mapvizieR_growth', 'mapvizieR_data')]
@@ -306,7 +304,7 @@ select.mapvizieR_growth <- function(.data, ...) {
 }
 
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method select mapvizieR_cdf
 select.mapvizieR_cdf <- function(.data, ...) {
   old_classes <- class(.data)
   class(.data) <- old_classes[!old_classes %in% c('mapvizieR_cdf', 'mapvizieR_data')]
@@ -317,7 +315,7 @@ select.mapvizieR_cdf <- function(.data, ...) {
 }
 
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method filter mapvizieR_growth
 filter.mapvizieR_growth <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   old_classes <- class(.data)
   class(.data) <- old_classes[!old_classes %in% c('mapvizieR_growth', 'mapvizieR_data')]
@@ -328,7 +326,7 @@ filter.mapvizieR_growth <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 }
 
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method filter mapvizieR_cdf
 filter.mapvizieR_cdf <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   old_classes <- class(.data)
   class(.data) <- old_classes[!old_classes %in% c('mapvizieR_cdf', 'mapvizieR_data')]
@@ -339,7 +337,7 @@ filter.mapvizieR_cdf <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 }
 
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method mutate mapvizieR_growth
 mutate.mapvizieR_growth <- function(.data, ...) {
   old_classes <- class(.data)
   class(.data) <- old_classes[!old_classes %in% c('mapvizieR_growth', 'mapvizieR_data')]
@@ -350,7 +348,7 @@ mutate.mapvizieR_growth <- function(.data, ...) {
 }
 
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method mutate mapvizieR_cdf
 mutate.mapvizieR_cdf <- function(.data, ...) {
   old_classes <- class(.data)
   class(.data) <- old_classes[!old_classes %in% c('mapvizieR_cdf', 'mapvizieR_data')]
@@ -361,7 +359,7 @@ mutate.mapvizieR_cdf <- function(.data, ...) {
 }
 
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method arrange mapvizieR_growth
 arrange.mapvizieR_growth <- function(.data, ..., .by_group = FALSE) {
   old_classes <- class(.data)
   class(.data) <- old_classes[!old_classes %in% c('mapvizieR_growth', 'mapvizieR_data')]
@@ -372,7 +370,7 @@ arrange.mapvizieR_growth <- function(.data, ..., .by_group = FALSE) {
 }
 
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method arrange mapvizieR_cdf
 arrange.mapvizieR_cdf <- function(.data, ..., .by_group = FALSE) {
   old_classes <- class(.data)
   class(.data) <- old_classes[!old_classes %in% c('mapvizieR_cdf', 'mapvizieR_data')]
@@ -383,7 +381,7 @@ arrange.mapvizieR_cdf <- function(.data, ..., .by_group = FALSE) {
 }
 
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method summarize mapvizieR_growth
 summarize.mapvizieR_growth <- function(.data, ..., .by = NULL, .groups = NULL) {
   old_classes <- class(.data)
   class(.data) <- old_classes[!old_classes %in% c('mapvizieR_growth', 'mapvizieR_data')]
@@ -394,7 +392,7 @@ summarize.mapvizieR_growth <- function(.data, ..., .by = NULL, .groups = NULL) {
 }
 
 #' @export
-#' @method group_by mapvizieR_growth
+#' @method summarize mapvizieR_cdf
 summarize.mapvizieR_cdf <- function(.data, ..., .by = NULL, .groups = NULL) {
   old_classes <- class(.data)
   class(.data) <- old_classes[!old_classes %in% c('mapvizieR_cdf', 'mapvizieR_data')]

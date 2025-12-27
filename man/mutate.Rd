@@ -4,7 +4,7 @@
 \alias{mutate.mapvizieR_data}
 \title{mutate wrapper}
 \usage{
-mutate.mapvizieR_data(.data, ...)
+\method{mutate}{mapvizieR_data}(.data, ...)
 }
 \arguments{
 \item{.data}{data.frame}

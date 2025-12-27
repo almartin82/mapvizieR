@@ -6,3 +6,10 @@ inst/doc
 #ephemeral file created by testing, sometimes
 tests/testthat/Rplots.pdf
 *.DS_Store
+
+# Analysis folder
+analysis/
+
+# R CMD check artifacts
+*.Rcheck/
+mapvizieR_*.tar.gz

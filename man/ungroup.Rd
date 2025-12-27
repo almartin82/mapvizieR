@@ -4,7 +4,7 @@
 \alias{ungroup.mapvizieR_data}
 \title{ungroup wrapper}
 \usage{
-ungroup.mapvizieR_data(x, ...)
+\method{ungroup}{mapvizieR_data}(x, ...)
 }
 \arguments{
 \item{x}{data.frame}

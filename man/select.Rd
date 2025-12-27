@@ -4,7 +4,7 @@
 \alias{select.mapvizieR_data}
 \title{select wrapper}
 \usage{
-select.mapvizieR_data(.data, ...)
+\method{select}{mapvizieR_data}(.data, ...)
 }
 \arguments{
 \item{.data}{data.frame}
