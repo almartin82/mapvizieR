@@ -949,7 +949,7 @@ unq_models <- ny[, c('Grade', 'Measurementscale', 'Season')] %>% unique()
 ``` r
 all_preds <- list()
 
-for (i in 1:nrow(unq_models)) {
+for (i in seq_len(nrow(unq_models))) {
   
   ids <- unq_models[i, ]
   
