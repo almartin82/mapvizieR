@@ -19,3 +19,8 @@ mapvizieR_*.tar.gz
 src/*.o
 src/*.so
 src/*.dll
+
+# Proprietary NWEA reference documents
+data-raw/*.pdf
+data-raw/*.xlsx
+data-raw/*.txt
