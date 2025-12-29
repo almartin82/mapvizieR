@@ -142,6 +142,22 @@ mapvizier_growth_colors()
 - ggplot2 >= 3.4.0
 - dplyr >= 1.1.0
 
+## Norms Data
+
+mapvizieR includes NWEA norms data for percentile calculations:
+
+| Norm Year | Student Status | School Status | Student Growth | School Growth |
+|-----------|----------------|---------------|----------------|---------------|
+| 2011 | ✅ | - | ✅ | - |
+| 2015 | ✅ | ✅ | ✅ | ✅ |
+| 2020 | ✅ | ✅ | - | ✅ |
+| 2025 | ✅ | ✅ | - | ❌ |
+
+**Note:** NWEA has not published detailed school conditional growth norms for 2025.
+The 2025 Technical Manual only provides aggregate growth statistics by grade, not the
+RIT-conditional tables needed for school growth percentile calculations. Use 2020
+school growth norms as the most recent detailed option.
+
 ## Documentation
 
 - [Package website](https://almartin82.github.io/mapvizieR) - Full documentation and vignettes

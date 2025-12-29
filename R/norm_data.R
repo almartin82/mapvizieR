@@ -112,6 +112,124 @@
 #' @source http://support.nwea.org/support/article/rit-scale-norms-study-data-files
 "school_status_norms_2015_dense_extended"
 
+
+#' status_norms_2020 NWEA student and school status norms data (2020 study)
+#'
+#' Norm data published by NWEA in the 2020 MAP Growth Normative Data report.
+#' Given a subject, grade level, season and RIT, gives a percentile rank.
+#'
+#' @format
+#' \describe{
+#' \item{measurementscale}{measurementscale}
+#' \item{fallwinterspring}{fallwinterspring}
+#' \item{grade}{grade}
+#' \item{RIT}{RIT}
+#' \item{student_percentile}{student_percentile}
+#' \item{school_percentile}{school_percentile}
+#' }
+#' @source NWEA 2020 MAP Growth Normative Data
+"status_norms_2020"
+
+
+#' status_norms_2025 NWEA student and school status norms data (2025 study)
+#'
+#' Norm data published by NWEA in the 2025 MAP Growth Technical Manual.
+#' Given a subject, grade level, season and RIT, gives a percentile rank.
+#' Note: 2025 norms only include percentiles at 5-point intervals (5, 10, 15, ..., 95).
+#'
+#' @format
+#' \describe{
+#' \item{measurementscale}{measurementscale}
+#' \item{fallwinterspring}{fallwinterspring}
+#' \item{grade}{grade}
+#' \item{RIT}{RIT}
+#' \item{student_percentile}{student_percentile}
+#' \item{school_percentile}{school_percentile}
+#' }
+#' @source NWEA 2025 MAP Growth Technical Manual
+"status_norms_2025"
+
+
+#' student_status_norms_2020_dense_extended 2020 student norm data densified and extended
+#'
+#' Builds on status_norms_2020 for students.
+#' Two data processing steps have been performed:
+#' 1) densification by percentile - creates entries for intermediate percentiles
+#' 2) extending norms into HS grades where data may be sparse
+#'
+#' @format
+#' \describe{
+#' \item{measurementscale}{measurementscale}
+#' \item{fallwinterspring}{fallwinterspring}
+#' \item{grade}{grade}
+#' \item{RIT}{RIT}
+#' \item{student_percentile}{student_percentile}
+#' }
+#' @source NWEA 2020 MAP Growth Normative Data
+"student_status_norms_2020_dense_extended"
+
+
+#' student_status_norms_2025_dense_extended 2025 student norm data densified and extended
+#'
+#' Builds on status_norms_2025 for students.
+#' Two data processing steps have been performed:
+#' 1) densification by percentile - creates entries for intermediate percentiles
+#' 2) extending norms into HS grades where data may be sparse
+#' Note: Original 2025 norms only include 5-point percentile intervals.
+#'
+#' @format
+#' \describe{
+#' \item{measurementscale}{measurementscale}
+#' \item{fallwinterspring}{fallwinterspring}
+#' \item{grade}{grade}
+#' \item{RIT}{RIT}
+#' \item{student_percentile}{student_percentile}
+#' }
+#' @source NWEA 2025 MAP Growth Technical Manual
+"student_status_norms_2025_dense_extended"
+
+
+#' school_status_norms_2020_dense_extended 2020 school norm data densified and extended
+#'
+#' Builds on status_norms_2020 for schools.
+#' Two data processing steps have been performed:
+#' 1) densification by percentile
+#' 2) extending norms into HS grades
+#' See student_status_norms_2020_dense_extended for more details.
+#'
+#' @format
+#' \describe{
+#' \item{measurementscale}{measurementscale}
+#' \item{fallwinterspring}{fallwinterspring}
+#' \item{grade}{grade}
+#' \item{RIT}{RIT}
+#' \item{school_percentile}{school_percentile}
+#' }
+#' @source NWEA 2020 MAP Growth Normative Data
+"school_status_norms_2020_dense_extended"
+
+
+#' school_status_norms_2025_dense_extended 2025 school norm data densified and extended
+#'
+#' Builds on status_norms_2025 for schools.
+#' Two data processing steps have been performed:
+#' 1) densification by percentile
+#' 2) extending norms into HS grades
+#' See student_status_norms_2025_dense_extended for more details.
+#' Note: Original 2025 norms only include 5-point percentile intervals.
+#'
+#' @format
+#' \describe{
+#' \item{measurementscale}{measurementscale}
+#' \item{fallwinterspring}{fallwinterspring}
+#' \item{grade}{grade}
+#' \item{RIT}{RIT}
+#' \item{school_percentile}{school_percentile}
+#' }
+#' @source NWEA 2025 MAP Growth Technical Manual
+"school_status_norms_2025_dense_extended"
+
+
 ##
 ## STUDENT GROWTH NORMS
 ##
@@ -236,6 +354,28 @@
 #' @source NWEA 2015 norms table, cleaned with
 #' 'growth norms munging.R' in /data-raw
 "sch_growth_norms_2015"
+
+
+#' school growth norms 2020 study
+#'
+#' School / cohort conditional growth norms published by NWEA.
+#' These are parsed from Appendix E of the 2020 MAP Growth Normative Data report.
+#' Growth expectations are conditional on starting RIT score.
+#'
+#' @format
+#' \describe{
+#' \item{measurementscale}{measurementscale}
+#' \item{start_grade}{start grade level}
+#' \item{end_grade}{end grade level}
+#' \item{start_fallwinterspring}{start season}
+#' \item{end_fallwinterspring}{end season}
+#' \item{start_rit}{starting RIT score}
+#' \item{typical_cohort_growth}{expected mean growth for cohorts at this starting RIT}
+#' \item{sd_of_expectation}{standard deviation of expected growth}
+#' }
+#' @source NWEA 2020 MAP Growth Normative Data, Appendix E
+"sch_growth_norms_2020"
+
 
 ##
 ## ACT LINKING
