@@ -172,9 +172,12 @@
 <url><loc>https://almartin82.github.io/mapvizieR/reference/sch_growth_lookup.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/sch_growth_norms_2012.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/sch_growth_norms_2015.html</loc></url>
+<url><loc>https://almartin82.github.io/mapvizieR/reference/sch_growth_norms_2020.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/schambach_figure.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/schambach_table_1d.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/school_status_norms_2015_dense_extended.html</loc></url>
+<url><loc>https://almartin82.github.io/mapvizieR/reference/school_status_norms_2020_dense_extended.html</loc></url>
+<url><loc>https://almartin82.github.io/mapvizieR/reference/school_status_norms_2025_dense_extended.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/scores_by_testid.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/season_fix.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/select.html</loc></url>
@@ -182,6 +185,8 @@
 <url><loc>https://almartin82.github.io/mapvizieR/reference/standardize_kinder.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/state_pass_prob.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/status_norms_2015.html</loc></url>
+<url><loc>https://almartin82.github.io/mapvizieR/reference/status_norms_2020.html</loc></url>
+<url><loc>https://almartin82.github.io/mapvizieR/reference/status_norms_2025.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/strand_boxes.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/strands_list_plot.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/stu_RIT_hist_plot_elements.html</loc></url>
@@ -195,6 +200,8 @@
 <url><loc>https://almartin82.github.io/mapvizieR/reference/student_status_norms_2011.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/student_status_norms_2011_dense_extended.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/student_status_norms_2015_dense_extended.html</loc></url>
+<url><loc>https://almartin82.github.io/mapvizieR/reference/student_status_norms_2020_dense_extended.html</loc></url>
+<url><loc>https://almartin82.github.io/mapvizieR/reference/student_status_norms_2025_dense_extended.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/summarize.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/summary.mapvizieR.html</loc></url>
 <url><loc>https://almartin82.github.io/mapvizieR/reference/summary.mapvizieR_cdf.html</loc></url>

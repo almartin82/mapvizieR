@@ -108,6 +108,12 @@ Individual student visualizations
 - [`student_status_norms_2015_dense_extended`](https://almartin82.github.io/mapvizieR/reference/student_status_norms_2015_dense_extended.md)
   : student_status_norms_2015_dense_extended 2015 norm data densified
   and extended
+- [`student_status_norms_2020_dense_extended`](https://almartin82.github.io/mapvizieR/reference/student_status_norms_2020_dense_extended.md)
+  : student_status_norms_2020_dense_extended 2020 student norm data
+  densified and extended
+- [`student_status_norms_2025_dense_extended`](https://almartin82.github.io/mapvizieR/reference/student_status_norms_2025_dense_extended.md)
+  : student_status_norms_2025_dense_extended 2025 student norm data
+  densified and extended
 - [`build_student_1year_goal_plot()`](https://almartin82.github.io/mapvizieR/reference/build_student_1year_goal_plot.md)
   : Generates a one-term goal plot for one student
 - [`build_student_college_plot()`](https://almartin82.github.io/mapvizieR/reference/build_student_college_plot.md)
@@ -312,6 +318,12 @@ Example datasets for testing and demonstration
 - [`student_status_norms_2015_dense_extended`](https://almartin82.github.io/mapvizieR/reference/student_status_norms_2015_dense_extended.md)
   : student_status_norms_2015_dense_extended 2015 norm data densified
   and extended
+- [`student_status_norms_2020_dense_extended`](https://almartin82.github.io/mapvizieR/reference/student_status_norms_2020_dense_extended.md)
+  : student_status_norms_2020_dense_extended 2020 student norm data
+  densified and extended
+- [`student_status_norms_2025_dense_extended`](https://almartin82.github.io/mapvizieR/reference/student_status_norms_2025_dense_extended.md)
+  : student_status_norms_2025_dense_extended 2025 student norm data
+  densified and extended
 
 ## Internal Functions
 
@@ -484,6 +496,14 @@ Internal helper functions (exported for advanced use)
 - [`school_status_norms_2015_dense_extended`](https://almartin82.github.io/mapvizieR/reference/school_status_norms_2015_dense_extended.md)
   : school_status_norms_2015_dense_extended 2015 norm data densified and
   extended
+
+- [`school_status_norms_2020_dense_extended`](https://almartin82.github.io/mapvizieR/reference/school_status_norms_2020_dense_extended.md)
+  : school_status_norms_2020_dense_extended 2020 school norm data
+  densified and extended
+
+- [`school_status_norms_2025_dense_extended`](https://almartin82.github.io/mapvizieR/reference/school_status_norms_2025_dense_extended.md)
+  : school_status_norms_2025_dense_extended 2025 school norm data
+  densified and extended
 
 - [`scores_by_testid()`](https://almartin82.github.io/mapvizieR/reference/scores_by_testid.md)
   : scores_by_testid
@@ -726,6 +746,8 @@ Additional exported functions
   : school growth norms 2012 study
 - [`sch_growth_norms_2015`](https://almartin82.github.io/mapvizieR/reference/sch_growth_norms_2015.md)
   : school growth norms 2015 study
+- [`sch_growth_norms_2020`](https://almartin82.github.io/mapvizieR/reference/sch_growth_norms_2020.md)
+  : school growth norms 2020 study
 - [`season_fix()`](https://almartin82.github.io/mapvizieR/reference/season_fix.md)
   : season fix
 - [`state_pass_prob()`](https://almartin82.github.io/mapvizieR/reference/state_pass_prob.md)
@@ -733,5 +755,11 @@ Additional exported functions
 - [`status_norms_2015`](https://almartin82.github.io/mapvizieR/reference/status_norms_2015.md)
   : status_norms_2015 NWEA student and school status (or, attainment)
   norms data (2015 study)
+- [`status_norms_2020`](https://almartin82.github.io/mapvizieR/reference/status_norms_2020.md)
+  : status_norms_2020 NWEA student and school status norms data (2020
+  study)
+- [`status_norms_2025`](https://almartin82.github.io/mapvizieR/reference/status_norms_2025.md)
+  : status_norms_2025 NWEA student and school status norms data (2025
+  study)
 - [`teacher_performance_update()`](https://almartin82.github.io/mapvizieR/reference/teacher_performance_update.md)
   : Teacher Performance Update
