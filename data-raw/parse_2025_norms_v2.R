@@ -43,14 +43,14 @@ parse_2025_status_table <- function(lines, line_num, subject, season, grade_rang
   return(df_long)
 }
 
-# Tables with their line numbers and grade ranges
-tables <- list(
+# Student tables with their line numbers and grade ranges
+student_tables <- list(
   list(line = 1947, subject = "Mathematics", season = "Fall", grades = 0:12),
   list(line = 2007, subject = "Mathematics", season = "Winter", grades = 0:12),
   list(line = 2067, subject = "Mathematics", season = "Spring", grades = 0:12),
   list(line = 2129, subject = "Reading", season = "Fall", grades = 0:12),
-  list(line = 2159, subject = "Reading", season = "Winter", grades = 0:12),
-  list(line = 2189, subject = "Reading", season = "Spring", grades = 0:12),
+  list(line = 2189, subject = "Reading", season = "Winter", grades = 0:12),
+  list(line = 2249, subject = "Reading", season = "Spring", grades = 0:12),
   list(line = 2311, subject = "Language Usage", season = "Fall", grades = 2:11),
   list(line = 2371, subject = "Language Usage", season = "Winter", grades = 2:11),
   list(line = 2431, subject = "Language Usage", season = "Spring", grades = 2:11),
@@ -59,13 +59,48 @@ tables <- list(
   list(line = 2612, subject = "General Science", season = "Spring", grades = 2:11)
 )
 
-all_status <- list()
+# School tables with their line numbers and grade ranges
+school_tables <- list(
+  list(line = 1977, subject = "Mathematics", season = "Fall", grades = 0:12),
+  list(line = 2037, subject = "Mathematics", season = "Winter", grades = 0:12),
+  list(line = 2097, subject = "Mathematics", season = "Spring", grades = 0:12),
+  list(line = 2159, subject = "Reading", season = "Fall", grades = 0:12),
+  list(line = 2219, subject = "Reading", season = "Winter", grades = 0:12),
+  list(line = 2279, subject = "Reading", season = "Spring", grades = 0:12),
+  list(line = 2341, subject = "Language Usage", season = "Fall", grades = 2:11),
+  list(line = 2401, subject = "Language Usage", season = "Winter", grades = 2:11),
+  list(line = 2461, subject = "Language Usage", season = "Spring", grades = 2:11),
+  list(line = 2522, subject = "General Science", season = "Fall", grades = 2:11),
+  list(line = 2582, subject = "General Science", season = "Winter", grades = 2:11),
+  list(line = 2642, subject = "General Science", season = "Spring", grades = 2:11)
+)
 
-for (t in tables) {
+# Parse student tables
+cat("=== Parsing Student Tables ===\n")
+all_student_status <- list()
+
+for (t in student_tables) {
   cat("Parsing:", t$subject, t$season, "(line", t$line, ")\n")
   df <- parse_2025_status_table(txt, t$line, t$subject, t$season, t$grades)
   if (!is.null(df)) {
-    all_status[[paste(t$subject, t$season)]] <- df
+    all_student_status[[paste(t$subject, t$season)]] <- df
+    cat("  Found", nrow(df), "rows\n")
+  } else {
+    cat("  FAILED\n")
+  }
+}
+
+# Parse school tables
+cat("\n=== Parsing School Tables ===\n")
+all_school_status <- list()
+
+for (t in school_tables) {
+  cat("Parsing:", t$subject, t$season, "(line", t$line, ")\n")
+  df <- parse_2025_status_table(txt, t$line, t$subject, t$season, t$grades)
+  if (!is.null(df)) {
+    # Rename column for school norms
+    df <- df %>% rename(school_percentile = student_percentile)
+    all_school_status[[paste(t$subject, t$season)]] <- df
     cat("  Found", nrow(df), "rows\n")
   } else {
     cat("  FAILED\n")
@@ -73,14 +108,24 @@ for (t in tables) {
 }
 
 # Combine all
-status_norms_2025 <- bind_rows(all_status)
-cat("\n=== 2025 Status norms dimensions:", dim(status_norms_2025), "===\n")
-print(head(status_norms_2025, 20))
+status_norms_2025 <- bind_rows(all_student_status)
+school_status_norms_2025 <- bind_rows(all_school_status)
+
+cat("\n=== 2025 Student Status norms dimensions:", dim(status_norms_2025), "===\n")
+print(head(status_norms_2025, 10))
+
+cat("\n=== 2025 School Status norms dimensions:", dim(school_status_norms_2025), "===\n")
+print(head(school_status_norms_2025, 10))
 
 # Check subjects
-cat("\nSubjects found:\n")
+cat("\nStudent subjects found:\n")
 print(table(status_norms_2025$measurementscale, status_norms_2025$fallwinterspring))
+
+cat("\nSchool subjects found:\n")
+print(table(school_status_norms_2025$measurementscale, school_status_norms_2025$fallwinterspring))
 
 # Save
 write.csv(status_norms_2025, 'data-raw/status_norms_2025_parsed.csv', row.names = FALSE)
+write.csv(school_status_norms_2025, 'data-raw/school_status_norms_2025_parsed.csv', row.names = FALSE)
 cat("\nSaved to data-raw/status_norms_2025_parsed.csv\n")
+cat("Saved to data-raw/school_status_norms_2025_parsed.csv\n")
