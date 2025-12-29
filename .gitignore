@@ -3,22 +3,23 @@
 .RData
 inst/doc
 
-#ephemeral file created by testing, sometimes
-tests/testthat/Rplots.pdf
-*.DS_Store
-
-# Analysis folder
-analysis/
-
-# R CMD check artifacts
+# R CMD check output
 *.Rcheck/
 ..Rcheck/
-mapvizieR_*.tar.gz
 
-# Compiled code
+# Build artifacts
+*.tar.gz
+mapvizieR_*.tar.gz
 src/*.o
 src/*.so
 src/*.dll
+
+# Ephemeral files
+tests/testthat/Rplots.pdf
+*.DS_Store
+
+# Local analysis (tracked in separate private repo)
+analysis/
 
 # Proprietary NWEA reference documents
 data-raw/*.pdf
